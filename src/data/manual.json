@@ -1,0 +1,165 @@
+{
+  "version": "0.13.0",
+  "title": "Audit-Safe Document Extractor - Benutzerhandbuch",
+  "lastUpdated": "2026-07-06T14:00:00Z",
+  "chapters": [
+    {
+      "id": "intro",
+      "title": "Einführung",
+      "sections": [
+        {
+          "heading": "Was ist der Audit-Safe Document Extractor?",
+          "content": "Der Audit-Safe Document Extractor ist ein fortgeschrittenes System zur automatisierten Extraktion strukturierter Daten aus unstrukturierten Dokumenten. Das System kombiniert mehrere Verarbeitungsschritte:\n\n• Document Parsing: Unterstützt PDF, HTML, DOCX-Formate\n• Intelligent Chunking: Intelligente Zerlegung großer Dokumente\n• LLM-basierte Extraktion: Nutzt GPT-4-Turbo für genaue Datenextraktion\n• Quality Evaluation: Automatische Validierung und Konfidenz-Bewertung\n• Audit Trail: Vollständiges Logging aller Operationen für Compliance"
+        },
+        {
+          "heading": "Kernfeatures",
+          "content": "✅ Hochgenaue Datenextraktion mit KI\n✅ Multi-Format Dokumentunterstützung (PDF, HTML, DOCX)\n✅ Regelbasierte Validierung\n✅ Vollständiger Audit Trail für Compliance\n✅ Konfigurierbare Verarbeitungspipeline\n✅ Backup- und Restore-Funktionen\n✅ Echtzeit-Systemmetriken\n✅ Mehrsprachige Unterstützung"
+        }
+      ]
+    },
+    {
+      "id": "getting-started",
+      "title": "Erste Schritte",
+      "sections": [
+        {
+          "heading": "Dashboard verstehen",
+          "content": "Das Dashboard zeigt einen Überblick über den Systemstatus:\n\n📊 Config Status: Aktuelle Konfigurationsversion\n💾 Backup Status: Anzahl und Zeitstempel der letzten Sicherung\n🔌 API Status: Systemzustand (Healthy/Warning/Error)\n📋 Extraction Rules: Anzahl der aktiven Extraktionsregeln\n⚙️ Configurations: Anzahl der konfigurierten Systeme\n\nJede Karte zeigt relevante Metriken und Zeitstempel für schnelle Statusüberprüfung."
+        },
+        {
+          "heading": "Dokumente hochladen",
+          "content": "1. Navigieren Sie zu 'Documents'\n2. Klicken Sie auf 'Upload'\n3. Wählen Sie ein Dokument (PDF, HTML oder DOCX)\n4. Bestätigen Sie mit 'Upload'\n\nDas System verarbeitet das Dokument automatisch und erstellt eine Kopie im source-documents Verzeichnis."
+        },
+        {
+          "heading": "Extraktion starten",
+          "content": "1. Gehen Sie zu 'Extraction Workbench'\n2. Wählen Sie ein Dokument und eine Extraktionsregel\n3. Klicken Sie 'Extract'\n4. Warten Sie auf die Verarbeitung\n5. Überprüfen Sie die Ergebnisse im 'Results' Tab"
+        }
+      ]
+    },
+    {
+      "id": "extraction-rules",
+      "title": "Extraktionsregeln",
+      "sections": [
+        {
+          "heading": "Was sind Extraktionsregeln?",
+          "content": "Extraktionsregeln definieren, welche Daten aus Dokumenten extrahiert werden sollen. Sie bestehen aus:\n\n🎯 Feld-Name: Der Name des zu extrahierenden Feldes (z.B. 'invoice_number')\n📋 Beschreibung: Beschreibung des Feldes für den LLM\n🔍 Pattern: Optionales Regex-Muster zur Validierung\n✅ Validation Rules: Definieren die Gültigkeitskriterien\n📊 Test Cases: Beispiele für korrekte Extraktion"
+        },
+        {
+          "heading": "Regel erstellen",
+          "content": "1. Navigieren Sie zu 'Rule Editor'\n2. Klicken Sie 'Create New Rule'\n3. Füllen Sie die Felder aus:\n   - Name: Eindeutiger Regelname\n   - Description: Beschreibung des Feldes\n   - Pattern: Regex-Muster (optional)\n   - Validation: Validierungsregel\n4. Speichern Sie die Regel\n\nDie Regel kann sofort in der Extraktion verwendet werden."
+        },
+        {
+          "heading": "Regel testen",
+          "content": "1. Öffnen Sie die Regel im 'Rule Editor'\n2. Klicken Sie auf 'Test Rule'\n3. Geben Sie Test-Eingaben ein\n4. Überprüfen Sie das Ergebnis\n\nDer Test zeigt, ob die Regel das erwartete Ergebnis produziert."
+        }
+      ]
+    },
+    {
+      "id": "configuration",
+      "title": "Konfiguration",
+      "sections": [
+        {
+          "heading": "Konfiguration ändern",
+          "content": "Das System bietet 4 Konfigurationsbereiche:\n\n🔀 Chunking: Wie große Dokumente in kleinere Teile zerlegt werden\n   - Strategy: semantic (bedeutungsbasiert), fixed-size (feste Größe) oder hybrid\n   - Max/Min Chunk Size: Größenlimits für Chunks\n   - Overlap Percentage: Überlappung zwischen Chunks für Kontexterhalten\n\n📊 Confidence: Vertrauens- und Validierungseinstellungen\n   - Minimum Threshold: Minimale akzeptable Konfidenz\n   - Score Calculation: Wie Scores berechnet werden\n   - Hallucination Detection: Aktiviert LLM-Halluzinations-Erkennung\n   - Source Validation: Validiert, dass Extraktionen aus dem Quelltext stammen\n\n🤖 LLM: Language Model Einstellungen\n   - Model: Verwendetes Modell (z.B. gpt-4-turbo)\n   - Temperature: Kreativität (0=deterministisch, 1=kreativ)\n   - Max Tokens: Maximale Länge der Ausgabe\n   - Timeout: Maximale Wartedauer für API-Anfrage\n\n⚙️ System: Systemweite Einstellungen\n   - Log Level: Verbositätsstufe (debug/info/warn/error)\n   - Tracing: Aktiviert detailliertes Tracing\n   - Metrics: Aktiviert Metrik-Erfassung\n   - Caching: Aktiviert Ergebnis-Caching"
+        },
+        {
+          "heading": "Versionsverwaltung",
+          "content": "Jede Konfigurationsänderung erstellt automatisch eine neue Version:\n\n✅ Alle Versionen werden automatisch gespeichert\n✅ Sie können zur vorherigen Version zurückkehren\n✅ Jede Version zeigt Änderungen und Zeitstempel\n✅ Changelog dokumentiert alle Änderungen\n\nUm zurückzukehren: Klicken Sie auf eine vorherige Version und bestätigen Sie 'Restore'."
+        }
+      ]
+    },
+    {
+      "id": "audit-compliance",
+      "title": "Audit & Compliance",
+      "sections": [
+        {
+          "heading": "Audit Trail Übersicht",
+          "content": "Das Audit Trail zeigt den kompletten Audit-Verlauf:\n\n📋 Welche Felder wurden extrahiert?\n✅ Validierungsergebnis für jedes Feld\n📊 Konfidenz-Score für jede Extraktion\n🔍 Quelle: Wo wurde die Information gefunden?\n🕐 Zeitstempel: Wann wurde die Extraktion durchgeführt?\n\nAlle Extraktion-Operationen werden vollständig protokolliert für auditierbare Verarbeitung."
+        },
+        {
+          "heading": "Log-Suche",
+          "content": "Mit der Log-Browser können Sie alle Systemlogs durchsuchen und filtern:\n\n🔍 Search: Volltext-Suche in Log-Inhalten\n📍 Source: Filtern nach Komponente (parser, llm, validator, api, system)\n⚠️ Level: Filtern nach Severity (debug, info, warn, error)\n📅 Date Range: Filtern nach Zeitraum\n\nLogs können als JSON, CSV oder TXT exportiert werden."
+        },
+        {
+          "heading": "Compliance-Anforderungen",
+          "content": "Das System erfüllt folgende Anforderungen:\n\n✅ Vollständiges Audit Trail aller Operationen\n✅ Keine Daten-Modifikation ohne Logging\n✅ Konfigurationsversion Control\n✅ Backup- und Restore-Funktionen\n✅ Fehlerbehandlung mit detailliertem Logging\n✅ Regulatory-konforme Datenspeicherung\n\nAlle Daten werden verschlüsselt und mit Checksummen versehen."
+        }
+      ]
+    },
+    {
+      "id": "backup-restore",
+      "title": "Backup & Restore",
+      "sections": [
+        {
+          "heading": "Backup erstellen",
+          "content": "Um ein Backup zu erstellen:\n\n1. Gehen Sie zu 'Backups'\n2. Klicken Sie 'Create Backup'\n3. Geben Sie einen Namen ein (z.B. 'Before Config Update')\n4. Geben Sie einen Grund an (z.B. 'Pre-deployment backup')\n5. Klicken Sie 'Create'\n\nDas System erstellt automatisch:\n✅ Komprimierte Backup-Datei\n✅ Checksumme zur Integritätsprüfung\n✅ Metadaten mit Zeitstempel und Größe"
+        },
+        {
+          "heading": "Backup wiederherstellen",
+          "content": "Um einen Backup wiederherzustellen:\n\n1. Gehen Sie zu 'Backups'\n2. Klicken Sie auf den Backup in der Liste\n3. Klicken Sie 'Restore'\n4. Geben Sie einen Grund ein (z.B. 'Rolling back failed update')\n5. Bestätigen Sie mit 'Restore'\n\n⚠️ Dies wird den aktuellen Zustand durch den Backup-Zustand ersetzen."
+        },
+        {
+          "heading": "Backup verwalten",
+          "content": "Backup-Operationen:\n\n📥 Download: Exportiert den Backup lokal\n🔍 View Details: Zeigt Backup-Metadaten\n🗑️ Delete: Löscht den Backup (kann nicht rückgängig gemacht werden)\n⏰ Retention: Backups werden automatisch nach konfigurierbarer Zeit gelöscht\n\nBackup-Status zeigt Größe, Erstellungsdatum und Integritätsscore."
+        }
+      ]
+    },
+    {
+      "id": "troubleshooting",
+      "title": "Fehlerbehandlung",
+      "sections": [
+        {
+          "heading": "Häufige Probleme",
+          "content": "❌ API nicht erreichbar\n✅ Lösung: Überprüfen Sie, dass der Backend-Server läuft (Port 3000)\n\n❌ Extraktion schlägt fehl\n✅ Lösung: Überprüfen Sie die Regel und das Dokument-Format\n\n❌ Niedrige Konfidenz-Scores\n✅ Lösung: Passen Sie die Confidence-Einstellungen an oder verbessern Sie die Extraktionsregel\n\n❌ Langsame Verarbeitung\n✅ Lösung: Reduzieren Sie die Max Chunk Size oder deaktivieren Sie Tracing"
+        },
+        {
+          "heading": "Log-Analyse",
+          "content": "Für Fehlersuche:\n\n1. Gehen Sie zu 'Logs'\n2. Setzen Sie Log Level auf 'debug' für mehr Details\n3. Filtern Sie nach der Komponente mit dem Fehler\n4. Überprüfen Sie die Fehlermeldung\n5. Exportieren Sie relevante Logs für weitere Analyse"
+        },
+        {
+          "heading": "Support kontaktieren",
+          "content": "Für zusätzliche Hilfe:\n\n📧 Email: support@example.com\n📖 Dokumentation: Siehe 'Help' > 'Documentation'\n🐛 Issue Tracking: GitHub Issues\n💬 Chat Support: Verfügbar während Geschäftszeiten\n\nBitte stellen Sie folgende Informationen zur Verfügung:\n- Systemversion\n- Fehlermeldung\n- Relevante Logs\n- Schritte zum Reproduzieren"
+        }
+      ]
+    },
+    {
+      "id": "advanced",
+      "title": "Erweiterte Themen",
+      "sections": [
+        {
+          "heading": "Mehrsprachige Verarbeitung",
+          "content": "Das System unterstützt mehrsprachige Dokumente:\n\n🇩🇪 Deutsch (de)\n🇬🇧 Englisch (en)\n🇫🇷 Französisch (fr)\n🇪🇸 Spanisch (es)\n🇮🇹 Italienisch (it)\n\nLegen Sie die Sprache in der Chunking-Konfiguration fest. Das System passt die Verarbeitung automatisch an."
+        },
+        {
+          "heading": "Hybrid Chunking Strategie",
+          "content": "Hybrid Chunking kombiniert:\n\n📍 Semantische Intelligenz: Versteht Dokumentstruktur\n📏 Feste Größen: Respektiert Speicherlimits\n🔄 Adaptive Overlap: Passt Kontextüberlappung an\n\nBeste Verwendung für: Große, komplexe Dokumente mit variabler Struktur."
+        },
+        {
+          "heading": "Custom LLM Integration",
+          "content": "Das System unterstützt verschiedene LLM-Provider:\n\n🔹 OpenAI: gpt-4-turbo (Standard)\n🔹 Alternative: Können konfiguriert werden\n\nAnpassung von LLM-Parametern:\n- Temperature: 0.0 (genau) bis 1.0 (kreativ)\n- Top P: Nucleus sampling für Vielfalt\n- Max Tokens: Kontrolliert Länge der Ausgabe\n- Retries: Automatische Wiederholung bei Fehlern"
+        },
+        {
+          "heading": "Performance Optimierung",
+          "content": "Optimierungstipps:\n\n⚡ Chunking: Nutzen Sie semantic chunking für bessere Qualität\n💾 Caching: Aktivieren Sie Caching für häufig verarbeitete Inhalte\n📊 Metriken: Analysieren Sie Performance-Metriken für Bottlenecks\n🔧 Batch Processing: Verarbeiten Sie mehrere Dokumente zusammen\n\nMonitorieren Sie die Systemmetriken für kontinuierliche Optimierung."
+        }
+      ]
+    },
+    {
+      "id": "reference",
+      "title": "Referenz",
+      "sections": [
+        {
+          "heading": "Tastaturkürzel",
+          "content": "⌨️ Ctrl+K: Öffne Suchfunktion\n⌨️ Ctrl+B: Toggle Sidebar\n⌨️ Ctrl+,: Öffne Einstellungen\n⌨️ Alt+Dark: Toggle Dark Mode\n⌨️ Esc: Schließe Dialoge\n⌨️ Enter: Bestätige Aktion"
+        },
+        {
+          "heading": "API-Endpoints",
+          "content": "Häufig verwendete Endpoints:\n\n📄 GET /api/documents - Alle Dokumente\n📝 GET /api/rules - Alle Regeln\n⚙️ GET /api/config - Aktuelle Konfiguration\n📊 GET /api/audit - Audit Trail\n📥 GET /api/logs - System Logs\n💾 GET /api/backup/list - Backups\n🏥 GET /api/health - System Status\n\nVollständige API-Dokumentation verfügbar unter /api/docs"
+        },
+        {
+          "heading": "Glossar der Begriffe",
+          "content": "Für detaillierte Definitionen von Fachbegriffen:\n\n✍️ Siehe 'Help' > 'Glossary'\n\nEinige wichtige Begriffe:\n- Chunking: Zerlegung großer Texte in kleinere Einheiten\n- LLM: Large Language Model (z.B. GPT-4)\n- Confidence Score: Vertrauen in die Genauigkeit des Ergebnisses (0-100%)\n- Hallucination: Wenn das LLM falsche Informationen erfunden hat\n- Audit Trail: Protokoll aller durchgeführten Operationen"
+        }
+      ]
+    }
+  ]
+}

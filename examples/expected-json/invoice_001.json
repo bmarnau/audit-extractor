@@ -1,0 +1,432 @@
+{
+  "invoiceNumber": {
+    "value": "INV-202406-0142",
+    "confidence": 0.98,
+    "sourceReference": {
+      "chunkId": "chunk-001-header",
+      "section": "Document Header",
+      "pageNumber": 1,
+      "textSnippet": "Rechnungsnummer: INV-202406-0142",
+      "offset": 245,
+      "length": 17,
+      "similarity": 0.99,
+      "sourceConfidence": 0.98
+    }
+  },
+  "invoiceDate": {
+    "value": "2024-07-06",
+    "confidence": 0.97,
+    "sourceReference": {
+      "chunkId": "chunk-001-header",
+      "section": "Invoice Header",
+      "pageNumber": 1,
+      "textSnippet": "Rechnungsdatum: 06.07.2024",
+      "offset": 180,
+      "length": 26,
+      "similarity": 0.98,
+      "sourceConfidence": 0.97
+    }
+  },
+  "dueDate": {
+    "value": "2024-08-31",
+    "confidence": 0.96,
+    "sourceReference": {
+      "chunkId": "chunk-001-header",
+      "section": "Invoice Header",
+      "pageNumber": 1,
+      "textSnippet": "Zahlbar bis: 31.08.2024",
+      "offset": 210,
+      "length": 23,
+      "similarity": 0.98,
+      "sourceConfidence": 0.96
+    }
+  },
+  "customerName": {
+    "value": "Acme Corporation GmbH",
+    "confidence": 0.95,
+    "sourceReference": {
+      "chunkId": "chunk-002-billing",
+      "section": "Bill To",
+      "pageNumber": 1,
+      "textSnippet": "RECHNUNGSEMPFÄNGER: Acme Corporation GmbH",
+      "offset": 420,
+      "length": 21,
+      "similarity": 0.97,
+      "sourceConfidence": 0.95
+    }
+  },
+  "customerEmail": {
+    "value": "info@acmecorp.de",
+    "confidence": 0.94,
+    "sourceReference": {
+      "chunkId": "chunk-002-billing",
+      "section": "Bill To Contact",
+      "pageNumber": 1,
+      "textSnippet": "Kontakt: info@acmecorp.de",
+      "offset": 520,
+      "length": 16,
+      "similarity": 0.99,
+      "sourceConfidence": 0.94
+    }
+  },
+  "customerAddress": {
+    "street": {
+      "value": "Hauptstraße 123",
+      "confidence": 0.92,
+      "sourceReference": {
+        "chunkId": "chunk-002-billing",
+        "section": "Customer Address",
+        "pageNumber": 1,
+        "textSnippet": "Hauptstraße 123",
+        "offset": 450,
+        "length": 15,
+        "similarity": 0.99,
+        "sourceConfidence": 0.92
+      }
+    },
+    "city": {
+      "value": "Berlin",
+      "confidence": 0.93,
+      "sourceReference": {
+        "chunkId": "chunk-002-billing",
+        "section": "Customer Address",
+        "pageNumber": 1,
+        "textSnippet": "10115 Berlin",
+        "offset": 470,
+        "length": 6,
+        "similarity": 0.99,
+        "sourceConfidence": 0.93
+      }
+    },
+    "postalCode": {
+      "value": "10115",
+      "confidence": 0.94,
+      "sourceReference": {
+        "chunkId": "chunk-002-billing",
+        "section": "Customer Address",
+        "pageNumber": 1,
+        "textSnippet": "10115 Berlin",
+        "offset": 465,
+        "length": 5,
+        "similarity": 0.99,
+        "sourceConfidence": 0.94
+      }
+    },
+    "country": {
+      "value": "Deutschland",
+      "confidence": 0.92,
+      "sourceReference": {
+        "chunkId": "chunk-002-billing",
+        "section": "Customer Address",
+        "pageNumber": 1,
+        "textSnippet": "Deutschland",
+        "offset": 485,
+        "length": 11,
+        "similarity": 0.98,
+        "sourceConfidence": 0.92
+      }
+    }
+  },
+  "vendorName": {
+    "value": "TechSolve GmbH",
+    "confidence": 0.96,
+    "sourceReference": {
+      "chunkId": "chunk-000-header",
+      "section": "Vendor Header",
+      "pageNumber": 1,
+      "textSnippet": "RECHNUNGSSTELLER: TechSolve GmbH",
+      "offset": 50,
+      "length": 14,
+      "similarity": 0.99,
+      "sourceConfidence": 0.96
+    }
+  },
+  "vendorTaxId": {
+    "value": "DE287654321",
+    "confidence": 0.97,
+    "sourceReference": {
+      "chunkId": "chunk-000-header",
+      "section": "Vendor Details",
+      "pageNumber": 1,
+      "textSnippet": "Steuernummer: DE287654321",
+      "offset": 150,
+      "length": 11,
+      "similarity": 0.99,
+      "sourceConfidence": 0.97
+    }
+  },
+  "lineItems": [
+    {
+      "description": {
+        "value": "Cloud-Hosting-Paket (6 Monate)",
+        "confidence": 0.93
+      },
+      "quantity": {
+        "value": 6,
+        "confidence": 0.94
+      },
+      "unitPrice": {
+        "value": 2500.00,
+        "confidence": 0.94
+      },
+      "amount": {
+        "value": 15000.00,
+        "confidence": 0.95
+      },
+      "sourceReference": {
+        "chunkId": "chunk-003-lineitem-1",
+        "section": "Line Items Table",
+        "pageNumber": 1,
+        "textSnippet": "Cloud-Hosting-Paket (6 Monate) | 6 | Monat | 2.500,00 € | 15.000,00 €",
+        "offset": 650,
+        "length": 70,
+        "similarity": 0.98,
+        "sourceConfidence": 0.93
+      }
+    },
+    {
+      "description": {
+        "value": "Support & Maintenance",
+        "confidence": 0.92
+      },
+      "quantity": {
+        "value": 60,
+        "confidence": 0.93
+      },
+      "unitPrice": {
+        "value": 150.00,
+        "confidence": 0.94
+      },
+      "amount": {
+        "value": 9000.00,
+        "confidence": 0.94
+      },
+      "sourceReference": {
+        "chunkId": "chunk-003-lineitem-2",
+        "section": "Line Items Table",
+        "pageNumber": 1,
+        "textSnippet": "Support & Maintenance | 60 | Stunde | 150,00 € | 9.000,00 €",
+        "offset": 720,
+        "length": 58,
+        "similarity": 0.97,
+        "sourceConfidence": 0.92
+      }
+    },
+    {
+      "description": {
+        "value": "Security-Audit Durchführung",
+        "confidence": 0.91
+      },
+      "quantity": {
+        "value": 1,
+        "confidence": 0.95
+      },
+      "unitPrice": {
+        "value": 5500.00,
+        "confidence": 0.93
+      },
+      "amount": {
+        "value": 5500.00,
+        "confidence": 0.94
+      },
+      "sourceReference": {
+        "chunkId": "chunk-003-lineitem-3",
+        "section": "Line Items Table",
+        "pageNumber": 1,
+        "textSnippet": "Security-Audit Durchführung | 1 | Paket | 5.500,00 € | 5.500,00 €",
+        "offset": 778,
+        "length": 65,
+        "similarity": 0.96,
+        "sourceConfidence": 0.91
+      }
+    },
+    {
+      "description": {
+        "value": "Dokumentation & Training",
+        "confidence": 0.91
+      },
+      "quantity": {
+        "value": 20,
+        "confidence": 0.93
+      },
+      "unitPrice": {
+        "value": 125.00,
+        "confidence": 0.92
+      },
+      "amount": {
+        "value": 2500.00,
+        "confidence": 0.93
+      },
+      "sourceReference": {
+        "chunkId": "chunk-003-lineitem-4",
+        "section": "Line Items Table",
+        "pageNumber": 1,
+        "textSnippet": "Dokumentation & Training | 20 | Stunde | 125,00 € | 2.500,00 €",
+        "offset": 843,
+        "length": 62,
+        "similarity": 0.96,
+        "sourceConfidence": 0.91
+      }
+    }
+  ],
+  "subtotal": {
+    "value": 32000.00,
+    "confidence": 0.95,
+    "sourceReference": {
+      "chunkId": "chunk-004-totals",
+      "section": "Invoice Summary",
+      "pageNumber": 1,
+      "textSnippet": "Zwischensumme 32.000,00 €",
+      "offset": 950,
+      "length": 26,
+      "similarity": 0.98,
+      "sourceConfidence": 0.95
+    }
+  },
+  "taxRate": {
+    "value": 19,
+    "confidence": 0.97,
+    "sourceReference": {
+      "chunkId": "chunk-004-totals",
+      "section": "Tax Information",
+      "pageNumber": 1,
+      "textSnippet": "Steuersatz (MwSt 19%)",
+      "offset": 980,
+      "length": 20,
+      "similarity": 0.99,
+      "sourceConfidence": 0.97
+    }
+  },
+  "taxAmount": {
+    "value": 6080.00,
+    "confidence": 0.95,
+    "sourceReference": {
+      "chunkId": "chunk-004-totals",
+      "section": "Tax Information",
+      "pageNumber": 1,
+      "textSnippet": "Steuerbetrag 6.080,00 €",
+      "offset": 1005,
+      "length": 23,
+      "similarity": 0.98,
+      "sourceConfidence": 0.95
+    }
+  },
+  "totalAmount": {
+    "value": 38080.00,
+    "confidence": 0.98,
+    "sourceReference": {
+      "chunkId": "chunk-004-totals",
+      "section": "Total Amount",
+      "pageNumber": 1,
+      "textSnippet": "GESAMTBETRAG 38.080,00 €",
+      "offset": 1030,
+      "length": 25,
+      "similarity": 0.99,
+      "sourceConfidence": 0.98
+    }
+  },
+  "currency": {
+    "value": "EUR",
+    "confidence": 0.98,
+    "sourceReference": {
+      "chunkId": "chunk-004-totals",
+      "section": "Currency",
+      "pageNumber": 1,
+      "textSnippet": "Währung: EUR",
+      "offset": 1060,
+      "length": 3,
+      "similarity": 0.99,
+      "sourceConfidence": 0.98
+    }
+  },
+  "paymentTerms": {
+    "value": "NET30",
+    "confidence": 0.96,
+    "sourceReference": {
+      "chunkId": "chunk-004-totals",
+      "section": "Payment Terms",
+      "pageNumber": 1,
+      "textSnippet": "Zahlungsbedingungen: Zahlung innerhalb von 30 Tagen (NET30)",
+      "offset": 1075,
+      "length": 58,
+      "similarity": 0.98,
+      "sourceConfidence": 0.96
+    }
+  },
+  "bankDetails": {
+    "accountHolder": {
+      "value": "TechSolve GmbH",
+      "confidence": 0.95
+    },
+    "bankName": {
+      "value": "Deutsche Commerzbank",
+      "confidence": 0.94
+    },
+    "iban": {
+      "value": "DE89370400440532013000",
+      "confidence": 0.97
+    },
+    "bic": {
+      "value": "COBADEFFXXX",
+      "confidence": 0.96
+    },
+    "sourceReference": {
+      "chunkId": "chunk-000-bankdetails",
+      "section": "Bank Details",
+      "pageNumber": 1,
+      "textSnippet": "Kontoinhaber: TechSolve GmbH, Bank: Deutsche Commerzbank, IBAN: DE89370400440532013000, BIC: COBADEFFXXX",
+      "offset": 100,
+      "length": 105,
+      "similarity": 0.97,
+      "sourceConfidence": 0.95
+    }
+  },
+  "metadata": {
+    "extractionMethod": "llm-extractor-gpt-4-turbo",
+    "extractionTimestamp": "2024-07-06T14:32:15Z",
+    "documentId": "invoice_001",
+    "fileName": "invoice_001.txt",
+    "fileFormat": "text",
+    "schema": "invoice.schema.json",
+    "schemaVersion": "1.0.0",
+    "rules": "invoice.txt",
+    "qualityScore": 0.945,
+    "hallucinationRisk": 0.02,
+    "validationStatus": "valid",
+    "auditTrail": [
+      {
+        "step": 1,
+        "timestamp": "2024-07-06T14:32:15Z",
+        "event": "extraction_started"
+      },
+      {
+        "step": 2,
+        "timestamp": "2024-07-06T14:32:18Z",
+        "event": "parsing_complete"
+      },
+      {
+        "step": 3,
+        "timestamp": "2024-07-06T14:32:20Z",
+        "event": "chunking_complete",
+        "details": "4 chunks created"
+      },
+      {
+        "step": 4,
+        "timestamp": "2024-07-06T14:32:22Z",
+        "event": "extraction_complete"
+      },
+      {
+        "step": 5,
+        "timestamp": "2024-07-06T14:32:23Z",
+        "event": "hallucination_check",
+        "details": "No hallucinations detected"
+      },
+      {
+        "step": 6,
+        "timestamp": "2024-07-06T14:32:24Z",
+        "event": "validation_complete",
+        "details": "All required fields valid"
+      }
+    ]
+  }
+}

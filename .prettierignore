@@ -1,0 +1,7 @@
+*.json
+*.md
+node_modules/
+dist/
+build/
+coverage/
+.git/

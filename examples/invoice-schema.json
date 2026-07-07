@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Invoice",
+  "description": "A JSON Schema for invoice documents",
+  "type": "object",
+  "properties": {
+    "invoiceNumber": {
+      "type": "string",
+      "description": "Unique invoice identifier",
+      "pattern": "^INV-[0-9]{6}$"
+    },
+    "invoiceDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Invoice issue date in YYYY-MM-DD format"
+    },
+    "customerName": {
+      "type": "string",
+      "description": "Name of the customer"
+    },
+    "customerAddress": {
+      "type": "string",
+      "description": "Address of the customer"
+    },
+    "totalAmount": {
+      "type": "number",
+      "description": "Total invoice amount",
+      "minimum": 0
+    },
+    "taxAmount": {
+      "type": "number",
+      "description": "Tax amount",
+      "minimum": 0
+    },
+    "dueDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Payment due date"
+    },
+    "lineItems": {
+      "type": "array",
+      "description": "List of invoice line items",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Item description"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Item quantity",
+            "minimum": 0
+          },
+          "unitPrice": {
+            "type": "number",
+            "description": "Price per unit",
+            "minimum": 0
+          },
+          "total": {
+            "type": "number",
+            "description": "Line item total",
+            "minimum": 0
+          }
+        },
+        "required": ["description", "quantity", "unitPrice"]
+      }
+    }
+  },
+  "required": ["invoiceNumber", "invoiceDate", "customerName", "totalAmount"]
+}

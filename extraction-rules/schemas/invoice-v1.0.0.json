@@ -1,0 +1,66 @@
+{
+  "id": "invoice-schema-v1.0.0",
+  "name": "Invoice Schema",
+  "documentType": "invoice",
+  "version": "1.0.0",
+  "description": "Schema für Rechnungsdokumente",
+  "fields": [
+    {
+      "id": "invoice-field-001",
+      "fieldName": "invoiceNumber",
+      "fieldType": "string",
+      "description": "Eindeutige Rechnungsnummer",
+      "isRequired": true,
+      "documentTypes": ["pdf", "docx"],
+      "schemaVersion": "1.0.0",
+      "isActive": true,
+      "updatedAt": "2024-01-15T00:00:00Z"
+    },
+    {
+      "id": "invoice-field-002",
+      "fieldName": "invoiceDate",
+      "fieldType": "date",
+      "description": "Datum der Rechnungsausstellung",
+      "isRequired": true,
+      "documentTypes": ["pdf", "docx"],
+      "schemaVersion": "1.0.0",
+      "isActive": true,
+      "updatedAt": "2024-01-15T00:00:00Z"
+    },
+    {
+      "id": "invoice-field-003",
+      "fieldName": "customerName",
+      "fieldType": "string",
+      "description": "Name des Kunden",
+      "isRequired": true,
+      "documentTypes": ["pdf", "docx"],
+      "schemaVersion": "1.0.0",
+      "isActive": true,
+      "updatedAt": "2024-01-15T00:00:00Z"
+    }
+  ],
+  "fieldGroups": [
+    {
+      "id": "header",
+      "name": "Rechnungskopf",
+      "description": "Kopfzeile mit Rechnungsnummer und Datum",
+      "fieldIds": ["invoice-field-001", "invoice-field-002"],
+      "isRequired": true,
+      "isArray": false,
+      "order": 1
+    },
+    {
+      "id": "customer",
+      "name": "Kundeninformation",
+      "description": "Kundendetails",
+      "fieldIds": ["invoice-field-003"],
+      "isRequired": true,
+      "isArray": false,
+      "order": 2
+    }
+  ],
+  "createdAt": "2024-01-15T00:00:00Z",
+  "updatedAt": "2024-01-15T00:00:00Z",
+  "isActive": true,
+  "notes": "Basis-Schema für Rechnungen"
+}

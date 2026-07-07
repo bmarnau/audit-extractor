@@ -1,0 +1,10 @@
+id: invoice-field-003
+fieldName: customerName
+fieldType: string
+isRequired: true
+description: Name des Kunden/Schuldners
+documentTypes: pdf, docx
+schemaVersion: 1.0.0
+isActive: true
+hints: Normalerweise in "Bill To" oder "Sold To" Sektion
+examples: Acme Corporation, Meyer GmbH, John Smith

@@ -1,0 +1,23 @@
+{
+  "invoiceNumber": "INV-202401-001",
+  "invoiceDate": "2024-01-15",
+  "customerName": "ACME Corporation GmbH",
+  "customerAddress": "123 Main Street, Berlin, Germany",
+  "totalAmount": 15750.50,
+  "taxAmount": 2987.50,
+  "dueDate": "2024-02-15",
+  "lineItems": [
+    {
+      "description": "Consulting Services - January",
+      "quantity": 1,
+      "unitPrice": 10000.00,
+      "total": 10000.00
+    },
+    {
+      "description": "Software Licenses",
+      "quantity": 5,
+      "unitPrice": 1150.00,
+      "total": 5750.00
+    }
+  ]
+}

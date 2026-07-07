@@ -1,0 +1,52 @@
+{
+  "nodeEnv": "testing",
+  "logging": {
+    "level": "error",
+    "format": "json",
+    "enableFileLogging": false
+  },
+  "paths": {
+    "sourceDocuments": "tests/fixtures/source-documents",
+    "extractionRules": "tests/fixtures/extraction-rules",
+    "results": "tests/fixtures/results",
+    "learning": "tests/fixtures/learning",
+    "logs": "tests/fixtures/logs"
+  },
+  "extraction": {
+    "minConfidenceThreshold": 0.5,
+    "maxChunkSize": 1000,
+    "enableAuditTrail": false,
+    "testMode": true
+  },
+  "validation": {
+    "strictMode": true,
+    "additionalPropertiesAllowed": false,
+    "coerceTypes": false
+  },
+  "testing": {
+    "timeoutMs": 10000,
+    "enableCoverageReports": true,
+    "minCoverageThreshold": 85,
+    "seedRandomly": true,
+    "testDataFromExamples": true
+  },
+  "api": {
+    "port": 3001,
+    "host": "127.0.0.1",
+    "corsEnabled": false
+  },
+  "cache": {
+    "enabled": false,
+    "ttlSeconds": 0
+  },
+  "database": {
+    "type": "memory",
+    "sync": true
+  },
+  "debug": {
+    "enableDetailedErrors": false,
+    "enableStackTraces": false,
+    "logRequestBodies": false,
+    "logResponseBodies": false
+  }
+}

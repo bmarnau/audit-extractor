@@ -1,0 +1,49 @@
+{
+  "nodeEnv": "production",
+  "logging": {
+    "level": "warn",
+    "format": "json",
+    "enableFileLogging": true
+  },
+  "extraction": {
+    "minConfidenceThreshold": 0.85,
+    "enableAuditTrail": true,
+    "enableEncryption": true
+  },
+  "validation": {
+    "strictMode": true,
+    "additionalPropertiesAllowed": false,
+    "coerceTypes": false
+  },
+  "api": {
+    "port": 3000,
+    "host": "0.0.0.0",
+    "corsEnabled": true,
+    "corsOrigins": [],
+    "requireAuth": true,
+    "rateLimitPerMinute": 60
+  },
+  "cache": {
+    "enabled": true,
+    "ttlSeconds": 3600,
+    "maxSize": 1000
+  },
+  "security": {
+    "enableSSL": true,
+    "requireHTTPS": true,
+    "helmet": true,
+    "dataEncryption": true,
+    "auditLogging": true
+  },
+  "debug": {
+    "enableDetailedErrors": false,
+    "enableStackTraces": false,
+    "logRequestBodies": false,
+    "logResponseBodies": false
+  },
+  "monitoring": {
+    "enableMetrics": true,
+    "enableHealthChecks": true,
+    "metricsInterval": 60000
+  }
+}

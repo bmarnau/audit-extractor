@@ -1,0 +1,52 @@
+{
+  "application": {
+    "name": "audit-safe-document-extractor",
+    "version": "0.10.0",
+    "description": "Revisionssicheres Dokument-Extraktionssystem mit Provenance Tracking"
+  },
+  "paths": {
+    "sourceDocuments": "source-documents",
+    "extractionRules": "extraction-rules",
+    "results": "results",
+    "learning": "learning",
+    "logs": "logs"
+  },
+  "extraction": {
+    "minConfidenceThreshold": 0.8,
+    "maxChunkSize": 5000,
+    "enableAuditTrail": true,
+    "supportedFormats": ["pdf", "docx", "html"]
+  },
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "enableFileLogging": true
+  },
+  "testing": {
+    "timeoutMs": 10000,
+    "enableCoverageReports": true,
+    "minCoverageThreshold": 85
+  },
+  "validation": {
+    "strictMode": true,
+    "additionalPropertiesAllowed": false,
+    "coerceTypes": false
+  },
+  "chunking": {
+    "semanticChunkSize": 300,
+    "simpleChunkSize": 1000,
+    "hybridChunkSize": 500,
+    "overlapTokens": 50
+  },
+  "classification": {
+    "enableFeatureExtraction": true,
+    "confidenceConstraint": {
+      "min": 0.0,
+      "max": 0.99
+    }
+  },
+  "api": {
+    "corsEnabled": true,
+    "corsOrigins": ["http://localhost:3000"]
+  }
+}

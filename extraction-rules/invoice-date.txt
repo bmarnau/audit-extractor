@@ -1,0 +1,10 @@
+id: invoice-field-002
+fieldName: invoiceDate
+fieldType: date
+isRequired: true
+description: Datum der Rechnungsausstellung
+documentTypes: pdf, docx
+schemaVersion: 1.0.0
+isActive: true
+hints: Suche nach Datumsformaten (DD.MM.YYYY, YYYY-MM-DD, DD/MM/YYYY)
+examples: 15.01.2024, 2024-01-15, 15/01/2024

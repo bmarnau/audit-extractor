@@ -1,0 +1,182 @@
+[
+  {
+    "id": "change-1783345138355-58s6d1clx",
+    "version": 2,
+    "changes": {
+      "system": {
+        "from": {
+          "maxFileSize": 50,
+          "maxCacheSize": 100,
+          "parserTimeout": 30000,
+          "chunkingTimeout": 30000,
+          "extractionTimeout": 120000,
+          "validationTimeout": 30000
+        },
+        "to": {
+          "maxFileSize": 50,
+          "maxCacheSize": 100,
+          "parserTimeout": 30000,
+          "chunkingTimeout": 30000,
+          "extractionTimeout": 120000,
+          "validationTimeout": 30000,
+          "system": {
+            "env": "test"
+          }
+        }
+      }
+    },
+    "timestamp": "2026-07-06T13:38:58.355Z",
+    "previousConfig": {
+      "version": "0.12.0",
+      "configVersion": 1,
+      "chunking": {
+        "maxChunkSize": 1024,
+        "minChunkSize": 256,
+        "overlap": 256,
+        "strategy": "hybrid"
+      },
+      "confidence": {
+        "hallucinationThreshold": 0.5,
+        "lowConfidenceThreshold": 0.7,
+        "minimumTrustworthiness": 0.8,
+        "sourceMatchPercentage": 0.8
+      },
+      "llm": {
+        "provider": "openai",
+        "apiKey": "",
+        "model": "gpt-4-turbo",
+        "temperature": 0.1,
+        "maxTokens": 2048,
+        "requestTimeout": 30000
+      },
+      "system": {
+        "maxFileSize": 50,
+        "maxCacheSize": 100,
+        "parserTimeout": 30000,
+        "chunkingTimeout": 30000,
+        "extractionTimeout": 120000,
+        "validationTimeout": 30000
+      },
+      "lastUpdated": "2026-07-06T10:25:31.967Z"
+    },
+    "newConfig": {
+      "version": "0.12.0",
+      "configVersion": 2,
+      "chunking": {
+        "maxChunkSize": 1024,
+        "minChunkSize": 256,
+        "overlap": 256,
+        "strategy": "hybrid"
+      },
+      "confidence": {
+        "hallucinationThreshold": 0.5,
+        "lowConfidenceThreshold": 0.7,
+        "minimumTrustworthiness": 0.8,
+        "sourceMatchPercentage": 0.8
+      },
+      "llm": {
+        "provider": "openai",
+        "apiKey": "",
+        "model": "gpt-4-turbo",
+        "temperature": 0.1,
+        "maxTokens": 2048,
+        "requestTimeout": 30000
+      },
+      "system": {
+        "maxFileSize": 50,
+        "maxCacheSize": 100,
+        "parserTimeout": 30000,
+        "chunkingTimeout": 30000,
+        "extractionTimeout": 120000,
+        "validationTimeout": 30000,
+        "system": {
+          "env": "test"
+        }
+      },
+      "lastUpdated": "2026-07-06T13:38:58.352Z"
+    }
+  },
+  {
+    "id": "change-1783345138384-l61srwtgu",
+    "version": 3,
+    "changes": {
+      "configVersion": {
+        "from": 2,
+        "to": "2"
+      }
+    },
+    "timestamp": "2026-07-06T13:38:58.384Z",
+    "previousConfig": {
+      "version": "0.12.0",
+      "configVersion": 2,
+      "chunking": {
+        "maxChunkSize": 1024,
+        "minChunkSize": 256,
+        "overlap": 256,
+        "strategy": "hybrid"
+      },
+      "confidence": {
+        "hallucinationThreshold": 0.5,
+        "lowConfidenceThreshold": 0.7,
+        "minimumTrustworthiness": 0.8,
+        "sourceMatchPercentage": 0.8
+      },
+      "llm": {
+        "provider": "openai",
+        "apiKey": "",
+        "model": "gpt-4-turbo",
+        "temperature": 0.1,
+        "maxTokens": 2048,
+        "requestTimeout": 30000
+      },
+      "system": {
+        "maxFileSize": 50,
+        "maxCacheSize": 100,
+        "parserTimeout": 30000,
+        "chunkingTimeout": 30000,
+        "extractionTimeout": 120000,
+        "validationTimeout": 30000,
+        "system": {
+          "env": "test"
+        }
+      },
+      "lastUpdated": "2026-07-06T13:38:58.352Z"
+    },
+    "newConfig": {
+      "version": "0.12.0",
+      "configVersion": 3,
+      "chunking": {
+        "maxChunkSize": 1024,
+        "minChunkSize": 256,
+        "overlap": 256,
+        "strategy": "hybrid"
+      },
+      "confidence": {
+        "hallucinationThreshold": 0.5,
+        "lowConfidenceThreshold": 0.7,
+        "minimumTrustworthiness": 0.8,
+        "sourceMatchPercentage": 0.8
+      },
+      "llm": {
+        "provider": "openai",
+        "apiKey": "",
+        "model": "gpt-4-turbo",
+        "temperature": 0.1,
+        "maxTokens": 2048,
+        "requestTimeout": 30000
+      },
+      "system": {
+        "maxFileSize": 50,
+        "maxCacheSize": 100,
+        "parserTimeout": 30000,
+        "chunkingTimeout": 30000,
+        "extractionTimeout": 120000,
+        "validationTimeout": 30000,
+        "system": {
+          "env": "test"
+        }
+      },
+      "lastUpdated": "2026-07-06T13:38:58.380Z"
+    }
+  }
+]

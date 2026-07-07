@@ -1,0 +1,66 @@
+RECHNUNGSSTELLER:
+TechSolve GmbH
+Innovationsstraße 42
+85737 Ismaning
+Deutschland
+Steuernummer: DE287654321
+E-Mail: info@techsolve.de
+Website: www.techsolve.de
+
+BANKVERBINDUNG:
+Kontoinhaber: TechSolve GmbH
+Bank: Deutsche Commerzbank
+IBAN: DE89370400440532013000
+BIC: COBADEFFXXX
+
+═══════════════════════════════════════════════════════════════
+
+                          RECHNUNG
+                       INV-202406-0142
+
+═══════════════════════════════════════════════════════════════
+
+Rechnungsdatum:        06.07.2024
+Rechnungsnummer:       INV-202406-0142
+Zahlbar bis:           31.08.2024
+
+RECHNUNGSEMPFÄNGER:
+Acme Corporation GmbH
+Hauptstraße 123
+10115 Berlin
+Deutschland
+Kontakt: info@acmecorp.de
+
+─────────────────────────────────────────────────────────────
+
+                      LEISTUNGSVERZEICHNIS
+
+Pos. | Beschreibung                    | Menge | Einheit | Preis/Einheit | Betrag
+──────┼─────────────────────────────────┼───────┼─────────┼───────────────┼──────────
+  1  | Cloud-Hosting-Paket (6 Monate) |   6   |  Monat  |   2.500,00 €  | 15.000,00 €
+  2  | Support & Maintenance           |  60   |  Stunde |      150,00 € |  9.000,00 €
+  3  | Security-Audit Durchführung     |   1   |  Paket  |   5.500,00 €  |  5.500,00 €
+  4  | Dokumentation & Training        |  20   |  Stunde |      125,00 € |  2.500,00 €
+
+─────────────────────────────────────────────────────────────
+
+                          ZUSAMMENFASSUNG
+
+Zwischensumme                             32.000,00 €
+Steuersatz (MwSt 19%)                        19 %
+Steuerbetrag                               6.080,00 €
+─────────────────────────────────────────────────────────────
+GESAMTBETRAG                              38.080,00 €
+═════════════════════════════════════════════════════════════
+
+Währung: EUR
+Zahlungsbedingungen: Zahlung innerhalb von 30 Tagen (NET30)
+
+Bitte überweisen Sie den Betrag auf das angegebene Bankkonto.
+
+Für Rückfragen: +49 89 123456-0
+
+Mit freundlichen Grüßen,
+
+TechSolve GmbH
+Geschäftsführung

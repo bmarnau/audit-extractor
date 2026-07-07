@@ -1,0 +1,131 @@
+RULE: invoice.txt
+DESCRIPTION: Extraktionsregeln für Standard-Rechnungen
+VERSION: 1.0.0
+
+FIELDS TO EXTRACT:
+1. invoiceNumber
+   - PATTERN: "INV-" followed by 6 digits OR "Rechnungsnummer:" followed by number
+   - CONFIDENCE_MIN: 0.95
+   - REQUIRED: true
+   - SOURCE_REQUIRED: true
+
+2. invoiceDate
+   - PATTERN: "Datum:", "Ausstellungsdatum:", "Date:" followed by date format
+   - FORMAT: DD.MM.YYYY or YYYY-MM-DD
+   - CONFIDENCE_MIN: 0.90
+   - REQUIRED: true
+   - HINT: Look for "Rechnungsdatum" in German invoices
+
+3. dueDate
+   - PATTERN: "Zahlbar bis:", "Due Date:", "Fälligkeitsdatum:"
+   - FORMAT: DD.MM.YYYY or YYYY-MM-DD
+   - CONFIDENCE_MIN: 0.85
+   - REQUIRED: false
+
+4. customerName
+   - PATTERN: "Rechnungsempfänger:", "Bill To:", "An:" followed by company/person name
+   - CONFIDENCE_MIN: 0.90
+   - REQUIRED: true
+   - VALIDATION: Not to be confused with vendor name
+
+5. customerEmail
+   - PATTERN: Email address near customer name
+   - FORMAT: valid@email.com
+   - CONFIDENCE_MIN: 0.95
+   - REQUIRED: false
+
+6. customerAddress
+   - street: Street name and number after customer name
+   - city: City name
+   - postalCode: Postal code (5-10 digits)
+   - country: Country name or code
+   - CONFIDENCE_MIN: 0.85
+   - REQUIRED: true (at least street + city)
+
+7. vendorName
+   - PATTERN: "Rechnungssteller:", "Billed By:", "Von:" at document header
+   - CONFIDENCE_MIN: 0.95
+   - REQUIRED: true
+   - VALIDATION: Must differ from customerName
+
+8. vendorTaxId
+   - PATTERN: "Steuernummer:", "Tax ID:", "USt.-IdNr:" followed by tax number
+   - FORMAT: 2-letter country code + 10-15 digits (e.g., DE123456789)
+   - CONFIDENCE_MIN: 0.95
+   - REQUIRED: false
+
+9. lineItems (array)
+   - Description: Item/Service description
+   - Quantity: Menge/Qty
+   - UnitPrice: Price per unit
+   - Amount: Line total (Qty * UnitPrice)
+   - TABLE_BASED: true
+   - CONFIDENCE_MIN: 0.85
+   - REQUIRED: true (at least 1 item)
+
+10. subtotal
+    - PATTERN: "Subtotal:", "Summe:", "Zwischensumme:" followed by amount
+    - CONFIDENCE_MIN: 0.90
+    - REQUIRED: true
+    - VALIDATION: Sum of line items
+
+11. taxRate
+    - PATTERN: "MwSt-Satz:", "Tax Rate:", percentage value
+    - FORMAT: Number 0-100
+    - CONFIDENCE_MIN: 0.90
+    - REQUIRED: true
+    - COMMON_VALUES: 0, 7, 19 (Germany)
+
+12. taxAmount
+    - PATTERN: "Steuerbetrag:", "Tax:", "MwSt:" followed by amount
+    - CONFIDENCE_MIN: 0.90
+    - REQUIRED: true
+    - VALIDATION: subtotal * (taxRate / 100)
+
+13. totalAmount
+    - PATTERN: "Gesamtbetrag:", "Total:", "Summe insgesamt:" followed by large number
+    - CONFIDENCE_MIN: 0.95
+    - REQUIRED: true
+    - VALIDATION: subtotal + taxAmount
+
+14. currency
+    - PATTERN: € = EUR, $ = USD, £ = GBP, CHF = CHF
+    - FORMAT: 3-letter ISO code
+    - CONFIDENCE_MIN: 0.95
+    - REQUIRED: true
+    - HINT: Often appears with monetary amounts
+
+15. paymentTerms
+    - PATTERN: "NET30", "NET60", "NET90", "Zahlung sofort fällig"
+    - ALLOWED_VALUES: [NET30, NET60, NET90, IMMEDIATE]
+    - CONFIDENCE_MIN: 0.85
+    - REQUIRED: false
+
+16. bankDetails
+    - accountHolder: Name on account
+    - bankName: Bank name
+    - iban: IBAN format
+    - bic: BIC/SWIFT code
+    - SECTION: Usually in footer
+    - CONFIDENCE_MIN: 0.90
+    - REQUIRED: false
+
+CONFIDENCE RULES:
+- If field marked REQUIRED and not found with min confidence: HALLUCINATION_RISK
+- If source reference not found: Mark as LOW_CONFIDENCE
+- If multiple values found: Use HIGHEST confidence match
+- If conflicting sources: Flag for manual review
+
+VALIDATION RULES:
+- invoiceNumber must be unique per document
+- customerName != vendorName (no self-invoicing)
+- invoiceDate <= dueDate (if both present)
+- totalAmount == subtotal + taxAmount (within 0.01 tolerance)
+- currency must match amount formatting
+
+POST-EXTRACTION:
+- Generate sourceReference for each extracted field
+- Track chunk IDs for audit trail
+- Mark confidence scores
+- Flag hallucinations if detected
+- Export to JSON with full provenance

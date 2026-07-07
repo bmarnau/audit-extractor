@@ -1,0 +1,36 @@
+{
+  "nodeEnv": "development",
+  "logging": {
+    "level": "debug",
+    "format": "json",
+    "enableFileLogging": false
+  },
+  "extraction": {
+    "minConfidenceThreshold": 0.5,
+    "enableAuditTrail": true
+  },
+  "validation": {
+    "strictMode": false,
+    "additionalPropertiesAllowed": true
+  },
+  "api": {
+    "port": 3000,
+    "host": "localhost",
+    "corsEnabled": true,
+    "corsOrigins": [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "http://127.0.0.1:3000"
+    ]
+  },
+  "cache": {
+    "enabled": false,
+    "ttlSeconds": 300
+  },
+  "debug": {
+    "enableDetailedErrors": true,
+    "enableStackTraces": true,
+    "logRequestBodies": true,
+    "logResponseBodies": true
+  }
+}
