@@ -1,0 +1,67 @@
+version: '3.9'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: extractor-postgres
+    environment:
+      POSTGRES_USER: extractor
+      POSTGRES_PASSWORD: dev-password-change-in-prod
+      POSTGRES_DB: extractor_db
+      POSTGRES_INITDB_ARGS: "-c shared_preload_libraries=pg_stat_statements"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/01-init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U extractor"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - extractor-network
+    restart: unless-stopped
+
+  # pgAdmin for database management (optional)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: extractor-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@extractor.local
+      PGADMIN_DEFAULT_PASSWORD: dev-password
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - extractor-network
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
+  # Redis for caching (optional, for Phase 16+)
+  redis:
+    image: redis:7-alpine
+    container_name: extractor-redis
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - extractor-network
+    restart: unless-stopped
+    profiles:
+      - cache  # Optional: use with docker-compose --profile cache up
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  redis_data:
+
+networks:
+  extractor-network:
+    driver: bridge
