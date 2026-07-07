@@ -72,13 +72,32 @@ export function useHelp(): UseHelpResult {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/help/search?query=*`);
-      if (!response.ok) throw new Error(`Failed to fetch help: ${response.statusText}`);
-      const data = await response.json();
+      // Fetch glossary entries
+      const glossaryResponse = await fetch(`${API_URL}/help/glossary?limit=100`);
+      if (!glossaryResponse.ok) throw new Error(`Failed to fetch glossary: ${glossaryResponse.statusText}`);
+      const glossaryData = await glossaryResponse.json();
+      const glossaryEntries = glossaryData.data?.entries || [];
+      
+      // Convert glossary response format to GlossaryEntry format
+      const formattedGlossary = glossaryEntries.map((entry: any) => ({
+        term: entry.term || entry.id,
+        definition: entry.definition || '',
+        explanation: entry.explanation || entry.definition || '',
+        category: entry.category || 'general',
+        seeAlso: entry.seeAlso || [],
+        examples: entry.examples || [],
+        links: entry.links || [],
+      }));
 
-      setGlossary(data.data.glossary || []);
-      setDocumentation(data.data.documentation || []);
-      setReleaseNotes(data.data.releaseNotes || []);
+      // Fetch documentation/release notes via search
+      const docsResponse = await fetch(`${API_URL}/help/search?query=*&category=guide&limit=50`);
+      if (!docsResponse.ok) throw new Error(`Failed to fetch documentation: ${docsResponse.statusText}`);
+      const docsData = await docsResponse.json();
+      const docResults = docsData.data?.results || [];
+      
+      setGlossary(formattedGlossary);
+      setDocumentation(docResults);
+      setReleaseNotes([]);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch help content';
       setError(message);
