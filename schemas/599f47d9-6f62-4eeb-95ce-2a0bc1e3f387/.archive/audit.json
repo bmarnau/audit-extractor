@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-07-08T12:06:30.740Z",
+  "schemaId": "599f47d9-6f62-4eeb-95ce-2a0bc1e3f387",
+  "userId": "test-user-1783512390661",
+  "action": "COMPLETE_WORKFLOW",
+  "details": {
+    "schemaCreated": true,
+    "rulesGenerated": true,
+    "filesystemManaged": true,
+    "versioning": true
+  }
+}

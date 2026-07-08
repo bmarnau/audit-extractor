@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "invoiceNumber": {
+      "type": "string",
+      "pattern": "^INV-\\d{6}$"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "unitPrice": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "totalAmount": {
+      "type": "number"
+    },
+    "vendorName": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "invoiceNumber",
+    "date",
+    "items",
+    "totalAmount"
+  ]
+}

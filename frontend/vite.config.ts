@@ -24,7 +24,6 @@ export default defineConfig({
         target: 'http://localhost:3000',
         changeOrigin: true,
         rewrite: (path) => path,  // Keep /api in path
-        logLevel: 'debug',  // Log proxy activity for debugging
         // Disable caching for API responses
         headers: {
           'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',

@@ -62,10 +62,8 @@ export function isProduction(): boolean {
 
 /**
  * Get API base URL for current environment
+ * Always use relative URL /api for compatibility with Nginx reverse proxy
  */
 export function getApiBaseUrl(): string {
-  if (isProduction()) {
-    return 'https://api.audit-safe.com';
-  }
-  return '/api';  // Use relative URL with Vite proxy in development
+  return '/api';  // Use relative URL - works with Nginx proxy in Docker and Vite dev proxy
 }

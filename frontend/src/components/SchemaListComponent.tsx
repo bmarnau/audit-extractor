@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
   Card,
   CardContent,
-  CardHeader,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Grid,
   Paper,
   Table,
   TableBody,
@@ -23,16 +22,16 @@ import {
   Chip,
   CircularProgress,
   Alert,
-  Divider,
+  Snackbar,
 } from '@mui/material';
 import {
   Delete as DeleteIcon,
   Edit as EditIcon,
   History as HistoryIcon,
-  Download as DownloadIcon,
-  FileUpload as FileUploadIcon,
   Refresh as RefreshIcon,
 } from '@mui/icons-material';
+import { useSchemas, useUpdateSchema, useDeleteSchema } from '../hooks/useSchemaAPI';
+import { useSchemaContext } from '../context/SchemaContext';
 
 interface SchemaEntity {
   id: string;
@@ -41,13 +40,13 @@ interface SchemaEntity {
   version: number;
   status: 'active' | 'archived' | 'draft';
   userId: string;
-  fieldsCount: number;
-  examplesCount: number;
-  generatedRulesCount: number;
-  averageConfidence: number;
+  fieldsCount?: number;
+  examplesCount?: number;
+  generatedRulesCount?: number;
+  averageConfidence?: number;
   createdAt: string;
   updatedAt: string;
-  directoryPath: string;
+  directoryPath?: string;
 }
 
 interface SchemaListProps {
@@ -57,49 +56,39 @@ interface SchemaListProps {
 
 /**
  * SchemaListComponent: Display all schemas in a sortable, filterable table
- * Phase 16D Frontend Component
+ * Phase 17: Updated with React Hooks and React Router integration
  */
 export const SchemaListComponent: React.FC<SchemaListProps> = ({
   onSchemaSelect,
   onSchemaCreate,
 }) => {
-  const [schemas, setSchemas] = useState<SchemaEntity[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { schemas, loading, error, refetch } = useSchemas();
+  const { setSchemas, setCurrentSchema, setLoading, setError } = useSchemaContext();
+  
   const [selectedSchema, setSelectedSchema] = useState<SchemaEntity | null>(null);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [schemaToDelete, setSchemaToDelete] = useState<SchemaEntity | null>(null);
-  const [editFormData, setEditFormData] = useState({
-    name: '',
-    description: '',
-  });
+  const [editFormData, setEditFormData] = useState({ name: '', description: '' });
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
 
-  // Load schemas on mount
-  useEffect(() => {
-    loadSchemas();
-  }, []);
+  const { updateSchema } = useUpdateSchema(selectedSchema?.id || null);
+  const { deleteSchema } = useDeleteSchema(schemaToDelete?.id || null);
 
   /**
-   * Fetch schemas from API
+   * Sync schemas to context on load
    */
-  const loadSchemas = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch('/api/schemas?page=1&limit=20');
-      if (!response.ok) throw new Error('Failed to load schemas');
-
-      const data = await response.json();
-      // Mock: Since full pagination not yet implemented
-      setSchemas(data.schemas || []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (schemas.length > 0) {
+      setSchemas(schemas as any);
     }
-  };
+    setLoading(loading);
+    if (error) {
+      setError(error);
+    }
+  }, [schemas, loading, error, setSchemas, setLoading, setError]);
 
   /**
    * Handle opening edit dialog
@@ -120,25 +109,18 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
     if (!selectedSchema) return;
 
     try {
-      const response = await fetch(`/api/schema/${selectedSchema.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          description: editFormData.description,
-          metadata: { updatedVia: 'frontend-phase16d' },
-        }),
+      await updateSchema({
+        description: editFormData.description,
+        metadata: { updatedVia: 'frontend-phase17' },
       });
 
-      if (!response.ok) throw new Error('Failed to update schema');
-
       setEditDialogOpen(false);
-      loadSchemas();
-
-      // Notify parent
-      const updatedData = await response.json();
-      if (onSchemaSelect) onSchemaSelect(updatedData);
+      setSuccessMessage('Schema updated successfully');
+      refetch();
+      
+      if (onSchemaSelect) onSchemaSelect(selectedSchema);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Update failed');
+      setApiError(err instanceof Error ? err.message : 'Update failed');
     }
   };
 
@@ -157,17 +139,13 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
     if (!schemaToDelete) return;
 
     try {
-      const response = await fetch(`/api/schema/${schemaToDelete.id}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) throw new Error('Failed to delete schema');
-
+      await deleteSchema();
       setDeleteConfirmOpen(false);
       setSchemaToDelete(null);
-      loadSchemas();
+      setSuccessMessage('Schema deleted successfully');
+      refetch();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Delete failed');
+      setApiError(err instanceof Error ? err.message : 'Delete failed');
     }
   };
 
@@ -199,11 +177,11 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
   return (
     <Box sx={{ width: '100%', p: 2 }}>
       {/* Header */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-        <Typography variant="h5">Schema Manager</Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, alignItems: 'center' }}>
+        <Typography variant="h5">Schema Management</Typography>
         <Button
           startIcon={<RefreshIcon />}
-          onClick={loadSchemas}
+          onClick={() => refetch()}
           disabled={loading}
         >
           Refresh
@@ -212,7 +190,7 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
 
       {/* Error Alert */}
       {error && (
-        <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
+        <Alert severity="error" sx={{ mb: 2 }} onClose={() => setApiError(null)}>
           {error}
         </Alert>
       )}
@@ -231,9 +209,12 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
             <Typography color="textSecondary" gutterBottom>
               No schemas found
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" sx={{ mb: 2 }}>
               Create a new schema to get started
             </Typography>
+            <Button variant="contained" onClick={() => navigate('/schema-wizard')}>
+              Create Schema
+            </Button>
           </CardContent>
         </Card>
       )}
@@ -248,9 +229,6 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
                 <TableCell sx={{ fontWeight: 'bold' }}>Name</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Version</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Status</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }} align="right">
-                  Fields
-                </TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }} align="right">
                   Rules
                 </TableCell>
@@ -276,12 +254,7 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
                     </code>
                   </TableCell>
                   <TableCell>
-                    <Typography
-                      variant="body2"
-                      onClick={() => onSchemaSelect?.(schema)}
-                    >
-                      {schema.name}
-                    </Typography>
+                    <Typography variant="body2">{schema.name}</Typography>
                   </TableCell>
                   <TableCell>
                     <Chip label={`v${schema.version}`} variant="outlined" size="small" />
@@ -289,24 +262,24 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
                   <TableCell>
                     <Chip
                       label={schema.status}
-                      color={getStatusColor(schema.status)}
+                      color={schema.status === 'active' ? 'success' : schema.status === 'archived' ? 'warning' : 'default'}
                       size="small"
                       variant="filled"
                     />
                   </TableCell>
-                  <TableCell align="right">{schema.fieldsCount}</TableCell>
-                  <TableCell align="right">{schema.generatedRulesCount}</TableCell>
-                  <TableCell>{formatDate(schema.createdAt)}</TableCell>
+                  <TableCell align="right">{schema.generatedRulesCount || 0}</TableCell>
+                  <TableCell>{new Date(schema.createdAt).toLocaleDateString()}</TableCell>
                   <TableCell align="center">
                     <IconButton
                       size="small"
-                      onClick={() => handleEditOpen(schema)}
+                      onClick={() => navigate(`/schema/${schema.id}/edit`)}
                       title="Edit"
                     >
                       <EditIcon fontSize="small" />
                     </IconButton>
                     <IconButton
                       size="small"
+                      onClick={() => navigate(`/schema/${schema.id}/history`)}
                       title="Version History"
                     >
                       <HistoryIcon fontSize="small" />
@@ -381,6 +354,24 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Success Notification */}
+      <Snackbar
+        open={!!successMessage}
+        autoHideDuration={4000}
+        onClose={() => setSuccessMessage(null)}
+      >
+        <Alert severity="success">{successMessage}</Alert>
+      </Snackbar>
+
+      {/* API Error Notification */}
+      <Snackbar
+        open={!!apiError}
+        autoHideDuration={6000}
+        onClose={() => setApiError(null)}
+      >
+        <Alert severity="error">{apiError}</Alert>
+      </Snackbar>
     </Box>
   );
 };

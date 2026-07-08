@@ -79,7 +79,7 @@ export const LearningPage: React.FC = () => {
           return;
         }
 
-        throw new Error(`Failed to load result: ${response.statusCode} ${response.statusText}`);
+        throw new Error(`Failed to load result: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();

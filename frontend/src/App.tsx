@@ -41,6 +41,8 @@ import {
   Description as LogIcon,
   School as LearningIcon,
   CloudUpload as CloudUploadIcon,
+  Schema as SchemaIcon,
+  History as HistoryIcon,
 } from '@mui/icons-material';
 import { DocumentExplorer } from './components/DocumentExplorer';
 import { ExtractionWorkbench } from './components/ExtractionWorkbench';
@@ -53,6 +55,14 @@ import { BackupManager } from './components/workbench/BackupManager';
 import LearningPage from './pages/LearningPage';
 import Dashboard from './components/Dashboard';
 import SchemaUploadWizard from './components/SchemaUploadWizard';
+// Phase 16 Components
+import SchemaListComponent from './components/SchemaListComponent';
+import SchemaEditorComponent from './components/SchemaEditorComponent';
+import VersionHistoryComponent from './components/VersionHistoryComponent';
+// Phase 17: Context
+import { SchemaProvider } from './context/SchemaContext';
+// Error Handling
+import ErrorBoundary from './components/ErrorBoundary';
 
 const drawerWidth = 280;
 
@@ -65,6 +75,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: 'Dashboard', path: '/', icon: <DashboardIcon /> },
   { label: 'Schema Upload', path: '/schema-wizard', icon: <CloudUploadIcon /> },
+  { label: 'Schema Management', path: '/schemas', icon: <SchemaIcon /> },
   { label: 'Documents', path: '/documents', icon: <DocumentsIcon /> },
   { label: 'Extraction Workbench', path: '/workbench', icon: <WorkbenchIcon /> },
   { label: 'Rule Editor', path: '/rules', icon: <EditIcon /> },
@@ -165,7 +176,9 @@ export const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
+      <ErrorBoundary>
+        <SchemaProvider>
+          <Router>
         <Box sx={{ display: 'flex', minHeight: '100vh' }}>
           {/* App Bar */}
           <AppBar
@@ -236,6 +249,11 @@ export const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/schema-wizard" element={<SchemaUploadWizard />} />
+              {/* Phase 16: Schema Management Routes */}
+              <Route path="/schemas" element={<SchemaListComponent />} />
+              <Route path="/schema/:id/edit" element={<SchemaEditorComponent />} />
+              <Route path="/schema/:id/history" element={<VersionHistoryComponent />} />
+              {/* Phase 14 & Earlier Routes */}
               <Route path="/documents" element={<DocumentExplorer />} />
               <Route path="/workbench" element={<ExtractionWorkbench />} />
               <Route path="/rules" element={<RuleEditor />} />
@@ -248,7 +266,9 @@ export const App: React.FC = () => {
             </Routes>
           </Box>
         </Box>
-      </Router>
+        </Router>
+        </SchemaProvider>
+      </ErrorBoundary>
     </ThemeProvider>
   );
 };

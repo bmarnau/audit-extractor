@@ -1,16 +1,16 @@
 @echo off
 REM ============================================================================
-REM AUDIT-SAFE DOCUMENT EXTRACTOR - Full Application Startup
+REM AUDIT-SAFE DOCUMENT EXTRACTOR - Frontend Application Startup
 REM
-REM Purpose: Start Backend + Frontend + Chrome Browser
-REM Version: 0.13.0 (Phase 14 Complete)
+REM Purpose: Start Frontend Server + Chrome Browser
+REM Version: 0.17.0 (Phase 17 Complete)
 REM 
 REM Features:
-REM   - Kills old Node processes on ports 3000 and 5173
-REM   - Starts Backend server (Express on :3000)
-REM   - Starts Frontend server (Vite on :5173)
+REM   - Kills old Node processes on ports 5173
+REM   - Starts Frontend server (Vite on :5173) - PRIMARY
+REM   - Starts Backend server (Express on :3000) - OPTIONAL
 REM   - Opens Chrome browser automatically
-REM   - Includes error recovery and retry logic
+REM   - Continues even if Backend fails (PostgreSQL dependency)
 REM ============================================================================
 
 setlocal enabledelayedexpansion
@@ -20,9 +20,9 @@ cd /d "%~dp0"
 set "APP_ROOT=%cd%"
 
 cls
-echo   Audit-Safe Document Extractor v0.13.0               
-echo   Starting Full Application Stack                      
-echo   Phase 14 - Production Ready                          
+echo   Audit-Safe Document Extractor v0.17.0               
+echo   Starting Frontend Application (Phase 17)             
+echo   Backend optional (requires PostgreSQL)               
 
 REM ============================================================================
 REM Step 1: Kill old processes (with explicit port cleanup)
@@ -90,43 +90,9 @@ echo ✓ Dependencies ready
 echo.
 
 REM ============================================================================
-REM Step 4: Start Backend and Frontend servers
+REM Step 4: Start Frontend server (PRIMARY)
 REM ============================================================================
-echo [4/5] Starting servers...
-echo.
-
-echo Starting Backend (Port 3000)...
-start "Audit-Safe Backend" /D "%APP_ROOT%" cmd /k "npm run dev"
-
-REM Wait for backend to start and respond
-echo Waiting for Backend to initialize (up to 20 seconds)...
-
-set /a RETRY=0
-:WAIT_BACKEND
-timeout /t 1 /nobreak >nul
-set /a RETRY+=1
-
-REM Check if backend is listening
-netstat -ano 2>nul | findstr ":3000" >nul 2>&1
-if errorlevel 1 (
-    if %RETRY% LSS 20 (
-        echo   Attempt %RETRY%/20 - Backend not yet ready...
-        goto WAIT_BACKEND
-    ) else (
-        echo ❌ Backend failed to start after 20 seconds
-        echo.
-        echo Troubleshooting:
-        echo - Check "Audit-Safe Backend" window for error messages
-        echo - Try manually: npm run dev
-        echo - Verify port 3000 is not in use
-        echo.
-        echo Press any key to close this window...
-        pause
-        exit /b 1
-    )
-)
-
-echo ✓ Backend port 3000 is listening
+echo [4/5] Starting Frontend server...
 echo.
 
 echo Starting Frontend (Port 5173)...
@@ -147,26 +113,42 @@ if errorlevel 1 (
         echo   Attempt %RETRY%/40 - Frontend not yet ready...
         goto WAIT_FRONTEND
     ) else (
-        echo ❌ Frontend failed to start after 40 seconds
-        echo.
-        echo Troubleshooting:
-        echo - Check "Audit-Safe Frontend" window for error messages
-        echo - Try manually: cd frontend ^&^& npm run dev
-        echo - Verify port 5173 is not in use
-        echo.
-        echo Press any key to close this window...
-        pause
-        exit /b 1
+        echo ⚠  Frontend timeout after 40 seconds, but continuing...
+        echo   Check "Audit-Safe Frontend" window for details
     )
+) else (
+    echo ✓ Frontend port 5173 is listening
 )
-
-echo ✓ Frontend port 5173 is listening
 echo.
 
 REM ============================================================================
-REM Step 5: Open Chrome
+REM Step 5: Start Backend server (OPTIONAL - may fail if PostgreSQL not running)
 REM ============================================================================
-echo [5/5] Opening Chrome browser...
+echo [5/6] Starting Backend server (optional)...
+echo   Note: Backend requires PostgreSQL on port 5432
+echo.
+
+REM Try to start backend but don't fail if it doesn't work
+start "Audit-Safe Backend" /D "%APP_ROOT%" cmd /k "npm run dev"
+
+REM Give backend a few seconds to try starting
+timeout /t 3 /nobreak >nul
+
+REM Check if backend is running (non-blocking)
+netstat -ano 2>nul | findstr ":3000" >nul 2>&1
+if errorlevel 1 (
+    echo ⚠  Backend not available (PostgreSQL may not be running)
+    echo   Frontend will continue working without Backend
+    echo   API calls will show 500 errors until Backend is fixed
+) else (
+    echo ✓ Backend port 3000 is listening
+)
+echo.
+
+REM ============================================================================
+REM Step 6: Open Chrome
+REM ============================================================================
+echo [6/6] Opening Chrome browser...
 echo.
 
 REM Try multiple Chrome locations
@@ -196,8 +178,17 @@ if %CHROME_FOUND% EQU 1 (
 
 echo   ✓ Application Started Successfully!                   
 echo                                                          
-echo   Frontend:     http://localhost:5173                   
-echo   Backend API:  http://localhost:3000                   
+echo   Frontend:     http://localhost:5173  (PRIMARY)        
+echo   Backend API:  http://localhost:3000  (OPTIONAL)       
+echo                                                          
+echo   Note: Frontend works independently                    
+echo   Backend may not be available if PostgreSQL           
+echo   is not running on your system                         
+echo.
+echo   Press Ctrl+C to stop the application                  
+echo.
+REM Keep window open
+pause
 echo   Health Check: http://localhost:3000/health            
 echo   API Docs:     http://localhost:3000/api-docs          
 echo                                                          

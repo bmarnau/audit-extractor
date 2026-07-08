@@ -1,18 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
   Card,
   CardContent,
-  CardHeader,
   CircularProgress,
   Alert,
-  Timeline,
-  TimelineItem,
-  TimelineSeparator,
-  TimelineConnector,
-  TimelineContent,
-  TimelineOppositeContent,
-  TimelineDot,
   Typography,
   Chip,
   Button,
@@ -20,87 +13,45 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Divider,
-} from '@mui/lab';
-import { Download as DownloadIcon, Info as InfoIcon } from '@mui/icons-material';
-
-interface VersionHistoryProps {
-  schemaId: string;
-}
+  Paper,
+  Snackbar,
+} from '@mui/material';
+import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineOppositeContent, TimelineDot } from '@mui/lab';
+import { ArrowBack as BackIcon, Info as InfoIcon } from '@mui/icons-material';
+import { useVersionHistory } from '../hooks/useSchemaAPI';
+import { useSchemaContext } from '../context/SchemaContext';
 
 interface SchemaVersion {
-  id: string;
   version: number;
   createdAt: string;
   updatedAt: string;
   description?: string;
-  generatedRulesCount: number;
-  previousVersionId?: string;
-  isArchived: boolean;
+  metadata?: Record<string, any>;
 }
 
 /**
  * VersionHistoryComponent: Display version history with timeline
- * Phase 16D Frontend Component
- * 
- * Shows last 2 versions of schema in a timeline view
+ * Phase 17: Updated with React Router and API Hooks
  */
-export const VersionHistoryComponent: React.FC<VersionHistoryProps> = ({
-  schemaId,
-}) => {
-  const [versions, setVersions] = useState<SchemaVersion[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export const VersionHistoryComponent: React.FC = () => {
+  const { id: schemaId } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { versions, loading, error } = useVersionHistory(schemaId || null);
+  const { setVersionHistory } = useSchemaContext();
+  
   const [selectedVersion, setSelectedVersion] = useState<SchemaVersion | null>(null);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
-
-  // Load version history on mount
-  useEffect(() => {
-    loadVersionHistory();
-  }, [schemaId]);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   /**
-   * Load version history from API
+   * Sync version history to context on load
    */
-  const loadVersionHistory = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch(
-        `/api/schema/${schemaId}/version-history`
-      );
-      if (!response.ok) throw new Error('Failed to load version history');
-
-      const data = await response.json();
-      setVersions(data.versions || []);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
-      // Mock data for demo
-      setVersions([
-        {
-          id: schemaId,
-          version: 2,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          description: 'Current version',
-          generatedRulesCount: 24,
-          isArchived: false,
-        },
-        {
-          id: schemaId + '-v1',
-          version: 1,
-          createdAt: new Date(Date.now() - 86400000).toISOString(),
-          updatedAt: new Date(Date.now() - 86400000).toISOString(),
-          description: 'Initial version',
-          generatedRulesCount: 20,
-          isArchived: true,
-        },
-      ]);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (versions && versions.length > 0) {
+      setVersionHistory(versions);
     }
-  };
+  }, [versions, setVersionHistory]);
+
 
   /**
    * Handle version details view
@@ -115,7 +66,7 @@ export const VersionHistoryComponent: React.FC<VersionHistoryProps> = ({
    */
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('de-DE') + ' ' + date.toLocaleTimeString('de-DE');
+    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
   };
 
   if (loading) {
@@ -126,85 +77,80 @@ export const VersionHistoryComponent: React.FC<VersionHistoryProps> = ({
     );
   }
 
+  if (error && !versions.length) {
+    return (
+      <Box sx={{ p: 2 }}>
+        <Alert severity="error" onClose={() => navigate('/schemas')}>
+          {error}
+        </Alert>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ width: '100%', p: 2 }}>
-      <Card>
-        <CardHeader
-          title="Version History"
-          subtitle={`Total: ${versions.length} version(s)`}
-        />
-        <Divider />
-        <CardContent>
-          {error && (
-            <Alert severity="warning" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
+      {/* Header */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+        <Button
+          startIcon={<BackIcon />}
+          onClick={() => navigate('/schemas')}
+        >
+          Back
+        </Button>
+        <Typography variant="h5">Version History</Typography>
+      </Box>
 
+      <Card>
+        <CardContent>
           {versions.length === 0 ? (
             <Alert severity="info">No version history available</Alert>
           ) : (
             <Timeline position="alternate">
               {versions.map((version, index) => (
-                <TimelineItem key={version.id}>
-                  <TimelineOppositeContent color="textSecondary">
+                <TimelineItem key={`v${version.version}`}>
+                  <TimelineOppositeContent color="textSecondary" sx={{ flex: 0.3 }}>
                     <Typography variant="caption">
                       {formatDate(version.createdAt)}
                     </Typography>
                   </TimelineOppositeContent>
                   <TimelineSeparator>
                     <TimelineDot
-                      color={version.isArchived ? 'grey' : 'primary'}
-                      variant={version.version === Math.max(...versions.map((v) => v.version)) ? 'filled' : 'outlined'}
+                      color={index === 0 ? 'primary' : 'grey'}
+                      variant={index === 0 ? 'filled' : 'outlined'}
                     />
                     {index < versions.length - 1 && <TimelineConnector />}
                   </TimelineSeparator>
-                  <TimelineContent sx={{ py: '12px', px: 2 }}>
-                    <Card variant="outlined">
-                      <CardContent sx={{ pb: 1 }}>
-                        <Box
-                          sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            mb: 1,
-                          }}
-                        >
-                          <Typography variant="h6">
-                            Version {version.version}
-                          </Typography>
-                          {version.isArchived && (
-                            <Chip label="Archived" size="small" variant="outlined" />
-                          )}
-                        </Box>
-
-                        {version.description && (
-                          <Typography variant="body2" color="textSecondary">
-                            {version.description}
-                          </Typography>
-                        )}
-
-                        <Typography variant="caption" display="block" sx={{ mt: 1 }}>
-                          Rules: {version.generatedRulesCount}
+                  <TimelineContent sx={{ py: '12px', px: 2, flex: 1 }}>
+                    <Paper elevation={0} sx={{ p: 2, backgroundColor: '#f9f9f9' }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                        <Typography variant="h6">
+                          Version {version.version}
                         </Typography>
+                        {index === 0 && (
+                          <Chip label="Current" size="small" color="primary" variant="filled" />
+                        )}
+                      </Box>
 
-                        <Box sx={{ mt: 1, display: 'flex', gap: 1 }}>
-                          <Button
-                            size="small"
-                            startIcon={<InfoIcon />}
-                            onClick={() => handleViewDetails(version)}
-                          >
-                            Details
-                          </Button>
-                          <Button
-                            size="small"
-                            startIcon={<DownloadIcon />}
-                          >
-                            Export
-                          </Button>
-                        </Box>
-                      </CardContent>
-                    </Card>
+                      {version.description && (
+                        <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+                          {version.description}
+                        </Typography>
+                      )}
+
+                      <Typography variant="caption" display="block" color="textSecondary">
+                        Last updated: {formatDate(version.updatedAt)}
+                      </Typography>
+
+                      <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
+                        <Button
+                          size="small"
+                          startIcon={<InfoIcon />}
+                          onClick={() => handleViewDetails(version)}
+                        >
+                          Details
+                        </Button>
+                      </Box>
+                    </Paper>
                   </TimelineContent>
                 </TimelineItem>
               ))}
@@ -222,36 +168,60 @@ export const VersionHistoryComponent: React.FC<VersionHistoryProps> = ({
       >
         <DialogTitle>Version {selectedVersion?.version} Details</DialogTitle>
         <DialogContent>
-          <Box sx={{ pt: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <Typography variant="subtitle2">
-              Created: {selectedVersion && formatDate(selectedVersion.createdAt)}
-            </Typography>
-            <Typography variant="subtitle2">
-              Updated: {selectedVersion && formatDate(selectedVersion.updatedAt)}
-            </Typography>
-            <Typography variant="subtitle2">
-              Generated Rules: {selectedVersion?.generatedRulesCount}
-            </Typography>
-            <Typography variant="subtitle2">
-              Status: {selectedVersion?.isArchived ? 'Archived' : 'Active'}
-            </Typography>
-            {selectedVersion?.description && (
-              <>
-                <Divider sx={{ my: 1 }} />
-                <Typography variant="body2">
-                  {selectedVersion.description}
+          {selectedVersion && (
+            <Box sx={{ pt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Box>
+                <Typography variant="caption" color="textSecondary">
+                  Created
                 </Typography>
-              </>
-            )}
-          </Box>
+                <Typography variant="body2">
+                  {formatDate(selectedVersion.createdAt)}
+                </Typography>
+              </Box>
+              <Box>
+                <Typography variant="caption" color="textSecondary">
+                  Last Updated
+                </Typography>
+                <Typography variant="body2">
+                  {formatDate(selectedVersion.updatedAt)}
+                </Typography>
+              </Box>
+              {selectedVersion.description && (
+                <Box>
+                  <Typography variant="caption" color="textSecondary">
+                    Description
+                  </Typography>
+                  <Typography variant="body2">
+                    {selectedVersion.description}
+                  </Typography>
+                </Box>
+              )}
+              {selectedVersion.metadata && (
+                <Box>
+                  <Typography variant="caption" color="textSecondary">
+                    Metadata
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontFamily: 'monospace', fontSize: '0.75rem' }}>
+                    {JSON.stringify(selectedVersion.metadata, null, 2)}
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDetailsDialogOpen(false)}>Close</Button>
-          <Button variant="contained" color="primary">
-            Restore Version
-          </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Success Notification */}
+      <Snackbar
+        open={!!successMessage}
+        autoHideDuration={4000}
+        onClose={() => setSuccessMessage(null)}
+      >
+        <Alert severity="success">{successMessage}</Alert>
+      </Snackbar>
     </Box>
   );
 };

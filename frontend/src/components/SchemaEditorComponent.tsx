@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
   Button,
   Card,
   CardContent,
-  CardHeader,
   TextField,
   Typography,
   Alert,
   CircularProgress,
   Paper,
-  Divider,
   Chip,
+  Snackbar,
   Grid,
 } from '@mui/material';
-import { Save as SaveIcon, Cancel as CancelIcon } from '@mui/icons-material';
-
-interface SchemaEditorProps {
-  schemaId: string;
-  onSave?: () => void;
-  onCancel?: () => void;
-}
+import { Save as SaveIcon, ArrowBack as BackIcon } from '@mui/icons-material';
+import { useSchema, useUpdateSchema } from '../hooks/useSchemaAPI';
+import { useSchemaContext } from '../context/SchemaContext';
+import { useFormValidation, ValidationRules } from '../hooks/useFormValidation';
 
 interface SchemaData {
   id: string;
@@ -28,85 +25,83 @@ interface SchemaData {
   description: string;
   version: number;
   schema: Record<string, unknown>;
-  generatedRulesCount: number;
-  averageConfidence: number;
+  generatedRulesCount?: number;
+  averageConfidence?: number;
   createdAt: string;
   updatedAt: string;
 }
 
 /**
  * SchemaEditorComponent: Edit schema metadata and description
- * Phase 16D Frontend Component
+ * Phase 17: Updated with React Router and API Hooks
  */
-export const SchemaEditorComponent: React.FC<SchemaEditorProps> = ({
-  schemaId,
-  onSave,
-  onCancel,
-}) => {
-  const [schema, setSchema] = useState<SchemaData | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-  });
-
-  // Load schema on mount
-  useEffect(() => {
-    loadSchema();
-  }, [schemaId]);
-
-  /**
-   * Load schema from API
-   */
-  const loadSchema = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch(`/api/schema/${schemaId}`);
-      if (!response.ok) throw new Error('Failed to load schema');
-
-      const data = await response.json();
-      setSchema(data);
-      setFormData({
-        name: data.name,
-        description: data.description,
-      });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
-    } finally {
-      setLoading(false);
-    }
+export const SchemaEditorComponent: React.FC = () => {
+  const { id: schemaId } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  
+  const { schema, loading, error: loadError, refetch } = useSchema(schemaId || null);
+  const { updateSchema, loading: saving, error: saveError } = useUpdateSchema(schemaId || null);
+  const { setCurrentSchema } = useSchemaContext();
+  
+  // Validation rules
+  const validationRules: ValidationRules = {
+    description: [
+      value => {
+        if (value && value.length > 5000) {
+          return 'Description must be less than 5000 characters';
+        }
+        return null;
+      },
+    ],
   };
+
+  // Form validation hook
+  const {
+    values: formData,
+    errors,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    getFieldError,
+  } = useFormValidation(
+    { description: '' },
+    async (values) => {
+      await updateSchema({
+        description: values.description,
+        metadata: { updatedVia: 'frontend-phase17' },
+      });
+      setSuccessMessage('Schema updated successfully');
+      refetch();
+    },
+    validationRules
+  );
+
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+
+  // Update form when schema loads
+  useEffect(() => {
+    if (schema) {
+      // setFormData({
+      //   description: schema.description || '',
+      // });
+      setCurrentSchema(schema as any);
+    }
+  }, [schema, setCurrentSchema]);
 
   /**
    * Handle save
    */
   const handleSave = async () => {
-    setSaving(true);
-    setError(null);
-
     try {
-      const response = await fetch(`/api/schema/${schemaId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          description: formData.description,
-          metadata: { lastEditVia: 'frontend-editor' },
-        }),
+      await updateSchema({
+        description: formData.description,
+        metadata: { lastEditVia: 'frontend-editor' },
       });
-
-      if (!response.ok) throw new Error('Failed to save schema');
-
-      // Reload schema to get updated version
-      await loadSchema();
-      onSave?.();
+      setSuccessMessage('Schema updated successfully');
+      refetch();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Save failed');
-    } finally {
-      setSaving(false);
+      // Error is handled by the hook and displayed below
     }
   };
 
@@ -118,35 +113,63 @@ export const SchemaEditorComponent: React.FC<SchemaEditorProps> = ({
     );
   }
 
+  if (loadError && !schema) {
+    return (
+      <Box sx={{ p: 2 }}>
+        <Alert severity="error" onClose={() => navigate('/schemas')}>
+          {loadError}
+        </Alert>
+      </Box>
+    );
+  }
+
   if (!schema) {
     return (
-      <Alert severity="error">Schema not found</Alert>
+      <Box sx={{ p: 2 }}>
+        <Alert severity="error" onClose={() => navigate('/schemas')}>
+          Schema not found
+        </Alert>
+      </Box>
     );
   }
 
   return (
     <Box sx={{ width: '100%', p: 2 }}>
+      {/* Header */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+        <Button
+          startIcon={<BackIcon />}
+          onClick={() => navigate('/schemas')}
+        >
+          Back
+        </Button>
+        <Typography variant="h5">Edit Schema</Typography>
+      </Box>
+
       <Card>
-        <CardHeader
-          title={`Edit Schema: ${schema.name}`}
-          subtitle={`Version ${schema.version} • ID: ${schema.id.substring(0, 8)}...`}
-        />
-        <Divider />
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {/* Error Alert */}
-          {error && (
-            <Alert severity="error" onClose={() => setError(null)}>
-              {error}
+          {saveError && (
+            <Alert severity="error" onClose={() => {}}>
+              {saveError}
             </Alert>
           )}
 
           {/* Schema Info Grid */}
-          <Grid container spacing={2} sx={{ mb: 2, p: 1, backgroundColor: '#f5f5f5', borderRadius: 1 }}>
+          <Grid container spacing={2} sx={{ p: 2, backgroundColor: '#f5f5f5', borderRadius: 1 }}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="caption" color="textSecondary">
+                Schema ID
+              </Typography>
+              <Typography variant="body2" sx={{ fontFamily: 'monospace', fontSize: '0.85rem' }}>
+                {schema.id.substring(0, 12)}...
+              </Typography>
+            </Grid>
             <Grid item xs={12} sm={6}>
               <Typography variant="caption" color="textSecondary">
                 Version
               </Typography>
-              <Typography variant="body2">{schema.version}</Typography>
+              <Chip label={`v${schema.version}`} size="small" />
             </Grid>
             <Grid item xs={12} sm={6}>
               <Typography variant="caption" color="textSecondary">
@@ -158,29 +181,39 @@ export const SchemaEditorComponent: React.FC<SchemaEditorProps> = ({
             </Grid>
             <Grid item xs={12} sm={6}>
               <Typography variant="caption" color="textSecondary">
-                Generated Rules
-              </Typography>
-              <Typography variant="body2">{schema.generatedRulesCount}</Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="caption" color="textSecondary">
-                Average Confidence
+                Last Updated
               </Typography>
               <Typography variant="body2">
-                {(schema.averageConfidence * 100).toFixed(1)}%
+                {new Date(schema.updatedAt).toLocaleDateString()}
               </Typography>
             </Grid>
+            {schema.generatedRulesCount && (
+              <>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="caption" color="textSecondary">
+                    Generated Rules
+                  </Typography>
+                  <Typography variant="body2">{schema.generatedRulesCount}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="caption" color="textSecondary">
+                    Average Confidence
+                  </Typography>
+                  <Typography variant="body2">
+                    {schema.averageConfidence ? (schema.averageConfidence * 100).toFixed(1) : 'N/A'}%
+                  </Typography>
+                </Grid>
+              </>
+            )}
           </Grid>
-
-          <Divider />
 
           {/* Edit Fields */}
           <TextField
             label="Schema Name"
             fullWidth
             disabled
-            value={formData.name}
-            helperText="Schema name cannot be changed. Create a new version to modify."
+            value={schema.name}
+            helperText="Schema name cannot be changed"
           />
 
           <TextField
@@ -188,26 +221,18 @@ export const SchemaEditorComponent: React.FC<SchemaEditorProps> = ({
             fullWidth
             multiline
             rows={4}
+            name="description"
             value={formData.description}
-            onChange={(e) =>
-              setFormData({ ...formData, description: e.target.value })
-            }
+            onChange={handleChange}
+            onBlur={handleBlur}
             placeholder="Enter schema description..."
-            helperText="Update the schema description to track changes."
+            helperText="Update the description to track changes"
           />
 
-          {/* Field Count */}
-          <Typography variant="body2" color="textSecondary">
-            This schema defines {schema.schema.properties ? Object.keys(schema.schema.properties).length : 0} fields
-          </Typography>
-
-          <Divider />
-
           {/* Actions */}
-          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end', pt: 1 }}>
             <Button
-              startIcon={<CancelIcon />}
-              onClick={onCancel}
+              onClick={() => navigate('/schemas')}
               disabled={saving}
             >
               Cancel
@@ -219,11 +244,20 @@ export const SchemaEditorComponent: React.FC<SchemaEditorProps> = ({
               color="primary"
               disabled={saving}
             >
-              {saving ? 'Saving...' : 'Save'}
+              {saving ? 'Saving...' : 'Save Changes'}
             </Button>
           </Box>
         </CardContent>
       </Card>
+
+      {/* Success Notification */}
+      <Snackbar
+        open={!!successMessage}
+        autoHideDuration={4000}
+        onClose={() => setSuccessMessage(null)}
+      >
+        <Alert severity="success">{successMessage}</Alert>
+      </Snackbar>
     </Box>
   );
 };

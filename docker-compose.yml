@@ -9,14 +9,13 @@ services:
       POSTGRES_USER: extractor_user
       POSTGRES_PASSWORD: extractor_pass
       POSTGRES_DB: extractor_db
-      POSTGRES_INITDB_ARGS: "-c shared_preload_libraries=pg_stat_statements"
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/01-init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U extractor"]
+      test: ["CMD-SHELL", "pg_isready -U extractor_user"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -40,9 +39,10 @@ services:
       - extractor-network
     restart: unless-stopped
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
-  # Redis for caching (optional, for Phase 16+)
+  # Redis for caching
   redis:
     image: redis:7-alpine
     container_name: extractor-redis
@@ -51,17 +51,87 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - extractor-network
     restart: unless-stopped
-    profiles:
-      - cache  # Optional: use with docker-compose --profile cache up
+
+  # Backend API Service
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: extractor-backend
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: extractor_user
+      DB_PASSWORD: extractor_pass
+      DB_NAME: extractor_db
+      REDIS_URL: redis://redis:6379
+      API_URL: http://backend:3000/api
+      CORS_ORIGIN: http://localhost:5173,http://localhost
+      LOG_LEVEL: info
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./extraction-rules:/app/extraction-rules
+      - ./results:/app/results
+      - ./schemas:/app/schemas
+      - ./source-documents:/app/source-documents
+    networks:
+      - extractor-network
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend Service
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: extractor-frontend
+    ports:
+      - "80:80"
+      - "5173:80"  # Alternative port for local development
+    networks:
+      - extractor-network
+    restart: unless-stopped
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/index.html"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
 
 volumes:
   postgres_data:
+    driver: local
   pgadmin_data:
+    driver: local
   redis_data:
+    driver: local
 
 networks:
   extractor-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

@@ -35,10 +35,11 @@ export type { AuditEntry } from '@application/ExtractionEngine';
 export type { LearningEntry } from '@application/LearningComponent';
 
 // CLI Entry Point: Start API Server
-// When run with: npx ts-node src/index.ts
+// When run with: npx ts-node src/index.ts or node dist/index.js
 // This check works with both CommonJS and ESM
 (async () => {
   const isMainModule = process.argv[1]?.endsWith('index.ts') || 
+                       process.argv[1]?.endsWith('index.js') ||
                        process.argv[1]?.includes('ts-node');
   
   if (isMainModule) {

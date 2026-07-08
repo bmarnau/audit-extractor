@@ -1,0 +1,18 @@
+{
+  "invoiceNumber": "INV-202408",
+  "date": "2024-07-09",
+  "items": [
+    {
+      "description": "Product A",
+      "quantity": 2,
+      "unitPrice": 500
+    },
+    {
+      "description": "Product B",
+      "quantity": 1,
+      "unitPrice": 300
+    }
+  ],
+  "totalAmount": 1300,
+  "vendorName": "Tech Solutions"
+}

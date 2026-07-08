@@ -1,51 +1,52 @@
 # Audit-Safe Document Extraction System
 
-**Version**: 0.15.0 | **Status**: ✅ PRODUCTION READY  
+**Version**: 0.18.0 | **Status**: ✅ PRODUCTION READY  
+**Phase 18**: Docker Containerization ✅ COMPLETE  
+**Phase 17**: Frontend Integration ✅ COMPLETE  
+**Phase 16**: Database Persistence ✅ COMPLETE  
 **Phase 15**: Schema-Driven Rule Generation ✅ COMPLETE  
 **Last updated**: 8.7.2026
 
-Ein revisionssicheres Dokument-Extraktionssystem mit **automatischer Regelwerk-Generierung** basierend auf JSON Schema und Beispieldateien.
+Ein revisionssicheres Dokument-Extraktionssystem mit **automatischer Regelwerk-Generierung** und **vollständiger Docker-Containerisierung**.
 
 ---
 
-## 🎉 NEUGKEIT: Phase 15 - Automatische Regelgenerierung
+## 🎉 Phase 18: Vollständige Docker-Containerisierung
 
-**Status**: ✅ Production Ready | Build: 0 TypeScript Errors | 100% Tested
+**Status**: ✅ Production Ready | All Services Containerized | 0 TypeScript Errors
 
-### Kernfeature: In 5 Minuten vom Schema zu generierten Extraktionsregeln
+### Neu in Version 0.18.0
+
+Das gesamte System läuft jetzt in Docker-Containern:
 
 ```bash
-1. Schema hochladen (JSON)          ← Ihre Datenstruktur
-2. 2-3 Beispieldateien             ← Realistische Daten
-3. Aggressiveness-Level setzen     ← Feinabstimmung (0-1)
-4. Regelgenerierung starten        ← Automatisch!
-5. Ergebnisse mit Confidence       ← Production-ready Regeln
+1. Dockerfile für Backend (Node.js + TypeScript) ✅
+2. Dockerfile für Frontend (React + Nginx)       ✅
+3. Docker Compose Stack (5 Services)            ✅
+4. Startup Scripts (Windows + PowerShell)       ✅
+5. Vollständige Dokumentation                   ✅
 ```
 
-**Automatische Regeln für**:
-- Einfache Felder (String, Number, Date)
-- Nested Objects & Arrays
-- Pattern-basierte Erkennung (z.B. "INV-XXXXXX")
-- Berechnete Felder (z.B. Summe = Menge × Preis)
-- Format-Validierung (Email, Phone, IBAN)
-
-### Beispiel: Invoice Extraction (10 Minuten)
-
+**Schnellstart:**
 ```bash
-# 1. Schema & Beispiele vorbereiten
-examples/schemas/invoice-schema.json
-examples/schemas/invoice-example-1.json
-examples/schemas/invoice-example-2.json
-examples/schemas/invoice-example-3.json
+# Windows
+start-docker.cmd
 
-# 2. App öffnen & Schema Upload Wizard
-http://localhost:3000
+# PowerShell
+.\start-docker.ps1
 
-# 3. Schema hochladen
-✅ invoice-schema.json → 12 Felder erkannt
+# Manual
+docker-compose up -d
+```
 
-# 4. Beispiele hochladen
-✅ 3 diverse Beispiele → Patterns gelernt
+**Fertig!** Öffne:
+- Frontend: http://localhost
+- Backend: http://localhost:3000/api
+- pgAdmin: http://localhost:5050
+
+---
+
+## 🚀 System starten (3 Optionen)
 
 # 5. Regeln generieren
 ✅ 10+ Regeln mit ~0.87 avg Confidence

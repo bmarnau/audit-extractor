@@ -1,53 +1,148 @@
-# Quick Start - Audit-Safe Document Extractor (v0.15.0)
+# 🚀 Quick Start - Audit-Safe Document Extractor (v0.18.0)
 
 **Status**: ✅ PRODUCTION READY  
-**Phase 15**: Schema-Driven Rule Generation COMPLETE
-
-## 📦 Installation & Startup
-
-```bash
-cd c:\Users\bmarn\OneDrive\HTML\extractor
-npm install
-npm run build
-npm run test
-npm run dev      # Startet Server auf Port 3000
-```
-
-Server läuft auf: `http://localhost:3000`
+**Phase**: 18 - Docker Containerization  
+**Last Updated**: 8.7.2026
 
 ---
 
-## 🚀 Phase 15: Automatische Regelgenerierung (5 Minuten)
+## ⚡ Instant Start (30 Sekunden)
 
-### 1️⃣ Schema hochladen
+### Windows: CMD Script
 
-```json
-{
-  "type": "object",
-  "properties": {
-    "invoiceNumber": { "type": "string" },
-    "totalAmount": { "type": "number" },
-    "date": { "type": "string", "format": "date" }
-  },
-  "required": ["invoiceNumber", "totalAmount"]
-}
+```cmd
+cd c:\Users\bmarn\OneDrive\HTML\extractor
+start-docker.cmd
 ```
 
-### 2️⃣ Beispieldateien vorbereiten (2-3)
+**Fertig!** Öffne dann:
+- Frontend: http://localhost
+- Backend: http://localhost:3000/api
+- pgAdmin: http://localhost:5050
 
-```json
-{
-  "invoiceNumber": "INV-202601",
-  "totalAmount": 1500.00,
-  "date": "2026-01-15"
-}
+### Windows: PowerShell
+
+```powershell
+cd c:\Users\bmarn\OneDrive\HTML\extractor
+.\start-docker.ps1
 ```
 
-### 3️⃣ REST API aufrufen
+### macOS / Linux
 
-**Upload Schema:**
 ```bash
-curl -X POST http://localhost:3000/api/schema/upload \
+cd /path/to/extractor
+docker-compose up -d
+```
+
+---
+
+## 🎯 Was läuft nach dem Start?
+
+| Service | URL | Status |
+|---------|-----|--------|
+| Frontend | http://localhost | ✅ React UI |
+| Backend API | http://localhost:3000/api | ✅ REST Server |
+| Database UI | http://localhost:5050 | ✅ pgAdmin |
+| Database | localhost:5432 | ✅ PostgreSQL |
+| Cache | localhost:6379 | ✅ Redis |
+
+---
+
+## 📊 Logs anzeigen
+
+```bash
+# Alle zusammen
+docker-compose logs -f
+
+# Nur Backend
+docker-compose logs -f backend
+
+# Nur Frontend
+docker-compose logs -f frontend
+```
+
+---
+
+## 🛑 Stoppen
+
+```bash
+# Pausieren (Container bleiben)
+docker-compose stop
+
+# Komplett herunterfahren
+docker-compose down
+
+# Mit Datenlöschung (⚠️)
+docker-compose down -v
+```
+
+---
+
+## 🔄 Neu starten
+
+```bash
+# Mit Rebuild
+docker-compose up -d --build
+
+# Nur Backend
+docker-compose build backend && docker-compose up -d backend
+
+# Nur Frontend
+docker-compose build frontend && docker-compose up -d frontend
+```
+
+---
+
+## 🐛 Schnelle Fehlersuche
+
+```bash
+# Was läuft?
+docker-compose ps
+
+# Fehler in Backend?
+docker-compose logs backend | tail -50
+
+# Fehler in Frontend?
+docker-compose logs frontend | tail -50
+
+# Datenbank OK?
+docker-compose exec postgres pg_isready -U extractor_user
+```
+
+---
+
+## 💾 Datenbank-Operationen
+
+### Backup
+
+```bash
+docker-compose exec postgres pg_dump -U extractor_user extractor_db > backup.sql
+```
+
+### Restore
+
+```bash
+cat backup.sql | docker-compose exec -T postgres psql -U extractor_user -d extractor_db
+```
+
+### pgAdmin öffnen
+
+http://localhost:5050
+- Email: admin@extractor.local
+- Password: admin-pass
+
+---
+
+## 📖 Weitere Dokumentation
+
+- **Full Manual**: [MANUAL-0.18.0.md](MANUAL-0.18.0.md)
+- **Docker Guide**: [DOCKER_DEPLOYMENT_GUIDE.md](DOCKER_DEPLOYMENT_GUIDE.md)
+- **Command Reference**: [DOCKER_QUICK_REFERENCE.md](DOCKER_QUICK_REFERENCE.md)
+- **Release Notes**: [RELEASE_NOTES_0.18.0.md](RELEASE_NOTES_0.18.0.md)
+
+---
+
+**Ready to extract? Start now!** 🚀
   -H "Content-Type: application/json" \
   -d '{
     "schema": { /* your schema */ },

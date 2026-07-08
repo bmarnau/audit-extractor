@@ -1,0 +1,57 @@
+# Multi-stage build für Backend (Node.js + TypeScript)
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# System-Dependencies
+RUN apk add --no-cache python3 make g++ cairo-dev jpeg-dev pango-dev giflib-dev pixman-dev
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --no-save --ignore-scripts --legacy-peer-deps 2>&1 || true
+
+# Copy source code
+COPY . .
+
+# TypeScript compilieren
+RUN npm run build
+
+# Runtime Stage
+FROM node:20-alpine
+
+WORKDIR /app
+
+# System-Dependencies für PDF/Document Processing
+RUN apk add --no-cache cairo jpeg pango giflib pixman
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev for tsconfig-paths at runtime)
+RUN npm ci --ignore-scripts --legacy-peer-deps 2>&1 || true
+
+# Copy built application from builder
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/extraction-rules ./extraction-rules
+COPY --from=builder /app/scripts ./scripts
+
+# Environment Variables (can be overridden at runtime)
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV DATABASE_URL=postgresql://extractor_user:extractor_pass@postgres:5432/extractor_db
+ENV REDIS_URL=redis://redis:6379
+ENV API_URL=http://backend:3000/api
+ENV CORS_ORIGIN=http://localhost:5173
+ENV LOG_LEVEL=info
+
+# Health Check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
+
+# Expose Port
+EXPOSE 3000
+
+# Start Application
+CMD ["node", "dist/index.js"]

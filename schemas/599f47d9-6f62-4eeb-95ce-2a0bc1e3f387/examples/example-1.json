@@ -1,0 +1,13 @@
+{
+  "invoiceNumber": "INV-202407",
+  "date": "2024-07-08",
+  "items": [
+    {
+      "description": "Service",
+      "quantity": 1,
+      "unitPrice": 1000
+    }
+  ],
+  "totalAmount": 1000,
+  "vendorName": "Acme Corp"
+}
