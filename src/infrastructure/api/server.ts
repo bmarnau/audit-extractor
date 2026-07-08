@@ -112,6 +112,11 @@ export function createApiServer(): Express {
 
   // Response Wrapper - Standardize all API responses
   app.use((req: ApiRequest, res, next) => {
+    // Disable caching for all API responses - APIs should never return 304
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    
     const originalJson = res.json.bind(res);
     res.json = function(data: unknown) {
       const statusCode = res.statusCode;

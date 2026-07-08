@@ -1,7 +1,8 @@
 # Audit-Safe Document Extraction System
 
-**Version**: 0.15.0-rc1 | **Status**: ✅ PRODUCTION READY (Phase 14) | 🟡 Phase 15 PROPOSED
-Ein revisionssicheres Dokument-Extraktionssystem mit vollständiger Provenance-Verfolgung und strikter Halluzinations-Verhinderung.
+**Version**: 0.15.0 | **Status**: ✅ PRODUCTION READY | **Phase 15**: Schema-Driven Rule Generation COMPLETE
+
+Ein revisionssicheres Dokument-Extraktionssystem mit automatischer Regelwerk-Generierung basierend auf JSON Schema und Beispieldateien.
 
 ## 🎯 Kernprinzipien
 

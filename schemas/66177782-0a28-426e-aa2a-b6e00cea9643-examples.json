@@ -1,0 +1,22 @@
+{
+  "examples": [
+    {
+      "invoiceNumber": "INV-001234",
+      "amount": 1299.5,
+      "date": "2026-07-08",
+      "vendor": "ABC Corp"
+    },
+    {
+      "invoiceNumber": "INV-001235",
+      "amount": 2500,
+      "date": "2026-07-07",
+      "vendor": "XYZ Inc"
+    },
+    {
+      "invoiceNumber": "INV-001236",
+      "amount": 750.25,
+      "date": "2026-07-06",
+      "vendor": "Tech Solutions"
+    }
+  ]
+}

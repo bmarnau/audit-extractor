@@ -1,164 +1,190 @@
 #!/usr/bin/env pwsh
 <#
 .SYNOPSIS
-    Audit-Safe Document Extractor - Application Startup Script
+    Audit-Safe Document Extractor - Full Application Startup
 .DESCRIPTION
-    Starts the application with automatic cleanup of running processes.
-    - Checks for running Node.js processes on port 3000
-    - Kills all Node.js processes if found
-    - Verifies necessary files exist
-    - Builds TypeScript if needed
-    - Starts dev server with logging
+    Starts both backend and frontend servers.
+    - Backend: Express on port 3000
+    - Frontend: Vite on port 5173
+    - Opens Chrome browser automatically
 .EXAMPLE
     .\start-app.ps1
 #>
 
 param(
     [switch]$NoCleanup = $false,
-    [switch]$NoBuild = $false,
-    [switch]$SkipValidation = $false
+    [switch]$SkipChrome = $false
 )
 
 $ErrorActionPreference = 'Continue'
 $AppRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $AppRoot
 
-# Color helpers
-function Write-ColorOutput {
-    param(
-        [string]$Message,
-        [string]$Color = 'White'
-    )
-    Write-Host $Message -ForegroundColor $Color
-}
+# Colors
+function Write-Success { Write-Host "✓ $args" -ForegroundColor Green }
+function Write-Error { Write-Host "✗ $args" -ForegroundColor Red }
+function Write-Warning { Write-Host "⚠ $args" -ForegroundColor Yellow }
+function Write-Info { Write-Host $args -ForegroundColor Cyan }
+function Write-Header { Write-Host $args -ForegroundColor Cyan -BackgroundColor Black }
 
-function Write-Success {
-    Write-Host "✓ $args" -ForegroundColor Green
-}
-
-function Write-Error {
-    Write-Host "✗ $args" -ForegroundColor Red
-}
-
-function Write-Warning {
-    Write-Host "⚠ $args" -ForegroundColor Yellow
-}
-
-function Write-Info {
-    Write-Host $args -ForegroundColor Cyan
-}
-
-# Header
 Write-Host ""
-Write-ColorOutput "========================================" Cyan
-Write-ColorOutput "  AUDIT-SAFE DOCUMENT EXTRACTOR" Cyan
-Write-ColorOutput "  Application Startup Script" Cyan
-Write-ColorOutput "========================================" Cyan
+Write-Header "╔═══════════════════════════════════════════════════════╗"
+Write-Header "║  Audit-Safe Document Extractor v0.13.0               ║"
+Write-Header "║  Starting Full Application Stack (Backend + Frontend) ║"
+Write-Header "╚═══════════════════════════════════════════════════════╝"
 Write-Host ""
 
-# Step 1: Check for running Node processes
+# Step 1: Cleanup
 if (-not $NoCleanup) {
-    Write-Info "[1/4] Checking for running Node processes on port 3000..."
+    Write-Info "[1/5] Cleaning up old processes..."
     
-    $port = 3000
-    try {
-        $netstat = netstat -ano 2>$null | Select-String ":$port"
-        
-        if ($netstat) {
-            Write-Warning "Found process on port $port"
-            
-            Write-Warning "Terminating all Node.js processes..."
-            Get-Process -Name "node" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
-            
-            Start-Sleep -Seconds 2
-            
-            Write-Success "Node processes terminated"
-        } else {
-            Write-Success "No processes running on port $port"
-        }
-    }
-    catch {
-        Write-Warning "Could not check port status: $_"
-    }
-}
-else {
-    Write-Info "[1/4] Skipping process cleanup..."
-}
-
-Write-Host ""
-
-# Step 2: Verify required files
-if (-not $SkipValidation) {
-    Write-Info "[2/4] Verifying required files..."
-    
-    $requiredFiles = @(
-        "package.json",
-        "src\index.ts",
-        "extraction-rules\invoice.json"
-    )
-    
-    $allExist = $true
-    foreach ($file in $requiredFiles) {
-        if (Test-Path $file) {
-            Write-Success "$file found"
-        } else {
-            Write-Error "$file NOT found"
-            $allExist = $false
+    # Kill Node processes on ports
+    foreach ($port in @(3000, 5173)) {
+        $procs = netstat -ano 2>$null | Select-String ":$port" | ForEach-Object { ($_ -split '\s+')[-1] }
+        $procs | Where-Object { $_ -and $_ -ne 'PID' } | ForEach-Object {
+            taskkill /F /PID $_ 2>$null
         }
     }
     
-    if (-not $allExist) {
-        Write-Error "Required files missing!"
-        Read-Host "Press Enter to exit"
-        exit 1
+    # Kill all node.exe processes
+    Get-Process -Name "node" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+    
+    Start-Sleep -Seconds 1
+    Write-Success "Old processes cleaned"
+} else {
+    Write-Info "[1/5] Skipping cleanup..."
+}
+
+Write-Host ""
+
+# Step 2: Check Node.js
+Write-Info "[2/5] Checking Node.js..."
+$node = Get-Command node -ErrorAction SilentlyContinue
+if (-not $node) {
+    Write-Error "Node.js not found! Install from https://nodejs.org"
+    Read-Host "Press Enter to exit"
+    exit 1
+}
+$nodeVersion = & node --version
+Write-Success "Node.js $nodeVersion found"
+Write-Host ""
+
+# Step 3: Install dependencies
+Write-Info "[3/5] Checking dependencies..."
+if (-not (Test-Path "node_modules")) {
+    Write-Info "Installing backend dependencies..."
+    & npm install 2>$null
+}
+if (-not (Test-Path "frontend\node_modules")) {
+    Write-Info "Installing frontend dependencies..."
+    Push-Location frontend
+    & npm install 2>$null
+    Pop-Location
+}
+Write-Success "Dependencies ready"
+Write-Host ""
+
+# Step 4: Start servers
+Write-Info "[4/5] Starting servers..."
+
+# Start Backend
+Write-Host "Starting Backend on port 3000..."
+$backendJob = Start-Process -NoNewWindow -PassThru -FilePath "cmd" -ArgumentList "/k npm run dev"
+if ($backendJob) {
+    Write-Success "Backend started (PID: $($backendJob.Id))"
+} else {
+    Write-Error "Failed to start backend"
+    exit 1
+}
+
+# Wait for backend to be ready
+$backendReady = $false
+for ($i = 0; $i -lt 20; $i++) {
+    $portCheck = netstat -ano 2>$null | Select-String ":3000"
+    if ($portCheck) {
+        $backendReady = $true
+        break
+    }
+    Start-Sleep -Seconds 1
+}
+
+if ($backendReady) {
+    Write-Success "Backend is listening on port 3000"
+} else {
+    Write-Error "Backend failed to start"
+    exit 1
+}
+
+Write-Host ""
+
+# Start Frontend
+Write-Host "Starting Frontend on port 5173..."
+$frontendJob = Start-Process -NoNewWindow -PassThru -WorkingDirectory "$AppRoot\frontend" -FilePath "cmd" -ArgumentList "/k npm run dev"
+if ($frontendJob) {
+    Write-Success "Frontend started (PID: $($frontendJob.Id))"
+} else {
+    Write-Error "Failed to start frontend"
+    exit 1
+}
+
+# Wait for frontend to be ready
+$frontendReady = $false
+for ($i = 0; $i -lt 40; $i++) {
+    $portCheck = netstat -ano 2>$null | Select-String ":5173"
+    if ($portCheck) {
+        $frontendReady = $true
+        break
+    }
+    Start-Sleep -Seconds 1
+}
+
+if ($frontendReady) {
+    Write-Success "Frontend is listening on port 5173"
+} else {
+    Write-Warning "Frontend may still be starting..."
+}
+
+Write-Host ""
+
+# Step 5: Open Chrome
+if (-not $SkipChrome) {
+    Write-Info "[5/5] Opening Chrome..."
+    $chromePath = Get-ChildItem -Path @(
+        "C:\Program Files\Google\Chrome\Application\chrome.exe",
+        "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+        "${env:ProgramFiles}\Google\Chrome\Application\chrome.exe"
+    ) -ErrorAction SilentlyContinue | Select-Object -First 1
+    
+    if ($chromePath) {
+        & "$($chromePath.FullName)" "http://localhost:5173" &
+        Write-Success "Chrome opened"
+    } else {
+        Write-Warning "Chrome not found - opening via default browser..."
+        Start-Process "http://localhost:5173"
     }
 }
-else {
-    Write-Info "[2/4] Skipping file validation..."
-}
 
 Write-Host ""
-
-# Step 3: Build TypeScript
-if (-not $NoBuild) {
-    Write-Info "[3/4] Building TypeScript..."
-    
-    if (Test-Path "dist") {
-        Write-Warning "Clearing old build artifacts..."
-        Remove-Item -Path "dist" -Recurse -Force -ErrorAction SilentlyContinue | Out-Null
-    }
-    
-    & npm run build 2>&1 | Write-Host
-    
-    if ($LASTEXITCODE -ne 0) {
-        Write-Error "Build failed!"
-        Read-Host "Press Enter to exit"
-        exit 1
-    }
-    
-    Write-Success "Build successful"
-}
-else {
-    Write-Info "[3/4] Skipping build..."
-}
-
+Write-Header "╔═══════════════════════════════════════════════════════╗"
+Write-Header "║  ✓ Application Started Successfully!                 ║"
+Write-Header "║                                                       ║"
+Write-Header "║  Frontend:     http://localhost:5173                 ║"
+Write-Header "║  Backend API:  http://localhost:3000                 ║"
+Write-Header "║  Health Check: http://localhost:3000/health          ║"
+Write-Header "║  API Docs:     http://localhost:3000/api-docs        ║"
+Write-Header "║                                                       ║"
+Write-Header "║  Press Ctrl+C to stop all servers                    ║"
+Write-Header "╚═══════════════════════════════════════════════════════╝"
 Write-Host ""
 
-# Step 4: Start dev server
-Write-Info "[4/4] Starting development server..."
-Write-ColorOutput "========================================" Green
-Write-ColorOutput "  Server is starting..." Green
-Write-ColorOutput "  API: http://localhost:3000" Green
-Write-ColorOutput "  Frontend: http://localhost:5173" Green
-Write-ColorOutput "========================================" Green
-Write-Host ""
-Write-Host "Press Ctrl+C to stop the server"
-Write-Host ""
+# Wait for user exit
+try {
+    Wait-Process -Id $backendJob.Id -ErrorAction SilentlyContinue
+} catch {}
 
-& npm run dev
+# Cleanup on exit
+Write-Warning "Shutting down..."
+Stop-Process -Id $backendJob.Id -Force -ErrorAction SilentlyContinue 2>$null
+Stop-Process -Id $frontendJob.Id -Force -ErrorAction SilentlyContinue 2>$null
+Write-Success "Cleanup complete"
 
-Write-Host ""
-Write-ColorOutput "========================================" Yellow
-Write-ColorOutput "  Server stopped" Yellow
-Write-ColorOutput "========================================" Yellow
-Write-Host ""

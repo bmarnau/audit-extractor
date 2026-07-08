@@ -14,7 +14,7 @@ export const BUILD_INFO = {
   phase: PHASE,
   buildTime: new Date().toISOString(),
   environment: import.meta.env.MODE,
-  apiUrl: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  apiUrl: '/api',  // Use relative URL with Vite proxy
   logLevel: import.meta.env.VITE_LOG_LEVEL || 'warn',
   enableTracing: import.meta.env.VITE_ENABLE_TRACING === 'true',
 };

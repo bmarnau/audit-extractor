@@ -1,0 +1,155 @@
+/**
+ * SCHEMA - Contract
+ *
+ * Zielstruktur für Vertrags-Extraktion
+ */
+
+{
+  "id": "contract-schema-v1.0.0",
+  "documentType": "contract",
+  "version": "1.0.0",
+  "description": "Schema for Contract/Agreement Extraction",
+  "fields": [
+    {
+      "fieldName": "contractNumber",
+      "fieldType": "string",
+      "isRequired": true,
+      "description": "Contract reference number"
+    },
+    {
+      "fieldName": "contractDate",
+      "fieldType": "date",
+      "isRequired": true,
+      "description": "Contract execution date"
+    },
+    {
+      "fieldName": "effectiveDate",
+      "fieldType": "date",
+      "isRequired": true,
+      "description": "Contract effective date"
+    },
+    {
+      "fieldName": "expirationDate",
+      "fieldType": "date",
+      "isRequired": false,
+      "description": "Contract expiration date"
+    },
+    {
+      "fieldName": "contractType",
+      "fieldType": "string",
+      "isRequired": true,
+      "description": "Type of contract (Service Agreement, etc.)"
+    },
+    {
+      "fieldName": "clientName",
+      "fieldType": "string",
+      "isRequired": true,
+      "description": "Client/Customer name"
+    },
+    {
+      "fieldName": "clientAddress",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Client address"
+    },
+    {
+      "fieldName": "clientContactPerson",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Client contact person name"
+    },
+    {
+      "fieldName": "vendorName",
+      "fieldType": "string",
+      "isRequired": true,
+      "description": "Service provider/vendor name"
+    },
+    {
+      "fieldName": "vendorAddress",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Vendor address"
+    },
+    {
+      "fieldName": "vendorContactPerson",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Vendor contact person name"
+    },
+    {
+      "fieldName": "serviceType",
+      "fieldType": "string",
+      "isRequired": true,
+      "description": "Type of service provided"
+    },
+    {
+      "fieldName": "serviceScopeDescription",
+      "fieldType": "string",
+      "isRequired": true,
+      "description": "Detailed service scope"
+    },
+    {
+      "fieldName": "monthlyFee",
+      "fieldType": "number",
+      "isRequired": false,
+      "description": "Monthly service fee"
+    },
+    {
+      "fieldName": "annualFee",
+      "fieldType": "number",
+      "isRequired": false,
+      "description": "Annual service fee"
+    },
+    {
+      "fieldName": "paymentTerms",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Payment terms"
+    },
+    {
+      "fieldName": "sla",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Service Level Agreement details"
+    },
+    {
+      "fieldName": "terminationClause",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Contract termination terms"
+    },
+    {
+      "fieldName": "jurisdiction",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Applicable law/jurisdiction"
+    },
+    {
+      "fieldName": "signerNameClient",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Client signatory name"
+    },
+    {
+      "fieldName": "signatureDateClient",
+      "fieldType": "date",
+      "isRequired": false,
+      "description": "Client signature date"
+    },
+    {
+      "fieldName": "signerNameVendor",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Vendor signatory name"
+    },
+    {
+      "fieldName": "signatureDateVendor",
+      "fieldType": "date",
+      "isRequired": false,
+      "description": "Vendor signature date"
+    }
+  ],
+  "createdAt": "2026-07-08T00:00:00Z",
+  "updatedAt": "2026-07-08T00:00:00Z",
+  "isActive": true
+}

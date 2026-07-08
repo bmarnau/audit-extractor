@@ -9,7 +9,7 @@
 
 import { useState, useCallback } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_URL = '/api';
 
 export interface LogEntry {
   id: string;
@@ -55,10 +55,20 @@ export function useLogs(): UseLogsResult {
       if (filter?.startDate) params.set('startDate', filter.startDate);
       if (filter?.endDate) params.set('endDate', filter.endDate);
 
-      const response = await fetch(`${API_URL}/logs?${params.toString()}`);
+      const response = await fetch(`${API_URL}/logs?${params.toString()}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+          'Pragma': 'no-cache',
+        },
+        cache: 'no-store',
+      });
       if (!response.ok) throw new Error(`Failed to fetch logs: ${response.statusText}`);
       const data = await response.json();
-      setLogs(data.data.logs);
+      // Handle both response formats: { data: { logs: ... } } and { success: true, data: { logs: ... } }
+      const logsData = data.data?.logs || data.logs || [];
+      setLogs(logsData);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch logs';
       setError(message);

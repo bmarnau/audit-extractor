@@ -66,6 +66,9 @@ class ApiClient {
         method,
         headers: {
           'Content-Type': 'application/json',
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
           ...this.config.headers,
           ...options?.headers,
         },
@@ -185,13 +188,31 @@ class ApiClient {
   private async handleErrorResponse(response: Response): Promise<ApiError> {
     const contentType = response.headers.get('content-type');
     let data: ApiErrorResponse | null = null;
+    let rawText = '';
 
     try {
+      rawText = await response.text();
       if (contentType?.includes('application/json')) {
-        data = await response.json();
+        data = JSON.parse(rawText);
+      } else if (contentType?.includes('text/html') || rawText.includes('<!doctype')) {
+        // Server returned HTML error page - backend is likely down or crashed
+        console.error('[API Client] Backend returned HTML instead of JSON!');
+        console.error('[API Client] Request URL:', (response as any).url || 'unknown');
+        console.error('[API Client] Content-Type:', contentType);
+        console.error('[API Client] Response Status:', response.status);
+        console.error('[API Client] Response HTML (first 500 chars):', rawText.substring(0, 500));
+        return new ApiError(
+          'BACKEND_ERROR',
+          response.status,
+          `Backend API Error (HTTP ${response.status}): Server returned HTML instead of JSON. Check backend server status.`,
+          { statusCode: response.status, contentType, htmlSnippet: rawText.substring(0, 200) }
+        );
       }
-    } catch {
-      // Failed to parse JSON
+    } catch (parseErr) {
+      // Failed to parse response
+      console.error('[API Client] Failed to parse response:', parseErr);
+      console.error('[API Client] Content-Type:', contentType);
+      console.error('[API Client] Raw response (first 500 chars):', rawText.substring(0, 500));
     }
 
     const code = data?.error?.code || 'UNKNOWN_ERROR';
@@ -238,7 +259,7 @@ class ApiClient {
 }
 
 // Initialize global API client
-const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const apiBaseUrl = '/api';
 export const apiClient = new ApiClient({
   baseUrl: apiBaseUrl,
   timeout: 30000,

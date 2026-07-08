@@ -1,0 +1,44 @@
+{
+  "invoiceNumber": "INV-202603",
+  "invoiceDate": "2026-03-05",
+  "dueDate": "2026-04-05",
+  "vendor": {
+    "name": "OfficeSupplies Ltd",
+    "address": "Potsdamer Platz 1, 10785 Berlin",
+    "email": "sales@officesupplies.de"
+  },
+  "customer": {
+    "name": "Startup Company GmbH",
+    "address": "Kreuzberg 5, 10965 Berlin"
+  },
+  "items": [
+    {
+      "description": "Office Equipment Bundle",
+      "quantity": 10,
+      "unitPrice": 149.50,
+      "total": 1495.00
+    },
+    {
+      "description": "Printer Toner (Black)",
+      "quantity": 5,
+      "unitPrice": 89.99,
+      "total": 449.95
+    },
+    {
+      "description": "Shipping & Handling",
+      "quantity": 1,
+      "unitPrice": 50.00,
+      "total": 50.00
+    }
+  ],
+  "subtotal": 1994.95,
+  "taxRate": 19.0,
+  "taxAmount": 378.05,
+  "totalAmount": 2373.00,
+  "paymentTerms": "Netto 30",
+  "bankAccount": {
+    "accountHolder": "OfficeSupplies Ltd",
+    "iban": "DE77370400440532013000",
+    "bic": "COBADEDEXXXXX"
+  }
+}

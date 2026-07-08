@@ -50,4 +50,4 @@ export type { LearningEntry } from '@application/LearningComponent';
       process.exit(1);
     }
   }
-})().catch(err => console.error('[Fatal] Startup error:', err));
+})();

@@ -1,10 +1,10 @@
 /**
- * Main App Component - Phase 13
+ * Main App Component - Phase 14
  * 
- * Definiert Routing und Theme mit vollständiger Frontend Workbench.
+ * Automatische Ruleset-Generierung aus Schema + Beispiele
  * 
- * @version 0.13.0
- * @phase 13
+ * @version 0.14.0
+ * @phase 14
  */
 
 import React, { useState, useEffect } from 'react';
@@ -87,7 +87,7 @@ export const App: React.FC = () => {
     const logLevel = import.meta.env.VITE_LOG_LEVEL || 'warn';
     
     if (logLevel === 'debug') {
-      console.group('🚀 Frontend v0.13.0 - Phase 13: Frontend Workbench');
+      console.group('🚀 Frontend v0.14.0 - Phase 14: Automatic Ruleset Generation');
       console.log(`API URL: ${apiUrl}`);
       console.log(`Environment: ${import.meta.env.MODE}`);
       console.log(`Tracing: ${import.meta.env.VITE_ENABLE_TRACING === 'true'}`);

@@ -1,0 +1,39 @@
+{
+  "invoiceNumber": "INV-202601",
+  "invoiceDate": "2026-01-15",
+  "dueDate": "2026-02-15",
+  "vendor": {
+    "name": "TechSupplies GmbH",
+    "address": "Hauptstr. 42, 10115 Berlin",
+    "taxId": "DE123456789",
+    "email": "billing@techsupplies.de"
+  },
+  "customer": {
+    "name": "Acme Corp",
+    "address": "Potsdamer Platz 1, 10785 Berlin"
+  },
+  "items": [
+    {
+      "description": "Server-Lizenzen (12 Monate)",
+      "quantity": 5,
+      "unitPrice": 299.99,
+      "total": 1499.95
+    },
+    {
+      "description": "Support & Maintenance",
+      "quantity": 1,
+      "unitPrice": 500.00,
+      "total": 500.00
+    }
+  ],
+  "subtotal": 1999.95,
+  "taxRate": 19.0,
+  "taxAmount": 379.99,
+  "totalAmount": 2379.94,
+  "paymentTerms": "Netto 30",
+  "bankAccount": {
+    "accountHolder": "TechSupplies GmbH",
+    "iban": "DE89370400440532013000",
+    "bic": "COBADEDEXXXXX"
+  }
+}

@@ -19,6 +19,20 @@ export default defineConfig({
     port: 5173,
     host: '0.0.0.0',  // Listen on all interfaces (IPv4 + IPv6)
     open: true,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        rewrite: (path) => path,  // Keep /api in path
+        logLevel: 'debug',  // Log proxy activity for debugging
+        // Disable caching for API responses
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      },
+    },
   },
   build: {
     outDir: 'dist',

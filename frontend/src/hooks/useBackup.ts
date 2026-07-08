@@ -10,7 +10,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { BackupMetadata, RestoreRequest, RestoreResult, BackupStatistics } from '@/types/Backup';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_URL = '/api';
 
 interface UseBackupResult {
   // State
@@ -40,7 +40,13 @@ export function useBackup(): UseBackupResult {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/backup/list?limit=${limit}`);
+      const response = await fetch(`${API_URL}/backup/list?limit=${limit}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+          'Pragma': 'no-cache',
+        },
+      });
       if (!response.ok) throw new Error(`Failed to list backups: ${response.statusText}`);
       const data = await response.json();
       setBackups(data.data.backups);
@@ -56,7 +62,13 @@ export function useBackup(): UseBackupResult {
   // Get single backup
   const getBackup = useCallback(async (backupId: string): Promise<BackupMetadata> => {
     try {
-      const response = await fetch(`${API_URL}/backup/${backupId}`);
+      const response = await fetch(`${API_URL}/backup/${backupId}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+          'Pragma': 'no-cache',
+        },
+      });
       if (!response.ok) throw new Error(`Failed to get backup: ${response.statusText}`);
       const data = await response.json();
       return data.data;
@@ -74,7 +86,12 @@ export function useBackup(): UseBackupResult {
       try {
         const response = await fetch(`${API_URL}/backup/create`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          cache: 'no-store',
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-store, no-cache, must-revalidate',
+            'Pragma': 'no-cache',
+          },
           body: JSON.stringify({
             backupName: name,
             reason,
@@ -84,7 +101,11 @@ export function useBackup(): UseBackupResult {
 
         if (!response.ok) throw new Error(`Failed to create backup: ${response.statusText}`);
         const data = await response.json();
+        console.log('[useBackup] Create response:', data);
+        
         const backup = data.data.backup;
+        console.log('[useBackup] Parsed backup:', backup);
+        console.log('[useBackup] Backup totalSize:', backup.totalSize, 'bytes');
 
         setBackups((prev) => [backup, ...prev]);
         return backup;
@@ -108,7 +129,12 @@ export function useBackup(): UseBackupResult {
       try {
         const response = await fetch(`${API_URL}/backup/${request.backupId}/restore`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          cache: 'no-store',
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-store, no-cache, must-revalidate',
+            'Pragma': 'no-cache',
+          },
           body: JSON.stringify({
             ...request,
             restoredBy: 'ui-user',
@@ -138,7 +164,12 @@ export function useBackup(): UseBackupResult {
       try {
         const response = await fetch(`${API_URL}/backup/${backupId}`, {
           method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
+          cache: 'no-store',
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-store, no-cache, must-revalidate',
+            'Pragma': 'no-cache',
+          },
           body: JSON.stringify({
             deletedBy: 'ui-user',
           }),
@@ -174,7 +205,13 @@ export function useBackup(): UseBackupResult {
   const getStatistics = useCallback(async () => {
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/backup/stats`);
+      const response = await fetch(`${API_URL}/backup/stats`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+          'Pragma': 'no-cache',
+        },
+      });
       if (!response.ok) throw new Error(`Failed to get statistics: ${response.statusText}`);
       const data = await response.json();
       setStatistics(data.data.statistics);

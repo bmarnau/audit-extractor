@@ -1,0 +1,33 @@
+{
+  "invoiceNumber": "INV-202602",
+  "invoiceDate": "2026-02-10",
+  "dueDate": "2026-03-10",
+  "vendor": {
+    "name": "CloudServices AG",
+    "address": "Kurfürstendamm 50, 10707 Berlin",
+    "taxId": "DE987654321",
+    "email": "invoice@cloudservices.de"
+  },
+  "customer": {
+    "name": "Digital Solutions Ltd",
+    "address": "Unter den Linden 77, 10117 Berlin"
+  },
+  "items": [
+    {
+      "description": "Cloud Hosting (AWS equivalent) - Monthly",
+      "quantity": 1,
+      "unitPrice": 4500.00,
+      "total": 4500.00
+    }
+  ],
+  "subtotal": 4500.00,
+  "taxRate": 19.0,
+  "taxAmount": 855.00,
+  "totalAmount": 5355.00,
+  "paymentTerms": "Netto 15",
+  "bankAccount": {
+    "accountHolder": "CloudServices AG",
+    "iban": "DE11500105170648489890",
+    "bic": "SOLADEST"
+  }
+}

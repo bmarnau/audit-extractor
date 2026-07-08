@@ -32,6 +32,11 @@ import { BackupService } from '@infrastructure/services/BackupService';
 import { RunComparisonService } from '@application/revision/RunComparisonService';
 import { RunHistoryService } from '@application/revision/RunHistoryService';
 
+// Phase 15 Schema-Driven Rule Generation
+import { SchemaAnalyzer } from '@domain/schema/SchemaAnalyzer';
+import { ExampleAnalyzer } from '@domain/schema/ExampleAnalyzer';
+import { RuleGenerator } from '@application/rule-generation/RuleGenerator';
+
 /**
  * Registriert alle Services im globalen Container
  *
@@ -74,6 +79,13 @@ export function initializeServiceContainer(): void {
   // ============================================================================
   container.registerSingleton(RunComparisonService);
   container.registerSingleton(RunHistoryService);
+
+  // ============================================================================
+  // PHASE 15 - Schema-Driven Rule Generation
+  // ============================================================================
+  container.registerSingleton(SchemaAnalyzer);
+  container.registerSingleton(ExampleAnalyzer);
+  container.registerSingleton(RuleGenerator);
 }
 
 /**

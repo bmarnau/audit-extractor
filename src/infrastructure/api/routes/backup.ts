@@ -36,6 +36,13 @@ router.post('/create', async (req: ApiRequest, res: Response, next: NextFunction
 
     const backup = await getBackupService().createBackup(backupName, reason, backupBy);
 
+    console.log('[Backup Route] Created backup:', {
+      backupId: backup.backupId,
+      status: backup.status,
+      totalSize: backup.totalSize,
+      duration: backup.duration,
+    });
+
     res.json(createSuccessResponse({
       backupId: backup.backupId,
       status: backup.status,
@@ -70,6 +77,51 @@ router.get('/list', async (req: ApiRequest, res: Response, next: NextFunction) =
       'BACKUP_LIST_FAILED',
       500,
       'Failed to list backups',
+      { error: (error as any).message }
+    ));
+  }
+});
+
+/**
+ * GET /api/backup/stats - Get backup statistics
+ * MUST be before /:backupId route to avoid being matched as a backupId
+ */
+router.get('/stats', async (_req: ApiRequest, res: Response, next: NextFunction) => {
+  try {
+    const stats = await getBackupService().getStatistics();
+
+    res.json(createSuccessResponse({
+      statistics: stats,
+    }));
+  } catch (error) {
+    return next(new ApiResponseError(
+      'STATS_FAILED',
+      500,
+      'Failed to get backup statistics',
+      { error: (error as any).message }
+    ));
+  }
+});
+
+/**
+ * GET /api/backup/:backupId/download - Download backup file
+ * MUST be before /:backupId route to match properly
+ */
+router.get('/:backupId/download', async (req: ApiRequest, res: Response, next: NextFunction) => {
+  try {
+    const backupId = req.params.backupId as string;
+    const filePath = await getBackupService().getBackupFile(backupId);
+
+    res.download(filePath, `${backupId}.tar.gz`, (err: any) => {
+      if (err) {
+        console.error('Failed to download backup:', err);
+      }
+    });
+  } catch (error) {
+    return next(new ApiResponseError(
+      'BACKUP_DOWNLOAD_FAILED',
+      500,
+      'Failed to download backup',
       { error: (error as any).message }
     ));
   }
@@ -163,49 +215,6 @@ router.delete('/:backupId', async (req: ApiRequest, res: Response, next: NextFun
       'BACKUP_DELETE_FAILED',
       500,
       'Failed to delete backup',
-      { error: (error as any).message }
-    ));
-  }
-});
-
-/**
- * GET /api/backup/stats - Get backup statistics
- */
-router.get('/stats', async (_req: ApiRequest, res: Response, next: NextFunction) => {
-  try {
-    const stats = await getBackupService().getStatistics();
-
-    res.json(createSuccessResponse({
-      statistics: stats,
-    }));
-  } catch (error) {
-    return next(new ApiResponseError(
-      'STATS_FAILED',
-      500,
-      'Failed to get backup statistics',
-      { error: (error as any).message }
-    ));
-  }
-});
-
-/**
- * GET /api/backup/:backupId/download - Download backup file
- */
-router.get('/:backupId/download', async (req: ApiRequest, res: Response, next: NextFunction) => {
-  try {
-    const backupId = req.params.backupId as string;
-    const filePath = await getBackupService().getBackupFile(backupId);
-
-    res.download(filePath, `${backupId}.tar.gz`, (err: any) => {
-      if (err) {
-        console.error('Failed to download backup:', err);
-      }
-    });
-  } catch (error) {
-    return next(new ApiResponseError(
-      'BACKUP_DOWNLOAD_FAILED',
-      500,
-      'Failed to download backup',
       { error: (error as any).message }
     ));
   }

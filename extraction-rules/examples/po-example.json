@@ -1,0 +1,31 @@
+/**
+ * TESTDATEN - Purchase Order Beispiel
+ *
+ * Typische Bestellung
+ */
+
+{
+  "poNumber": "PO-2024-001",
+  "poDate": "2026-07-08",
+  "requiredDeliveryDate": "2026-07-22",
+  "vendorName": "Supplier Inc.",
+  "vendorAddress": "Industrial Park 45, 54321 Suppliertown",
+  "vendorContactPerson": "John Smith",
+  "vendorEmail": "john@supplier.example.com",
+  "vendorPhone": "+49 1234 567890",
+  "departmentCode": "DEPT-IT",
+  "projectCode": "PROJECT-2024-Q3",
+  "itemDescription": "Software Licenses - Enterprise Edition",
+  "itemQuantity": 50,
+  "itemUnit": "Licenses",
+  "itemUnitPrice": 199.99,
+  "itemSubtotal": 9999.50,
+  "shippingCost": 500.00,
+  "taxRate": 0.19,
+  "taxAmount": 1999.90,
+  "totalAmount": 12499.40,
+  "currency": "EUR",
+  "approvedBy": "Manager Name",
+  "purchaserId": "BUYER-123",
+  "specialInstructions": "Delivery to warehouse, building B"
+}

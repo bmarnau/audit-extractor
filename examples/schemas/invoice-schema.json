@@ -1,0 +1,141 @@
+{
+  "type": "object",
+  "title": "Rechnung (Invoice)",
+  "description": "Schema für die automatische Extraktion von Rechnungsdaten",
+  "properties": {
+    "invoiceNumber": {
+      "type": "string",
+      "description": "Eindeutige Rechnungsnummer",
+      "pattern": "^INV-\\d{6}$",
+      "example": "INV-202601"
+    },
+    "invoiceDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Ausstellungsdatum der Rechnung",
+      "example": "2026-01-15"
+    },
+    "dueDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Fälligkeitsdatum für die Zahlung",
+      "example": "2026-02-15"
+    },
+    "vendor": {
+      "type": "object",
+      "description": "Verkäufer/Rechnungssteller",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name des Unternehmens",
+          "example": "TechSupplies GmbH"
+        },
+        "address": {
+          "type": "string",
+          "description": "Vollständige Adresse",
+          "example": "Hauptstr. 42, 10115 Berlin"
+        },
+        "taxId": {
+          "type": "string",
+          "description": "Steuernummer (optional)",
+          "example": "DE123456789"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Kontakt-E-Mail"
+        }
+      },
+      "required": ["name", "address"]
+    },
+    "customer": {
+      "type": "object",
+      "description": "Kunde/Rechnungsempfänger",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Acme Corp"
+        },
+        "address": {
+          "type": "string",
+          "example": "Potsdamer Platz 1, 10785 Berlin"
+        }
+      },
+      "required": ["name"]
+    },
+    "items": {
+      "type": "array",
+      "description": "Rechnungspositionen",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Beschreibung der Leistung/Ware",
+            "example": "Server-Lizenzen (12 Monate)"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Menge",
+            "example": 5
+          },
+          "unitPrice": {
+            "type": "number",
+            "description": "Preis pro Einheit in EUR",
+            "example": 299.99
+          },
+          "total": {
+            "type": "number",
+            "description": "Gesamtbetrag für Position",
+            "example": 1499.95
+          }
+        },
+        "required": ["description", "quantity", "unitPrice"]
+      }
+    },
+    "subtotal": {
+      "type": "number",
+      "description": "Summe vor Steuern",
+      "example": 1999.95
+    },
+    "taxRate": {
+      "type": "number",
+      "description": "Steuersatz in Prozent",
+      "example": 19.0
+    },
+    "taxAmount": {
+      "type": "number",
+      "description": "Steuerbetrag",
+      "example": 379.99
+    },
+    "totalAmount": {
+      "type": "number",
+      "description": "Gesamtbetrag inklusive Steuern",
+      "example": 2379.94
+    },
+    "paymentTerms": {
+      "type": "string",
+      "description": "Zahlungsbedingungen",
+      "example": "Netto 30"
+    },
+    "bankAccount": {
+      "type": "object",
+      "description": "Bankverbindung für Überweisung",
+      "properties": {
+        "accountHolder": {
+          "type": "string",
+          "example": "TechSupplies GmbH"
+        },
+        "iban": {
+          "type": "string",
+          "example": "DE89370400440532013000"
+        },
+        "bic": {
+          "type": "string",
+          "example": "COBADEDEXXXXX"
+        }
+      }
+    }
+  },
+  "required": ["invoiceNumber", "invoiceDate", "totalAmount", "vendor", "items"]
+}

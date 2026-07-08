@@ -68,9 +68,16 @@ export const BackupManager: React.FC = () => {
 
   const handleLoadBackups = async () => {
     try {
+      console.log('[BackupManager] Attempting to load backups...');
       await listBackups();
+      console.log('[BackupManager] Backups loaded successfully');
     } catch (err) {
+      const errMsg = err instanceof Error ? err.message : String(err);
       console.error('[BackupManager] Failed to load backups:', err);
+      setMessage({
+        type: 'error',
+        text: `Failed to load backups: ${errMsg}`
+      });
     }
   };
 

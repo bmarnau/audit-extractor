@@ -1,18 +1,21 @@
 /**
- * Help Routes - Phase 13
+ * Help Routes - Phase 14
  *
  * REST API für Help Center und Dokumentations-Verwaltung mit Serviceintegration
+ * Lädt echte Datenquellen aus Markdown-Dateien
  *
- * @version 0.13.0
- * @phase 13
+ * @version 0.14.0
+ * @phase 14
  */
 
 import { Router, Response, NextFunction } from 'express';
 import { ApiRequest, ApiResponseError, createSuccessResponse } from '../server';
+import { getHelpContentLoader } from '../../services/HelpContentLoader';
 import * as fs from 'fs';
 import * as path from 'path';
 
 const router = Router();
+const loader = getHelpContentLoader();
 
 /**
  * GET /api/help/search - Search help content with full-text search
@@ -34,14 +37,36 @@ router.get('/search', async (req: ApiRequest, res: Response, next: NextFunction)
     const categoryStr = category ? category.toString() : undefined;
     const limitNum = Math.min(parseInt(limit as string) || 20, 100);
 
-    // Load glossary and search
-    const glossary = getDefaultGlossary();
+    // Load glossary, docs, and release notes
+    const [glossary, documentation, releaseNotes] = await Promise.all([
+      loader.loadGlossary(),
+      loader.loadDocumentation(),
+      loader.loadReleaseNotes()
+    ]);
+    
     let results: any[] = [];
 
+    // Search glossary
     glossary.forEach((entry: any) => {
       if ((entry.term.toLowerCase().includes(queryStr) || entry.definition.toLowerCase().includes(queryStr)) &&
           (!categoryStr || entry.category === categoryStr)) {
         results.push({ type: 'glossary', ...entry, relevance: calculateRelevance(entry, queryStr) });
+      }
+    });
+    
+    // Search documentation
+    documentation.forEach((doc: any) => {
+      if ((doc.title.toLowerCase().includes(queryStr) || doc.content.toLowerCase().includes(queryStr)) &&
+          (!categoryStr || doc.category === categoryStr)) {
+        results.push({ type: 'documentation', ...doc, relevance: calculateRelevance(doc, queryStr) });
+      }
+    });
+    
+    // Search release notes
+    releaseNotes.forEach((note: any) => {
+      if ((note.title.toLowerCase().includes(queryStr) || note.content.toLowerCase().includes(queryStr)) &&
+          (!categoryStr || note.category === categoryStr)) {
+        results.push({ type: 'release-note', ...note, relevance: calculateRelevance(note, queryStr) });
       }
     });
 
@@ -101,7 +126,7 @@ router.get('/glossary', async (req: ApiRequest, res: Response, next: NextFunctio
     const { term, category, limit } = req.query;
     console.log(`[Help] Getting glossary entries: term="${term}" category="${category}"`);
 
-    const entries = getDefaultGlossary();
+    const entries = await loader.loadGlossary();
     const limitNum = Math.min(parseInt(limit as string) || 50, 200);
 
     let filtered = entries;
@@ -155,9 +180,16 @@ router.get('/item/:itemId', async (req: ApiRequest, res: Response, next: NextFun
       ));
     }
 
-    // Search for item in glossary
-    const glossary = getDefaultGlossary();
-    const item = glossary.find((e: any) => e.id === itemId);
+    // Search for item in glossary, docs, and release notes
+    const [glossary, documentation, releaseNotes] = await Promise.all([
+      loader.loadGlossary(),
+      loader.loadDocumentation(),
+      loader.loadReleaseNotes()
+    ]);
+    
+    let item: any = glossary.find((e: any) => e.id === itemId);
+    if (!item) item = documentation.find((d: any) => d.id === itemId);
+    if (!item) item = releaseNotes.find((r: any) => r.id === itemId);
 
     if (!item) {
       return next(new ApiResponseError(
@@ -189,14 +221,25 @@ router.get('/stats', async (_req: ApiRequest, res: Response, next: NextFunction)
   try {
     console.log(`[Help] Getting help statistics`);
 
-    const glossary = getDefaultGlossary();
-    const categories = new Set(glossary.map((g: any) => g.category));
+    const [glossary, documentation, releaseNotes] = await Promise.all([
+      loader.loadGlossary(),
+      loader.loadDocumentation(),
+      loader.loadReleaseNotes()
+    ]);
+    
+    const allCategories = new Set([
+      ...glossary.map((g: any) => g.category),
+      ...documentation.map((d: any) => d.category),
+      ...releaseNotes.map((r: any) => r.category)
+    ]);
 
     const stats = {
-      totalItems: glossary.length,
+      totalItems: glossary.length + documentation.length + releaseNotes.length,
       glossaryEntries: glossary.length,
-      categories: categories.size,
-      categoryNames: Array.from(categories),
+      documentationItems: documentation.length,
+      releaseNotes: releaseNotes.length,
+      categories: allCategories.size,
+      categoryNames: Array.from(allCategories),
       lastIndexed: new Date().toISOString(),
     };
 
@@ -210,6 +253,89 @@ router.get('/stats', async (_req: ApiRequest, res: Response, next: NextFunction)
       'STATS_FAILED',
       500,
       'Failed to get help statistics',
+      { error: err.message }
+    ));
+  }
+});
+
+/**
+ * GET /api/help/release-notes - Get release notes
+ */
+router.get('/release-notes', async (req: ApiRequest, res: Response, next: NextFunction) => {
+  try {
+    const { version, limit } = req.query;
+    console.log(`[Help] Getting release notes: version="${version}"`);
+
+    let notes = await loader.loadReleaseNotes();
+    const limitNum = Math.min(parseInt(limit as string) || 50, 200);
+
+    if (version) {
+      const versionStr = version.toString();
+      notes = notes.filter((n: any) => n.version === versionStr);
+    }
+
+    notes = notes.slice(0, limitNum);
+
+    console.log(`[Help] Retrieved ${notes.length} release notes`);
+    res.json(createSuccessResponse({
+      notes: notes,
+      total: notes.length,
+      limit: limitNum,
+    }));
+  } catch (error) {
+    console.error(`[Help] Release notes error:`, error);
+    const err = error as any;
+    if (err.statusCode) return next(err);
+    return next(new ApiResponseError(
+      'RELEASE_NOTES_FAILED',
+      500,
+      'Failed to get release notes',
+      { error: err.message }
+    ));
+  }
+});
+
+/**
+ * GET /api/help/documentation - Get documentation items
+ */
+router.get('/documentation', async (req: ApiRequest, res: Response, next: NextFunction) => {
+  try {
+    const { category, limit, search } = req.query;
+    console.log(`[Help] Getting documentation: category="${category}"`);
+
+    let docs = await loader.loadDocumentation();
+    const limitNum = Math.min(parseInt(limit as string) || 50, 200);
+
+    if (category) {
+      const categoryStr = category.toString();
+      docs = docs.filter((d: any) => d.category === categoryStr);
+    }
+
+    if (search) {
+      const searchStr = search.toString().toLowerCase();
+      docs = docs.filter((d: any) =>
+        d.title.toLowerCase().includes(searchStr) ||
+        d.content.toLowerCase().includes(searchStr) ||
+        (d.summary && d.summary.toLowerCase().includes(searchStr))
+      );
+    }
+
+    docs = docs.slice(0, limitNum);
+
+    console.log(`[Help] Retrieved ${docs.length} documentation items`);
+    res.json(createSuccessResponse({
+      items: docs,
+      total: docs.length,
+      limit: limitNum,
+    }));
+  } catch (error) {
+    console.error(`[Help] Documentation error:`, error);
+    const err = error as any;
+    if (err.statusCode) return next(err);
+    return next(new ApiResponseError(
+      'DOCUMENTATION_FAILED',
+      500,
+      'Failed to get documentation',
       { error: err.message }
     ));
   }
@@ -235,7 +361,7 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
     } else {
       // Fallback
       manual = {
-        version: '0.13.0',
+        version: '0.14.0',
         title: 'Audit-Safe Document Extractor - Benutzerhandbuch',
         lastUpdated: new Date().toISOString(),
         chapters: []
@@ -295,21 +421,6 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
   }
 });
 
-
-function getDefaultGlossary(): any[] {
-  return [
-    { id: 'g1', term: 'Extraction', definition: 'Process of extracting structured data from documents', category: 'general', seeAlso: [] },
-    { id: 'g2', term: 'Rule', definition: 'Definition of how to extract a field from a document', category: 'rules', seeAlso: [] },
-    { id: 'g3', term: 'Validation', definition: 'Process of validating extracted data against rules', category: 'validation', seeAlso: [] },
-    { id: 'g4', term: 'Schema', definition: 'JSON Schema definition for extracted data structure', category: 'general', seeAlso: [] },
-    { id: 'g5', term: 'Confidence Score', definition: 'Measure of confidence in extracted values (0-100%)', category: 'metrics', seeAlso: [] },
-    { id: 'g6', term: 'LLM', definition: 'Large Language Model used for intelligent extraction', category: 'general', seeAlso: [] },
-    { id: 'g7', term: 'Hallucination', definition: 'When LLM generates incorrect information not in source', category: 'validation', seeAlso: [] },
-    { id: 'g8', term: 'Chunk', definition: 'Segment of document content processed together', category: 'processing', seeAlso: [] },
-    { id: 'g9', term: 'Backup', definition: 'Complete snapshot of configuration and rules', category: 'general', seeAlso: [] },
-    { id: 'g10', term: 'Audit Trail', definition: 'Record of all extraction decisions and confidence scores', category: 'general', seeAlso: [] },
-  ];
-}
 
 function calculateRelevance(item: any, query: string): number {
   let score = 0;

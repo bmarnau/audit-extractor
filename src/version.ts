@@ -4,7 +4,7 @@
  * Centralized version and phase metadata for logging and exports
  */
 
-export const PROJECT_VERSION = '0.13.0';
+export const PROJECT_VERSION = '0.14.0';
 export const PROJECT_NAME = 'Audit-Safe Document Extractor';
 
 /** Completed Phases */
@@ -21,10 +21,11 @@ export enum Phase {
   REST_API = 11,
   ORCHESTRATION_CENTERS = 12,
   FRONTEND_WORKBENCH = 13,
+  AUTOMATIC_RULESET_GENERATION = 14,
 }
 
 /** Current Phase */
-export const CURRENT_PHASE = Phase.FRONTEND_WORKBENCH;
+export const CURRENT_PHASE = Phase.AUTOMATIC_RULESET_GENERATION;
 
 /** Build Info */
 export const BUILD_INFO = {
@@ -44,6 +45,8 @@ export const BUILD_INFO = {
     validationService: 'COMPLETE',
     restApi: 'COMPLETE - Phase 11 (Frontend + Backend)',
     orchestrationCenters: 'COMPLETE - Phase 12 (Pipeline + Config/Audit/Help/Log/Backup Centers)',
+    frontendWorkbench: 'COMPLETE - Phase 13 (React UI + Material-UI)',
+    automaticRulesetGeneration: 'COMPLETE - Phase 14 (Schema + Examples → Auto-Generated Rules)',
   },
 };
 

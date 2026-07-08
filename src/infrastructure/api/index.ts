@@ -3,9 +3,9 @@
  * 
  * Startet den Express API Server mit allen Routes und Service Initialization
  * 
- * @version 0.13.0
- * @phase 13
- * @startup Initializes ConfigManager and BackupService, then starts server
+ * @version 0.14.0
+ * @phase 14
+ * @startup Initializes ConfigManager, BackupService, and HelpContentLoader, then starts server
  */
 
 import 'reflect-metadata';
@@ -14,6 +14,7 @@ import { logProjectInfo, PROJECT_VERSION } from '../../version';
 import { initializeServiceContainer, resolveService } from '../di/ServiceContainer';
 import { ConfigManager } from '../config/ConfigManager';
 import { BackupService } from '../services/BackupService';
+import { getHelpContentLoader } from '../services/HelpContentLoader';
 // Legacy Phase 11 routes - disabled due to type incompatibilities
 // Use Phase 13 routes instead (config, audit, help, logs, backup)
 // import documentRoutes from './routes/documents';
@@ -27,6 +28,7 @@ import backupRoutes from './routes/backup';
 import extractPhase14Routes from './routes/extract-phase14';
 // Phase 15 Revision System
 import { createRevisionRoutes } from '../../presentation/RevisionRoutes';
+import { createSchemaExtractionRoutes } from '../../presentation/SchemaExtractionRoutes';
 
 const port = parseInt(process.env.PORT || '3000', 10);
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -38,17 +40,46 @@ async function startServer() {
 
     // Initialize Service Container (DI-First pattern)
     console.log('[Server] Initializing Service Container...');
-    initializeServiceContainer();
+    try {
+      initializeServiceContainer();
+      console.log('[Server] ✓ Service Container initialized');
+    } catch (diErr: any) {
+      console.error('[Server] ✗ Service Container initialization failed:', diErr);
+      throw diErr;
+    }
 
     // Initialize ConfigManager
     console.log('[Server] Initializing ConfigManager...');
-    const configManager = resolveService(ConfigManager);
-    await configManager.initialize();
+    try {
+      const configManager = resolveService(ConfigManager);
+      await configManager.initialize();
+      console.log('[Server] ✓ ConfigManager initialized');
+    } catch (cfgErr: any) {
+      console.error('[Server] ✗ ConfigManager initialization failed:', cfgErr);
+      throw cfgErr;
+    }
 
     // Initialize BackupService
     console.log('[Server] Initializing BackupService...');
-    const backupService = resolveService(BackupService);
-    await backupService.initialize();
+    try {
+      const backupService = resolveService(BackupService);
+      await backupService.initialize();
+      console.log('[Server] ✓ BackupService initialized');
+    } catch (bakErr: any) {
+      console.error('[Server] ✗ BackupService initialization failed:', bakErr);
+      throw bakErr;
+    }
+
+    // Initialize HelpContentLoader (preload markdown files)
+    console.log('[Server] Initializing HelpContentLoader...');
+    try {
+      const helpLoader = getHelpContentLoader();
+      await helpLoader.initialize();
+      console.log('[Server] ✓ HelpContentLoader initialized');
+    } catch (helpErr: any) {
+      console.error('[Server] ✗ HelpContentLoader initialization failed:', helpErr);
+      throw helpErr;
+    }
 
     // Register Phase 15 Revision System services
     // const revisionComparisonService = resolveService(RunComparisonService);
@@ -58,27 +89,72 @@ async function startServer() {
     // Create API server
     console.log('[Server] Creating API server...');
     const app = createApiServer();
-    console.log('[Server] API Server created - now mounting routes');
+    console.log('[Server] ✓ API Server created - now mounting routes');
 
     // Mount Phase 12-13 routes (Centers)
     console.log('[Server] Mounting routes...');
     
-    app.use('/api/config', configRoutes);
-    console.log('[Server] Config routes mounted');
-    app.use('/api/audit', auditRoutes);
-    console.log('[Server] Audit routes mounted');
-    app.use('/api/help', helpRoutes);
-    console.log('[Server] Help routes mounted');
-    app.use('/api/logs', logRoutes);
-    console.log('[Server] Log routes mounted');
-    app.use('/api/backup', backupRoutes);
-    console.log('[Server] Backup routes mounted');
-    app.use('/api/extract', extractPhase14Routes);
-    console.log('[Server] Phase 14 Extraction routes mounted');
+    try {
+      app.use('/api/config', configRoutes);
+      console.log('[Server] ✓ Config routes mounted');
+    } catch (routeErr: any) {
+      console.error('[Server] ✗ Config routes failed:', routeErr);
+      throw routeErr;
+    }
+
+    try {
+      app.use('/api/audit', auditRoutes);
+      console.log('[Server] ✓ Audit routes mounted');
+    } catch (routeErr: any) {
+      console.error('[Server] ✗ Audit routes failed:', routeErr);
+      throw routeErr;
+    }
+
+    try {
+      app.use('/api/help', helpRoutes);
+      console.log('[Server] ✓ Help routes mounted');
+    } catch (routeErr: any) {
+      console.error('[Server] ✗ Help routes failed:', routeErr);
+      throw routeErr;
+    }
+
+    try {
+      app.use('/api/logs', logRoutes);
+      console.log('[Server] ✓ Log routes mounted');
+    } catch (routeErr: any) {
+      console.error('[Server] ✗ Log routes failed:', routeErr);
+      throw routeErr;
+    }
+
+    try {
+      app.use('/api/backup', backupRoutes);
+      console.log('[Server] ✓ Backup routes mounted');
+    } catch (routeErr: any) {
+      console.error('[Server] ✗ Backup routes failed:', routeErr);
+      throw routeErr;
+    }
+
+    try {
+      app.use('/api/extract', extractPhase14Routes);
+      console.log('[Server] ✓ Phase 14 Extraction routes mounted');
+    } catch (routeErr: any) {
+      console.error('[Server] ✗ Extraction routes failed:', routeErr);
+      throw routeErr;
+    }
+
+    try {
+      const schemaExtractionRoutes = createSchemaExtractionRoutes();
+      app.use('/api/schema', schemaExtractionRoutes);
+      console.log('[Server] ✓ Schema Extraction routes (Phase 15) mounted on /api/schema');
+    } catch (routeErr) {
+      console.error('[Server] Error mounting schema extraction routes:', routeErr);
+      throw routeErr;
+    }
 
     try {
       const revRoutes = createRevisionRoutes();
       app.use('/api/revision', revRoutes);
+      console.log('[Server] ✓ Revision routes mounted');
     } catch (routeErr) {
       console.error('[Server] Error mounting revision routes:', routeErr);
       throw routeErr;
@@ -127,57 +203,39 @@ async function startServer() {
 
     // Start server (AFTER all middleware and routes)
     console.log(`[Server] Starting to listen on port ${port}...`);
-    app.listen(port, () => {
-      console.log(`[Server] Successfully listening on port ${port}
-╔═══════════════════════════════════════════════════════╗
-║   Audit-Safe Document Extractor API v${PROJECT_VERSION}     ║
-║   Phase 13: Frontend Workbench + Service Container   ║
-╠═══════════════════════════════════════════════════════╣
-║ Environment: ${nodeEnv.padEnd(38)}║
-║ Port: ${String(port).padEnd(46)}║
-║ Health Check: http://localhost:${port}/health             ║
-╠═══════════════════════════════════════════════════════╣
-║ Phase 1-11 Routes (Documents, Rules, Extraction):  ║
-║ • POST   /api/documents/upload                       ║
-║ • GET    /api/documents                              ║
-║ • DELETE /api/documents/:id                          ║
-║ • GET    /api/rules                                  ║
-║ • POST   /api/rules                                  ║
-║ • PUT    /api/rules/:id                              ║
-║ • DELETE /api/rules/:id                              ║
-║ • POST   /api/rules/:id/test                         ║
-║ • POST   /api/extract                                ║
-╠═══════════════════════════════════════════════════════╣
-║ Phase 12-13 Centers - Configuration, Backup, Audit: ║
-║ Configuration Center:                              ║
-║ • GET/PUT  /api/config                               ║
-║ • PATCH    /api/config/:section                      ║
-║ • GET      /api/config/changes                       ║
-║ • POST     /api/config/:version/revert               ║
-║ Backup Center:                                       ║
-║ • POST     /api/backup/create                        ║
-║ • GET      /api/backup/list                          ║
-║ • GET      /api/backup/:id                           ║
-║ • POST     /api/backup/:id/restore                   ║
-║ • DELETE   /api/backup/:id                           ║
-║ • GET      /api/backup/stats                         ║
-║ • GET      /api/backup/:id/download                  ║
-║ Audit Center:                                        ║
-║ • GET      /api/audit/:documentId                    ║
-║ • POST     /api/audit/export                         ║
-║ Help Center:                                         ║
-║ • GET      /api/help/search                          ║
-║ • GET      /api/help/glossary                        ║
-║ Log Browser:                                         ║
-║ • GET      /api/logs                                 ║
-║ • POST     /api/logs/export                          ║
-╠═══════════════════════════════════════════════════════╣
-║ Services Initialized:                                ║
-║ ✓ ConfigManager (versioning + changelog)             ║
-║ ✓ BackupService (compression + checksums)            ║
-║ ✓ All 12 Core Services (DI Container)                ║
-╚═══════════════════════════════════════════════════════╝
-      `);
+    
+    // Return a promise that never resolves to keep server running
+    return new Promise<void>((_resolve, reject) => {
+      const server = app.listen(port, () => {
+        console.log(`[Server] Successfully listening on port ${port}\n`);
+        console.log('='.repeat(60));
+        console.log(`Audit-Safe Document Extractor API v${PROJECT_VERSION}`);
+        console.log(`Phase 13: Frontend Workbench + Service Container`);
+        console.log('='.repeat(60));
+        console.log(`Environment: ${nodeEnv}`);
+        console.log(`Port: ${port}`);
+        console.log(`Health Check: http://localhost:${port}/health`);
+        console.log('-'.repeat(60));
+        console.log('ENDPOINTS:');
+        console.log('  Config: GET/PUT /api/config');
+        console.log('  Backup: GET /api/backup/list, POST /api/backup/create');
+        console.log('  Audit: GET /api/audit/:documentId');
+        console.log('  Help: GET /api/help/glossary, GET /api/help/manual');
+        console.log('  Logs: GET /api/logs');
+        console.log('  Extract: POST /api/extract');
+        console.log('  Revision: GET /api/revision/runs, POST /api/revision/save-run');
+        console.log('-'.repeat(60));
+        console.log('Services: ConfigManager, BackupService, All DI Services');
+        console.log('='.repeat(60) + '\n');
+      });
+
+      // Handle server errors
+      server.on('error', (err: any) => {
+        console.error('[Server] Server error:', err);
+        reject(err);
+      });
+
+      // Never resolve to keep server running indefinitely
     });
   } catch (error) {
     console.error('Failed to start API server:', error);
@@ -187,7 +245,10 @@ async function startServer() {
 
 // Only start if run directly
 if (require.main === module) {
-  startServer();
+  startServer().catch(err => {
+    console.error('[Fatal] Server crashed:', err);
+    process.exit(1);
+  });
 }
 
 export { startServer };

@@ -1,0 +1,26 @@
+/**
+ * TESTDATEN - Invoice Beispiel
+ *
+ * Typische deutsche Rechnung mit realistischen Feldern
+ */
+
+{
+  "invoiceNumber": "INV-2024-001",
+  "invoiceDate": "2026-07-08",
+  "dueDate": "2026-08-08",
+  "customerName": "Acme Corporation GmbH",
+  "customerAddress": "Musterstraße 123, 12345 Musterstadt",
+  "customerTaxId": "DE123456789",
+  "serviceDescription": "Software Development Services",
+  "hours": 40,
+  "hourlyRate": 95.00,
+  "subtotal": 3800.00,
+  "taxRate": 0.19,
+  "taxAmount": 722.00,
+  "totalAmount": 4522.00,
+  "currency": "EUR",
+  "paymentTerms": "NET 30",
+  "paymentMethod": "Bank Transfer",
+  "bankAccount": "DE89370400440532013000",
+  "notes": "Thank you for your business!"
+}

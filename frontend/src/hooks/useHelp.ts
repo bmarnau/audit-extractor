@@ -9,7 +9,7 @@
 
 import { useState, useCallback } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_URL = '/api';
 
 export interface GlossaryEntry {
   term: string;
@@ -73,10 +73,19 @@ export function useHelp(): UseHelpResult {
     setError(null);
     try {
       // Fetch glossary entries
-      const glossaryResponse = await fetch(`${API_URL}/help/glossary?limit=100`);
+      const glossaryResponse = await fetch(`${API_URL}/help/glossary?limit=100`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+          'Pragma': 'no-cache',
+        },
+        cache: 'no-store',
+      });
       if (!glossaryResponse.ok) throw new Error(`Failed to fetch glossary: ${glossaryResponse.statusText}`);
       const glossaryData = await glossaryResponse.json();
-      const glossaryEntries = glossaryData.data?.entries || [];
+      // Handle response format: { data: { entries: [...] } }
+      const glossaryEntries = glossaryData.data?.entries || glossaryData.entries || [];
       
       // Convert glossary response format to GlossaryEntry format
       const formattedGlossary = glossaryEntries.map((entry: any) => ({
@@ -89,15 +98,48 @@ export function useHelp(): UseHelpResult {
         links: entry.links || [],
       }));
 
-      // Fetch documentation/release notes via search
-      const docsResponse = await fetch(`${API_URL}/help/search?query=*&category=guide&limit=50`);
+      // Fetch documentation/release notes via dedicated endpoints
+      const docsResponse = await fetch(`${API_URL}/help/documentation?limit=50`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+          'Pragma': 'no-cache',
+        },
+        cache: 'no-store',
+      });
       if (!docsResponse.ok) throw new Error(`Failed to fetch documentation: ${docsResponse.statusText}`);
       const docsData = await docsResponse.json();
-      const docResults = docsData.data?.results || [];
+      // Handle response format: { data: { items: [...] } }
+      const docResults = docsData.data?.items || docsData.items || [];
+      
+      // Fetch release notes
+      const notesResponse = await fetch(`${API_URL}/help/release-notes?limit=20`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+          'Pragma': 'no-cache',
+        },
+        cache: 'no-store',
+      });
+      if (!notesResponse.ok) throw new Error(`Failed to fetch release notes: ${notesResponse.statusText}`);
+      const notesData = await notesResponse.json();
+      // Handle response format: { data: { notes: [...] } }
+      const noteResults = notesData.data?.notes || notesData.notes || [];
+      
+      // Convert release notes to DocItem format
+      const formattedNotes = noteResults.map((note: any) => ({
+        id: note.id || `release-${note.version}`,
+        title: note.title || `Release ${note.version}`,
+        category: 'release',
+        content: note.content || note.summary || '',
+        source: 'release-notes',
+      }));
       
       setGlossary(formattedGlossary);
       setDocumentation(docResults);
-      setReleaseNotes([]);
+      setReleaseNotes(formattedNotes);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch help content';
       setError(message);
@@ -110,7 +152,15 @@ export function useHelp(): UseHelpResult {
   const fetchManual = useCallback(async () => {
     setError(null);
     try {
-      const response = await fetch(`${API_URL}/help/manual`);
+      const response = await fetch(`${API_URL}/help/manual`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+          'Pragma': 'no-cache',
+        },
+        cache: 'no-store',
+      });
       if (!response.ok) throw new Error(`Failed to fetch manual: ${response.statusText}`);
       const data = await response.json();
       console.log('[useHelp] Manual loaded:', data.data?.chapters?.length || 0, 'chapters');

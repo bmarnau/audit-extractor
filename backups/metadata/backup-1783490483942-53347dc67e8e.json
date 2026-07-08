@@ -1,0 +1,54 @@
+{
+  "backupId": "backup-1783490483942-53347dc67e8e",
+  "backupName": "20260708",
+  "status": "completed",
+  "createdAt": "2026-07-08T06:01:23.944Z",
+  "createdBy": "ui-user",
+  "reason": "Backup created from UI",
+  "items": [
+    {
+      "type": "rules",
+      "path": "extraction-rules",
+      "size": 0,
+      "fileCount": 14,
+      "lastModified": "2026-07-08T05:26:12.483Z",
+      "checksum": "a0cde633717ca078937be5a165bd12d4c9a499552a07b9e6a5f874e6df429161"
+    },
+    {
+      "type": "schemas",
+      "path": "extraction-rules/schemas",
+      "size": 0,
+      "fileCount": 5,
+      "lastModified": "2026-07-08T05:28:25.031Z",
+      "checksum": "b348f05c2c0fc2461998750ee8dbc54bb29b26a5447878336c83ef432a3c0df0"
+    },
+    {
+      "type": "configuration",
+      "path": "config",
+      "size": 0,
+      "fileCount": 6,
+      "lastModified": "2026-07-06T13:38:58.356Z",
+      "checksum": "fd91baf2a00cb6726da04e27c302c7e8ae15ce4d6cf0b3be6fc6b4044162403d"
+    },
+    {
+      "type": "documentation",
+      "path": "docs",
+      "size": 0,
+      "fileCount": 11,
+      "lastModified": "2026-07-07T10:36:33.397Z",
+      "checksum": "634a77f65ff5cc5bcc8c29df01eea3dca631362e56fb991a244a04c7662706cb"
+    }
+  ],
+  "itemCount": 4,
+  "totalSize": 490,
+  "duration": 78,
+  "compression": {
+    "algorithm": "gzip",
+    "ratio": 0.478515625,
+    "originalSize": 1024,
+    "compressedSize": 490
+  },
+  "backupChecksum": "2bcf44f509d0ce1a44ad7d7446512a15d1944537f4af83305f05e295c88e6624",
+  "fileLocation": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\backups\\backup-1783490483942-53347dc67e8e.tar.gz",
+  "appVersion": "0.13.0"
+}

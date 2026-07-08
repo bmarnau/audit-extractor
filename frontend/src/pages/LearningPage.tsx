@@ -60,27 +60,38 @@ export const LearningPage: React.FC = () => {
       // Try to load from results/json directory (backend API)
       const response = await fetch(
         `/api/extract/results/${id}`,
-        { method: 'GET' }
+        {
+          method: 'GET',
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-store, no-cache, must-revalidate',
+            'Pragma': 'no-cache',
+          },
+        }
       );
 
       if (!response.ok) {
         // Fallback: Try from local storage or session
         const cached = sessionStorage.getItem(`extraction-result-${id}`);
         if (cached) {
+          console.log('[LearningPage] Loaded result from session cache');
           setResult(JSON.parse(cached));
           return;
         }
 
-        throw new Error(`Failed to load result: ${response.statusText}`);
+        throw new Error(`Failed to load result: ${response.statusCode} ${response.statusText}`);
       }
 
       const data = await response.json();
-      if (data.success) {
-        setResult(data.data);
+      // Handle both response formats
+      const resultData = data.data || data;
+      if (resultData && (resultData.id || resultData.resultId)) {
+        console.log('[LearningPage] Result loaded:', resultData.id || resultData.resultId);
+        setResult(resultData);
         // Cache in session for quick reload
-        sessionStorage.setItem(`extraction-result-${id}`, JSON.stringify(data.data));
+        sessionStorage.setItem(`extraction-result-${id}`, JSON.stringify(resultData));
       } else {
-        throw new Error(data.error || 'Failed to load result');
+        throw new Error(data.error || 'Failed to load result - invalid data format');
       }
     } catch (err: any) {
       const message = err.message || 'Unknown error loading result';

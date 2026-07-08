@@ -1,0 +1,123 @@
+/**
+ * SCHEMA - Purchase Order
+ *
+ * Zielstruktur für Bestellungs-Extraktion
+ */
+
+{
+  "id": "po-schema-v1.0.0",
+  "documentType": "purchase_order",
+  "version": "1.0.0",
+  "description": "Schema for Purchase Order Extraction",
+  "fields": [
+    {
+      "fieldName": "poNumber",
+      "fieldType": "string",
+      "isRequired": true,
+      "description": "Purchase Order number",
+      "constraints": {
+        "minLength": 3,
+        "maxLength": 50
+      }
+    },
+    {
+      "fieldName": "poDate",
+      "fieldType": "date",
+      "isRequired": true,
+      "description": "PO issue date"
+    },
+    {
+      "fieldName": "requiredDeliveryDate",
+      "fieldType": "date",
+      "isRequired": false,
+      "description": "Required delivery date"
+    },
+    {
+      "fieldName": "vendorName",
+      "fieldType": "string",
+      "isRequired": true,
+      "description": "Supplier/Vendor name"
+    },
+    {
+      "fieldName": "vendorAddress",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Vendor address"
+    },
+    {
+      "fieldName": "departmentCode",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Requesting department code"
+    },
+    {
+      "fieldName": "projectCode",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Project code"
+    },
+    {
+      "fieldName": "itemDescription",
+      "fieldType": "string",
+      "isRequired": true,
+      "description": "Description of items/services"
+    },
+    {
+      "fieldName": "itemQuantity",
+      "fieldType": "number",
+      "isRequired": true,
+      "description": "Quantity of items"
+    },
+    {
+      "fieldName": "itemUnit",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Unit of measurement (pcs, hours, etc.)"
+    },
+    {
+      "fieldName": "itemUnitPrice",
+      "fieldType": "number",
+      "isRequired": true,
+      "description": "Unit price"
+    },
+    {
+      "fieldName": "itemSubtotal",
+      "fieldType": "number",
+      "isRequired": true,
+      "description": "Line item total (before tax)"
+    },
+    {
+      "fieldName": "shippingCost",
+      "fieldType": "number",
+      "isRequired": false,
+      "description": "Shipping/Delivery cost"
+    },
+    {
+      "fieldName": "taxAmount",
+      "fieldType": "number",
+      "isRequired": false,
+      "description": "Tax amount"
+    },
+    {
+      "fieldName": "totalAmount",
+      "fieldType": "number",
+      "isRequired": true,
+      "description": "Total PO amount"
+    },
+    {
+      "fieldName": "currency",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Currency code"
+    },
+    {
+      "fieldName": "approvedBy",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Name of approver"
+    }
+  ],
+  "createdAt": "2026-07-08T00:00:00Z",
+  "updatedAt": "2026-07-08T00:00:00Z",
+  "isActive": true
+}

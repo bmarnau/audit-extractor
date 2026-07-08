@@ -7,12 +7,12 @@
  */
 
 // Vite environment variables (from .env.development / .env.production)
-const VITE_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const VITE_API_URL = '/api';  // Use relative URL with Vite proxy
 const VITE_ENV = import.meta.env.MODE || 'development';
 
 export const API_CONFIG = {
   // API Base URL - supports environment-based configuration
-  BASE_URL: VITE_API_URL.replace(/\/api\/?$/, ''), // Remove /api suffix if present
+  BASE_URL: '',  // Empty for relative URLs with Vite proxy
   
   // Extract endpoints
   EXTRACT: {
@@ -65,7 +65,7 @@ export function isProduction(): boolean {
  */
 export function getApiBaseUrl(): string {
   if (isProduction()) {
-    return VITE_API_URL || 'https://api.audit-safe.com';
+    return 'https://api.audit-safe.com';
   }
-  return VITE_API_URL || 'http://localhost:3000';
+  return '/api';  // Use relative URL with Vite proxy in development
 }

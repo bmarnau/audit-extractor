@@ -30,7 +30,7 @@ export const useLearningWorkflow = () => {
     setState((prev) => ({ ...prev, feedbackSubmitting: true, error: null }));
     try {
       const response = await fetch(
-        `http://localhost:3000/api/extract/extraction/${resultId}/feedback`,
+        `/api/extract/extraction/${resultId}/feedback`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -59,7 +59,7 @@ export const useLearningWorkflow = () => {
     setState((prev) => ({ ...prev, suggestionsLoading: true, error: null }));
     try {
       const response = await fetch(
-        `http://localhost:3000/api/extract/extraction/${resultId}/suggestions?docType=${docType}`
+        `/api/extract/extraction/${resultId}/suggestions?docType=${docType}`
       );
 
       if (!response.ok) throw new Error('Failed to load suggestions');
@@ -83,7 +83,7 @@ export const useLearningWorkflow = () => {
     async (docType: string, suggestions: any[], applyAll: boolean = true) => {
       setState((prev) => ({ ...prev, improvementsApplying: true, error: null }));
       try {
-        const response = await fetch(`http://localhost:3000/api/extract/rules/${docType}/improve`, {
+        const response = await fetch(`/api/extract/rules/${docType}/improve`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ suggestions, applyAll }),

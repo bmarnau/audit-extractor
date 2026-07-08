@@ -1,6 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react()],
@@ -16,8 +20,15 @@ export default defineConfig({
     },
     server: {
         port: 5173,
-        host: '0.0.0.0', // Listen on all interfaces (IPv4 + IPv6)
-        open: true,
+        host: 'localhost',
+        open: false,
+        proxy: {
+            '/api': {
+                target: 'http://localhost:3000',
+                changeOrigin: true,
+                logLevel: 'debug',
+            },
+        },
     },
     build: {
         outDir: 'dist',

@@ -1,4 +1,7 @@
-# Quick Start - Audit-Safe Document Extractor (v0.13.0)
+# Quick Start - Audit-Safe Document Extractor (v0.15.0)
+
+**Status**: ✅ PRODUCTION READY  
+**Phase 15**: Schema-Driven Rule Generation COMPLETE
 
 ## 📦 Installation & Startup
 
@@ -10,124 +13,136 @@ npm run test
 npm run dev      # Startet Server auf Port 3000
 ```
 
-Server läuft auf: http://localhost:3000
-API Health Check: http://localhost:3000/health
+Server läuft auf: `http://localhost:3000`
 
-## 🎯 Erste Extraktion
+---
 
-```typescript
-import {
-  ExtractionEngine,
-  ExtractionResultBuilder,
-  ResultRepository
-} from './src/index';
+## 🚀 Phase 15: Automatische Regelgenerierung (5 Minuten)
 
-// 1. Engine mit Regeln erstellen
-const rules = [
-  {
-    ruleId: 'test-1',
-    fieldName: new ExtractionFieldName('amount'),
-    description: 'Betrag',
-    fieldType: 'number',
-    isRequired: true,
-    documentTypes: ['pdf']
-  }
-];
+### 1️⃣ Schema hochladen
 
-const engine = new ExtractionEngine(rules);
-
-// 2. Wert extrahieren (MUSS Quelle haben!)
-const result = engine.extract(
-  'amount',
-  1500.00,
-  [{
-    documentReference: {
-      documentId: 'inv-001',
-      fileName: 'invoice.pdf',
-      documentType: 'pdf',
-      hash: 'abc123...',
-      uploadedAt: new Date()
-    },
-    pageNumber: 1,
-    textSnippet: 'Total: EUR 1500.00'
-  }],
-  0.95
-);
-
-// 3. Ergebnis speichern
-const repo = new ResultRepository('./results');
-repo.save(result);
-
-// 4. Audit-Trail ansehen
-console.log(engine.getAuditTrail());
-```
-
-## 🌐 REST API (v0.13.0)
-
-### Configuration Management
-
-```bash
-# Get current configuration
-curl http://localhost:3000/api/config
-
-# Update configuration
-curl -X PUT http://localhost:3000/api/config \
-  -H "Content-Type: application/json" \
-  -d '{"updates": {"configVersion": "2"}}'
-
-# Get configuration history
-curl http://localhost:3000/api/config/changes
-```
-
-### Backup Management
-
-```bash
-# List backups
-curl http://localhost:3000/api/backup/list
-
-# Create backup
-curl -X POST http://localhost:3000/api/backup/create \
-  -H "Content-Type: application/json" \
-  -d '{"backupName": "full-backup", "reason": "Daily backup"}'
-```
-
-### Audit & Logs
-
-```bash
-# Get audit trail for document
-curl http://localhost:3000/api/audit/doc123
-
-# Get logs with filtering
-curl http://localhost:3000/api/logs?limit=50&level=info
-
-# Search help/glossary
-curl http://localhost:3000/api/help/search?query=extraction
-```
-
-### API Response Format
-
-Alle Responses folgen diesem Format:
 ```json
 {
-  "data": { /* payload */ },
-  "timestamp": "2026-07-06T13:38:09.800Z",
-  "path": "/api/config",
-  "duration": 1
+  "type": "object",
+  "properties": {
+    "invoiceNumber": { "type": "string" },
+    "totalAmount": { "type": "number" },
+    "date": { "type": "string", "format": "date" }
+  },
+  "required": ["invoiceNumber", "totalAmount"]
 }
 ```
+
+### 2️⃣ Beispieldateien vorbereiten (2-3)
+
+```json
+{
+  "invoiceNumber": "INV-202601",
+  "totalAmount": 1500.00,
+  "date": "2026-01-15"
+}
+```
+
+### 3️⃣ REST API aufrufen
+
+**Upload Schema:**
+```bash
+curl -X POST http://localhost:3000/api/schema/upload \
+  -H "Content-Type: application/json" \
+  -d '{
+    "schema": { /* your schema */ },
+    "examples": [ /* your examples */ ],
+    "schemaName": "invoice"
+  }'
+```
+
+Response:
+```json
+{
+  "schemaId": "uuid-123",
+  "fieldsCount": 3,
+  "examplesCount": 2,
+  "message": "Schema uploaded successfully"
+}
+```
+
+**Regeln generieren:**
+```bash
+curl -X POST http://localhost:3000/api/schema/uuid-123/generate-rules \
+  -H "Content-Type: application/json" \
+  -d '{
+    "aggressiveness": 0.7,
+    "customKeywords": ["invoice", "total"]
+  }'
+```
+
+Response:
+```json
+{
+  "rules": [
+    {
+      "fieldName": "invoiceNumber",
+      "confidence": 0.95,
+      "patterns": ["INV-\\d{6}"],
+      "extractionStrategy": "pattern_match"
+    },
+    {
+      "fieldName": "totalAmount",
+      "confidence": 0.92,
+      "patterns": ["Total:", "EUR \\d+\\.\\d{2}"],
+      "extractionStrategy": "value_extraction"
+    }
+  ],
+  "stats": {
+    "rulesGenerated": 3,
+    "averageConfidence": 0.93
+  }
+}
+```
+
+### 4️⃣ Frontend UI (Optional)
+
+Oder verwenden Sie die Web-Benutzeroberfläche:
+1. Öffnen Sie `http://localhost:3000`
+2. Wählen Sie "Schema Upload Wizard"
+3. Folgen Sie den 5 Schritten
+4. Ergebnisse werden angezeigt
+
+---
+
+## 📖 Weitere Ressourcen
+
+- **Detailliertes Handbuch**: `PHASE15_USER_GUIDE.md`
+- **API Dokumentation**: `RELEASE_NOTES_0.15.0.md`
+- **Architektur**: `docs/PHASE-15-SCHEMA-DRIVEN-GENERATION.md`
+- **Glossar**: `docs/glossary.md`
+
+---
+
+## 🔧 API Endpoints Übersicht
+
+| Endpoint | Methode | Zweck |
+|----------|---------|-------|
+| `/api/schema/upload` | POST | Schema + Beispiele hochladen |
+| `/api/schema/:schemaId/generate-rules` | POST | Regeln generieren |
+| `/api/schema/:schemaId` | GET | Schema-Metadaten |
+| `/api/schema/:schemaId/rules` | GET | Generierte Regeln |
+| `/api/schema/:schemaId` | DELETE | Schema löschen |
+
+---
 
 ## 🏗️ Dateistruktur
 
 | Pfad | Zweck |
 |------|-------|
-| `src/domain/` | Value Objects, Validierung |
-| `src/application/` | ExtractionEngine, Services |
-| `src/infrastructure/` | Repositories, I/O |
-| `src/presentation/` | Report Generation |
-| `extraction-rules/` | Rule Definitions (JSON) |
-| `examples/` | Beispiele + erwartete Ergebnisse |
-| `results/` | Extraktions-Ergebnisse |
-| `tests/unit/` | Unit Tests |
+| `src/domain/schema/` | SchemaAnalyzer, ExampleAnalyzer |
+| `src/application/rule-generation/` | RuleGenerator |
+| `src/presentation/` | SchemaExtractionRoutes (REST API) |
+| `src/infrastructure/di/` | Dependency Injection Setup |
+| `frontend/src/components/` | SchemaUploadWizard UI |
+| `docs/` | Dokumentation |
+
+---
 
 ## ⚡ Wichtigste Commands
 
@@ -136,10 +151,58 @@ npm run build      # TypeScript compilieren
 npm run test       # Unit Tests ausführen
 npm run test:watch # Watch Mode
 npm run test:coverage # Coverage Report
-npm run lint       # ESLint
-npm run format     # Prettier
-npm run dev        # Entwicklungs-Mode
+npm run dev        # Entwicklungs-Mode (startet Server)
 ```
+
+---
+
+## ✅ Phase 15 Status
+
+```
+✅ Backend REST API (5 Endpoints)
+✅ Frontend UI (5-Step Wizard)
+✅ Domain Services (Analyzer + Generator)
+✅ Dependency Injection
+✅ TypeScript Build (0 errors)
+✅ Error Handling
+✅ Documentation
+
+→ Einsatzbereit für TESTING & PRODUCTION
+```
+
+---
+
+## 🚀 Next Steps
+
+1. **Jetzt**: Phase 15 testen mit Ihrer Daten
+2. **Phase 16**: Datenbank-Persistierung (PostgreSQL)
+3. **Phase 17**: Erweiterte Validierung
+4. **Phase 18**: Multi-User & Sharing
+
+---
+
+## 📞 Probleme?
+
+```bash
+# 1. Build-Check
+npm run build
+
+# 2. Server-Check
+npm run dev
+
+# 3. Browser-Konsole öffnen (F12)
+# Auf Fehler prüfen
+
+# 4. Logs anschauen
+# Terminal-Ausgabe überprüfen
+```
+
+Für detaillierte Hilfe siehe `PHASE15_USER_GUIDE.md`
+
+---
+
+**Version**: 0.15.0  
+**Last Updated**: 2026-07-08
 
 ## 🔒 Halluzinations-Verhinderung
 
