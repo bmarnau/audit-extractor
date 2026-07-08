@@ -37,6 +37,12 @@ import { SchemaAnalyzer } from '@domain/schema/SchemaAnalyzer';
 import { ExampleAnalyzer } from '@domain/schema/ExampleAnalyzer';
 import { RuleGenerator } from '@application/rule-generation/RuleGenerator';
 
+// Phase 16 Database & Schema Management
+import { SchemaRepository } from '@domain/schema/SchemaRepository';
+import { SchemaStorageService } from '@application/schema/SchemaStorageService';
+import { SchemaDirectoryManager } from '@infrastructure/filesystem/SchemaDirectoryManager';
+import { SchemaManagementService } from '@application/schema/SchemaManagementService';
+
 /**
  * Registriert alle Services im globalen Container
  *
@@ -86,6 +92,14 @@ export function initializeServiceContainer(): void {
   container.registerSingleton(SchemaAnalyzer);
   container.registerSingleton(ExampleAnalyzer);
   container.registerSingleton(RuleGenerator);
+
+  // ============================================================================
+  // PHASE 16 - Database & Schema Persistence
+  // ============================================================================
+  container.registerSingleton(SchemaRepository);
+  container.registerSingleton(SchemaStorageService);
+  container.registerSingleton(SchemaDirectoryManager);
+  container.registerSingleton(SchemaManagementService);
 }
 
 /**

@@ -1,8 +1,8 @@
 # 📚 Dokumentation: Kompletter Index
 
-**Version:** 1.0.0  
+**Version:** 2.0.0 (Phase 16)  
 **Datum:** 2026-07-08  
-**Status:** ✅ ALLE DOKUMENTATIONEN VERFÜGBAR
+**Status:** ✅ ALLE DOKUMENTATIONEN VERFÜGBAR (Phase 15 + Phase 16)
 
 ---
 
@@ -19,133 +19,170 @@ Sie fragten nach fehlender Dokumentation für:
 
 ## ✅ Was ist jetzt dokumentiert
 
+### Phase 15 & Phase 16
+
+#### Phase 15: Schema-Driven Rule Generation ✅
+
+Diese Funktionen sind vollständig dokumentiert und in v0.15+ implementiert:
+
 ### 1. 📋 [SCHEMA-STRUCTURE-GUIDE.md](./SCHEMA-STRUCTURE-GUIDE.md)
 
-**Ihre Frage:** "Ich finde die JSON-Struktur-Beschreibung für die Nutzung eines neuen Schemas nicht"
+**Thema:** Aufbau von JSON-Schemas für Extraktionen
 
-**Antwort:** Dieses Dokument beschreibt:
-
-- ✅ **Was ist ein Schema?** (Konzept-Erklärung)
-- ✅ **JSON-Schema Format** (Draft-07 Standard)
-- ✅ **Alle Feldtypen:**
-  - STRING (Text, E-Mail, Datum, etc.)
-  - NUMBER (Zahlen, Prozente, etc.)
-  - BOOLEAN (Ja/Nein)
-  - ARRAY (Listen von Objekten)
-  - OBJECT (Verschachtelte Strukturen)
-- ✅ **Praktische Beispiele:**
-  - Minimales Schema
-  - Komplettes Invoice-Schema (17 Felder)
-  - Nested Objects
-  - Pattern-Definitionen
-  - Enum-Werte
-- ✅ **Best Practices** (DO & DON'T)
-- ✅ **Validators & Tools**
-
-**📖 Startseite:** [SCHEMA-STRUCTURE-GUIDE.md](./SCHEMA-STRUCTURE-GUIDE.md)
+**Inhalte:**
+- ✅ JSON-Schema Draft-07 Standard
+- ✅ Alle Feldtypen (String, Number, Boolean, Date, Array, Object)
+- ✅ Praktische Beispiele (Invoice, Purchase Order, Contract)
+- ✅ Best Practices & Häufige Fehler
+- ✅ Validators & Tools
 
 ---
 
 ### 2. 🔄 [RULESET-MANAGEMENT-GUIDE.md](./RULESET-MANAGEMENT-GUIDE.md)
 
-**Ihre Frage:** "Ich finde die Beschreibung des Vorgehens - Regelwerkserstellung mit einem neuen Report-Dokument nicht, auch nicht die Umschaltung zwischen verschiedenen Regelwerken"
+**Thema:** Verwaltung mehrerer Regelwerke
 
-**Antwort:** Dieses Dokument beschreibt:
-
-- ✅ **Problem:** Mehrere Reports mit verschiedenen Regelwerken
-- ✅ **Lösung:** Multi-Ruleset-Architektur
-- ✅ **Verzeichnis-Struktur:**
-  ```
-  extraction-rules/
-  ├── invoice.json
-  ├── purchase-order.json
-  ├── delivery-note.json
-  └── schemas/
-      ├── invoice-schema.json
-      ├── po-schema.json
-      └── ...
-  ```
-- ✅ **Schritt-für-Schritt:**
-  - Regelwerk 1 erstellen (Invoices)
-  - Regelwerk 2 erstellen (Purchase Orders)
-  - Regelwerk 3 erstellen (Delivery Notes)
-- ✅ **Regelwerk auswählen (API):**
-  ```bash
-  # Invoices extrahieren
-  POST /api/extract -F "ruleSetId=invoice"
-  
-  # POs extrahieren
-  POST /api/extract -F "ruleSetId=purchase-order"
-  ```
-- ✅ **Phase 15:** Automatische Regelwerk-Generierung (geplant)
-- ✅ **Troubleshooting:** Häufige Probleme & Lösungen
-
-**📖 Startseite:** [RULESET-MANAGEMENT-GUIDE.md](./RULESET-MANAGEMENT-GUIDE.md)
+**Inhalte:**
+- ✅ Multi-Ruleset-Architektur
+- ✅ Verzeichnis-Struktur für mehrere Reports
+- ✅ Schritt-für-Schritt Setup
+- ✅ API zum Umschalten zwischen Regelwerken
+- ✅ Troubleshooting
 
 ---
 
 ### 3. 🧪 [TEST-DOCUMENTATION.md](./TEST-DOCUMENTATION.md)
 
-**Ihre Frage:** "Gibt es eine Beschreibung des generierten Tests, der die Funktionalität abbildet?"
+**Thema:** Testing der Extraktionsfunktionalität
 
-**Antwort:** Ja! Dieses Dokument beschreibt:
+**Inhalte:**
+- ✅ SchemaAnalyzer Tests
+- ✅ ExampleAnalyzer Tests
+- ✅ RuleGenerator Tests
+- ✅ Praktische Test-Beispiele
+- ✅ Wie Sie eigene Tests schreiben
 
-- ✅ **SchemaAnalyzer Tests** (19+ Tests)
-  - Einfache Felder parsen
-  - Verschachtelte Objekte parsen
-  - Pattern & Enum Constraints
-  - Edge Cases
+---
 
-- ✅ **ExampleAnalyzer Tests** (9+ Tests)
-  - String-Felder analysieren
-  - Zahlen-Felder mit Min/Max
-  - Pattern-Erkennung (Email, Datum, Telefon)
-  - Optional/Nullable-Felder
+### 4. 📖 [PHASE-15-USER-GUIDE.md](./PHASE-15-USER-GUIDE.md)
 
-- ✅ **RuleGenerator Tests** (8+ Tests)
-  - Einfache Regeln generieren
-  - Hybrid Rules (Schema + Beispiele)
-  - Confidence-Scores
+**Thema:** Learn-by-Example Workflow (Nutzer-Sicht)
 
-- ✅ **RuleGenerationPipeline Tests** (15+ Tests)
-  - Beispiel-Datei laden & validieren
-  - Pattern-Inferierung
-  - ReDoS-Sicherheitsprüfung
+**Inhalte:**
+- ✅ 5-Schritte-Assistent für Regelgenerierung
+- ✅ Schema hochladen
+- ✅ Beispiele hochladen
+- ✅ Automatische Regelgenerierung
+- ✅ Extraktion durchführen
+- ✅ Ergebnisse validieren
 
-- ✅ **RuleLoader Tests** (10+ Tests)
-  - Multiple Rulesets laden
-  - Caching
-  - Umschalten zwischen Regelwerken
+---
 
-- ✅ **Praktische Beispiele zum Selbst-Testen**
+### 5. 🏗️ [PHASE-15-SCHEMA-DRIVEN-GENERATION.md](./PHASE-15-SCHEMA-DRIVEN-GENERATION.md)
 
-**📖 Startseite:** [TEST-DOCUMENTATION.md](./TEST-DOCUMENTATION.md)
+**Thema:** Technische Architektur Phase 15
+
+**Inhalte:**
+- ✅ Komponenten (SchemaAnalyzer, ExampleAnalyzer, RuleGenerator)
+- ✅ API-Endpoints
+- ✅ Dependency Injection Setup
+- ✅ Performance-Charakteristiken
+
+---
+
+#### 🆕 Phase 16: Database Persistence & Schema Management ✅
+
+**Neu in v0.16.0:** Persistente Datenbankgestützte Speicherung!
+
+### 6. 📊 [RELEASE_NOTES_0.16.0.md](../RELEASE_NOTES_0.16.0.md)
+
+**Thema:** Was ist neu in Version 0.16
+
+**Inhalte:**
+- ✅ Phase 15 Überblick (für Kontext)
+- ✅ Phase 16A: Database Layer Complete
+- ✅ TypeORM + PostgreSQL Setup
+- ✅ SchemaEntity Definition
+- ✅ SchemaRepository CRUD
+- ✅ SchemaStorageService Business Logic
+- ✅ 2-Version Retention Policy
+- ✅ Multi-Tenant Support
+- ✅ Validation Checklist
+- ✅ Performance Metrics
+
+**📖 Start:** [RELEASE_NOTES_0.16.0.md](../RELEASE_NOTES_0.16.0.md)
+
+---
+
+### 7. 📖 [MANUAL-0.16.0.md](../MANUAL-0.16.0.md)
+
+**Thema:** Benutzerhandbuch für Version 0.16
+
+**Inhalte:**
+- ✅ Was ist neu (Persistenz + Versioning)
+- ✅ Schnellstart in 5 Minuten
+- ✅ Phase 15 Workflow erklärt
+- ✅ Phase 16 neue Funktionen
+  - Automatische Versionierung
+  - Multi-Benutzer-Unterstützung
+  - Persistente Metadaten
+- ✅ REST-APIs Referenz (alle 6 Endpoints)
+- ✅ Installation & Setup
+- ✅ Häufig gestellte Fragen
+- ✅ Checkliste für Produktion
+
+**📖 Start:** [MANUAL-0.16.0.md](../MANUAL-0.16.0.md)
+
+---
+
+### 8. 📚 [glossary.md](./glossary.md)
+
+**Thema:** Vollständiges Fachvokabular des Systems
+
+**Phase 15-16 Begriffe:**
+- Chunk, Parser, Document, Metadata
+- Rule, Schema, Entity, Confidence
+- MissingField, Hallucination, HallucinationValidator
+- Reflection, Correction, Embedding
+- **NEU Phase 16:**
+  - Schema Persistence
+  - SchemaEntity
+  - SchemaRepository
+  - SchemaStorageService
+  - Version Retention Policy
+  - Multi-Tenant Architecture
+  - TypeORM DataSource
+  - Dependency Injection
+  - Atomic Operations
+  - Schema Validation (JSONB)
+  - Archive vs Delete
+
+**📖 Start:** [glossary.md](./glossary.md)
 
 ---
 
 ## 🗺️ Dokumentations-Roadmap
 
 ```
-┌─────────────────────────────────────────────────┐
-│ Sie starten hier                                │
-└──────────────┬──────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┐
+│ Sie starten hier (Version 0.16)                         │
+└──────────────┬──────────────────────────────────────────┘
                │
-         ┌─────▼─────┐
-         │ Haben Sie │
-         │ Docs für: │
-         └─────┬─────┘
+         ┌─────▼─────────────────┐
+         │ Was möchten Sie tun?  │
+         └─────┬─────────────────┘
                │
-        ┌──────┴──────┐
-        │             │
-   JSON-Schemas   Regelwerke    Tests?
-   (mehrere       (mehrere      (wie
-   Report-Typen)  Reports)?     werden
-   ?                           getestet?)
-        │             │             │
-    ┌───▼──┐      ┌───▼──┐     ┌───▼──┐
-    │SCHEMA│      │RULESET│    │ TEST │
-    │GUIDE │      │MGMT   │    │ DOCS │
-    └──────┘      └───────┘    └──────┘
+     ┌─────────┼────────────┬──────────────┐
+     │         │            │              │
+  Schema    Rules        Testen       Produktion
+  erstellen  generieren  verstehen    deployen
+     │         │            │              │
+ ┌───▼──┐  ┌───▼──┐     ┌───▼──┐      ┌───▼────┐
+ │SCHEMA│  │PHASE │     │ TEST │      │MANUAL  │
+ │GUIDE │  │  15  │     │ DOCS │      │ 0.16.0 │
+ └──────┘  │USER  │     └──────┘      └────────┘
+           │GUIDE │
+           └──────┘
 ```
 
 ---
@@ -157,92 +194,109 @@ Sie fragten nach fehlender Dokumentation für:
 **Sie wollen:** Prüfen, ob das System korrekt läuft
 
 **Was tun:**
-1. Starten Sie Backend & Frontend: `npm run dev`
-2. Warten Sie bis beide laufen
-3. Öffnen Sie ein neues Terminal
-4. Führen Sie aus: `node scripts/pre-phase-16-complete-check.js`
-5. Lesen Sie die Ergebnisse
+```bash
+# 1. Terminal öffnen
+# 2. Zum Projekt-Ordner navigieren
+cd c:\Users\bmarn\OneDrive\HTML\extractor
 
-**Dokumentation:** [TROUBLESHOOTING-COMPREHENSIVE-CHECK.md](./TROUBLESHOOTING-COMPREHENSIVE-CHECK.md)
+# 3. Backend + Frontend starten
+npm run dev
+
+# 4. In neuem Terminal: Build testen
+npm run build
+
+# 5. Datenbank-Verbindung testen
+npm run test
+
+# Server sollte bereit sein
+```
+
+**Falls Fehler:** Siehe [TROUBLESHOOTING-COMPREHENSIVE-CHECK.md](./TROUBLESHOOTING-COMPREHENSIVE-CHECK.md)
 
 ---
 
 ### Schritt 1: Schema für neuen Report-Typ erstellen
 
-**Sie wollen:** Extraktionsregeln für ein neues Dokumentformat (z.B. Verträge)
+**Sie wollen:** Extraktionsregeln für ein neues Dokumentformat
 
-**Was tun:**
-1. Lesen Sie: [SCHEMA-STRUCTURE-GUIDE.md](./SCHEMA-STRUCTURE-GUIDE.md)
-2. Schreiben Sie eine `contract-schema.json` Datei
-3. Speichern Sie sie in: `extraction-rules/schemas/contract-schema.json`
+**Lesen Sie:** [SCHEMA-STRUCTURE-GUIDE.md](./SCHEMA-STRUCTURE-GUIDE.md)
 
 **Beispiel (Verträge):**
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
+  "title": "Contract",
   "properties": {
     "contractNumber": { "type": "string" },
     "parties": { "type": "array" },
     "effectiveDate": { "type": "string", "format": "date" },
     "terms": { "type": "string" }
-  }
+  },
+  "required": ["contractNumber", "parties", "effectiveDate"]
 }
 ```
 
 ---
 
-### Schritt 2: Regelwerk für neuen Report erstellen
+### Schritt 2: Automatische Regelwerk-Generierung
 
-**Sie wollen:** Automatische Extraktion mit Regeln
+**Sie wollen:** System soll Regeln automatisch aus Beispielen lernen
 
-**Was tun:**
-1. Lesen Sie: [RULESET-MANAGEMENT-GUIDE.md](./RULESET-MANAGEMENT-GUIDE.md)
-2. Erstellen Sie `extraction-rules/contract.json`
-3. Definieren Sie Regeln für jedes Feld
+**Lesen Sie:** [PHASE-15-USER-GUIDE.md](./PHASE-15-USER-GUIDE.md)
 
-**Beispiel (Contract Rules):**
-```json
-{
-  "ruleSetId": "contract-v1.0",
-  "documentType": "contract",
-  "schemaId": "contract-schema-v1.0.0",
-  "rules": [
-    {
-      "fieldName": "contractNumber",
-      "pattern": "(CONTRACT|CON)-[0-9]{6}",
-      "searchKeywords": ["contract number", "contract#"]
-    }
-  ]
-}
-```
+**Workflow:**
+1. Schema hochladen (JSON-Datei)
+2. 3-5 Beispiel-JSON-Dateien hochladen
+3. System analysiert Muster automatisch
+4. Generierte Regeln nutzen für Extraktion
 
 ---
 
-### Schritt 3: Tests verstehen & schreiben
+### Schritt 3: Mit Datenbank persistieren (Phase 16)
+
+**Sie wollen:** Schemas überstehen einen App-Neustart
+
+**Wissen Sie automatisch!**
+- Alle Schemas werden in PostgreSQL gespeichert (nicht im RAM)
+- Automatische Versionierung (letzte 2 Versionen)
+- Multi-Benutzer-Unterstützung
+
+**Technische Details:** [MANUAL-0.16.0.md](../MANUAL-0.16.0.md) oder [RELEASE_NOTES_0.16.0.md](../RELEASE_NOTES_0.16.0.md)
+
+---
+
+### Schritt 4: Tests verstehen & schreiben
 
 **Sie wollen:** Verstehen, wie die Funktionalität getestet wird
 
-**Was tun:**
-1. Lesen Sie: [TEST-DOCUMENTATION.md](./TEST-DOCUMENTATION.md)
-2. Sehen Sie praktische Test-Beispiele
-3. Führen Sie Tests aus: `npm run test`
+**Lesen Sie:** [TEST-DOCUMENTATION.md](./TEST-DOCUMENTATION.md)
+
+**Tests ausführen:**
+```bash
+npm run test                    # Alle Tests
+npm run test:coverage         # Mit Coverage-Report
+npm run test:unit             # Nur Unit-Tests
+npm run test:watch            # Watch-Mode
+```
 
 ---
 
 ## 📊 Dokumentations-Übersicht
 
-| Dokumentation | Dateigröße | Thema | Für wen? |
-|---------------|-----------|-------|---------|
-| [SCHEMA-STRUCTURE-GUIDE.md](./SCHEMA-STRUCTURE-GUIDE.md) | ~15 KB | JSON-Schema Aufbau | Alle Nutzer |
-| [RULESET-MANAGEMENT-GUIDE.md](./RULESET-MANAGEMENT-GUIDE.md) | ~20 KB | Multi-Ruleset Verwaltung | Alle Nutzer |
-| [TEST-DOCUMENTATION.md](./TEST-DOCUMENTATION.md) | ~18 KB | Tests & Validierung | Developer + QA |
-| [TROUBLESHOOTING-COMPREHENSIVE-CHECK.md](./TROUBLESHOOTING-COMPREHENSIVE-CHECK.md) | ~18 KB | System-Checks & Fehlersuche | Alle Nutzer + Admin |
-| [PHASE-15-USER-GUIDE.md](./PHASE-15-USER-GUIDE.md) | ~25 KB | Auto-Regelwerk-Generierung | Alle Nutzer (zukünftig) |
-| [PHASE-15-SCHEMA-DRIVEN-GENERATION.md](./PHASE-15-SCHEMA-DRIVEN-GENERATION.md) | ~22 KB | Technische Architektur Phase 15 | Developer |
-| [USER-GUIDE.md](./USER-GUIDE.md) | ~20 KB | Basis-Bedienung Phase 14 | Alle Nutzer |
+| Dokumentation | Phase | Größe | Thema | Für wen? |
+|---------------|-------|-------|-------|---------|
+| [SCHEMA-STRUCTURE-GUIDE.md](./SCHEMA-STRUCTURE-GUIDE.md) | 15 | ~15 KB | JSON-Schema Aufbau | Alle |
+| [RULESET-MANAGEMENT-GUIDE.md](./RULESET-MANAGEMENT-GUIDE.md) | 15 | ~20 KB | Multi-Ruleset | Alle |
+| [TEST-DOCUMENTATION.md](./TEST-DOCUMENTATION.md) | 15 | ~18 KB | Tests & QA | Dev+QA |
+| [PHASE-15-USER-GUIDE.md](./PHASE-15-USER-GUIDE.md) | 15 | ~25 KB | Learn-by-Example | Alle |
+| [PHASE-15-SCHEMA-DRIVEN-GENERATION.md](./PHASE-15-SCHEMA-DRIVEN-GENERATION.md) | 15 | ~22 KB | Architektur Phase 15 | Dev |
+| [RELEASE_NOTES_0.16.0.md](../RELEASE_NOTES_0.16.0.md) | 16 | ~18 KB | Was ist neu 0.16 | Alle |
+| [MANUAL-0.16.0.md](../MANUAL-0.16.0.md) | 16 | ~22 KB | Handbuch 0.16 | Alle |
+| [glossary.md](./glossary.md) | 15+16 | ~30 KB | Fachvokabular | Alle |
+| [TROUBLESHOOTING-COMPREHENSIVE-CHECK.md](./TROUBLESHOOTING-COMPREHENSIVE-CHECK.md) | - | ~18 KB | Fehlersuche | Admin |
 
-**Gesamt:** ~138 KB dokumentierte Inhalte
+**Gesamt:** ~188 KB dokumentierte Inhalte (Phase 15 + 16)
 
 ---
 

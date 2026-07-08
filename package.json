@@ -1,7 +1,7 @@
 {
   "name": "audit-safe-document-extractor",
-  "version": "0.15.0",
-  "description": "Schema-Driven Document Extraction with Auto Rule Generation (Phase 15: Schema Analyzer, Example Analyzer, RuleGenerator + REST API + Frontend Wizard)",
+  "version": "0.16.0",
+  "description": "Schema-Driven Document Extraction with DB Persistence & Schema Manager (Phase 16: PostgreSQL + TypeORM + Schema Versioning + File System Organization)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

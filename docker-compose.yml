@@ -6,8 +6,8 @@ services:
     image: postgres:15-alpine
     container_name: extractor-postgres
     environment:
-      POSTGRES_USER: extractor
-      POSTGRES_PASSWORD: dev-password-change-in-prod
+      POSTGRES_USER: extractor_user
+      POSTGRES_PASSWORD: extractor_pass
       POSTGRES_DB: extractor_db
       POSTGRES_INITDB_ARGS: "-c shared_preload_libraries=pg_stat_statements"
     ports:
@@ -24,13 +24,13 @@ services:
       - extractor-network
     restart: unless-stopped
 
-  # pgAdmin for database management (optional)
+  # pgAdmin for database management
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: extractor-pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@extractor.local
-      PGADMIN_DEFAULT_PASSWORD: dev-password
+      PGADMIN_DEFAULT_PASSWORD: admin-pass
       PGADMIN_CONFIG_SERVER_MODE: 'False'
     ports:
       - "5050:80"

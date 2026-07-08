@@ -12,9 +12,11 @@ import 'reflect-metadata';
 import { createApiServer, ApiResponseError } from './server';
 import { logProjectInfo, PROJECT_VERSION } from '../../version';
 import { initializeServiceContainer, resolveService } from '../di/ServiceContainer';
+import { initializeDatabase } from '../database/data-source';
 import { ConfigManager } from '../config/ConfigManager';
 import { BackupService } from '../services/BackupService';
 import { getHelpContentLoader } from '../services/HelpContentLoader';
+import { SchemaDirectoryManager } from '../filesystem/SchemaDirectoryManager';
 // Legacy Phase 11 routes - disabled due to type incompatibilities
 // Use Phase 13 routes instead (config, audit, help, logs, backup)
 // import documentRoutes from './routes/documents';
@@ -48,6 +50,16 @@ async function startServer() {
       throw diErr;
     }
 
+    // Initialize Database (TypeORM + PostgreSQL)
+    console.log('[Server] Initializing Database Connection...');
+    try {
+      await initializeDatabase();
+      console.log('[Server] ✓ Database Connection initialized');
+    } catch (dbErr: any) {
+      console.error('[Server] ✗ Database initialization failed:', dbErr);
+      throw dbErr;
+    }
+
     // Initialize ConfigManager
     console.log('[Server] Initializing ConfigManager...');
     try {
@@ -79,6 +91,17 @@ async function startServer() {
     } catch (helpErr: any) {
       console.error('[Server] ✗ HelpContentLoader initialization failed:', helpErr);
       throw helpErr;
+    }
+
+    // Initialize SchemaDirectoryManager (Phase 16 Filesystem)
+    console.log('[Server] Initializing SchemaDirectoryManager...');
+    try {
+      const schemaDirectoryManager = resolveService(SchemaDirectoryManager);
+      await schemaDirectoryManager.initialize();
+      console.log('[Server] ✓ SchemaDirectoryManager initialized');
+    } catch (fmErr: any) {
+      console.error('[Server] ✗ SchemaDirectoryManager initialization failed:', fmErr);
+      throw fmErr;
     }
 
     // Register Phase 15 Revision System services

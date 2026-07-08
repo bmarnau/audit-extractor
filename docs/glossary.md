@@ -498,6 +498,439 @@ Die Eigenschaft eines Systems, dass alle Operationen nachverfolgbar, überprüfb
 - Audit-Trails mit Zeitstempeln
 - SourceReferences für alle Werte
 - Unveränderliche Ergebnisse (append-only)
+
+---
+
+## 🆕 Phase 16: Persistente Datenbankebene
+
+Diese Begriffe wurden in Phase 16 eingeführt.
+
+---
+
+## Schema Persistence
+
+**Definition**  
+Die Speicherung von JSON-Schemas in einer relationalen Datenbank (PostgreSQL) statt im Arbeitsspeicher. Schemasdaten überstehen Application-Neustarts.
+
+**Beispiel**  
+```typescript
+// Phase 15 (Arbeitsspeicher):
+const schemaMap = new Map(); // Weg nach Restart!
+
+// Phase 16 (Persistent):
+@Entity('schemas')
+class SchemaEntity {
+  @PrimaryColumn('uuid') id: string;
+  @Column('jsonb') schema: Record<string, unknown>;
+  @Column() version: number;
+  @CreateDateColumn() createdAt: Date;
+}
+// Bleibt in PostgreSQL gespeichert ✅
+```
+
+**Bedeutung im Projekt**  
+Schema Persistence ist die Basis von Phase 16. Ohne sie sind alle Extraktionsregeln nach dem Neustart verloren.
+
+---
+
+## SchemaEntity
+
+**Definition**  
+Eine TypeORM-Entity, die ein JSON-Schema in einer PostgreSQL-Tabelle darstellt. Mit 13 Spalten für Metadaten, Versionierung und Statusverfolgung.
+
+**Struktur:**
+```typescript
+{
+  id: UUID (Primärschlüssel)
+  userId: string (Multi-Mandanten)
+  name: string (Schemaname, unique pro Nutzer)
+  description: string (Benutzerdefiniert)
+  version: number (Versionscounter)
+  schema: JSONB (Vollständiges JSON-Schema)
+  examplesCount: number (Trainingsbeispiele)
+  generatedRulesCount: number (Regelanzahl)
+  averageConfidence: number (Durchschn. Konfidenz)
+  status: enum('active', 'archived', 'draft')
+  directoryPath: string (Dateisystem-Pfad)
+  metadata: JSONB (Benutzerdefiniert)
+  isArchived: boolean (Versionsflag)
+  previousVersionId: UUID (Versionskette)
+  createdAt: Date
+  updatedAt: Date
+}
+```
+
+**Bedeutung im Projekt**  
+SchemaEntity ist die persistente Repräsentation eines Schemas. Jede Zeile in der `schemas`-Tabelle ist eine Version eines Schemas.
+
+---
+
+## SchemaRepository
+
+**Definition**  
+Das Data Access Layer (DAL) für Schemas. Bietet typsichere Datenbankoperationen und filtert automatisch archivierte Schemas.
+
+**9 Hauptmethoden:**
+```
+create(data)              → Schema erstellen
+findById(id)              → Nach ID suchen
+findByName(userId, name)  → Nach Name suchen
+findAllByUser(userId)     → Alle für Nutzer
+findVersionHistory(id)    → Letzte 2 Versionen
+update(id, data)          → Update mit Versionierung
+deleteAllVersions(id)     → Komplett löschen
+getStatistics()           → Statistiken
+search(query, pagination) → Volltextsuche (ILIKE)
+```
+
+**Beispiel:**
+```typescript
+const repo = container.resolve(SchemaRepository);
+
+// Neues Schema erstellen
+const schema = await repo.create({
+  userId: 'user-123',
+  name: 'Invoice Schema',
+  schema: invoiceSchema
+});
+
+// Version abrufen
+const versionHistory = await repo.findVersionHistory(schema.id);
+// → [ { version: 1, ... }, { version: 2, ... } ]
+```
+
+**Bedeutung im Projekt**  
+SchemaRepository entkoppelt die Geschäftslogik von Datenbankdetails. Services nutzen das Repository, nicht direkt TypeORM.
+
+---
+
+## SchemaStorageService
+
+**Definition**  
+Die Business Logic Layer für Schemas. Koordiniert Repository + Dateisystem + Versionierung. 11 Methoden für Schema-Management.
+
+**Hauptfunktionen:**
+```
+createSchema()            → Validiere + erstelle
+updateSchema()            → Update mit Versioning
+getSchema()               → Abrufen mit Error-Handling
+listSchemas()             → Alle auflisten
+deleteSchema()            → Löschen
+getVersionHistory()       → Versionsverlauf
+updateMetadata()          → Metadaten ändern
+updateExamplesCount()     → Beispiel-Statistik
+updateRulesStats()        → Regel-Statistik
+searchSchemas()           → Volltextsuche
+archive()                 → Archivieren (ohne Löschen)
+```
+
+**Beispiel:**
+```typescript
+@injectable()
+class SchemaStorageService {
+  async createSchema(input: CreateSchemaInput): Promise<SchemaEntity> {
+    // 1. Validiere unique name
+    const existing = await this.repo.findByName(
+      input.userId,
+      input.name
+    );
+    if (existing) throw new Error('Schema name already exists');
+
+    // 2. Erstelle Verzeichnis
+    const dirPath = this.createSchemaDirectory(input.name);
+
+    // 3. Speichere in DB
+    return await this.repo.create({
+      ...input,
+      directoryPath: dirPath
+    });
+  }
+
+  async updateSchema(
+    id: string,
+    data: Partial<SchemaEntity>
+  ): Promise<SchemaEntity> {
+    // Repository handhabt Versionierung automatisch
+    // Alte Version wird archiviert
+    // Nur 2 Versionen behalten
+    return await this.repo.update(id, data);
+  }
+}
+```
+
+**Bedeutung im Projekt**  
+SchemaStorageService ist die Single Source of Truth für Schema-Operationen. Sie gewährleistet Konsistenz und Fehlerbehandlung.
+
+---
+
+## Version Retention Policy
+
+**Definition**  
+Eine Regel, die bestimmt, wie viele Versionen eines Schemas gespeichert werden. Phase 16 behält die **letzten 2 Versionen**.
+
+**Workflow:**
+```
+Schema v1 (Original)
+
+↓ (Nutzer aktualisiert Schema)
+
+v1 → ARCHIVIERT
+v2 → AKTIV
+
+↓ (Nutzer aktualisiert erneut)
+
+v1 → GELÖSCHT (zu alt)
+v2 → ARCHIVIERT
+v3 → AKTIV
+
+(Maximal 2 Versionen gespeichert)
+```
+
+**Logik in SchemaRepository.update():**
+```typescript
+async update(id: string, data: Partial<SchemaEntity>) {
+  const existing = await this.findById(id);
+  if (!existing) throw new Error('Schema not found');
+
+  // Alte Version archivieren
+  if (data.version && data.version > existing.version) {
+    existing.isArchived = true;
+    await this.repository.save(existing);
+
+    // Alle Versionen abrufen
+    const allVersions = await this.repository.find({
+      where: { name: existing.name, userId: existing.userId },
+      order: { version: 'DESC' }
+    });
+
+    // Versionen > 2 löschen
+    if (allVersions.length > 2) {
+      const toDelete = allVersions.slice(2);
+      await this.repository.remove(toDelete);
+    }
+  }
+
+  // Neue Version speichern
+  const updated = this.repository.merge(existing, data);
+  return await this.repository.save(updated);
+}
+```
+
+**Bedeutung im Projekt**  
+Version Retention Policy verhindert, dass die Datenbank ungebremst wächst. 2 Versionen bieten Backup ohne zu viel Speicher.
+
+---
+
+## Multi-Tenant Architecture
+
+**Definition**  
+Ein Systemdesign, bei dem mehrere unabhängige Nutzer in der gleichen Anwendung ihre Daten haben, aber nicht sehen können.
+
+**Umsetzung in Phase 16:**
+```typescript
+// Jede Datenbankoperation filtert nach userId
+async findAllByUser(userId: string): Promise<SchemaEntity[]> {
+  return this.repository.find({
+    where: { userId }  // ← Nur diesen Nutzer
+  });
+}
+
+// Schemas sind unique pro Nutzer (nicht global)
+@Index(['userId', 'name'], { unique: true })
+// Alice kann "Invoice Schema" haben
+// Bob kann auch "Invoice Schema" haben
+// Sie sind voneinander unabhängig!
+```
+
+**Beispiel:**
+```
+Alice (userId: alice-123):
+  ├── Invoice Schema v1
+  ├── Purchase Order Schema v2
+  └── Contract Schema v1
+
+Bob (userId: bob-456):
+  ├── Invoice Schema v1  ← Andere Kopie!
+  └── Invoice Schema v2
+
+Carol (userId: carol-789):
+  └── (Keine Schemas)
+
+# Jeder sieht nur die eigenen Schemas!
+GET /api/schema (Alice)   → [Invoice, PO, Contract]
+GET /api/schema (Bob)     → [Invoice v1, Invoice v2]
+GET /api/schema (Carol)   → []
+```
+
+**Bedeutung im Projekt**  
+Multi-Tenant ermöglicht, mehrere Organisationen oder Teams mit einer Instanz zu bedienen. Essentiell für SaaS-Modelle.
+
+---
+
+## TypeORM DataSource
+
+**Definition**  
+Die zentrale Konfiguration für PostgreSQL-Verbindung. Initialisiert beim Server-Start, vor allen anderen Services.
+
+**Datei:** `src/infrastructure/database/data-source.ts`
+
+**Konfiguration:**
+```typescript
+export const AppDataSource = new DataSource({
+  type: 'postgres',
+  host: process.env.DB_HOST || 'localhost',
+  port: parseInt(process.env.DB_PORT || '5432'),
+  username: process.env.DB_USER || 'extractor_user',
+  password: process.env.DB_PASSWORD || 'extractor_pass',
+  database: process.env.DB_NAME || 'extractor_db',
+  entities: [SchemaEntity],
+  synchronize: true, // Auto-Sync in Dev
+  logging: process.env.DB_LOGGING === 'true'
+});
+
+export async function initializeDatabase(): Promise<void> {
+  if (!AppDataSource.isInitialized) {
+    await AppDataSource.initialize();
+  }
+}
+```
+
+**Initialization Order:**
+```
+1. ServiceContainer (DI)
+2. Database (PostgreSQL)  ← DataSource hier
+3. ConfigManager
+4. BackupService
+5. HelpContentLoader
+```
+
+**Bedeutung im Projekt**  
+DataSource muss zuerst initialisiert werden, damit alle Services die DB nutzen können. Sie ist ein Singleton.
+
+---
+
+## Dependency Injection (DI)
+
+**Definition**  
+Ein Pattern, bei dem Services ihre Abhängigkeiten vom Container erhalten (nicht selbst erstellen).
+
+**Phase 16 DI-Registrierung:**
+```typescript
+// src/infrastructure/di/ServiceContainer.ts
+container.registerSingleton(SchemaRepository);
+container.registerSingleton(SchemaStorageService);
+
+// In Routes:
+@injectable()
+class SchemaExtractionRoutes {
+  constructor(
+    private schemaStorage: SchemaStorageService
+  ) {
+    // TSyringe injiziert automatisch!
+  }
+}
+```
+
+**Vorteil:**
+- Austauschbar (Mock in Tests)
+- Singleton (eine Instanz pro App)
+- Type-safe (TypeScript)
+- Testbar
+
+**Bedeutung im Projekt**  
+DI macht die Architektur flexibel und testbar. Phase 16 nutzt TSyringe Container.
+
+---
+
+## Atomic Operations
+
+**Definition**  
+Datenbankoperationen, die entweder komplett erfolgreich sind oder komplett rückgängig gemacht werden. Keine Teilzustände.
+
+**Beispiel (Versioning):**
+```typescript
+// ❌ NICHT ATOMIC (2 separate Queries):
+await repository.save(oldVersion);  // Archiviert
+await repository.save(newVersion);  // Falls dieser fehlschlägt?
+
+// ✅ ATOMIC (in einer Transaktion):
+await AppDataSource.transaction(async (manager) => {
+  await manager.save(oldVersion);   // Archiviert
+  await manager.save(newVersion);   // Nur wenn beide OK
+  // Wenn einer fehlschlägt: Rollback aller
+});
+```
+
+**Bedeutung im Projekt**  
+Atomic Operations garantieren Datenkonsistenz. Eine fehlerhafte Versioning würde sonst das Schema korrumpieren.
+
+---
+
+## Schema Validation (JSONB)
+
+**Definition**  
+Die Überprüfung, dass in JSONB gespeicherte Schemas gültig sind (JSON-Schema Draft-07).
+
+**Umsetzung:**
+```typescript
+// Beim Erstellen eines Schemas
+async createSchema(input: CreateSchemaInput): Promise<SchemaEntity> {
+  // Validiere: Ist das ein gültiges JSON-Schema?
+  const validator = new SchemaValidator();
+  if (!validator.isValidSchema(input.schema)) {
+    throw new Error('Invalid JSON Schema format');
+  }
+
+  // Jetzt OK zu speichern
+  return await this.repo.create({
+    schema: input.schema,  // JSONB
+    // ...
+  });
+}
+```
+
+**Bedeutung im Projekt**  
+JSONB-Validierung verhindert, dass ungültige Schemas in die DB gelangen. Sie ist eine Eingangsschutzmaßnahme.
+
+---
+
+## Archive vs Delete
+
+**Definition**  
+Zwei verschiedene Operationen:
+- **Archive**: Markieren als inaktiv (`isArchived: true`), Daten bleiben
+- **Delete**: Komplett aus DB entfernen
+
+**Implementierung:**
+```typescript
+// Archive (2 Versionen halten):
+async update(id: string, newData: Partial<SchemaEntity>) {
+  existing.isArchived = true;  // Nur flagged, nicht gelöscht!
+  await this.repository.save(existing);
+}
+
+// Delete (komplett weg):
+async deleteAllVersions(id: string) {
+  const allVersions = await this.repository.find({ /* ... */ });
+  await this.repository.remove(allVersions);  // Wirklich gelöscht!
+}
+```
+
+**Unterschiede:**
+```
+Archive:
+  - Daten lesbar für Audit
+  - Kann wiederhergestellt werden
+  - Schnell (nur Flag-Update)
+
+Delete:
+  - Daten wirklich weg
+  - Nicht wiederherstellbar
+  - Permanent (cascading deletes)
+```
+
+**Bedeutung im Projekt**  
+Archive ist Standard in Phase 16 (Revisionssicherheit). Delete ist nur Admin-Funktion.
 - Confidence-Scores für Validierung
 
 **Beispiel**  
