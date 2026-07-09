@@ -11,8 +11,6 @@
 import { Router, Response, NextFunction } from 'express';
 import { ApiRequest, ApiResponseError, createSuccessResponse } from '../server';
 import { getHelpContentLoader } from '../../services/HelpContentLoader';
-import * as fs from 'fs';
-import * as path from 'path';
 
 const router = Router();
 const loader = getHelpContentLoader();
@@ -348,28 +346,80 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
   try {
     const { chapter } = req.query;
 
-    // Load manual from file
-    let manualPath = path.join(__dirname, '../../../src/data/manual.json');
-    if (!fs.existsSync(manualPath)) {
-      manualPath = path.join(__dirname, '../../../../src/data/manual.json');
-    }
+    // Load manual from HelpContentLoader instead of JSON file
+    const docs = await loader.loadDocumentation();
     
-    let manual: any;
-    if (fs.existsSync(manualPath)) {
-      const content = fs.readFileSync(manualPath, 'utf-8');
-      manual = JSON.parse(content);
-    } else {
-      // Fallback
-      manual = {
-        version: '0.14.0',
+    // Prioritize MANUAL-*.md files by checking the filename directly
+    let manual = docs.find((d: any) => {
+      const filename = d.source?.split('/').pop() || '';
+      return filename.startsWith('MANUAL-');
+    });
+    
+    if (!manual) {
+      return res.json(createSuccessResponse({
+        version: '0.18.0',
         title: 'Audit-Safe Document Extractor - Benutzerhandbuch',
-        lastUpdated: new Date().toISOString(),
-        chapters: []
-      };
+        chapters: [],
+        totalChapters: 0,
+      }));
+    }
+
+    // Parse markdown chapters: split by ## headers
+    const chapters: any[] = [];
+    const content = manual.content || '';
+    const chapterRegex = /^##\s+(.+?)$/gm;
+    let match;
+    const chapterStarts: Array<{title: string; startIdx: number}> = [];
+    
+    while ((match = chapterRegex.exec(content)) !== null) {
+      chapterStarts.push({
+        title: match[1].trim(),
+        startIdx: match.index
+      });
+    }
+
+    // Build chapter objects with subsections
+    for (let i = 0; i < chapterStarts.length; i++) {
+      const chapterStart = chapterStarts[i];
+      const chapterEnd = i < chapterStarts.length - 1 ? chapterStarts[i + 1].startIdx : content.length;
+      const chapterContent = content.substring(chapterStart.startIdx, chapterEnd).trim();
+      
+      // Split by ### for subsections
+      const sections = chapterContent
+        .split(/^###\s+/m)
+        .slice(1)
+        .map((section: string) => {
+          const [heading, ...body] = section.split('\n');
+          return {
+            heading: heading.trim(),
+            content: body.join('\n').trim()
+          };
+        });
+
+      chapters.push({
+        id: `ch-${i + 1}`,
+        title: chapterStart.title,
+        sections: sections.length > 0 ? sections : [{
+          heading: chapterStart.title,
+          content: chapterContent
+        }]
+      });
+    }
+
+    // If no chapters found, create one from full content
+    if (chapters.length === 0) {
+      chapters.push({
+        id: 'main',
+        title: manual.title,
+        sections: [{
+          heading: 'Inhalt',
+          content: content
+        }]
+      });
     }
 
     if (chapter && typeof chapter === 'string') {
-      const selectedChapter = manual.chapters.find((c: any) => c.id === chapter);
+      const selectedChapter = chapters.find((c: any) => c.id === chapter);
       if (!selectedChapter) {
         return next(new ApiResponseError(
           'CHAPTER_NOT_FOUND',
@@ -378,35 +428,19 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
         ));
       }
       return res.json(createSuccessResponse({
-        version: manual.version,
+        version: '0.18.0',
         title: manual.title,
         chapter: selectedChapter,
-        totalChapters: manual.chapters.length,
+        totalChapters: chapters.length,
       }));
     }
 
-    // Return all chapters - ensure sections have heading and content
-    const transformedChapters = manual.chapters.map((c: any) => ({
-      id: c.id,
-      title: c.title,
-      sections: (c.sections || []).map((s: any) => {
-        // Handle both object and string formats
-        if (typeof s === 'string') {
-          return { heading: s, content: '' };
-        }
-        return {
-          heading: s.heading || s.title || '',
-          content: s.content || s.description || ''
-        };
-      })
-    }));
-
     res.json(createSuccessResponse({
-      version: manual.version,
+      version: '0.18.0',
       title: manual.title,
-      lastUpdated: manual.lastUpdated,
-      chapters: transformedChapters,
-      totalChapters: transformedChapters.length,
+      lastUpdated: new Date().toISOString(),
+      chapters: chapters,
+      totalChapters: chapters.length,
     }));
   } catch (error) {
     console.error(`[Help] Manual retrieval error:`, error);

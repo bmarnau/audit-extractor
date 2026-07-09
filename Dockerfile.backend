@@ -36,6 +36,13 @@ RUN npm ci --ignore-scripts --legacy-peer-deps 2>&1 || true
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/extraction-rules ./extraction-rules
 COPY --from=builder /app/scripts ./scripts
+COPY --from=builder /app/docs ./docs
+
+# Copy documentation files for Help Center (from local build context)
+COPY MANUAL-0.18.0.md ./
+COPY RELEASE_NOTES_0.18.0.md ./
+COPY RELEASE_NOTES_0.17.0.md ./
+COPY README.md ./
 
 # Environment Variables (can be overridden at runtime)
 ENV NODE_ENV=production

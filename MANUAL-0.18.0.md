@@ -349,7 +349,643 @@ curl http://localhost:3000/api/health  # Backend Health Check
 
 ---
 
-## 🔐 Sicherheit
+## � Docker Container-Architektur & Migration
+
+### Container-Namen und Speicherpfade
+
+Alle Container laufen in einem gemeinsamen Docker Network und sind wie folgt konfiguriert:
+
+#### Container-Namen im System
+
+| Container | Name | Netzwerk-Hostname | Status |
+|-----------|------|------------------|--------|
+| **Backend** | `extractor-backend` | `backend:3000` | Node.js API Server |
+| **Frontend** | `extractor-frontend` | `frontend:80` | Nginx Reverse Proxy |
+| **Datenbank** | `extractor-postgres` | `postgres:5432` | PostgreSQL 15 |
+| **Cache** | `extractor-redis` | `redis:6379` | Redis 7 |
+| **Admin** | `extractor-pgadmin` | `pgadmin:5050` | pgAdmin Web UI |
+
+**Docker Network**: `extractor-network` (172.20.0.0/16)
+
+#### Container-Filesystem-Struktur
+
+```
+Jeder Container hat sein eigenes Filesystem:
+
+Backend Container (/app):
+├── src/                           # TypeScript Source Code
+├── dist/                          # Compiled JavaScript
+├── extraction-rules/              # Extraktionsregeln (Bind Mount)
+├── results/                       # Extraktions-Ergebnisse (Bind Mount)
+├── schemas/                       # Hochgeladene Schemas (Bind Mount)
+├── source-documents/              # Quell-Dokumente (Bind Mount)
+├── backups/                       # Backup-Dateien (Named Volume)
+├── MANUAL-0.18.0.md              # Diese Dokumentation
+├── RELEASE_NOTES_0.18.0.md       # Release Notes
+└── node_modules/                  # Dependencies
+
+Frontend Container (/usr/share/nginx/html):
+├── index.html                     # React SPA Entry Point
+├── assets/                        # Bundled JavaScript/CSS
+└── ...                            # Andere static Files
+
+PostgreSQL Container (/var/lib/postgresql):
+├── data/                          # Datenbank-Dateien
+└── ...
+
+Redis Container (/data):
+├── dump.rdb                       # Persistente Data (Optional)
+└── ...
+```
+
+#### Named Volumes (Persistente Speicherung)
+
+Diese Volumes speichern Daten über Container-Neustarts hinweg:
+
+```yaml
+postgres_data:
+  - Speicherort (Host): 
+    Windows: %ProgramData%\Docker\volumes\extractor_postgres_data\_data
+    Linux: /var/lib/docker/volumes/extractor_postgres_data/_data
+  - Inhalt: PostgreSQL Datenbank-Dateien
+  - Größe: ~500MB (typisch)
+
+redis_data:
+  - Speicherort: %ProgramData%\Docker\volumes\extractor_redis_data\_data
+  - Inhalt: Redis Persistierung (RDB)
+  - Größe: ~50MB
+
+pgadmin_data:
+  - Speicherort: %ProgramData%\Docker\volumes\extractor_pgadmin_data\_data
+  - Inhalt: pgAdmin Konfiguration und Server-Definitionen
+  - Größe: ~20MB
+```
+
+#### Bind Mounts (Host-Verzeichnis)
+
+Diese Ordner sind direkt im Projekt gespeichert (Host-Dateisystem):
+
+```bash
+c:\Users\bmarn\OneDrive\HTML\extractor\
+├── extraction-rules/      # Rules (.txt, .json Dateien)
+├── results/              # Extraktions-Ergebnisse (.json)
+├── schemas/              # Hochgeladene Schemas (.json)
+└── source-documents/     # Quelldateien (.pdf, .docx, .html)
+    ├── pdf/
+    ├── docx/
+    └── html/
+```
+
+**Diese Dateien bleiben auf dem Host erhalten, auch wenn Container gelöscht werden!**
+
+#### Speicherorte für verschiedene Datentypen
+
+| Datentyp | Speicherort | Typ | Persistiert |
+|----------|------------|------|------------|
+| Datenbank | Named Volume `postgres_data` | Container | ✅ Ja |
+| Cache | Named Volume `redis_data` | Container | ✅ Teilweise |
+| Extraktionsregeln | `./extraction-rules/` | Bind Mount | ✅ Ja |
+| Ergebnisse | `./results/` | Bind Mount | ✅ Ja |
+| Hochgeladene Schemas | `./schemas/` | Bind Mount | ✅ Ja |
+| Quelldokumente | `./source-documents/` | Bind Mount | ✅ Ja |
+| Logs | Container Stdout | Ephemeral | ❌ Nein |
+
+### Docker Container auf anderen Host migrieren
+
+#### Vorbereitung: Kompletter Export
+
+**Schritt 1: Alle Daten sichern**
+
+```bash
+# 1. Datenbank-Backup
+docker-compose exec postgres pg_dump -U extractor_user extractor_db > db-backup.sql
+
+# 2. Redis-Daten
+docker-compose exec redis redis-cli BGSAVE
+
+# 3. Alle Bind Mounts in ZIP-Datei
+# Windows (PowerShell):
+Compress-Archive -Path extraction-rules, results, schemas, source-documents -DestinationPath extractor-data.zip
+
+# Linux/Mac:
+zip -r extractor-data.zip extraction-rules results schemas source-documents
+```
+
+**Schritt 2: Named Volumes exportieren**
+
+```bash
+# Volumes als Tarball exportieren
+docker run --rm -v extractor_postgres_data:/data -v $(pwd):/backup busybox tar czf /backup/postgres_data.tar.gz -C /data .
+docker run --rm -v extractor_redis_data:/data -v $(pwd):/backup busybox tar czf /backup/redis_data.tar.gz -C /data .
+docker run --rm -v extractor_pgadmin_data:/data -v $(pwd):/backup busybox tar czf /backup/pgadmin_data.tar.gz -C /data .
+
+# Oder einfacher: Backup-Skript
+docker-compose exec postgres pg_dump -U extractor_user extractor_db | gzip > db-backup.sql.gz
+```
+
+**Schritt 3: Docker Images exportieren**
+
+```bash
+# Alle Images speichern
+docker save extractor-backend extractor-frontend -o extractor-images.tar
+
+# Images komprimieren (Optional, spart Speicher)
+docker save extractor-backend extractor-frontend | gzip > extractor-images.tar.gz
+```
+
+#### Migration auf anderem Host
+
+**Schritt 1: Dateien kopieren**
+
+```bash
+# Alle notwendigen Dateien auf neuen Host kopieren:
+- docker-compose.yml              (Service-Definition)
+- Dockerfile.backend              (Backend Build-Rezept)
+- Dockerfile.frontend             (Frontend Build-Rezept)
+- frontend/nginx.conf             (Nginx-Konfiguration)
+- db-backup.sql                   (Datenbank)
+- extractor-data.zip              (Arbeitsdaten)
+- extractor-images.tar.gz         (Docker Images - Optional)
+
+# Windows (PowerShell):
+scp -r c:\Users\bmarn\OneDrive\HTML\extractor newhost:/opt/extractor/
+
+# oder via USB/Cloud:
+# 1. ZIP-Dateien erstellen und auf Cloud hochladen (Google Drive, OneDrive, S3)
+# 2. Auf neuem Host herunterladen
+```
+
+**Schritt 2: Auf neuem Host vorbereiten**
+
+```bash
+# Verzeichnis-Struktur erstellen
+mkdir -p /opt/extractor/extraction-rules
+mkdir -p /opt/extractor/results
+mkdir -p /opt/extractor/schemas
+mkdir -p /opt/extractor/source-documents
+
+# Daten entpacken
+unzip extractor-data.zip -d /opt/extractor/
+cd /opt/extractor/
+```
+
+**Schritt 3: Images laden (falls exportiert)**
+
+```bash
+# Falls als Tarball exportiert:
+docker load -i extractor-images.tar.gz
+
+# Falls nicht exportiert (normal): Neu bauen
+docker-compose build
+```
+
+**Schritt 4: Services starten**
+
+```bash
+# Services mit den gesicherten Daten starten
+docker-compose up -d
+
+# Datenbank restore (falls nur SQL-Backup)
+cat db-backup.sql | docker-compose exec -T postgres psql -U extractor_user -d extractor_db
+```
+
+**Schritt 5: Verifikation**
+
+```bash
+# Services prüfen
+docker-compose ps
+
+# Backend Health Check
+curl http://localhost:3000/api/health
+
+# Datenbank-Verbindung testen
+docker-compose exec postgres pg_isready -U extractor_user
+
+# Daten verifizieren (sollte 2+ Backups zeigen)
+curl http://localhost/api/backup/list
+```
+
+#### Checkliste für Migration
+
+- [ ] Datenbank-Backup erstellt: `db-backup.sql`
+- [ ] Bind Mounts gepackt: `extractor-data.zip`
+- [ ] Images exportiert: `extractor-images.tar.gz` (Optional)
+- [ ] `docker-compose.yml` kopiert
+- [ ] Alle Dockerfiles kopiert
+- [ ] Nginx Config kopiert: `frontend/nginx.conf`
+- [ ] Docker auf neuem Host installiert
+- [ ] Dateien auf neuem Host entpackt
+- [ ] Services gestartet: `docker-compose up -d`
+- [ ] Health Checks bestätigt ✅
+
+---
+
+## 📊 Vollständiger Extraction-Workflow für Reportingsystem
+
+### Szenario: Automatische Rechnungs-Extraktion
+
+Sie haben mehrere Rechnungen (PDF) und möchten ein Reporting-System automatisch speisen mit:
+- Rechnungsnummer
+- Kundennamen
+- Rechnungsbetrag
+- Zahlungsfälligkeitsdatum
+
+**Alle Schritte mit dem System:**
+
+### Phase 1: Schema definieren
+
+**1.1 Schema erstellen (UI oder API)**
+
+Navigieren zu: http://localhost/schemas
+
+Oder via API:
+```bash
+curl -X POST http://localhost/api/schema/upload \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Invoice_Report_Schema",
+    "version": "1.0",
+    "fields": [
+      {
+        "fieldName": "invoiceNumber",
+        "type": "string",
+        "isRequired": true,
+        "pattern": "^[0-9]{6,12}$",
+        "confidence": 0.95
+      },
+      {
+        "fieldName": "customerName",
+        "type": "string",
+        "isRequired": true,
+        "confidence": 0.90
+      },
+      {
+        "fieldName": "invoiceAmount",
+        "type": "number",
+        "isRequired": true,
+        "pattern": "^[0-9]{1,10}\\.[0-9]{2}$",
+        "confidence": 0.98
+      },
+      {
+        "fieldName": "dueDate",
+        "type": "date",
+        "isRequired": true,
+        "pattern": "^\\d{2}\\.\\d{2}\\.\\d{4}$",
+        "confidence": 0.92
+      }
+    ],
+    "documentType": "invoice"
+  }'
+```
+
+**Rückgabe:**
+```json
+{
+  "schemaId": "schema-12345",
+  "version": "1.0",
+  "fieldCount": 4,
+  "created": "2026-07-09T12:30:00Z"
+}
+```
+
+### Phase 2: Extraktionsregeln generieren
+
+**2.1 Automatische Regel-Generierung**
+
+```bash
+curl -X POST http://localhost/api/schema/schema-12345/generate-rules \
+  -H "Content-Type: application/json" \
+  -d '{
+    "strategy": "pattern-matching",
+    "sampleDocuments": [
+      {
+        "path": "./source-documents/pdf/invoice-sample-1.pdf",
+        "knownValues": {
+          "invoiceNumber": "2026-001234",
+          "customerName": "Acme Corp GmbH",
+          "invoiceAmount": "15999.99",
+          "dueDate": "15.08.2026"
+        }
+      },
+      {
+        "path": "./source-documents/pdf/invoice-sample-2.pdf",
+        "knownValues": {
+          "invoiceNumber": "2026-001235",
+          "customerName": "Tech Solutions LLC",
+          "invoiceAmount": "8500.50",
+          "dueDate": "20.08.2026"
+        }
+      }
+    ]
+  }'
+```
+
+**Rückgabe:**
+```json
+{
+  "rulesId": "rules-invoice-v1",
+  "generatedRules": 4,
+  "accuracy": 0.945,
+  "rules": [
+    {
+      "field": "invoiceNumber",
+      "pattern": "Rechnungsnr\\.?.*?([0-9]{6,12})",
+      "confidence": 0.98
+    },
+    {
+      "field": "customerName",
+      "pattern": "^Kunde.*?:\\s*(.+?)\\n",
+      "confidence": 0.92
+    },
+    ...
+  ]
+}
+```
+
+### Phase 3: Batch-Extraktion durchführen
+
+**3.1 Mehrere Rechnungen verarbeiten**
+
+```bash
+# Für alle PDFs im Verzeichnis
+for file in ./source-documents/pdf/*.pdf; do
+  echo "Extrahiere: $file"
+  curl -X POST http://localhost/api/extract/pdf \
+    -F "file=@$file" \
+    -F "schemaId=schema-12345" \
+    -F "rulesId=rules-invoice-v1" \
+    > results/$(basename $file .pdf).json
+done
+```
+
+**Oder als Single API-Call:**
+
+```bash
+curl -X POST http://localhost/api/extract/batch \
+  -H "Content-Type: application/json" \
+  -d '{
+    "schemaId": "schema-12345",
+    "rulesId": "rules-invoice-v1",
+    "files": [
+      "./source-documents/pdf/invoice-2026-001234.pdf",
+      "./source-documents/pdf/invoice-2026-001235.pdf",
+      "./source-documents/pdf/invoice-2026-001236.pdf"
+    ],
+    "outputFormat": "json",
+    "includeAuditTrail": true,
+    "includeConfidence": true
+  }'
+```
+
+**Rückgabe (für jede Datei):**
+```json
+{
+  "fileId": "file-12345",
+  "fileName": "invoice-2026-001234.pdf",
+  "status": "success",
+  "extractedData": {
+    "invoiceNumber": {
+      "value": "2026-001234",
+      "confidence": 0.99,
+      "source": "text@page-1"
+    },
+    "customerName": {
+      "value": "Acme Corp GmbH",
+      "confidence": 0.95,
+      "source": "text@page-1"
+    },
+    "invoiceAmount": {
+      "value": "15999.99",
+      "confidence": 0.98,
+      "source": "text@page-1"
+    },
+    "dueDate": {
+      "value": "15.08.2026",
+      "confidence": 0.93,
+      "source": "text@page-2"
+    }
+  },
+  "quality": {
+    "averageConfidence": 0.9625,
+    "missingFields": [],
+    "hallucinations": 0,
+    "validationsPassed": 4
+  },
+  "auditTrail": {
+    "processedAt": "2026-07-09T12:35:22Z",
+    "processor": "document-extractor-v0.18.0",
+    "ruleVersion": "1.0",
+    "accuracy": 0.96
+  }
+}
+```
+
+### Phase 4: Ergebnisse für Reporting aufbereiten
+
+**4.1 JSON → CSV für Reporting-System**
+
+```bash
+# Alle Ergebnisse in eine CSV konvertieren
+cd results
+
+# Header schreiben
+echo "Rechnungsnummer,Kundenname,Betrag,Zahlungsfällig,Confidence,Status" > invoices-report.csv
+
+# Jede JSON-Datei verarbeiten
+for file in *.json; do
+  jq -r '[
+    .extractedData.invoiceNumber.value,
+    .extractedData.customerName.value,
+    .extractedData.invoiceAmount.value,
+    .extractedData.dueDate.value,
+    .quality.averageConfidence,
+    .status
+  ] | @csv' "$file" >> invoices-report.csv
+done
+```
+
+**Ergebnis (invoices-report.csv):**
+```csv
+Rechnungsnummer,Kundenname,Betrag,Zahlungsfällig,Confidence,Status
+2026-001234,Acme Corp GmbH,15999.99,15.08.2026,0.9625,success
+2026-001235,Tech Solutions LLC,8500.50,20.08.2026,0.9450,success
+2026-001236,Global Trade Inc,42300.00,25.08.2026,0.9700,success
+```
+
+**4.2 Ergebnisse in Datenbank importieren**
+
+```bash
+# CSV in PostgreSQL-Tabelle laden
+docker-compose exec postgres psql -U extractor_user -d extractor_db << EOF
+CREATE TABLE extracted_invoices (
+  invoice_number VARCHAR(20) PRIMARY KEY,
+  customer_name VARCHAR(255),
+  amount DECIMAL(10,2),
+  due_date DATE,
+  confidence DECIMAL(3,2),
+  extracted_at TIMESTAMP DEFAULT NOW()
+);
+
+COPY extracted_invoices(invoice_number, customer_name, amount, due_date, confidence) 
+FROM STDIN WITH (FORMAT csv, HEADER);
+$(cat invoices-report.csv)
+EOF
+```
+
+**4.3 Reporting-Query ausführen**
+
+```sql
+-- Top Rechnungen nach Betrag
+SELECT 
+  invoice_number,
+  customer_name,
+  amount,
+  due_date,
+  ROUND((confidence * 100)::numeric, 2) as confidence_percent
+FROM extracted_invoices
+ORDER BY amount DESC
+LIMIT 10;
+
+-- Fälligkeiten überwachen
+SELECT 
+  COUNT(*) as pending_count,
+  SUM(amount) as total_amount,
+  MIN(due_date) as first_due
+FROM extracted_invoices
+WHERE due_date <= CURRENT_DATE + INTERVAL '7 days';
+
+-- Qualitätsmetriken
+SELECT 
+  AVG(confidence) as avg_confidence,
+  MIN(confidence) as min_confidence,
+  STDDEV(confidence) as confidence_std_dev,
+  COUNT(*) as processed_invoices
+FROM extracted_invoices;
+```
+
+### Phase 5: Fehlerbehandlung und Re-Prozessierung
+
+**5.1 Fehlgeschlagene Extraktion identifizieren**
+
+```bash
+# Alle Fehler prüfen
+grep -l '"status": "failed"' results/*.json
+
+# Fehlerrate berechnen
+total=$(ls results/*.json | wc -l)
+failed=$(grep -l '"status": "failed"' results/*.json | wc -l)
+success=$((total - failed))
+percentage=$((success * 100 / total))
+
+echo "Erfolg: $success/$total ($percentage%)"
+```
+
+**5.2 Korrektur und Re-Prozessierung**
+
+```bash
+# Fehlerhafte Dateien manuell überprüfen
+cat results/invoice-2026-001240.json | jq '.extractedData'
+
+# Regeln verfeinern (falls Pattern-Fehler)
+curl -X POST http://localhost/api/schema/schema-12345/refine-rules \
+  -H "Content-Type: application/json" \
+  -d '{
+    "failedFileId": "file-12340",
+    "corrections": {
+      "invoiceNumber": "2026-001240"
+    }
+  }'
+
+# Datei neu verarbeiten
+curl -X POST http://localhost/api/extract/pdf \
+  -F "file=@./source-documents/pdf/invoice-2026-001240.pdf" \
+  -F "schemaId=schema-12345" \
+  -F "rulesId=rules-invoice-v1-refined" \
+  > results/invoice-2026-001240-retry.json
+```
+
+### Phase 6: Audit und Überwachung
+
+**6.1 Audit-Trail prüfen**
+
+```bash
+# Alle Extraktionen einer Datei prüfen
+curl http://localhost/api/audit/file-12345
+
+# Zeitrahmen abfragen
+curl http://localhost/api/audit/file-12345?from=2026-07-09&to=2026-07-10
+
+# Benutzer-Historie
+curl http://localhost/api/audit/user/extractor-service
+```
+
+**6.2 Quality Metrics Dashboard**
+
+```bash
+# Durchschnittliche Qualität
+curl http://localhost/api/extract/quality
+
+# Ausgabe:
+{
+  "totalExtracted": 127,
+  "averageConfidence": 0.9542,
+  "averageProcessingTime": "2.34s",
+  "successRate": 0.987,
+  "commonErrors": [
+    {
+      "field": "invoiceAmount",
+      "errorRate": 0.008,
+      "type": "formatting"
+    }
+  ],
+  "recommendations": [
+    "Verbesserung Pattern für Betrag-Erkennung",
+    "Mehr Trainingsbeispiele für Kundennamen-Varianten"
+  ]
+}
+```
+
+### Zusammenfassung: Workflow-Pipeline
+
+```
+1. Schema definieren
+   └─ "Invoice_Report_Schema" mit 4 Feldern
+
+2. Trainingsbeispiele bereitstellen
+   └─ 2+ Muster-Rechnungen mit korrekten Werten
+
+3. Regeln generieren
+   └─ Automatische Patterns für Feldextraktion
+
+4. Batch-Extraktion durchführen
+   └─ 100+ Rechnungen verarbeiten
+
+5. Ergebnisse exportieren
+   └─ JSON → CSV
+
+6. In Datenbank importieren
+   └─ SQL-Tabelle für Reporting
+
+7. Reporting-Queries ausführen
+   └─ Top Rechnungen, Fälligkeiten, Qualitätsmetriken
+
+8. Fehler identifizieren & korrigieren
+   └─ Manuelle Review + Re-Prozessierung
+
+9. Audit & Überwachung
+   └─ Quality Metrics & History
+```
+
+**Zeit für diesen kompletten Workflow:**
+- Schema definieren: 5 Min
+- Regeln generieren: 3 Min
+- 100 Rechnungen extrahieren: 5 Min
+- Ergebnisse exportieren: 2 Min
+- **GESAMT: ~15 Min für 100 Dokumente**
+
+---
+
+## �🔐 Sicherheit
 
 ### Standard-Passwörter (FÜR ENTWICKLUNG)
 

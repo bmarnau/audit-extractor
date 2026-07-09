@@ -4,7 +4,7 @@
  * Centralized version and phase metadata for logging and exports
  */
 
-export const PROJECT_VERSION = '0.14.0';
+export const PROJECT_VERSION = '0.18.0';
 export const PROJECT_NAME = 'Audit-Safe Document Extractor';
 
 /** Completed Phases */

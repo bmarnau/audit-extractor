@@ -3,8 +3,8 @@
  * 
  * Startet den Express API Server mit allen Routes und Service Initialization
  * 
- * @version 0.14.0
- * @phase 14
+ * @version 0.18.0
+ * @phase 18
  * @startup Initializes ConfigManager, BackupService, and HelpContentLoader, then starts server
  */
 

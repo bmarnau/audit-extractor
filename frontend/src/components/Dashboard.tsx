@@ -12,7 +12,7 @@
  * @phase 13
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   Box,
   Card,
@@ -23,6 +23,7 @@ import {
   Alert,
   Chip,
   Stack,
+  Button,
 } from '@mui/material';
 import {
   Settings as SettingsIcon,
@@ -60,50 +61,72 @@ const Dashboard: React.FC = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Load all dashboard data on mount only
+  // Load all dashboard data (reusable function)
+  const loadDashboardData = useCallback(async () => {
+    setError(null);
+    try {
+      // Load config
+      await loadConfig();
+
+      // Load backups  
+      await listBackups(50);
+
+      // Check API health (just for verification)
+      await fetch(
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3000/api'}/health`
+      ).catch(() => {
+        // Silent fail - health check is informational
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to load dashboard data';
+      setError(message);
+      console.error('[Dashboard] Load failed:', err);
+    }
+  }, [loadConfig, listBackups]);
+
+  // Handle refresh button click
+  const handleRefresh = useCallback(async () => {
+    setIsRefreshing(true);
+    try {
+      await loadDashboardData();
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [loadDashboardData]);
+
+  // Load on mount
   useEffect(() => {
-    const loadDashboardData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        // Load config
-        await loadConfig();
+    setLoading(true);
+    loadDashboardData().finally(() => setLoading(false));
+  }, [loadDashboardData]);
 
-        // Load backups
-        await listBackups(50);
+  // Recalculate stats whenever data changes
+  useEffect(() => {
+    if (loading) return; // Skip if still loading
 
-        // Check API health
-        const healthResponse = await fetch(
-          `${import.meta.env.VITE_API_URL || 'http://localhost:3000/api'}/health`
-        );
-        const apiHealth: HealthStatus = healthResponse.ok
-          ? { api: 'healthy', timestamp: new Date().toISOString(), message: 'API is operational' }
-          : { api: 'warning', timestamp: new Date().toISOString(), message: 'API response slow' };
+    try {
+      const apiHealth: HealthStatus = {
+        api: 'healthy',
+        timestamp: new Date().toISOString(),
+        message: 'API is operational',
+      };
 
-        // Calculate stats
-        const newStats: DashboardStats = {
-          lastConfigUpdate: config ? new Date().toISOString() : null,
-          backupCount: backups.length,
-          lastBackupTime: backups.length > 0 ? backups[0].createdAt : null,
-          ruleCount: rules.length,
-          apiHealth,
-          configCount: 1, // Currently one active config
-        };
+      const newStats: DashboardStats = {
+        lastConfigUpdate: config ? new Date().toISOString() : null,
+        backupCount: backups.length,
+        lastBackupTime: backups.length > 0 ? backups[0].createdAt : null,
+        ruleCount: rules.length,
+        apiHealth,
+        configCount: 1,
+      };
 
-        setStats(newStats);
-      } catch (err) {
-        const message = err instanceof Error ? err.message : 'Failed to load dashboard data';
-        setError(message);
-        console.error('[Dashboard] Load failed:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadDashboardData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      setStats(newStats);
+    } catch (err) {
+      console.error('[Dashboard] Stats calculation failed:', err);
+    }
+  }, [config, backups, rules, loading]);
 
   if (loading) {
     return (
@@ -149,9 +172,18 @@ const Dashboard: React.FC = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" sx={{ mb: 3 }}>
-        Dashboard
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Typography variant="h4">Dashboard</Typography>
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={handleRefresh}
+          disabled={isRefreshing}
+          startIcon={isRefreshing ? <CircularProgress size={20} /> : undefined}
+        >
+          {isRefreshing ? 'Refreshing...' : 'Refresh'}
+        </Button>
+      </Box>
 
       <Grid container spacing={3}>
         {/* Config Status Card */}

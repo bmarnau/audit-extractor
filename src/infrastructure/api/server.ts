@@ -3,8 +3,8 @@
  * 
  * Express-basierter API-Server mit Error Handling und CORS
  * 
- * @version 0.14.0
- * @phase 14
+ * @version 0.18.0
+ * @phase 18
  * @status Updated - File Upload Support via Multer (in routes)
  */
 

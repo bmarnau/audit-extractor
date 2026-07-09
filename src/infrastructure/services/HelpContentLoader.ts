@@ -6,8 +6,8 @@
  * - Release notes from /RELEASE_NOTES_*.md
  * - Documentation from /docs/*.md and other markdown files
  * 
- * @version 0.14.0
- * @phase 14
+ * @version 0.18.0
+ * @phase 18
  */
 
 import * as fs from 'fs';
@@ -326,7 +326,7 @@ export class HelpContentLoader {
 
       // Load from root directory special docs
       const specialDocs = [
-        'MANUAL-0.14.0.md',  // ✅ NEW - Version 0.14.0 Manual
+        'MANUAL-0.18.0.md',  // ✅ Current version manual / Betriebshandbuch
         'README.md',
         'QUICKSTART.md',
         'CONTRIBUTING.md',
