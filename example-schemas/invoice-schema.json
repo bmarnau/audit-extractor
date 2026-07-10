@@ -1,0 +1,144 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Invoice Schema",
+  "description": "Struktur für Rechnungsextraction aus PDF, Word und anderen Dokumenten",
+  "type": "object",
+  "properties": {
+    "invoiceNumber": {
+      "type": "string",
+      "description": "Eindeutige Rechnungsnummer (z.B. INV-2026-001234)",
+      "pattern": "^[A-Z]{2,5}-[0-9]{4}-[0-9]{6}$"
+    },
+    "invoiceDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Rechnungsdatum im ISO-Format (YYYY-MM-DD)"
+    },
+    "dueDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Fälligkeitsdatum im ISO-Format"
+    },
+    "vendor": {
+      "type": "object",
+      "description": "Rechnungssteller (Verkäufer)",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Unternehmensname"
+        },
+        "address": {
+          "type": "string",
+          "description": "Vollständige Adresse"
+        },
+        "taxId": {
+          "type": "string",
+          "description": "Steuernummer / VAT ID"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Kontakt-E-Mail"
+        }
+      },
+      "required": ["name"]
+    },
+    "buyer": {
+      "type": "object",
+      "description": "Rechnungsempfänger (Käufer)",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name oder Unternehmensname"
+        },
+        "address": {
+          "type": "string",
+          "description": "Lieferadresse"
+        }
+      },
+      "required": ["name"]
+    },
+    "lineItems": {
+      "type": "array",
+      "description": "Rechnungspositionen",
+      "items": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "type": "integer",
+            "description": "Positionsnummer"
+          },
+          "description": {
+            "type": "string",
+            "description": "Beschreibung der Leistung/Ware"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Menge"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Einheit (Stück, kg, Std, etc.)"
+          },
+          "unitPrice": {
+            "type": "number",
+            "description": "Einzelpreis"
+          },
+          "totalPrice": {
+            "type": "number",
+            "description": "Gesamtpreis für Position"
+          }
+        },
+        "required": ["description", "quantity", "unitPrice"]
+      }
+    },
+    "subtotal": {
+      "type": "number",
+      "description": "Summe ohne Steuern"
+    },
+    "taxRate": {
+      "type": "number",
+      "description": "Steuersatz in Prozent (z.B. 19 für 19%)"
+    },
+    "taxAmount": {
+      "type": "number",
+      "description": "Steuerbetrag"
+    },
+    "totalAmount": {
+      "type": "number",
+      "description": "Gesamtrechnungsbetrag (inkl. Steuern)"
+    },
+    "currency": {
+      "type": "string",
+      "description": "Währung (EUR, USD, etc.)",
+      "default": "EUR"
+    },
+    "paymentTerms": {
+      "type": "string",
+      "description": "Zahlungsbedingungen (z.B. 'Netto 30')"
+    },
+    "bankDetails": {
+      "type": "object",
+      "description": "Bankdaten für Zahlung",
+      "properties": {
+        "accountHolder": {
+          "type": "string"
+        },
+        "iban": {
+          "type": "string"
+        },
+        "bic": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "required": [
+    "invoiceNumber",
+    "invoiceDate",
+    "vendor",
+    "buyer",
+    "lineItems",
+    "totalAmount"
+  ]
+}

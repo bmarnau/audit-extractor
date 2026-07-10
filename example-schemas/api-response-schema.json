@@ -1,0 +1,174 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "REST API Response Schema",
+  "description": "Struktur für das Extrahieren von Daten aus REST API Responses (z.B. für Audit & Compliance)",
+  "type": "object",
+  "properties": {
+    "endpoint": {
+      "type": "string",
+      "description": "API Endpoint-URL",
+      "pattern": "^https?://.*"
+    },
+    "method": {
+      "type": "string",
+      "enum": ["GET", "POST", "PUT", "DELETE", "PATCH"],
+      "description": "HTTP-Methode"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Zeitstempel der API-Anfrage (ISO 8601)"
+    },
+    "responseCode": {
+      "type": "integer",
+      "description": "HTTP-Statuscode (200, 404, 500, etc.)"
+    },
+    "responseTime": {
+      "type": "integer",
+      "description": "Response-Zeit in Millisekunden"
+    },
+    "user": {
+      "type": "object",
+      "description": "Benutzer der die API aufgerufen hat",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Eindeutige Benutzer-ID (UUID)"
+        },
+        "username": {
+          "type": "string",
+          "description": "Benutzername"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["admin", "user", "viewer", "auditor"]
+        },
+        "department": {
+          "type": "string"
+        }
+      },
+      "required": ["userId"]
+    },
+    "request": {
+      "type": "object",
+      "description": "Details der API-Anfrage",
+      "properties": {
+        "headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "HTTP-Header (gekürzt für Audit)"
+        },
+        "queryParameters": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Query-Parameter"
+        },
+        "bodySize": {
+          "type": "integer",
+          "description": "Größe des Request-Body in Bytes"
+        }
+      }
+    },
+    "response": {
+      "type": "object",
+      "description": "Response-Daten und Metadaten",
+      "properties": {
+        "totalRecords": {
+          "type": "integer",
+          "description": "Anzahl zurückgegebener Datensätze"
+        },
+        "pageSize": {
+          "type": "integer",
+          "description": "Seiten-/Batch-Größe"
+        },
+        "currentPage": {
+          "type": "integer",
+          "description": "Aktuelle Seite (bei Pagination)"
+        },
+        "totalPages": {
+          "type": "integer",
+          "description": "Gesamtanzahl Seiten"
+        },
+        "records": {
+          "type": "array",
+          "description": "Rückgegebene Datensätze",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "errors": {
+          "type": "array",
+          "description": "Fehler oder Warnungen",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "severity": {
+                "type": "string",
+                "enum": ["error", "warning", "info"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Audit & Compliance Metadaten",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "description": "Eindeutige Request-ID (für Tracing)"
+        },
+        "correlationId": {
+          "type": "string",
+          "description": "Correlation-ID für verteilte Systeme"
+        },
+        "cacheMiss": {
+          "type": "boolean",
+          "description": "Ob Cache verwendet wurde"
+        },
+        "dataClassification": {
+          "type": "string",
+          "enum": ["public", "internal", "confidential", "restricted"],
+          "description": "Dateneinstufung"
+        },
+        "complianceFlags": {
+          "type": "object",
+          "description": "Compliance-Überprüfungen",
+          "properties": {
+            "gdprCompliant": {
+              "type": "boolean"
+            },
+            "encryptedInTransit": {
+              "type": "boolean"
+            },
+            "auditLogged": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "endpoint",
+    "method",
+    "timestamp",
+    "responseCode",
+    "user",
+    "response"
+  ]
+}

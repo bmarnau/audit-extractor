@@ -1,0 +1,81 @@
+{
+  "endpoint": "https://api.example.com/v2/documents/search",
+  "method": "POST",
+  "timestamp": "2026-07-08T14:32:15.123Z",
+  "responseCode": 200,
+  "responseTime": 342,
+  "user": {
+    "userId": "user-f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "username": "hans.mueller",
+    "email": "hans.mueller@auditsafe.example.com",
+    "role": "auditor",
+    "department": "Internal Audit"
+  },
+  "request": {
+    "headers": {
+      "authorization": "Bearer eyJhbGciOiJIUzI1NiIs...",
+      "user-agent": "AuditSafe-Client/0.18.0",
+      "x-request-id": "req-93d8e4f2-7b91-4c91-92f1-c8e9d0a2b1f4"
+    },
+    "queryParameters": {
+      "query": "invoice AND vendor:TechCorp",
+      "filters": {
+        "dateFrom": "2026-01-01",
+        "dateTo": "2026-07-08",
+        "status": "processed"
+      },
+      "pagination": {
+        "page": 1,
+        "limit": 25
+      }
+    },
+    "bodySize": 256
+  },
+  "response": {
+    "totalRecords": 147,
+    "pageSize": 25,
+    "currentPage": 1,
+    "totalPages": 6,
+    "records": [
+      {
+        "documentId": "doc-6f3c9e2a-1b4d-4e8f-9c3a-5d7b2e1a9f4c",
+        "documentName": "Invoice_INV-2026-001234.pdf",
+        "uploadDate": "2026-07-01T10:15:30.000Z",
+        "extractionStatus": "completed",
+        "extractedFieldsCount": 18,
+        "confidence": 0.94,
+        "tags": ["invoice", "vendor", "techcorp", "q3-2026"]
+      },
+      {
+        "documentId": "doc-a2f4b8e9-3c5d-4f1a-7b2e-8c9d0a1b2f3e",
+        "documentName": "Invoice_INV-2026-001235.pdf",
+        "uploadDate": "2026-07-02T14:45:22.000Z",
+        "extractionStatus": "completed",
+        "extractedFieldsCount": 19,
+        "confidence": 0.96,
+        "tags": ["invoice", "vendor", "techcorp", "q3-2026"]
+      },
+      {
+        "documentId": "doc-5e7c1d3a-9b2f-4e8a-6c4b-3d1e9f7a2b5c",
+        "documentName": "Invoice_INV-2026-001236.pdf",
+        "uploadDate": "2026-07-03T09:20:15.000Z",
+        "extractionStatus": "completed",
+        "extractedFieldsCount": 17,
+        "confidence": 0.91,
+        "tags": ["invoice", "vendor", "techcorp", "q3-2026"]
+      }
+    ],
+    "errors": []
+  },
+  "metadata": {
+    "requestId": "req-93d8e4f2-7b91-4c91-92f1-c8e9d0a2b1f4",
+    "correlationId": "corr-5f2a8c1e-3d4b-7f9a-2e1b-6c8d3a4f5e2b",
+    "cacheMiss": false,
+    "dataClassification": "internal",
+    "complianceFlags": {
+      "gdprCompliant": true,
+      "encryptedInTransit": true,
+      "auditLogged": true
+    }
+  }
+}

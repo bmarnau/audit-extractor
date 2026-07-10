@@ -1,0 +1,2 @@
+# This file ensures the example-schemas directory is tracked by Git
+# and prevents accidental deletion during rebuild or maintenance

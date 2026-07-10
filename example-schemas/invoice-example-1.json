@@ -1,0 +1,52 @@
+{
+  "invoiceNumber": "INV-2026-001234",
+  "invoiceDate": "2026-07-01",
+  "dueDate": "2026-08-01",
+  "vendor": {
+    "name": "TechCorp GmbH",
+    "address": "Hauptstraße 42, 10115 Berlin, Germany",
+    "taxId": "DE123456789",
+    "email": "billing@techcorp.example.com"
+  },
+  "buyer": {
+    "name": "AuditSafe Solutions AG",
+    "address": "Kantstraße 10, 10623 Berlin, Germany"
+  },
+  "lineItems": [
+    {
+      "position": 1,
+      "description": "Document Extraction Service - Monthly License",
+      "quantity": 1,
+      "unit": "Stück",
+      "unitPrice": 4500.00,
+      "totalPrice": 4500.00
+    },
+    {
+      "position": 2,
+      "description": "API Calls - 10.000 calls @ €0.05 per call",
+      "quantity": 10000,
+      "unit": "calls",
+      "unitPrice": 0.05,
+      "totalPrice": 500.00
+    },
+    {
+      "position": 3,
+      "description": "Premium Support - 20 support hours",
+      "quantity": 20,
+      "unit": "Std",
+      "unitPrice": 150.00,
+      "totalPrice": 3000.00
+    }
+  ],
+  "subtotal": 8000.00,
+  "taxRate": 19,
+  "taxAmount": 1520.00,
+  "totalAmount": 9520.00,
+  "currency": "EUR",
+  "paymentTerms": "Netto 30",
+  "bankDetails": {
+    "accountHolder": "TechCorp GmbH",
+    "iban": "DE89370400440532013000",
+    "bic": "COBADEFFXXX"
+  }
+}
