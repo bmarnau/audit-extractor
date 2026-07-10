@@ -10,8 +10,8 @@ setlocal enabledelayedexpansion
 
 echo.
 echo ============================================================
-echo   🐳 Audit-Safe Document Extractor - Docker Stack
-echo ============================================================
+echo   [DOCKER] Audit-Safe Document Extractor - Docker Stack
+echo ==============================================================
 echo.
 
 REM Farben für Output
@@ -32,7 +32,7 @@ if %errorlevel% neq 0 (
     pause
     exit /b 1
 )
-echo %GREEN%[✓] Docker installiert%RESET%
+echo %GREEN%[OK] Docker installiert%RESET%
 
 REM Check für Docker Compose
 echo [*] Überprüfe Docker Compose...
@@ -41,7 +41,7 @@ if %errorlevel% neq 0 (
     echo %RED%[!] Docker Compose nicht installiert!%RESET%
     exit /b 1
 )
-echo %GREEN%[✓] Docker Compose installiert%RESET%
+echo %GREEN%[OK] Docker Compose installiert%RESET%
 
 REM Check für Docker Daemon
 echo [*] Überprüfe Docker Daemon...
@@ -54,7 +54,7 @@ if %errorlevel% neq 0 (
     pause
     exit /b 1
 )
-echo %GREEN%[✓] Docker Daemon läuft%RESET%
+echo %GREEN%[OK] Docker Daemon läuft%RESET%
 
 echo.
 echo ============================================================
@@ -76,7 +76,7 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-echo %GREEN%[✓] Services gestartet%RESET%
+echo %GREEN%[OK] Services gestartet%RESET%
 echo.
 
 REM Warte auf Services
@@ -96,7 +96,7 @@ set max_retries=12
 set /a retry_count+=1
 
 if !retry_count! gtr !max_retries! (
-    echo %YELLOW%[⚠] Einige Services antworten noch nicht (Timeout)%RESET%
+    echo %YELLOW%[WARN] Einige Services antworten noch nicht (Timeout)%RESET%
     echo Dies ist normal beim ersten Start - Services initialisieren.
     echo.
     goto continue_anyway
@@ -106,12 +106,12 @@ REM Backend Health Check
 echo [Versuch !retry_count!/!max_retries!] Überprüfe Backend...
 curl -s http://localhost:3000/api/health >nul 2>&1
 if %errorlevel% neq 0 (
-    echo  ⏳ Backend wird noch initialisiert...
+    echo  [WAIT] Backend wird noch initialisiert...
     timeout /t 2 /nobreak >nul
     goto health_check_loop
 )
 
-echo %GREEN%[✓] Backend erreichbar%RESET%
+echo %GREEN%[OK] Backend erreichbar%RESET%
 
 :continue_anyway
 echo.
@@ -121,30 +121,30 @@ docker-compose ps
 echo.
 
 echo ============================================================
-echo   ✅ Alle Services starten...
+echo   [OK] Alle Services starten...
 echo ============================================================
 echo.
-echo 📍 Zugriff auf Services:
+echo [*] Zugriff auf Services:
 echo.
 echo   Frontend (React):
-echo   👉 http://localhost
+echo   [-&gt;] http://localhost
 echo.
 echo   Backend API:
-echo   👉 http://localhost:3000/api
+echo   [-&gt;] http://localhost:3000/api
 echo.
 echo   pgAdmin (Datenbank-Management):
-echo   👉 http://localhost:5050
+echo   [-&gt;] http://localhost:5050
 echo      Email: admin@extractor.local
 echo      Passwort: admin-pass
 echo.
 echo   PostgreSQL (direkt):
-echo   👉 localhost:5432
+echo   [-&gt;] localhost:5432
 echo      Benutzer: extractor_user
 echo      Passwort: extractor_pass
 echo      DB: extractor_db
 echo.
 echo   Redis Cache:
-echo   👉 localhost:6379
+echo   [-&gt;] localhost:6379
 echo.
 echo ============================================================
 echo   Nützliche Befehle:
@@ -157,7 +157,7 @@ echo.
 echo   # Services stoppen
 echo   docker-compose stop
 echo.
-echo   # Services herunterfahren (mit Datenlöschung - ⚠️)
+echo   # Services herunterfahren (mit Datenlöschung - [WARN])
 echo   docker-compose down -v
 echo.
 echo   # Nur Frontend neu bauen
@@ -168,7 +168,7 @@ echo   docker-compose build backend && docker-compose up -d backend
 echo.
 echo ============================================================
 echo.
-echo 💡 Tipps:
+echo [TIP] Tipps:
 echo    - Beim ersten Start kann es 1-2 Minuten dauern
 echo    - Logs können Sie mit "docker-compose logs" ansehen
 echo    - Bei Problemen: siehe DOCKER_DEPLOYMENT_GUIDE.md

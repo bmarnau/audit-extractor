@@ -1,0 +1,14 @@
+{
+  "invoiceNumber": "INV-2026-001",
+  "currency": "EUR",
+  "amount": 1250.5,
+  "vendor": "Acme Corp",
+  "date": "2026-07-10",
+  "items": [
+    {
+      "unitPrice": 250,
+      "description": "Consulting Services",
+      "quantity": 5
+    }
+  ]
+}

@@ -26,22 +26,22 @@ param(
 
 function Write-Success {
     param([string]$Message)
-    Write-Host "✓ $Message" -ForegroundColor Green
+    Write-Host "[OK] $Message" -ForegroundColor Green
 }
 
 function Write-Error_ {
     param([string]$Message)
-    Write-Host "✗ $Message" -ForegroundColor Red
+    Write-Host "[ERR] $Message" -ForegroundColor Red
 }
 
 function Write-Warning_ {
     param([string]$Message)
-    Write-Host "⚠ $Message" -ForegroundColor Yellow
+    Write-Host "[WARN] $Message" -ForegroundColor Yellow
 }
 
 function Write-Info {
     param([string]$Message)
-    Write-Host "ℹ $Message" -ForegroundColor Cyan
+    Write-Host "[INFO] $Message" -ForegroundColor Cyan
 }
 
 function Test-Docker {
@@ -80,7 +80,7 @@ function Test-HealthCheck {
         
         $retries++
         if ($retries -lt $MaxRetries) {
-            Write-Host "  ⏳ Versuch $retries/$MaxRetries - Warte $DelaySeconds Sekunden..." -ForegroundColor Yellow
+            Write-Host "  [WAIT] Versuch $retries/$MaxRetries - Warte $DelaySeconds Sekunden..." -ForegroundColor Yellow
             Start-Sleep -Seconds $DelaySeconds
         }
     }
@@ -94,7 +94,7 @@ function Test-HealthCheck {
 
 Write-Host ""
 Write-Host "============================================================" -ForegroundColor Cyan
-Write-Host "  🐳 Audit-Safe Document Extractor - Docker Stack Startup" -ForegroundColor Cyan
+Write-Host "  [DOCKER] Audit-Safe Document Extractor - Docker Stack Startup" -ForegroundColor Cyan
 Write-Host "============================================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -202,32 +202,32 @@ Write-Host ""
 # ============================================================
 
 Write-Host "============================================================" -ForegroundColor Cyan
-Write-Host "  ✅ Systeme sind erreichbar unter:" -ForegroundColor Green
+Write-Host "  [OK] Systeme sind erreichbar unter:" -ForegroundColor Green
 Write-Host "============================================================" -ForegroundColor Cyan
 Write-Host ""
 
-Write-Host "📍 Frontend (React):" -ForegroundColor Yellow
-Write-Host "   👉 http://localhost" -ForegroundColor Cyan
+Write-Host "[*] Frontend (React):" -ForegroundColor Yellow
+Write-Host "   [-&gt;] http://localhost" -ForegroundColor Cyan
 Write-Host ""
 
-Write-Host "📍 Backend API:" -ForegroundColor Yellow
-Write-Host "   👉 http://localhost:3000/api" -ForegroundColor Cyan
+Write-Host "[*] Backend API:" -ForegroundColor Yellow
+Write-Host "   [-&gt;] http://localhost:3000/api" -ForegroundColor Cyan
 Write-Host ""
 
-Write-Host "📍 pgAdmin (Datenbank-Management):" -ForegroundColor Yellow
-Write-Host "   👉 http://localhost:5050" -ForegroundColor Cyan
+Write-Host "[*] pgAdmin (Datenbank-Management):" -ForegroundColor Yellow
+Write-Host "   [-&gt;] http://localhost:5050" -ForegroundColor Cyan
 Write-Host "   Email: admin@extractor.local" -ForegroundColor Gray
 Write-Host "   Passwort: admin-pass" -ForegroundColor Gray
 Write-Host ""
 
-Write-Host "📍 PostgreSQL (direkt):" -ForegroundColor Yellow
-Write-Host "   👉 localhost:5432" -ForegroundColor Cyan
+Write-Host "[*] PostgreSQL (direkt):" -ForegroundColor Yellow
+Write-Host "   [-&gt;] localhost:5432" -ForegroundColor Cyan
 Write-Host "   Benutzer: extractor_user" -ForegroundColor Gray
 Write-Host "   Passwort: extractor_pass" -ForegroundColor Gray
 Write-Host ""
 
-Write-Host "📍 Redis Cache:" -ForegroundColor Yellow
-Write-Host "   👉 localhost:6379" -ForegroundColor Cyan
+Write-Host "[*] Redis Cache:" -ForegroundColor Yellow
+Write-Host "   [-&gt;] localhost:6379" -ForegroundColor Cyan
 Write-Host ""
 
 # ============================================================
@@ -235,7 +235,7 @@ Write-Host ""
 # ============================================================
 
 Write-Host "============================================================" -ForegroundColor Cyan
-Write-Host "  💡 Nützliche Befehle:" -ForegroundColor Cyan
+Write-Host "  [TIP] Nützliche Befehle:" -ForegroundColor Cyan
 Write-Host "============================================================" -ForegroundColor Cyan
 Write-Host ""
 

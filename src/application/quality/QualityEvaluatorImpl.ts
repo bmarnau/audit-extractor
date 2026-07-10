@@ -4,6 +4,7 @@
  * Metriken-basierte Qualitätsbewertung ohne Datenmodifikation.
  */
 
+import { injectable } from 'tsyringe';
 import { ExtractionResult } from '@domain/ExtractionModels';
 import {
   IQualityEvaluator,
@@ -15,6 +16,7 @@ import {
 /**
  * MetricsBasedQualityEvaluator - Read-only Qualitätsbewertung.
  */
+@injectable()
 export class MetricsBasedQualityEvaluator implements IQualityEvaluator {
   private weights = {
     completeness: 0.3,

@@ -122,14 +122,20 @@ export function createApiServer(): Express {
       const statusCode = res.statusCode;
       const duration = req.startTime ? Date.now() - req.startTime : 0;
 
-      // Check if already wrapped by createSuccessResponse or createErrorResponse
-      const isWrapped = data && typeof data === 'object' && (
-        ('data' in data && 'timestamp' in data && 'path' in data) ||
-        ('error' in data && 'timestamp' in data && 'path' in data)
-      );
+      // Check if data is an array (route returned direct data, not wrapped)
+      if (Array.isArray(data)) {
+        // Wrap array responses
+        return originalJson.call(this, {
+          data,
+          timestamp: new Date().toISOString(),
+          path: req.path,
+          duration,
+        });
+      }
 
-      if (isWrapped) {
-        // Already wrapped, just return as-is with duration added
+      // Check if already wrapped (has timestamp already)
+      if (data && typeof data === 'object' && 'timestamp' in data) {
+        // Already wrapped, just add duration
         return originalJson.call(this, { ...data as any, duration });
       }
 
@@ -143,7 +149,19 @@ export function createApiServer(): Express {
         });
       }
 
-      // Success response
+      // Success response - check if it looks like a custom response format with data property
+      const isCustomFormat = data && typeof data === 'object' && 'data' in data;
+      if (isCustomFormat) {
+        // Route returned {data: ..., pagination, etc} - wrap it but preserve structure
+        return originalJson.call(this, {
+          data,
+          timestamp: new Date().toISOString(),
+          path: req.path,
+          duration,
+        });
+      }
+
+      // Generic success response
       return originalJson.call(this, {
         data,
         timestamp: new Date().toISOString(),

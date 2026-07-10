@@ -1,3 +1,4 @@
+import { injectable } from 'tsyringe';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as crypto from 'crypto';
@@ -6,6 +7,7 @@ import { ExtractionResult, ExtractedValue } from '@domain/ExtractionModels';
 /**
  * ResultRepository - Speichert und lädt Extraktions-Ergebnisse
  */
+@injectable()
 export class ResultRepository {
   constructor(private readonly resultsDir: string = './results') {
     this.ensureDirectory(this.resultsDir);

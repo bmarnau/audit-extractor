@@ -5,8 +5,8 @@ Umfassende Projekt-Übersicht und Roadmap.
 ## Projekt-Information
 
 **Name**: Audit-Safe Document Extractor  
-**Version**: 0.15.0-rc1  
-**Status**: ✅ Phase 14 COMPLETE | 🟡 Phase 15 PROPOSED (Schema-Driven Rule Generation)
+**Version**: 0.21.0  
+**Status**: ✅ Phase 20 COMPLETE | ✅ Phase 21 Extended COMPLETE (Async Job API)
 **Sprache**: TypeScript  
 **Lizenz**: MIT
 
@@ -107,15 +107,30 @@ Entwicklung eines **revisionssicheren Dokument-Extraktionssystems**, das:
 - **LOC**: ~265
 - **Status**: Complete - Phase 9 Rewrite
 
-### ⏳ Phase 8: LLMExtractor (NOT STARTED)
-- Input: Document, Chunks, RuleSet, Schema
-- Output: ExtractionResult with sourceReferences
-- Halluzination prevention
+### ✅ Phase 19: Schema Bug Fixes (100%)
+- **Encapsulation**: Fixed private property access violations
+- **Public API**: Added 3 public wrapper methods to SchemaManagementService
+- **Version Increment**: Fixed SchemaRepository version patching logic
+- **Testing**: 5/5 schema wizard test cases passed
+- **Status**: Complete - Schema fixes verified
 
-### ⏳ Phase 9: HallucinationValidator (NOT STARTED)
-- Verify sourceReferences point to actual chunks
-- Discard hallucinated values
-- Generate warnings
+### ✅ Phase 20: Log-Viewer Backend API (100%)
+- **AuditLogEntity**: TypeORM entity for audit_logs table
+- **AuditLogRepository**: Data Access Layer with 6 core methods
+- **7 REST Endpoints**: Query, filter, export, statistics, cleanup, create
+- **Full-Text Search**: PostgreSQL searchText column integration
+- **JSONB Context**: Flexible metadata storage for audit logs
+- **Testing**: All 10 endpoint tests passed
+- **Status**: Complete - Backend fully functional
+
+### ✅ Phase 21: Log-Viewer Frontend UI (100%)
+- **LogViewer Component**: Full-featured React component (TypeScript)
+- **Styling**: Responsive CSS with mobile optimization
+- **Features**: Filters, search, pagination, export (JSON/CSV), statistics
+- **Expandable Details**: Click-to-expand log details with JSON highlighting
+- **Dashboard**: 4-metric statistics card (total, errors, warnings, last 24h)
+- **User Experience**: Color-coded severity, emoji indicators, smooth transitions
+- **Status**: Complete - UI fully functional
 
 ## 📊 Systemarchitektur
 
@@ -296,15 +311,17 @@ develop (development)
 | 11 | REST API + Frontend | ✅ DONE | v0.11 |
 | 12 | Centers & Orchestration | ✅ DONE | v0.12 |
 | 13 | Frontend Workbench | ✅ DONE | v0.13 |
-| 14 | Learning Feedback Loop | ✅ DONE | v0.14 |
-
+| 14 | Learning Feedback Loop | ✅ DONE | v0.14 || 19 | Schema Bug Fixes | ✅ DONE | v0.19 |
+| 20 | Log-Viewer Backend API | ✅ DONE | v0.20 |
+| 21 | Log-Viewer Frontend UI | ✅ DONE | v0.20 |
 ### 🟡 Proposed/Planned
 
 | Phase | Name | Status | Priority | Est. Time |
 |-------|------|--------|----------|-----------|
-| **15** | **Schema-Driven Rule Generation** | 🟡 PROPOSED | HIGH | 4-5 weeks |
-| 16 | Advanced Pattern Mining | 🟤 PLANNED | MEDIUM | 3-4 weeks |
-| 17 | Multi-Document Synthesis | 🟤 PLANNED | LOW | 4-6 weeks |
+| 15 | Schema-Driven Rule Generation | ✅ DONE | HIGH | 4-5 weeks |
+| **22** | **Advanced Analytics & Real-time Streaming** | 🟡 PROPOSED | HIGH | 3-4 weeks |
+| 23 | ML-based Anomaly Detection | 🟤 PLANNED | MEDIUM | 4-5 weeks |
+| 24 | External Log Integration (Datadog/ELK) | 🟤 PLANNED | LOW | 3-4 weeks |
 
 ---
 

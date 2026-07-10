@@ -1,0 +1,1104 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/e2e/comprehensive-frontend-test.spec.ts"
+    ],
+    "configFile": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\playwright.config.ts",
+    "rootDir": "C:/Users/bmarn/OneDrive/HTML/extractor/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 1800000,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/bmarn/OneDrive/HTML/extractor/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/bmarn/OneDrive/HTML/extractor/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "junit-results.xml"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "comprehensive-frontend-test.spec.ts",
+      "file": "comprehensive-frontend-test.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "COMPREHENSIVE FRONTEND TEST SUITE",
+          "file": "comprehensive-frontend-test.spec.ts",
+          "line": 79,
+          "column": 6,
+          "specs": [
+            {
+              "title": "HOMEPAGE: Load and verify initial structure",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1590,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✓ Page Title: Audit-Safe Document Extractor\n"
+                        },
+                        {
+                          "text": "✅ Homepage loaded successfully in 970ms\n"
+                        },
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 970ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 0\n"
+                        },
+                        {
+                          "text": "  Network Errors: 0\n"
+                        },
+                        {
+                          "text": "  Requests: 11/11 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 1 taken\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:36.759Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-4009935e5ebf88dde0dd",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 160,
+              "column": 7
+            },
+            {
+              "title": "NAVIGATION: Verify all menu items visible and clickable",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 586,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\comprehensive-frontend-test.spec.ts:194:29",
+                        "location": {
+                          "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\comprehensive-frontend-test.spec.ts",
+                          "column": 29,
+                          "line": 194
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 192 |\u001b[39m     \u001b[90m// Find all navigation links\u001b[39m\n \u001b[90m 193 |\u001b[39m     \u001b[36mconst\u001b[39m navLinks \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'nav a, nav button'\u001b[39m)\u001b[33m.\u001b[39mall()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 194 |\u001b[39m     expect(navLinks\u001b[33m.\u001b[39mlength)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 195 |\u001b[39m\n \u001b[90m 196 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Found ${navLinks.length} navigation items`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 197 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\comprehensive-frontend-test.spec.ts",
+                            "column": 29,
+                            "line": 194
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n\u001b[0m \u001b[90m 192 |\u001b[39m     \u001b[90m// Find all navigation links\u001b[39m\n \u001b[90m 193 |\u001b[39m     \u001b[36mconst\u001b[39m navLinks \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'nav a, nav button'\u001b[39m)\u001b[33m.\u001b[39mall()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 194 |\u001b[39m     expect(navLinks\u001b[33m.\u001b[39mlength)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 195 |\u001b[39m\n \u001b[90m 196 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Found ${navLinks.length} navigation items`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 197 |\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\comprehensive-frontend-test.spec.ts:194:29\u001b[22m"
+                        },
+                        {
+                          "location": {
+                            "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\comprehensive-frontend-test.spec.ts",
+                            "column": 17,
+                            "line": 190
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('nav').first()\nExpected: visible\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('nav').first()\u001b[22m\n\n\n\u001b[0m \u001b[90m 188 |\u001b[39m     \u001b[90m// Check main navigation exists\u001b[39m\n \u001b[90m 189 |\u001b[39m     \u001b[36mconst\u001b[39m nav \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'nav'\u001b[39m)\u001b[33m.\u001b[39mfirst()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 190 |\u001b[39m     expect(nav)\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 191 |\u001b[39m\n \u001b[90m 192 |\u001b[39m     \u001b[90m// Find all navigation links\u001b[39m\n \u001b[90m 193 |\u001b[39m     \u001b[36mconst\u001b[39m navLinks \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mlocator(\u001b[32m'nav a, nav button'\u001b[39m)\u001b[33m.\u001b[39mall()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\comprehensive-frontend-test.spec.ts:190:17\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 0ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 0\n"
+                        },
+                        {
+                          "text": "  Network Errors: 0\n"
+                        },
+                        {
+                          "text": "  Requests: 11/11 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 0 taken\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:38.978Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\comprehensive-frontend-tes-78c8d-items-visible-and-clickable-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\comprehensive-frontend-tes-78c8d-items-visible-and-clickable-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\comprehensive-frontend-test.spec.ts",
+                        "column": 29,
+                        "line": 194
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-e57e92aac86340acf682",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 185,
+              "column": 7
+            },
+            {
+              "title": "SCHEMAS PAGE: Load and verify schema list",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1222,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Schemas page loaded\n"
+                        },
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 0ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 0\n"
+                        },
+                        {
+                          "text": "  Network Errors: 0\n"
+                        },
+                        {
+                          "text": "  Requests: 3/3 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 1 taken\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:40.409Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-cff304176768c0e539f7",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 218,
+              "column": 7
+            },
+            {
+              "title": "SCHEMAS PAGE: API call verification",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1001,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✓ API Call: GET /api/schema/schemas - Status 200\n"
+                        },
+                        {
+                          "text": "✅ Schema API call successful (HTTP 200)\n"
+                        },
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 0ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 0\n"
+                        },
+                        {
+                          "text": "  Network Errors: 0\n"
+                        },
+                        {
+                          "text": "  Requests: 3/3 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 0 taken\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:42.079Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-1b9a99f88a01fd8dcae5",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 237,
+              "column": 7
+            },
+            {
+              "title": "HELP CENTER: Load and verify tabs",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1403,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Found 4 tabs\n"
+                        },
+                        {
+                          "text": "✅ Help Center loaded with 4 tabs\n"
+                        },
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 0ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 0\n"
+                        },
+                        {
+                          "text": "  Network Errors: 0\n"
+                        },
+                        {
+                          "text": "  Requests: 6/6 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 1 taken\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:43.104Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-664add4757cc45023629",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 267,
+              "column": 7
+            },
+            {
+              "title": "HELP CENTER: Click each tab and verify content",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 519,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ All tabs verified\n"
+                        },
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 0ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 0\n"
+                        },
+                        {
+                          "text": "  Network Errors: 0\n"
+                        },
+                        {
+                          "text": "  Requests: 3/3 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 0 taken\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:44.525Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-4d7bf213cbc3cd305d13",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 286,
+              "column": 7
+            },
+            {
+              "title": "DASHBOARD: Load and verify components",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3757,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✓ Config Status: Active\n"
+                        },
+                        {
+                          "text": "✓ Backup Status: 0\n"
+                        },
+                        {
+                          "text": "✓ Extraction Rules: 3\n"
+                        },
+                        {
+                          "text": "✓ Configurations: 1\n"
+                        },
+                        {
+                          "text": "✓ Schemas: 0\n"
+                        },
+                        {
+                          "text": "✓ Documents: 0\n"
+                        },
+                        {
+                          "text": "✓ Manuals: 7\n"
+                        },
+                        {
+                          "text": "✅ All 7 metric cards found!\n"
+                        },
+                        {
+                          "text": "📊 Metric Values: {\"Config Status\":\"Active\",\"Backup Status\":\"0\",\"Extraction Rules\":\"3\",\"Configurations\":\"1\",\"Schemas\":\"0\",\"Documents\":\"0\",\"Manuals\":\"7\"}\n"
+                        },
+                        {
+                          "text": "✅ Dashboard verification complete\n"
+                        },
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 0ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 0\n"
+                        },
+                        {
+                          "text": "  Network Errors: 0\n"
+                        },
+                        {
+                          "text": "  Requests: 11/11 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 1 taken\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:45.061Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-33449a6272bb791b7357",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 322,
+              "column": 7
+            },
+            {
+              "title": "DASHBOARD: Test refresh buttons",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 481,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Refresh buttons tested\n"
+                        },
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 0ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 0\n"
+                        },
+                        {
+                          "text": "  Network Errors: 0\n"
+                        },
+                        {
+                          "text": "  Requests: 2/2 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 1 taken\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:48.846Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-123cbe313669f1242517",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 391,
+              "column": 7
+            },
+            {
+              "title": "FORMS: Find and fill all input fields",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 737,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Forms tested\n"
+                        },
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 0ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 1\n"
+                        },
+                        {
+                          "text": "  Network Errors: 1\n"
+                        },
+                        {
+                          "text": "  Requests: 15/15 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 1 taken\n"
+                        }
+                      ],
+                      "stderr": [
+                        {
+                          "text": "⚠️  Network Error: GET http://localhost/api/backup/list?limit=50\n"
+                        },
+                        {
+                          "text": "🔴 Console Error: http://localhost/assets/index-694b23a4.js:221 - [useBackup] List failed: TypeError: Failed to fetch\n    at http://localhost/assets/index-694b23a4.js:222:190824\n    at http://localhost/assets/index-694b23a4.js:222:225827\n"
+                        }
+                      ],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:49.343Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-aebe1669825fb9daaf33",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 422,
+              "column": 7
+            },
+            {
+              "title": "BUTTONS: Find and click all interactive buttons",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 712,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "Found 1 buttons on homepage\n"
+                        },
+                        {
+                          "text": "  ✓ Button \"\": Clicked\n"
+                        },
+                        {
+                          "text": "✅ Buttons tested: 1 clicked, 1 visible\n"
+                        },
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 0ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 0\n"
+                        },
+                        {
+                          "text": "  Network Errors: 0\n"
+                        },
+                        {
+                          "text": "  Requests: 11/11 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 1 taken\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:50.094Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-aecbcdce2bd70e810789",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 457,
+              "column": 7
+            },
+            {
+              "title": "FILE UPLOAD: Find and test file input",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 507,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "No file inputs found on homepage\n"
+                        },
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 0ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 0\n"
+                        },
+                        {
+                          "text": "  Network Errors: 0\n"
+                        },
+                        {
+                          "text": "  Requests: 11/11 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 1 taken\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:50.826Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-ae2c77a3bea98dcdb8cd",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 496,
+              "column": 7
+            },
+            {
+              "title": "DIALOGS: Find and open all modals/dialogs",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 609,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ Dialogs tested: 0 found\n"
+                        },
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 0ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 0\n"
+                        },
+                        {
+                          "text": "  Network Errors: 0\n"
+                        },
+                        {
+                          "text": "  Requests: 11/11 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 1 taken\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:51.354Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-1369bdbd008a05d49a01",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 531,
+              "column": 7
+            },
+            {
+              "title": "PERFORMANCE: Measure page load times",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2882,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "  Homepage: 793ms\n"
+                        },
+                        {
+                          "text": "  Schemas: 607ms\n"
+                        },
+                        {
+                          "text": "  Help: 711ms\n"
+                        },
+                        {
+                          "text": "  Dashboard: 531ms\n"
+                        },
+                        {
+                          "text": "✅ Performance metrics: {\"Homepage\":793,\"Schemas\":607,\"Help\":711,\"Dashboard\":531}\n"
+                        },
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 0ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 0\n"
+                        },
+                        {
+                          "text": "  Network Errors: 0\n"
+                        },
+                        {
+                          "text": "  Requests: 22/22 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 0 taken\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:51.990Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-efe2ded49dbcbbcb066d",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 573,
+              "column": 7
+            },
+            {
+              "title": "ERROR HANDLING: Verify proper error states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 221,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "✅ No errors detected\n"
+                        },
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 0ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 0\n"
+                        },
+                        {
+                          "text": "  Network Errors: 0\n"
+                        },
+                        {
+                          "text": "  Requests: 0/0 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 0 taken\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:54.887Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-06f0ff39dfa6d6c10e70",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 601,
+              "column": 7
+            },
+            {
+              "title": "FINAL CHECK: All systems operational",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 232,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\comprehensive-frontend-test.spec.ts:642:43",
+                        "location": {
+                          "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\comprehensive-frontend-test.spec.ts",
+                          "column": 43,
+                          "line": 642
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 640 |\u001b[39m     expect(metrics\u001b[33m.\u001b[39mnetworkErrors\u001b[33m.\u001b[39mlength)\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 641 |\u001b[39m     expect(metrics\u001b[33m.\u001b[39mrequestsCount\u001b[33m.\u001b[39mfailed)\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 642 |\u001b[39m     expect(metrics\u001b[33m.\u001b[39mrequestsCount\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 643 |\u001b[39m\n \u001b[90m 644 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ ALL TESTS PASSED - SYSTEM READY FOR PRODUCTION'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 645 |\u001b[39m   })\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\comprehensive-frontend-test.spec.ts",
+                            "column": 43,
+                            "line": 642
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n\u001b[0m \u001b[90m 640 |\u001b[39m     expect(metrics\u001b[33m.\u001b[39mnetworkErrors\u001b[33m.\u001b[39mlength)\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 641 |\u001b[39m     expect(metrics\u001b[33m.\u001b[39mrequestsCount\u001b[33m.\u001b[39mfailed)\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 642 |\u001b[39m     expect(metrics\u001b[33m.\u001b[39mrequestsCount\u001b[33m.\u001b[39msuccess)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 643 |\u001b[39m\n \u001b[90m 644 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'✅ ALL TESTS PASSED - SYSTEM READY FOR PRODUCTION'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 645 |\u001b[39m   })\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\comprehensive-frontend-test.spec.ts:642:43\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "\n🎯 FINAL TEST REPORT:\n"
+                        },
+                        {
+                          "text": "============================================================\n"
+                        },
+                        {
+                          "text": "Console Errors: 0 ❌ ✅\n"
+                        },
+                        {
+                          "text": "Network Errors: 0 ✅\n"
+                        },
+                        {
+                          "text": "HTTP Errors: 0 ✅\n"
+                        },
+                        {
+                          "text": "Successful Requests: 0/0\n"
+                        },
+                        {
+                          "text": "Screenshots Taken: 0\n"
+                        },
+                        {
+                          "text": "============================================================\n"
+                        },
+                        {
+                          "text": "\n📊 TEST METRICS:\n"
+                        },
+                        {
+                          "text": "  Page Load Time: 0ms\n"
+                        },
+                        {
+                          "text": "  Console Errors: 0\n"
+                        },
+                        {
+                          "text": "  Network Errors: 0\n"
+                        },
+                        {
+                          "text": "  Requests: 0/0 successful\n"
+                        },
+                        {
+                          "text": "  Screenshots: 0 taken\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-09T18:03:55.123Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\comprehensive-frontend-tes-a495b-ECK-All-systems-operational-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\comprehensive-frontend-tes-a495b-ECK-All-systems-operational-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\comprehensive-frontend-test.spec.ts",
+                        "column": 43,
+                        "line": 642
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d9ae6e6c9d987db785fe-08d3355e225cd4b4657d",
+              "file": "comprehensive-frontend-test.spec.ts",
+              "line": 628,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-07-09T18:03:36.012Z",
+    "duration": 19525.529,
+    "expected": 13,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

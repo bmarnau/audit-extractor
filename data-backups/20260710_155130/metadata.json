@@ -1,0 +1,26 @@
+{
+    "date":  "2026-07-10 15:51:30",
+    "total_items":  55,
+    "timestamp":  "20260710_155130",
+    "errors":  [
+
+               ],
+    "backed_up":  [
+                      {
+                          "items":  35,
+                          "name":  "schemas"
+                      },
+                      {
+                          "items":  5,
+                          "name":  "backups"
+                      },
+                      {
+                          "items":  14,
+                          "name":  "extraction-rules"
+                      },
+                      {
+                          "items":  1,
+                          "name":  "results"
+                      }
+                  ]
+}

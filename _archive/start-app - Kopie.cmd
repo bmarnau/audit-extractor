@@ -64,7 +64,7 @@ if errorlevel 1 (
 )
 
 for /f "tokens=*" %%i in ('node --version') do set NODE_VERSION=%%i
-echo ✓ Node.js %NODE_VERSION% found
+echo [OK] Node.js %NODE_VERSION% found
 echo.
 
 REM ============================================================================
@@ -76,7 +76,7 @@ if not exist "node_modules\" (
     echo Installing backend dependencies...
     call npm install >nul 2>&1
     if errorlevel 1 (
-        echo ⚠  npm install had warnings, continuing anyway...
+        echo [WARN] npm install had warnings, continuing anyway...
     )
 )
 
@@ -85,12 +85,12 @@ if not exist "frontend\node_modules\" (
     cd frontend
     call npm install >nul 2>&1
     if errorlevel 1 (
-        echo ⚠  Frontend npm install had warnings, continuing...
+        echo [WARN] Frontend npm install had warnings, continuing...
     )
     cd ..
 )
 
-echo ✓ Dependencies ready
+echo [OK] Dependencies ready
 echo.
 
 REM ============================================================================
@@ -130,7 +130,7 @@ if errorlevel 1 (
     )
 )
 
-echo ✓ Backend port 3000 is listening
+echo [OK] Backend port 3000 is listening
 echo.
 
 echo Starting Frontend (Port 5173)...
@@ -164,7 +164,7 @@ if errorlevel 1 (
     )
 )
 
-echo ✓ Frontend port 5173 is listening
+echo [OK] Frontend port 5173 is listening
 echo.
 
 REM ============================================================================
@@ -200,7 +200,7 @@ if %CHROME_FOUND% EQU 1 (
 
 echo.
 echo ╔═══════════════════════════════════════════════════════╗
-echo ║  ✓ Application Started Successfully!                   ║
+echo ║  [OK] Application Started Successfully!                   ║
 echo ║                                                         ║
 echo ║  Frontend:     http://localhost:5173                   ║
 echo ║  Backend API:  http://localhost:3000                   ║
@@ -224,7 +224,7 @@ pause
 echo.
 echo Shutting down services...
 taskkill /F /IM node.exe >nul 2>&1
-echo ✓ All services stopped
+echo [OK] All services stopped
 
 endlocal
 exit /b 0

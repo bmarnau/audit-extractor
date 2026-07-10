@@ -48,7 +48,7 @@ import { DocumentExplorer } from './components/DocumentExplorer';
 import { ExtractionWorkbench } from './components/ExtractionWorkbench';
 import { RuleEditor } from './components/RuleEditor';
 import { AuditViewer } from './components/workbench/AuditViewer';
-import { LogBrowser } from './components/workbench/LogBrowser';
+import LogViewer from './components/LogViewer';
 import { HelpBrowser } from './components/workbench/HelpBrowser';
 import { ConfigEditor } from './components/workbench/ConfigEditor';
 import { BackupManager } from './components/workbench/BackupManager';
@@ -259,7 +259,7 @@ export const App: React.FC = () => {
               <Route path="/rules" element={<RuleEditor />} />
               <Route path="/learning" element={<LearningPage />} />
               <Route path="/audit" element={<AuditViewer />} />
-              <Route path="/logs" element={<LogBrowser />} />
+              <Route path="/logs" element={<LogViewer />} />
               <Route path="/configuration" element={<ConfigEditor />} />
               <Route path="/backups" element={<BackupManager />} />
               <Route path="/help" element={<HelpBrowser />} />

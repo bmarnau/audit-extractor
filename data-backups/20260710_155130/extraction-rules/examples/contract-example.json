@@ -1,0 +1,39 @@
+/**
+ * TESTDATEN - Contract Beispiel
+ *
+ * Service Agreement / Dienstleistungsvertrag
+ */
+
+{
+  "contractNumber": "CNT-2024-001",
+  "contractDate": "2026-07-01",
+  "effectiveDate": "2026-07-01",
+  "expirationDate": "2027-06-30",
+  "contractType": "Service Agreement",
+  "clientName": "TechCorp AG",
+  "clientAddress": "Business District 10, 80001 München",
+  "clientContactPerson": "Sarah Johnson",
+  "clientEmail": "sarah@techcorp.example.com",
+  "vendorName": "ServicePro GmbH",
+  "vendorAddress": "Tech Street 55, 10115 Berlin",
+  "vendorContactPerson": "Michael Wagner",
+  "vendorEmail": "michael@servicepro.example.com",
+  "serviceType": "IT Support & Maintenance",
+  "serviceScopeDescription": "24/7 Technical Support, Bug Fixes, Updates",
+  "monthlyFee": 5000.00,
+  "annualFee": 60000.00,
+  "supportHours": "24/7",
+  "responseTime": "4 hours",
+  "sla": "99.9% Uptime",
+  "paymentTerms": "NET 30",
+  "renewalTerm": "12 months auto-renewal",
+  "terminationClause": "30 days written notice",
+  "confidentialityLevel": "Confidential",
+  "jurisdiction": "German Law",
+  "signerNameClient": "Anna Mueller",
+  "signerTitleClient": "Managing Director",
+  "signatureDateClient": "2026-07-01",
+  "signerNameVendor": "Thomas Schmidt",
+  "signerTitleVendor": "CEO",
+  "signatureDateVendor": "2026-07-01"
+}

@@ -1,7 +1,6 @@
 import { injectable } from "tsyringe";
 import { SchemaRepository } from "../../domain/schema/SchemaRepository";
 import { SchemaEntity } from "../../domain/schema/SchemaEntity";
-import { v4 as uuid } from "uuid";
 
 /**
  * SchemaStorageService - Business Logic für Schema-Verwaltung
@@ -17,12 +16,11 @@ export class SchemaStorageService {
   async createSchema(
     name: string,
     schema: Record<string, unknown>,
-    description?: string,
-    directoryPath?: string
+    description?: string
   ): Promise<SchemaEntity> {
     // Überprüfen ob Schema mit diesem Namen bereits existiert
     const existing = await this.schemaRepository.findByName(
-      "default-user",
+      "00000000-0000-0000-0000-000000000000",
       name
     );
     if (existing) {
@@ -31,17 +29,11 @@ export class SchemaStorageService {
       );
     }
 
-    const schemaDir = directoryPath || `/schemas/${uuid()}`;
-
     const newSchema = await this.schemaRepository.create({
       name,
       schema,
       description,
-      directoryPath: schemaDir,
-      userId: "default-user",
-      examplesCount: 0,
-      generatedRulesCount: 0,
-      status: "active",
+      createdBy: "00000000-0000-0000-0000-000000000000",
     });
 
     return newSchema;
@@ -84,7 +76,7 @@ export class SchemaStorageService {
    * Alle Schemas auflisten
    */
   async listSchemas(): Promise<SchemaEntity[]> {
-    return await this.schemaRepository.findAllByUser("default-user");
+    return await this.schemaRepository.findAllByUser("00000000-0000-0000-0000-000000000000");
   }
 
   /**
@@ -101,51 +93,57 @@ export class SchemaStorageService {
    * Alle Versionen eines Schemas abrufen
    */
   async getVersionHistory(name: string): Promise<SchemaEntity[]> {
-    return await this.schemaRepository.findVersionHistory(name, "default-user");
+    return await this.schemaRepository.findVersionHistory(name, "00000000-0000-0000-0000-000000000000");
   }
 
   /**
-   * Schema-Metadaten aktualisieren
+   * Schema-Metadaten aktualisieren - DEPRECATED (metadata no longer tracked per schema)
    */
   async updateMetadata(
     id: string,
-    metadata: Record<string, unknown>
+    _metadata: Record<string, unknown>
   ): Promise<SchemaEntity> {
-    return await this.updateSchema(id, { metadata });
+    // Metadata is no longer stored per schema
+    const entity = await this.schemaRepository.findById(id);
+    if (!entity) throw new Error(`Schema ${id} not found`);
+    return entity;
   }
 
   /**
-   * Examples Count aktualisieren
+   * Examples Count aktualisieren - DEPRECATED (examples count no longer tracked)
    */
-  async updateExamplesCount(id: string, count: number): Promise<SchemaEntity> {
-    return await this.updateSchema(id, { examplesCount: count });
+  async updateExamplesCount(id: string, _count: number): Promise<SchemaEntity> {
+    // Examples count is no longer tracked per schema
+    const entity = await this.schemaRepository.findById(id);
+    if (!entity) throw new Error(`Schema ${id} not found`);
+    return entity;
   }
 
   /**
-   * Rules Count und Confidence aktualisieren
+   * Rules Count und Confidence aktualisieren - DEPRECATED (stats no longer tracked)
    */
   async updateRulesStats(
     id: string,
-    rulesCount: number,
-    averageConfidence: number
+    _rulesCount: number,
+    _averageConfidence: number
   ): Promise<SchemaEntity> {
-    return await this.updateSchema(id, {
-      generatedRulesCount: rulesCount,
-      averageConfidence,
-    });
+    // Stats are no longer tracked per schema
+    const entity = await this.schemaRepository.findById(id);
+    if (!entity) throw new Error(`Schema ${id} not found`);
+    return entity;
   }
 
   /**
    * Schema-Statistiken
    */
   async getStatistics() {
-    return await this.schemaRepository.getStatistics("default-user");
+    return await this.schemaRepository.getStatistics("00000000-0000-0000-0000-000000000000");
   }
 
   /**
    * Schema suchen
    */
   async searchSchemas(query: string): Promise<SchemaEntity[]> {
-    return await this.schemaRepository.search(query, "default-user");
+    return await this.schemaRepository.search(query, "00000000-0000-0000-0000-000000000000");
   }
 }

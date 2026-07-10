@@ -43,7 +43,7 @@ taskkill /F /IM node.exe >nul 2>&1
 taskkill /F /IM chrome.exe >nul 2>&1
 timeout /t 2 /nobreak >nul
 
-echo ✓ Old processes terminated
+echo [OK] Old processes terminated
 echo.
 
 REM ============================================================================
@@ -53,14 +53,14 @@ echo [2/5] Checking Node.js...
 
 where node >nul 2>nul
 if errorlevel 1 (
-    echo ❌ ERROR: Node.js not found!
+    echo [ERROR] ERROR: Node.js not found!
     echo Please install Node.js 18+ from https://nodejs.org
     pause
     exit /b 1
 )
 
 for /f "tokens=*" %%i in ('node --version') do set NODE_VERSION=%%i
-echo ✓ Node.js %NODE_VERSION% found
+echo [OK] Node.js %NODE_VERSION% found
 echo.
 
 REM ============================================================================
@@ -72,7 +72,7 @@ if not exist "node_modules\" (
     echo Installing backend dependencies...
     call npm install >nul 2>&1
     if errorlevel 1 (
-        echo ⚠  npm install had warnings, continuing anyway...
+        echo [WARN]  npm install had warnings, continuing anyway...
     )
 )
 
@@ -81,12 +81,12 @@ if not exist "frontend\node_modules\" (
     cd frontend
     call npm install >nul 2>&1
     if errorlevel 1 (
-        echo ⚠  Frontend npm install had warnings, continuing...
+        echo [WARN]  Frontend npm install had warnings, continuing...
     )
     cd ..
 )
 
-echo ✓ Dependencies ready
+echo [OK] Dependencies ready
 echo.
 
 REM ============================================================================
@@ -117,7 +117,7 @@ if errorlevel 1 (
         echo   Check "Audit-Safe Frontend" window for details
     )
 ) else (
-    echo ✓ Frontend port 5173 is listening
+    echo [OK] Frontend port 5173 is listening
 )
 echo.
 
@@ -137,11 +137,11 @@ timeout /t 3 /nobreak >nul
 REM Check if backend is running (non-blocking)
 netstat -ano 2>nul | findstr ":3000" >nul 2>&1
 if errorlevel 1 (
-    echo ⚠  Backend not available (PostgreSQL may not be running)
+    echo [WARN]  Backend not available (PostgreSQL may not be running)
     echo   Frontend will continue working without Backend
     echo   API calls will show 500 errors until Backend is fixed
 ) else (
-    echo ✓ Backend port 3000 is listening
+    echo [OK] Backend port 3000 is listening
 )
 echo.
 
@@ -176,7 +176,7 @@ if %CHROME_FOUND% EQU 1 (
     )
 )
 
-echo   ✓ Application Started Successfully!                   
+echo   [OK] Application Started Successfully!                                      
 echo                                                          
 echo   Frontend:     http://localhost:5173  (PRIMARY)        
 echo   Backend API:  http://localhost:3000  (OPTIONAL)       

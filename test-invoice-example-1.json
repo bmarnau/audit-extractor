@@ -1,0 +1,7 @@
+{
+  "invoiceNumber": "INV-2026-001",
+  "invoiceDate": "2026-07-09",
+  "customerName": "ACME Corporation",
+  "totalAmount": 1250.50,
+  "currency": "EUR"
+}

@@ -20,15 +20,12 @@ export class SchemaRepository {
   async create(data: Partial<SchemaEntity>): Promise<SchemaEntity> {
     const schema = this.repository.create({
       id: uuid(),
-      userId: data.userId || "default-user",
+      createdBy: data.createdBy || "00000000-0000-0000-0000-000000000000",
       name: data.name || "",
       description: data.description,
       schema: data.schema || {},
-      directoryPath: data.directoryPath || "",
-      status: "active",
-      version: 1,
-      examplesCount: data.examplesCount || 0,
-      generatedRulesCount: data.generatedRulesCount || 0,
+      version: data.version || "1.0.0",
+      isActive: data.isActive !== undefined ? data.isActive : true,
       ...data,
     });
 
@@ -40,25 +37,25 @@ export class SchemaRepository {
    */
   async findById(id: string): Promise<SchemaEntity | null> {
     return await this.repository.findOne({
-      where: { id, isArchived: false },
+      where: { id },
     });
   }
 
   /**
    * Schema nach Name abrufen (für User)
    */
-  async findByName(userId: string, name: string): Promise<SchemaEntity | null> {
+  async findByName(createdBy: string, name: string): Promise<SchemaEntity | null> {
     return await this.repository.findOne({
-      where: { userId, name, isArchived: false },
+      where: { createdBy, name },
     });
   }
 
   /**
    * Alle aktiven Schemas für einen User abrufen
    */
-  async findAllByUser(userId: string = "default-user"): Promise<SchemaEntity[]> {
+  async findAllByUser(createdBy: string = "00000000-0000-0000-0000-000000000000"): Promise<SchemaEntity[]> {
     return await this.repository.find({
-      where: { userId, isArchived: false },
+      where: { createdBy },
       order: { createdAt: "DESC" },
     });
   }
@@ -66,9 +63,9 @@ export class SchemaRepository {
   /**
    * Version-Historie eines Schemas abrufen (letzte 2 Versionen)
    */
-  async findVersionHistory(schemaName: string, userId: string = "default-user"): Promise<SchemaEntity[]> {
+  async findVersionHistory(schemaName: string, createdBy: string = "00000000-0000-0000-0000-000000000000"): Promise<SchemaEntity[]> {
     return await this.repository.find({
-      where: { userId, name: schemaName },
+      where: { createdBy, name: schemaName },
       order: { version: "DESC" },
       take: 2,
     });
@@ -83,26 +80,25 @@ export class SchemaRepository {
       throw new Error(`Schema mit ID ${id} nicht gefunden`);
     }
 
-    // Alte Version archivieren, wenn es eine neue Version ist
-    if (data.version && data.version > existing.version) {
-      existing.isArchived = true;
-      await this.repository.save(existing);
-
-      // Alte Versionen löschen (über 2 Versionen hinaus)
-      const allVersions = await this.repository.find({
-        where: { name: existing.name, userId: existing.userId },
-        order: { version: "DESC" },
-      });
-
-      if (allVersions.length > 2) {
-        const toDelete = allVersions.slice(2);
-        await this.repository.remove(toDelete);
-      }
+    // Berechne neue Version: "1.0.0" -> "1.0.1"
+    let newVersion = "1.0.0";
+    if (existing.version) {
+      const parts = existing.version.split('.');
+      const patch = parseInt(parts[2] || '0', 10) + 1;
+      newVersion = `${parts[0]}.${parts[1]}.${patch}`;
     }
 
-    // Neue Version speichern
-    const updated = this.repository.merge(existing, data);
-    return await this.repository.save(updated);
+    // Merge mit neuen Daten und aktualisierte Version
+    const updated = this.repository.merge(existing, {
+      ...data,
+      version: newVersion,
+      updatedAt: new Date(),
+    });
+    
+    const saved = await this.repository.save(updated);
+    console.log(`✅ Schema version updated: ${existing.version} → ${saved.version}`);
+    
+    return saved;
   }
 
   /**
@@ -116,34 +112,26 @@ export class SchemaRepository {
   /**
    * Vollständige Löschung inklusive aller Versionen (Admin)
    */
-  async deleteAllVersions(name: string, userId: string = "default-user"): Promise<number> {
-    const result = await this.repository.delete({ name, userId });
+  async deleteAllVersions(name: string, createdBy: string = "00000000-0000-0000-0000-000000000000"): Promise<number> {
+    const result = await this.repository.delete({ name, createdBy });
     return result.affected || 0;
   }
 
   /**
    * Schema-Statistiken abrufen
    */
-  async getStatistics(userId: string = "default-user"): Promise<{
+  async getStatistics(createdBy: string = "00000000-0000-0000-0000-000000000000"): Promise<{
     totalSchemas: number;
     activeSchemas: number;
-    archivedSchemas: number;
-    totalVersions: number;
   }> {
-    const total = await this.repository.count({ where: { userId } });
+    const total = await this.repository.count({ where: { createdBy } });
     const active = await this.repository.count({
-      where: { userId, isArchived: false },
+      where: { createdBy, isActive: true },
     });
-    const archived = await this.repository.count({
-      where: { userId, isArchived: true },
-    });
-    const versions = await this.repository.count({ where: { userId } });
 
     return {
       totalSchemas: total,
       activeSchemas: active,
-      archivedSchemas: archived,
-      totalVersions: versions,
     };
   }
 
@@ -152,12 +140,11 @@ export class SchemaRepository {
    */
   async search(
     query: string,
-    userId: string = "default-user"
+    createdBy: string = "00000000-0000-0000-0000-000000000000"
   ): Promise<SchemaEntity[]> {
     return await this.repository
       .createQueryBuilder("schema")
-      .where("schema.userId = :userId", { userId })
-      .andWhere("schema.isArchived = false")
+      .where("schema.createdBy = :createdBy", { createdBy })
       .andWhere("(schema.name ILIKE :query OR schema.description ILIKE :query)", {
         query: `%${query}%`,
       })

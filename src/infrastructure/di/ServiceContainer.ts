@@ -14,14 +14,16 @@ import { container } from 'tsyringe';
 // Application Services
 import { ChunkingEngine } from '@application/chunking/ChunkingEngine';
 import { FeatureBasedClassifier } from '@application/classification/DocumentClassifierImpl';
-import { LLMExtractor } from '@application/LLMExtractor';
 import { ExtractionPipeline } from '@application/ExtractionPipeline';
 import { MetricsBasedQualityEvaluator } from '@application/quality/QualityEvaluatorImpl';
 
 // Domain Services
-import { RuleLoader } from '@core/rules/RuleLoader';
+// Note: RuleLoader and LLMExtractor are NOT registered in DI container - they're instantiated directly in ExtractionPipeline
 import { HallucinationValidator } from '@domain/HallucinationValidator';
 import { AjvValidationService } from '@domain/validation/ValidationServiceImpl';
+
+// Parser Infrastructure
+import { ParserService } from '@infrastructure/parsers/ParserService';
 
 // Infrastructure Services
 import { ResultRepository } from '@infrastructure/ResultRepository';
@@ -43,6 +45,10 @@ import { SchemaStorageService } from '@application/schema/SchemaStorageService';
 import { SchemaDirectoryManager } from '@infrastructure/filesystem/SchemaDirectoryManager';
 import { SchemaManagementService } from '@application/schema/SchemaManagementService';
 
+// Phase 21 Asynchronous Job Processing
+import { JobRepository } from '@infrastructure/repositories/JobRepository';
+import { JobService } from '@application/jobs/JobService';
+
 /**
  * Registriert alle Services im globalen Container
  *
@@ -54,16 +60,22 @@ import { SchemaManagementService } from '@application/schema/SchemaManagementSer
  */
 export function initializeServiceContainer(): void {
   // ============================================================================
+  // INFRASTRUCTURE SERVICES - Parsers
+  // ============================================================================
+  container.registerSingleton(ParserService);
+
+  // ============================================================================
   // APPLICATION SERVICES - Chunking, Classification, Extraction
   // ============================================================================
   container.registerSingleton(ChunkingEngine);
   container.registerSingleton(FeatureBasedClassifier);
-  container.registerSingleton(LLMExtractor);
+  // LLMExtractor is NOT registered in DI - it's instantiated directly in ExtractionPipeline
 
   // ============================================================================
   // DOMAIN SERVICES - Validation, Quality, Hallucination Detection
   // ============================================================================
-  container.registerSingleton(RuleLoader);
+  // RuleLoader is instantiated directly in ExtractionPipeline, not via DI
+  // This avoids the issue with optional constructor parameters
   container.registerSingleton(HallucinationValidator);
   container.registerSingleton(AjvValidationService);
   container.registerSingleton(MetricsBasedQualityEvaluator);
@@ -74,6 +86,16 @@ export function initializeServiceContainer(): void {
   container.registerSingleton(ResultRepository);
   container.registerSingleton(ConfigManager);
   container.registerSingleton(BackupService);
+
+  // ============================================================================
+  // TOKEN-BASED REGISTRATIONS FOR @inject() DECORATORS IN ExtractionPipeline
+  // ============================================================================
+  container.registerSingleton('DocumentParser', ParserService);
+  container.registerSingleton('ChunkingEngine', ChunkingEngine);
+  container.registerSingleton('DocumentClassifier', FeatureBasedClassifier);
+  // RuleLoader, LLMExtractor, ValidationService, QualityEvaluator, and ResultRepository are NOT registered here 
+  // - they're instantiated directly in ExtractionPipeline
+  container.registerSingleton('HallucinationValidator', HallucinationValidator);
 
   // ============================================================================
   // ORCHESTRATION - Central Pipeline (depends on all above)
@@ -100,6 +122,12 @@ export function initializeServiceContainer(): void {
   container.registerSingleton(SchemaStorageService);
   container.registerSingleton(SchemaDirectoryManager);
   container.registerSingleton(SchemaManagementService);
+
+  // ============================================================================
+  // PHASE 21 - Asynchronous Job Processing
+  // ============================================================================
+  container.registerSingleton(JobRepository);
+  container.registerSingleton(JobService);
 }
 
 /**

@@ -1,0 +1,307 @@
+<testsuites id="" name="" tests="15" failures="2" skipped="0" errors="0" time="19.525529">
+<testsuite name="comprehensive-frontend-test.spec.ts" timestamp="2026-07-09T18:03:36.066Z" hostname="chromium" tests="15" failures="2" skipped="0" time="16.459" errors="0">
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › HOMEPAGE: Load and verify initial structure" classname="comprehensive-frontend-test.spec.ts" time="1.59">
+<system-out>
+<![CDATA[✓ Page Title: Audit-Safe Document Extractor
+✅ Homepage loaded successfully in 970ms
+
+📊 TEST METRICS:
+  Page Load Time: 970ms
+  Console Errors: 0
+  Network Errors: 0
+  Requests: 11/11 successful
+  Screenshots: 1 taken
+]]>
+</system-out>
+</testcase>
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › NAVIGATION: Verify all menu items visible and clickable" classname="comprehensive-frontend-test.spec.ts" time="0.586">
+<system-out>
+<![CDATA[
+📊 TEST METRICS:
+  Page Load Time: 0ms
+  Console Errors: 0
+  Network Errors: 0
+  Requests: 11/11 successful
+  Screenshots: 0 taken
+
+[[ATTACHMENT|test-results\comprehensive-frontend-tes-78c8d-items-visible-and-clickable-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\comprehensive-frontend-tes-78c8d-items-visible-and-clickable-chromium\error-context.md]]
+]]>
+</system-out>
+<failure message="expect(received).toBeGreaterThan(expected)" type="expect.toBeGreaterThan">
+<![CDATA[  [chromium] › comprehensive-frontend-test.spec.ts:185:7 › COMPREHENSIVE FRONTEND TEST SUITE › NAVIGATION: Verify all menu items visible and clickable 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      192 |     // Find all navigation links
+      193 |     const navLinks = await page.locator('nav a, nav button').all();
+    > 194 |     expect(navLinks.length).toBeGreaterThan(0);
+          |                             ^
+      195 |
+      196 |     console.log(`Found ${navLinks.length} navigation items`);
+      197 |
+        at C:\Users\bmarn\OneDrive\HTML\extractor\tests\e2e\comprehensive-frontend-test.spec.ts:194:29
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('nav').first()
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('nav').first()
+
+
+      188 |     // Check main navigation exists
+      189 |     const nav = await page.locator('nav').first();
+    > 190 |     expect(nav).toBeVisible({ timeout: 5000 });
+          |                 ^
+      191 |
+      192 |     // Find all navigation links
+      193 |     const navLinks = await page.locator('nav a, nav button').all();
+        at C:\Users\bmarn\OneDrive\HTML\extractor\tests\e2e\comprehensive-frontend-test.spec.ts:190:17
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\comprehensive-frontend-tes-78c8d-items-visible-and-clickable-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\comprehensive-frontend-tes-78c8d-items-visible-and-clickable-chromium\error-context.md
+]]>
+</failure>
+</testcase>
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › SCHEMAS PAGE: Load and verify schema list" classname="comprehensive-frontend-test.spec.ts" time="1.222">
+<system-out>
+<![CDATA[✅ Schemas page loaded
+
+📊 TEST METRICS:
+  Page Load Time: 0ms
+  Console Errors: 0
+  Network Errors: 0
+  Requests: 3/3 successful
+  Screenshots: 1 taken
+]]>
+</system-out>
+</testcase>
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › SCHEMAS PAGE: API call verification" classname="comprehensive-frontend-test.spec.ts" time="1.001">
+<system-out>
+<![CDATA[✓ API Call: GET /api/schema/schemas - Status 200
+✅ Schema API call successful (HTTP 200)
+
+📊 TEST METRICS:
+  Page Load Time: 0ms
+  Console Errors: 0
+  Network Errors: 0
+  Requests: 3/3 successful
+  Screenshots: 0 taken
+]]>
+</system-out>
+</testcase>
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › HELP CENTER: Load and verify tabs" classname="comprehensive-frontend-test.spec.ts" time="1.403">
+<system-out>
+<![CDATA[Found 4 tabs
+✅ Help Center loaded with 4 tabs
+
+📊 TEST METRICS:
+  Page Load Time: 0ms
+  Console Errors: 0
+  Network Errors: 0
+  Requests: 6/6 successful
+  Screenshots: 1 taken
+]]>
+</system-out>
+</testcase>
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › HELP CENTER: Click each tab and verify content" classname="comprehensive-frontend-test.spec.ts" time="0.519">
+<system-out>
+<![CDATA[✅ All tabs verified
+
+📊 TEST METRICS:
+  Page Load Time: 0ms
+  Console Errors: 0
+  Network Errors: 0
+  Requests: 3/3 successful
+  Screenshots: 0 taken
+]]>
+</system-out>
+</testcase>
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › DASHBOARD: Load and verify components" classname="comprehensive-frontend-test.spec.ts" time="3.757">
+<system-out>
+<![CDATA[✓ Config Status: Active
+✓ Backup Status: 0
+✓ Extraction Rules: 3
+✓ Configurations: 1
+✓ Schemas: 0
+✓ Documents: 0
+✓ Manuals: 7
+✅ All 7 metric cards found!
+📊 Metric Values: {"Config Status":"Active","Backup Status":"0","Extraction Rules":"3","Configurations":"1","Schemas":"0","Documents":"0","Manuals":"7"}
+✅ Dashboard verification complete
+
+📊 TEST METRICS:
+  Page Load Time: 0ms
+  Console Errors: 0
+  Network Errors: 0
+  Requests: 11/11 successful
+  Screenshots: 1 taken
+]]>
+</system-out>
+</testcase>
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › DASHBOARD: Test refresh buttons" classname="comprehensive-frontend-test.spec.ts" time="0.481">
+<system-out>
+<![CDATA[✅ Refresh buttons tested
+
+📊 TEST METRICS:
+  Page Load Time: 0ms
+  Console Errors: 0
+  Network Errors: 0
+  Requests: 2/2 successful
+  Screenshots: 1 taken
+]]>
+</system-out>
+</testcase>
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › FORMS: Find and fill all input fields" classname="comprehensive-frontend-test.spec.ts" time="0.737">
+<system-out>
+<![CDATA[✅ Forms tested
+
+📊 TEST METRICS:
+  Page Load Time: 0ms
+  Console Errors: 1
+  Network Errors: 1
+  Requests: 15/15 successful
+  Screenshots: 1 taken
+]]>
+</system-out>
+<system-err>
+<![CDATA[⚠️  Network Error: GET http://localhost/api/backup/list?limit=50
+🔴 Console Error: http://localhost/assets/index-694b23a4.js:221 - [useBackup] List failed: TypeError: Failed to fetch
+    at http://localhost/assets/index-694b23a4.js:222:190824
+    at http://localhost/assets/index-694b23a4.js:222:225827
+]]>
+</system-err>
+</testcase>
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › BUTTONS: Find and click all interactive buttons" classname="comprehensive-frontend-test.spec.ts" time="0.712">
+<system-out>
+<![CDATA[Found 1 buttons on homepage
+  ✓ Button "": Clicked
+✅ Buttons tested: 1 clicked, 1 visible
+
+📊 TEST METRICS:
+  Page Load Time: 0ms
+  Console Errors: 0
+  Network Errors: 0
+  Requests: 11/11 successful
+  Screenshots: 1 taken
+]]>
+</system-out>
+</testcase>
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › FILE UPLOAD: Find and test file input" classname="comprehensive-frontend-test.spec.ts" time="0.507">
+<system-out>
+<![CDATA[No file inputs found on homepage
+
+📊 TEST METRICS:
+  Page Load Time: 0ms
+  Console Errors: 0
+  Network Errors: 0
+  Requests: 11/11 successful
+  Screenshots: 1 taken
+]]>
+</system-out>
+</testcase>
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › DIALOGS: Find and open all modals/dialogs" classname="comprehensive-frontend-test.spec.ts" time="0.609">
+<system-out>
+<![CDATA[✅ Dialogs tested: 0 found
+
+📊 TEST METRICS:
+  Page Load Time: 0ms
+  Console Errors: 0
+  Network Errors: 0
+  Requests: 11/11 successful
+  Screenshots: 1 taken
+]]>
+</system-out>
+</testcase>
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › PERFORMANCE: Measure page load times" classname="comprehensive-frontend-test.spec.ts" time="2.882">
+<system-out>
+<![CDATA[  Homepage: 793ms
+  Schemas: 607ms
+  Help: 711ms
+  Dashboard: 531ms
+✅ Performance metrics: {"Homepage":793,"Schemas":607,"Help":711,"Dashboard":531}
+
+📊 TEST METRICS:
+  Page Load Time: 0ms
+  Console Errors: 0
+  Network Errors: 0
+  Requests: 22/22 successful
+  Screenshots: 0 taken
+]]>
+</system-out>
+</testcase>
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › ERROR HANDLING: Verify proper error states" classname="comprehensive-frontend-test.spec.ts" time="0.221">
+<system-out>
+<![CDATA[✅ No errors detected
+
+📊 TEST METRICS:
+  Page Load Time: 0ms
+  Console Errors: 0
+  Network Errors: 0
+  Requests: 0/0 successful
+  Screenshots: 0 taken
+]]>
+</system-out>
+</testcase>
+<testcase name="COMPREHENSIVE FRONTEND TEST SUITE › FINAL CHECK: All systems operational" classname="comprehensive-frontend-test.spec.ts" time="0.232">
+<system-out>
+<![CDATA[
+🎯 FINAL TEST REPORT:
+============================================================
+Console Errors: 0 ❌ ✅
+Network Errors: 0 ✅
+HTTP Errors: 0 ✅
+Successful Requests: 0/0
+Screenshots Taken: 0
+============================================================
+
+📊 TEST METRICS:
+  Page Load Time: 0ms
+  Console Errors: 0
+  Network Errors: 0
+  Requests: 0/0 successful
+  Screenshots: 0 taken
+
+[[ATTACHMENT|test-results\comprehensive-frontend-tes-a495b-ECK-All-systems-operational-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\comprehensive-frontend-tes-a495b-ECK-All-systems-operational-chromium\error-context.md]]
+]]>
+</system-out>
+<failure message="expect(received).toBeGreaterThan(expected)" type="expect.toBeGreaterThan">
+<![CDATA[  [chromium] › comprehensive-frontend-test.spec.ts:628:7 › COMPREHENSIVE FRONTEND TEST SUITE › FINAL CHECK: All systems operational 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      640 |     expect(metrics.networkErrors.length).toBe(0);
+      641 |     expect(metrics.requestsCount.failed).toBe(0);
+    > 642 |     expect(metrics.requestsCount.success).toBeGreaterThan(0);
+          |                                           ^
+      643 |
+      644 |     console.log('✅ ALL TESTS PASSED - SYSTEM READY FOR PRODUCTION');
+      645 |   });
+        at C:\Users\bmarn\OneDrive\HTML\extractor\tests\e2e\comprehensive-frontend-test.spec.ts:642:43
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\comprehensive-frontend-tes-a495b-ECK-All-systems-operational-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\comprehensive-frontend-tes-a495b-ECK-All-systems-operational-chromium\error-context.md
+]]>
+</failure>
+</testcase>
+</testsuite>
+</testsuites>

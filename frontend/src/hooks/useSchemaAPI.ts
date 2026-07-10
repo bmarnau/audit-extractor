@@ -14,25 +14,21 @@ import { useState, useCallback, useEffect } from 'react';
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
 /**
- * Schema Interface
+ * Schema Interface - Updated for Phase 17/18 (matches PostgreSQL schema)
  */
 export interface Schema {
   id: string;
-  userId: string;
   name: string;
   description: string;
-  version: number;
-  schema: Record<string, any>;
-  examplesCount: number;
-  generatedRulesCount: number;
-  averageConfidence: number;
-  status: 'active' | 'archived' | 'draft';
-  directoryPath: string;
-  metadata: Record<string, any>;
+  documentType?: string;
+  schema?: Record<string, any>;
+  version: string;
+  isActive: boolean;
+  createdBy: string;
+  updatedBy: string;
   createdAt: string;
   updatedAt: string;
-  isArchived: boolean;
-  previousVersionId?: string;
+  fieldsCount?: number;
 }
 
 export interface ExtractionRule {
@@ -66,7 +62,7 @@ export const useSchemas = (page = 1, limit = 20) => {
       setLoading(true);
       setError(null);
       const response = await fetch(
-        `${API_BASE_URL}/schema?page=${page}&limit=${limit}`
+        `${API_BASE_URL}/schema/schemas?page=${page}&limit=${limit}`
       );
 
       if (!response.ok) {
@@ -74,8 +70,11 @@ export const useSchemas = (page = 1, limit = 20) => {
       }
 
       const data = await response.json();
-      setSchemas(data.schemas || []);
-      setTotal(data.total || 0);
+      // API Response format: {data: [schemas], timestamp, path, duration}
+      // So data.data is the schemas array
+      setSchemas(data.data || []);
+      // Total is part of the schemas if returned, otherwise 0
+      setTotal(data.total || data.data?.length || 0);
     } catch (err) {
       const errorMsg = err instanceof Error ? err.message : 'Failed to fetch schemas';
       setError(errorMsg);

@@ -1,82 +1,106 @@
 /**
- * Log Viewer Routes - Phase 13
+ * Log Viewer Routes - Phase 20
  *
- * REST API für Log Viewing und Verwaltung mit Serviceintegration
+ * REST API für Log Viewing mit PostgreSQL Persistenz
+ * Unterstützt: Filtering, Search, Stats, Export (JSON/CSV)
  *
- * @version 0.13.0
- * @phase 13
+ * @version 0.20.0
+ * @phase 20
  */
 
 import { Router, Response, NextFunction } from 'express';
 import { ApiRequest, ApiResponseError, createSuccessResponse } from '../server';
+import { AuditLogRepository } from '../../repositories/AuditLogRepository';
 
 const router = Router();
+const logRepository = new AuditLogRepository();
 
 /**
- * GET /api/logs - Get logs with multi-dimensional filtering
+ * GET /api/logs - Query logs with multi-dimensional filtering
+ * Query params: limit, offset, levels, sources, startDate, endDate, search, documentId, field
  */
 router.get('/', async (req: ApiRequest, res: Response, next: NextFunction) => {
   try {
     const limit = Math.min(parseInt(req.query.limit as string) || 50, 500);
     const offset = parseInt(req.query.offset as string) || 0;
-    const query = req.query.query as string;
-    const sources = req.query.source ? (req.query.source as string).split(',') : undefined;
-    const levels = req.query.level ? (req.query.level as string).split(',') : undefined;
+    const searchQuery = req.query.search as string | undefined;
+    const levels = req.query.levels ? (req.query.levels as string).split(',') : undefined;
+    const sources = req.query.sources ? (req.query.sources as string).split(',') : undefined;
     const startDate = req.query.startDate ? new Date(req.query.startDate as string) : undefined;
     const endDate = req.query.endDate ? new Date(req.query.endDate as string) : undefined;
+    const documentId = req.query.documentId as string | undefined;
+    const field = req.query.field as string | undefined;
 
-    console.log(`[Logs] Fetching logs: limit=${limit} offset=${offset} query="${query}"`);
+    console.log(`[LogViewer] Query logs: limit=${limit}, search="${searchQuery}", levels=${levels?.join(',')}`);
 
-    // Load mock logs (in production, would be from database)
-    const allLogs = getMockLogs();
+    const { logs, total } = await logRepository.query({
+      limit,
+      offset,
+      levels,
+      sources,
+      startDate,
+      endDate,
+      searchQuery,
+      documentId,
+      field,
+    });
 
-    // Apply filters
-    let filtered = allLogs;
-    
-    if (query) {
-      const queryLower = query.toLowerCase();
-      filtered = filtered.filter(log => 
-        log.message.toLowerCase().includes(queryLower) || 
-        JSON.stringify(log.context || {}).toLowerCase().includes(queryLower)
-      );
-    }
+    const hasMore = offset + limit < total;
 
-    if (sources && sources.length > 0) {
-      filtered = filtered.filter(log => sources.includes(log.source));
-    }
-
-    if (levels && levels.length > 0) {
-      filtered = filtered.filter(log => levels.includes(log.level));
-    }
-
-    if (startDate) {
-      filtered = filtered.filter(log => new Date(log.timestamp) >= startDate);
-    }
-
-    if (endDate) {
-      filtered = filtered.filter(log => new Date(log.timestamp) <= endDate);
-    }
-
-    const totalCount = filtered.length;
-    const logs = filtered.slice(offset, offset + limit);
-    const hasMore = offset + limit < totalCount;
-
-    console.log(`[Logs] Returned ${logs.length} logs (total: ${totalCount})`);
+    console.log(`[LogViewer] Returned ${logs.length} logs (total: ${total})`);
     res.json(createSuccessResponse({
-      logs,
-      totalCount,
+      logs: logs.map((log: any) => ({
+        id: log.id,
+        timestamp: log.timestamp,
+        level: log.level,
+        source: log.source,
+        message: log.message,
+        documentId: log.documentId,
+        field: log.field,
+        duration: log.duration,
+        requestId: log.requestId,
+        context: log.context,
+      })),
+      totalCount: total,
       hasMore,
       limit,
       offset,
-      filterUsed: { query, sources, levels, startDate, endDate },
-    }));
+    }, req));
   } catch (error) {
-    console.error(`[Logs] Search error:`, error);
+    console.error(`[LogViewer] Query error:`, error);
     const err = error as any;
     return next(new ApiResponseError(
-      'LOG_SEARCH_FAILED',
+      'LOG_QUERY_FAILED',
       500,
-      'Failed to search logs',
+      'Failed to query logs',
+      { error: err.message }
+    ));
+  }
+});
+
+/**
+ * GET /api/logs/stats - Get log statistics
+ */
+router.get('/stats', async (req: ApiRequest, res: Response, next: NextFunction) => {
+  try {
+    const stats = await logRepository.getStatistics();
+
+    res.json(createSuccessResponse({
+      totalEntries: stats.totalEntries,
+      byLevel: stats.byLevel,
+      bySource: stats.bySource,
+      errorCount: stats.errorCount,
+      warningCount: stats.warningCount,
+      last24Hours: stats.last24Hours,
+      generatedAt: new Date().toISOString(),
+    }, req));
+  } catch (error) {
+    console.error(`[LogViewer] Stats error:`, error);
+    const err = error as any;
+    return next(new ApiResponseError(
+      'LOG_STATS_FAILED',
+      500,
+      'Failed to get log statistics',
       { error: err.message }
     ));
   }
@@ -87,9 +111,10 @@ router.get('/', async (req: ApiRequest, res: Response, next: NextFunction) => {
  */
 router.get('/sources', async (_req: ApiRequest, res: Response, next: NextFunction) => {
   try {
-    const sources = ['parser', 'llm', 'validator', 'api', 'system'];
+    const sources = ['parser', 'llm', 'validator', 'api', 'system', 'schema', 'extraction'];
+    const levels = ['debug', 'info', 'warn', 'error'];
 
-    res.json(createSuccessResponse({ sources }));
+    res.json(createSuccessResponse({ sources, levels }, _req));
   } catch (error) {
     return next(new ApiResponseError(
       'SOURCES_FAILED',
@@ -101,100 +126,52 @@ router.get('/sources', async (_req: ApiRequest, res: Response, next: NextFunctio
 });
 
 /**
- * GET /api/logs/stats - Get log statistics
- */
-router.get('/stats', async (_req: ApiRequest, res: Response, next: NextFunction) => {
-  try {
-    const stats = {
-      totalEntries: 0,
-      bySource: {},
-      byLevel: {},
-      errorCount: 0,
-      warningCount: 0,
-      averageResponseTime: 0,
-      storageSize: 0,
-    };
-
-    res.json(createSuccessResponse(stats));
-  } catch (error) {
-    return next(new ApiResponseError(
-      'STATS_FAILED',
-      500,
-      'Failed to get log statistics',
-      { error: (error as any).message }
-    ));
-  }
-});
-
-/**
- * POST /api/logs/export - Export logs in specified format
+ * POST /api/logs/export - Export logs in specified format (json, csv)
+ * Body: { format: 'json'|'csv', levels?: [], sources?: [], startDate?: ISO, endDate?: ISO, limit?: number }
  */
 router.post('/export', async (req: ApiRequest, res: Response, next: NextFunction) => {
   try {
-    const { format, filter, limit } = req.body;
-    console.log(`[Logs] Exporting logs as ${format}`);
+    const { format, levels, sources, startDate, endDate, limit } = req.body;
 
-    if (!['json', 'csv', 'txt'].includes(format)) {
+    if (!['json', 'csv'].includes(format)) {
       return next(new ApiResponseError(
         'VALIDATION_ERROR',
         400,
-        'format must be json, csv, or txt'
+        'format must be json or csv'
       ));
     }
 
-    // Load all logs
-    let logs = getMockLogs();
-    
-    // Apply filter if provided
-    if (filter) {
-      if (filter.query) {
-        const q = filter.query.toLowerCase();
-        logs = logs.filter((l: any) => l.message.toLowerCase().includes(q));
-      }
-      if (filter.levels && filter.levels.length > 0) {
-        logs = logs.filter((l: any) => filter.levels.includes(l.level));
-      }
-      if (filter.sources && filter.sources.length > 0) {
-        logs = logs.filter((l: any) => filter.sources.includes(l.source));
-      }
-    }
+    console.log(`[LogViewer] Exporting logs as ${format}`);
 
-    // Limit results
-    const limitNum = Math.min(limit || 10000, 50000);
-    logs = logs.slice(0, limitNum);
+    const filter = {
+      limit: Math.min(limit || 10000, 50000),
+      levels,
+      sources,
+      startDate: startDate ? new Date(startDate) : undefined,
+      endDate: endDate ? new Date(endDate) : undefined,
+    };
 
-    // Format export
     let exportedContent: string;
+    const filename = `logs-${format}-${new Date().toISOString().slice(0, 10)}.${format}`;
+
     if (format === 'json') {
-      exportedContent = JSON.stringify(logs, null, 2);
-    } else if (format === 'csv') {
-      const headers = ['timestamp', 'level', 'source', 'message'];
-      const rows = [headers.join(','), ...logs.map((l: any) => [
-        `"${l.timestamp}"`,
-        l.level,
-        l.source,
-        `"${l.message.replace(/"/g, '""')}"`,
-      ].join(','))];
-      exportedContent = rows.join('\n');
+      exportedContent = await logRepository.exportAsJson(filter);
     } else {
-      exportedContent = logs.map((l: any) => 
-        `[${l.timestamp}] [${l.level}] [${l.source}] ${l.message}`
-      ).join('\n');
+      exportedContent = await logRepository.exportAsCsv(filter);
     }
 
-    const filename = `logs-export-${Date.now()}.${format}`;
-    console.log(`[Logs] Successfully exported ${logs.length} log entries to ${filename}`);
-    
+    console.log(`[LogViewer] Exported ${(exportedContent.match(/\n/g) || []).length + 1} entries`);
+
     res.json(createSuccessResponse({
       exported: true,
       format,
       filename,
-      entryCount: logs.length,
       contentLength: exportedContent.length,
       exportedAt: new Date().toISOString(),
-    }));
+      dataUrl: `data:text/${format === 'csv' ? 'csv' : 'json'};charset=utf-8,${encodeURIComponent(exportedContent)}`,
+    }, req));
   } catch (error) {
-    console.error(`[Logs] Export error:`, error);
+    console.error(`[LogViewer] Export error:`, error);
     const err = error as any;
     return next(new ApiResponseError(
       'EXPORT_FAILED',
@@ -207,41 +184,33 @@ router.post('/export', async (req: ApiRequest, res: Response, next: NextFunction
 
 /**
  * DELETE /api/logs/cleanup - Cleanup old logs based on retention policy
+ * Body: { daysToRetain: number }
  */
 router.delete('/cleanup', async (req: ApiRequest, res: Response, next: NextFunction) => {
   try {
-    const { retentionDays } = req.body;
-    console.log(`[Logs] Cleanup request: retentionDays=${retentionDays}`);
+    const { daysToRetain } = req.body;
 
-    if (!retentionDays || retentionDays < 1) {
+    if (!daysToRetain || daysToRetain < 1 || daysToRetain > 365) {
       return next(new ApiResponseError(
         'VALIDATION_ERROR',
         400,
-        'retentionDays must be at least 1'
+        'daysToRetain must be between 1 and 365'
       ));
     }
 
-    // Calculate cutoff date
-    const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - retentionDays);
+    console.log(`[LogViewer] Cleanup: removing logs older than ${daysToRetain} days`);
 
-    // In production, would delete from database
-    // For now, simulate cleanup
-    const allLogs = getMockLogs();
-    const logsToKeep = allLogs.filter(log => new Date(log.timestamp) > cutoffDate);
-    const removedCount = allLogs.length - logsToKeep.length;
+    const removedCount = await logRepository.clearOldLogs(daysToRetain);
 
-    const result = {
+    res.json(createSuccessResponse({
       cleaned: true,
       removedCount,
-      cutoffDate: cutoffDate.toISOString(),
+      daysRetained: daysToRetain,
+      cutoffDate: new Date(Date.now() - daysToRetain * 24 * 60 * 60 * 1000).toISOString(),
       cleanedAt: new Date().toISOString(),
-    };
-
-    console.log(`[Logs] Cleanup completed: removed ${removedCount} entries`);
-    res.json(createSuccessResponse(result));
+    }, req));
   } catch (error) {
-    console.error(`[Logs] Cleanup error:`, error);
+    console.error(`[LogViewer] Cleanup error:`, error);
     const err = error as any;
     return next(new ApiResponseError(
       'CLEANUP_FAILED',
@@ -253,85 +222,47 @@ router.delete('/cleanup', async (req: ApiRequest, res: Response, next: NextFunct
 });
 
 /**
- * GET /api/logs/level/:level - Get logs by level
+ * POST /api/logs/create - Create a log entry (for internal use)
+ * Body: { level, source, message, context?, documentId?, field? }
  */
-router.get('/level/:level', async (req: ApiRequest, res: Response, next: NextFunction) => {
+router.post('/create', async (req: ApiRequest, res: Response, next: NextFunction) => {
   try {
-    const level = req.params.level as string;
-    const limit = Math.min(parseInt(req.query.limit as string) || 50, 500);
+    const { level, source, message, context, documentId, field, duration, requestId } = req.body;
 
-    if (!['debug', 'info', 'warn', 'error'].includes(level)) {
+    if (!level || !source || !message) {
       return next(new ApiResponseError(
         'VALIDATION_ERROR',
         400,
-        'level must be debug, info, warn, or error'
+        'level, source, and message are required'
       ));
     }
 
-    console.log(`[Logs] Getting logs by level: ${level}`);
+    const logEntry = await logRepository.log({
+      level: level as any,
+      source: source as any,
+      message,
+      context,
+      documentId,
+      field,
+      duration,
+      requestId,
+    });
 
-    // Get all logs and filter by level
-    const allLogs = getMockLogs();
-    const filtered = allLogs.filter(log => log.level === level).slice(0, limit);
-
-    console.log(`[Logs] Retrieved ${filtered.length} logs with level ${level}`);
-    res.json(createSuccessResponse({
-      logs: filtered,
-      totalCount: filtered.length,
-      level,
-      limit,
-    }));
+    res.status(201).json(createSuccessResponse({
+      id: logEntry.id,
+      timestamp: logEntry.timestamp,
+      message: 'Log entry created',
+    }, req));
   } catch (error) {
-    console.error(`[Logs] Level filtering error:`, error);
+    console.error(`[LogViewer] Create error:`, error);
     const err = error as any;
     return next(new ApiResponseError(
-      'LOG_LEVEL_FAILED',
+      'LOG_CREATE_FAILED',
       500,
-      'Failed to get logs by level',
+      'Failed to create log entry',
       { error: err.message }
     ));
   }
 });
-
-// Helper function to get mock logs
-function getMockLogs(): any[] {
-  const sources = ['parser', 'llm', 'validator', 'api', 'system'];
-  const levels = ['debug', 'info', 'warn', 'error'];
-  const baseTime = Date.now();
-  const logs = [];
-
-  for (let i = 0; i < 100; i++) {
-    logs.push({
-      id: `log-${i}`,
-      timestamp: new Date(baseTime - i * 60000).toISOString(),
-      level: levels[Math.floor(Math.random() * levels.length)],
-      source: sources[Math.floor(Math.random() * sources.length)],
-      message: generateLogMessage(),
-      context: {
-        documentId: `doc-${Math.floor(Math.random() * 10)}`,
-        userId: 'user-123',
-        duration: Math.floor(Math.random() * 5000),
-      },
-    });
-  }
-
-  return logs.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
-}
-
-function generateLogMessage(): string {
-  const messages = [
-    'Document parsed successfully',
-    'LLM extraction completed',
-    'Validation rule applied',
-    'Confidence score calculated',
-    'Hallucination detection running',
-    'Backup created',
-    'Configuration updated',
-    'Error during processing',
-    'Timeout in extraction',
-    'Invalid input detected',
-  ];
-  return messages[Math.floor(Math.random() * messages.length)];
-}
 
 export default router;

@@ -1,0 +1,29 @@
+{
+  "value": "{\r\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\r\n  \"title\": \"Invoice Schema\",\r\n  \"description\": \"Struktur für Rechnungsextraction aus PDF, Word und anderen Dokumenten\",\r\n  \"type\": \"object\",\r\n  \"properties\": {\r\n    \"invoiceNumber\": {\r\n      \"type\": \"string\",\r\n      \"description\": \"Eindeutige Rechnungsnummer (z.B. INV-2026-001234)\",\r\n      \"pattern\": \"^[A-Z]{2,5}-[0-9]{4}-[0-9]{6}$\"\r\n    },\r\n    \"invoiceDate\": {\r\n      \"type\": \"string\",\r\n      \"format\": \"date\",\r\n      \"description\": \"Rechnungsdatum im ISO-Format (YYYY-MM-DD)\"\r\n    },\r\n    \"dueDate\": {\r\n      \"type\": \"string\",\r\n      \"format\": \"date\",\r\n      \"description\": \"Fälligkeitsdatum im ISO-Format\"\r\n    },\r\n    \"vendor\": {\r\n      \"type\": \"object\",\r\n      \"description\": \"Rechnungssteller (Verkäufer)\",\r\n      \"properties\": {\r\n        \"name\": {\r\n          \"type\": \"string\",\r\n          \"description\": \"Unternehmensname\"\r\n        },\r\n        \"address\": {\r\n          \"type\": \"string\",\r\n          \"description\": \"Vollständige Adresse\"\r\n        },\r\n        \"taxId\": {\r\n          \"type\": \"string\",\r\n          \"description\": \"Steuernummer / VAT ID\"\r\n        },\r\n        \"email\": {\r\n          \"type\": \"string\",\r\n          \"format\": \"email\",\r\n          \"description\": \"Kontakt-E-Mail\"\r\n        }\r\n      },\r\n      \"required\": [\"name\"]\r\n    },\r\n    \"buyer\": {\r\n      \"type\": \"object\",\r\n      \"description\": \"Rechnungsempfänger (Käufer)\",\r\n      \"properties\": {\r\n        \"name\": {\r\n          \"type\": \"string\",\r\n          \"description\": \"Name oder Unternehmensname\"\r\n        },\r\n        \"address\": {\r\n          \"type\": \"string\",\r\n          \"description\": \"Lieferadresse\"\r\n        }\r\n      },\r\n      \"required\": [\"name\"]\r\n    },\r\n    \"lineItems\": {\r\n      \"type\": \"array\",\r\n      \"description\": \"Rechnungspositionen\",\r\n      \"items\": {\r\n        \"type\": \"object\",\r\n        \"properties\": {\r\n          \"position\": {\r\n            \"type\": \"integer\",\r\n            \"description\": \"Positionsnummer\"\r\n          },\r\n          \"description\": {\r\n            \"type\": \"string\",\r\n            \"description\": \"Beschreibung der Leistung/Ware\"\r\n          },\r\n          \"quantity\": {\r\n            \"type\": \"number\",\r\n            \"description\": \"Menge\"\r\n          },\r\n          \"unit\": {\r\n            \"type\": \"string\",\r\n            \"description\": \"Einheit (Stück, kg, Std, etc.)\"\r\n          },\r\n          \"unitPrice\": {\r\n            \"type\": \"number\",\r\n            \"description\": \"Einzelpreis\"\r\n          },\r\n          \"totalPrice\": {\r\n            \"type\": \"number\",\r\n            \"description\": \"Gesamtpreis für Position\"\r\n          }\r\n        },\r\n        \"required\": [\"description\", \"quantity\", \"unitPrice\"]\r\n      }\r\n    },\r\n    \"subtotal\": {\r\n      \"type\": \"number\",\r\n      \"description\": \"Summe ohne Steuern\"\r\n    },\r\n    \"taxRate\": {\r\n      \"type\": \"number\",\r\n      \"description\": \"Steuersatz in Prozent (z.B. 19 für 19%)\"\r\n    },\r\n    \"taxAmount\": {\r\n      \"type\": \"number\",\r\n      \"description\": \"Steuerbetrag\"\r\n    },\r\n    \"totalAmount\": {\r\n      \"type\": \"number\",\r\n      \"description\": \"Gesamtrechnungsbetrag (inkl. Steuern)\"\r\n    },\r\n    \"currency\": {\r\n      \"type\": \"string\",\r\n      \"description\": \"Währung (EUR, USD, etc.)\",\r\n      \"default\": \"EUR\"\r\n    },\r\n    \"paymentTerms\": {\r\n      \"type\": \"string\",\r\n      \"description\": \"Zahlungsbedingungen (z.B. 'Netto 30')\"\r\n    },\r\n    \"bankDetails\": {\r\n      \"type\": \"object\",\r\n      \"description\": \"Bankdaten für Zahlung\",\r\n      \"properties\": {\r\n        \"accountHolder\": {\r\n          \"type\": \"string\"\r\n        },\r\n        \"iban\": {\r\n          \"type\": \"string\"\r\n        },\r\n        \"bic\": {\r\n          \"type\": \"string\"\r\n        }\r\n      }\r\n    }\r\n  },\r\n  \"required\": [\r\n    \"invoiceNumber\",\r\n    \"invoiceDate\",\r\n    \"vendor\",\r\n    \"buyer\",\r\n    \"lineItems\",\r\n    \"totalAmount\"\r\n  ]\r\n}\r\n",
+  "PSPath": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\example-schemas\\invoice-schema.json",
+  "PSParentPath": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\example-schemas",
+  "PSChildName": "invoice-schema.json",
+  "PSDrive": {
+    "CurrentLocation": "Users\\bmarn\\OneDrive\\HTML\\extractor",
+    "Name": "C",
+    "Provider": "Microsoft.PowerShell.Core\\FileSystem",
+    "Root": "C:\\",
+    "Description": "Local Disk",
+    "MaximumSize": null,
+    "Credential": "System.Management.Automation.PSCredential",
+    "DisplayRoot": null
+  },
+  "PSProvider": {
+    "ImplementingType": "Microsoft.PowerShell.Commands.FileSystemProvider",
+    "HelpFile": "System.Management.Automation.dll-Help.xml",
+    "Name": "FileSystem",
+    "PSSnapIn": "Microsoft.PowerShell.Core",
+    "ModuleName": "Microsoft.PowerShell.Core",
+    "Module": null,
+    "Description": "",
+    "Capabilities": 52,
+    "Home": "C:\\Users\\bmarn",
+    "Drives": "C T"
+  },
+  "ReadCount": 1
+}

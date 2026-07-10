@@ -14,12 +14,14 @@
  * - Confidence basierend auf Struktur-Klarheit
  */
 
+import { injectable } from 'tsyringe';
 import { Document, DocumentChunk } from '@core/models';
 import { IChunkingStrategy, ChunkingConfig, ChunkingError, validateChunkingConfig } from './ChunkingStrategy';
 
 /**
  * ChunkingEngine - Orchestriert verschiedene Chunking-Strategien.
  */
+@injectable()
 export class ChunkingEngine {
   private strategies: Map<string, IChunkingStrategy> = new Map();
   private defaultConfig: ChunkingConfig = {

@@ -19,9 +19,9 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-Write-Host "`n╔════════════════════════════════════════════════════════════════╗" -ForegroundColor Cyan
-Write-Host "║        Document Extractor - Service Startup (v1.0)            ║" -ForegroundColor Cyan
-Write-Host "╚════════════════════════════════════════════════════════════════╝`n" -ForegroundColor Cyan
+Write-Host "`n+==============================================================+" -ForegroundColor Cyan
+Write-Host "|        Document Extractor - Service Startup (v1.0)            |" -ForegroundColor Cyan
+Write-Host "+==============================================================+`n" -ForegroundColor Cyan
 
 # Colors
 $success = 'Green'
@@ -65,9 +65,9 @@ try {
     $nodeProcs = Get-Process node -ErrorAction SilentlyContinue
     if ($nodeProcs) {
         Stop-Process -Name node -Force -ErrorAction SilentlyContinue
-        Log-Message "✓ Stopped $($nodeProcs.Count) Node process(es)" "success"
+        Log-Message "[OK] Stopped $($nodeProcs.Count) Node process(es)" "success"
     } else {
-        Log-Message "✓ No Node processes running" "success"
+        Log-Message "[OK] No Node processes running" "success"
     }
 } catch {
     Log-Message "Could not stop Node processes: $_" "error"
@@ -86,22 +86,22 @@ if (-not $backendExists -or -not $packageExists) {
     Log-Message "Backend files missing!" "error"
     exit 1
 }
-Log-Message "✓ Backend files found" "success"
+Log-Message "[OK] Backend files found" "success"
 
 if (-not $NoFrontend -and -not $frontendExists) {
     Log-Message "Frontend files missing!" "error"
     exit 1
 }
-Log-Message "✓ Frontend files found" "success"
+Log-Message "[OK] Frontend files found" "success"
 
 # Step 3: Install dependencies (if needed)
 Log-Message "Step 3: Checking dependencies..." "info"
 if (-not (Test-Path "$projectRoot/node_modules")) {
     Log-Message "Installing backend dependencies..." "info"
     npm install
-    Log-Message "✓ Dependencies installed" "success"
+    Log-Message "[OK] Dependencies installed" "success"
 } else {
-    Log-Message "✓ Dependencies already installed" "success"
+    Log-Message "[OK] Dependencies already installed" "success"
 }
 
 # Step 4: Build (optional)
@@ -112,7 +112,7 @@ if ($Rebuild) {
         Log-Message "Build failed!" "error"
         exit 1
     }
-    Log-Message "✓ Build successful" "success"
+    Log-Message "[OK] Build successful" "success"
 } else {
     Log-Message "Step 4: Skipping rebuild (use -Rebuild flag to force)" "info"
 }
@@ -124,7 +124,7 @@ $backendJob = Start-Job -ScriptBlock {
     npm run dev 2>&1
 } -Name "extractor-backend"
 
-Log-Message "✓ Backend started (Job ID: $($backendJob.Id))" "success"
+Log-Message "[OK] Backend started (Job ID: $($backendJob.Id))" "success"
 
 # Wait for backend to be ready
 Log-Message "Waiting for backend to be ready on port 3000..." "info"
@@ -140,7 +140,7 @@ while (-not (Test-Port 3000) -and $waited -lt $maxWait) {
 Write-Host ""
 
 if (Test-Port 3000) {
-    Log-Message "✓ Backend is ready and responding on port 3000" "success"
+    Log-Message "[OK] Backend is ready and responding on port 3000" "success"
 } else {
     Log-Message "Backend failed to start on port 3000" "error"
     Stop-Job -Job $backendJob

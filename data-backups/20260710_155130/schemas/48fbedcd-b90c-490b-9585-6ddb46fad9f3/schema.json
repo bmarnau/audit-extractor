@@ -1,0 +1,53 @@
+{
+  "title": "Invoice",
+  "properties": {
+    "invoiceNumber": {
+      "type": "string",
+      "description": "Unique invoice identifier"
+    },
+    "currency": {
+      "type": "string",
+      "enum": [
+        "EUR",
+        "USD",
+        "GBP"
+      ]
+    },
+    "amount": {
+      "type": "number",
+      "description": "Total invoice amount"
+    },
+    "vendor": {
+      "type": "string",
+      "description": "Vendor/Company name"
+    },
+    "date": {
+      "format": "date",
+      "description": "Invoice date",
+      "type": "string"
+    },
+    "items": {
+      "items": {
+        "properties": {
+          "unitPrice": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "type": "object",
+  "required": [
+    "invoiceNumber",
+    "date",
+    "total"
+  ]
+}

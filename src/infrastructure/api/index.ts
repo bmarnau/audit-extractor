@@ -31,6 +31,8 @@ import extractPhase14Routes from './routes/extract-phase14';
 // Phase 15 Revision System
 import { createRevisionRoutes } from '../../presentation/RevisionRoutes';
 import { createSchemaExtractionRoutes } from '../../presentation/SchemaExtractionRoutes';
+// Phase 21 Asynchronous Jobs
+import createJobRoutes from './routes/jobs';
 
 const port = parseInt(process.env.PORT || '3000', 10);
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -180,6 +182,15 @@ async function startServer() {
       console.log('[Server] ✓ Revision routes mounted');
     } catch (routeErr) {
       console.error('[Server] Error mounting revision routes:', routeErr);
+      throw routeErr;
+    }
+
+    try {
+      const jobRoutes = createJobRoutes();
+      app.use('/api/jobs', jobRoutes);
+      console.log('[Server] ✓ Job routes (Phase 21) mounted on /api/jobs');
+    } catch (routeErr) {
+      console.error('[Server] Error mounting job routes:', routeErr);
       throw routeErr;
     }
 

@@ -43,9 +43,9 @@ export const createSchemaExtractionRoutes = (): Router => {
     throw err;
   }
 
-  // Helper: Extract userId from request (default: 'default-user' for now)
+  // Helper: Extract userId from request (default: zero UUID for now)
   const getUserId = (req: Request): string => {
-    return (req as any).userId || 'default-user';
+    return (req as any).userId || '00000000-0000-0000-0000-000000000000';
   };
 
   /**
@@ -67,7 +67,7 @@ export const createSchemaExtractionRoutes = (): Router => {
       }
 
       // Create schema with DB + Filesystem persistence
-      const { schemaEntity, paths } = await schemaManagementService.createSchema({
+      const schemaEntity = await schemaManagementService.createSchema({
         userId,
         name: schemaName || 'Unnamed Schema',
         description: description || '',
@@ -78,12 +78,10 @@ export const createSchemaExtractionRoutes = (): Router => {
       res.status(201).json({
         schemaId: schemaEntity.id,
         schemaName: schemaEntity.name,
-        userId: schemaEntity.userId,
+        createdBy: schemaEntity.createdBy,
         version: schemaEntity.version,
         fieldsCount: Object.keys(schema.properties || {}).length,
-        examplesCount: schemaEntity.examplesCount,
         createdAt: schemaEntity.createdAt,
-        directoryPath: paths.schemaRoot,
         message: 'Schema uploaded and persisted successfully',
       });
       return;
@@ -105,8 +103,8 @@ export const createSchemaExtractionRoutes = (): Router => {
       // Get schema from database + filesystem
       const { entity: schemaEntity, schema } = await schemaManagementService.getSchema(schemaId);
 
-      // Load examples
-      const examples = await schemaManagementService['directoryManager'].loadExamples(schemaId) || [];
+      // Load examples (using public method)
+      const examples = await schemaManagementService.loadExamples(schemaId);
 
       // Analyze schema
       const schemaAnalysisResult = schemaAnalyzer.analyzeSchema(schema);
@@ -153,25 +151,76 @@ export const createSchemaExtractionRoutes = (): Router => {
   });
 
   /**
-   * GET /api/schemas
-   * List all schemas (paginated)
+   * GET /api/schema/list
+   * List all schemas (paginated) - alias for /schemas
+   * MUST be defined BEFORE /:schemaId route to match correctly
    */
-  router.get('/', async (req: Request, res: Response): Promise<any> => {
+  router.get('/list', async (req: Request, res: Response): Promise<any> => {
     try {
       const userId = getUserId(req);
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
 
-      // Get schemas from database
-      const pagination = { page, limit };
-      // Note: This would need to be implemented in SchemaRepository
-      // For now, we return a simple list
+      // Get all schemas from database for this user (using public method)
+      const allSchemas = await schemaManagementService.getSchemasByUser(userId);
       
-      res.status(200).json({
-        message: 'List endpoint implemented in Phase 16B',
-        userId,
-        pagination,
-      });
+      // Apply pagination
+      const start = (page - 1) * limit;
+      const paginatedSchemas = allSchemas.slice(start, start + limit);
+      
+      // Map to response format (exclude full schema JSONB to avoid large payloads)
+      const schemas = paginatedSchemas.map((s: any) => ({
+        id: s.id,
+        name: s.name,
+        description: s.description,
+        version: s.version,
+        fieldsCount: Object.keys(s.schema?.properties || {}).length,
+        createdAt: s.createdAt,
+        updatedAt: s.updatedAt,
+        isActive: s.isActive,
+      }));
+
+      // Return raw array - middleware will wrap with {data: [...], timestamp, path}
+      res.status(200).json(schemas);
+      return;
+    } catch (err) {
+      console.error('[SchemaExtractionRoutes] List schemas error:', err);
+      res.status(500).json({ error: (err as Error).message });
+    }
+  });
+
+  /**
+   * GET /api/schema/schemas
+   * List all schemas (paginated) - alternate endpoint
+   * MUST be defined BEFORE /:schemaId route to match correctly
+   */
+  router.get('/schemas', async (req: Request, res: Response): Promise<any> => {
+    try {
+      const userId = getUserId(req);
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      // Get all schemas from database for this user (using public method)
+      const allSchemas = await schemaManagementService.getSchemasByUser(userId);
+      
+      // Apply pagination
+      const start = (page - 1) * limit;
+      const paginatedSchemas = allSchemas.slice(start, start + limit);
+      
+      // Map to response format (exclude full schema JSONB to avoid large payloads)
+      const schemas = paginatedSchemas.map((s: any) => ({
+        id: s.id,
+        name: s.name,
+        description: s.description,
+        version: s.version,
+        fieldsCount: Object.keys(s.schema?.properties || {}).length,
+        createdAt: s.createdAt,
+        updatedAt: s.updatedAt,
+        isActive: s.isActive,
+      }));
+
+      // Return raw array - middleware will wrap with {data: [...], timestamp, path}
+      res.status(200).json(schemas);
       return;
     } catch (err) {
       console.error('[SchemaExtractionRoutes] List schemas error:', err);
@@ -194,15 +243,11 @@ export const createSchemaExtractionRoutes = (): Router => {
         name: entity.name,
         description: entity.description,
         version: entity.version,
-        status: entity.status,
-        userId: entity.userId,
+        createdBy: entity.createdBy,
         fieldsCount: Object.keys(schema.properties || {}).length,
-        examplesCount: entity.examplesCount,
-        generatedRulesCount: entity.generatedRulesCount,
-        averageConfidence: entity.averageConfidence,
         createdAt: entity.createdAt,
         updatedAt: entity.updatedAt,
-        directoryPath: entity.directoryPath,
+        isActive: entity.isActive,
         filesystemStats: stats,
       });
       return;
@@ -222,13 +267,17 @@ export const createSchemaExtractionRoutes = (): Router => {
 
       const { entity } = await schemaManagementService.getSchema(schemaId);
 
-      if (entity.generatedRulesCount === 0) {
-        return res.status(400).json({ error: 'No rules generated yet. Run generation first.' });
+      // Load rules from filesystem - if none exist, return empty array
+      let rules: any[] = [];
+      let statistics: any = {};
+      
+      try {
+        rules = await schemaManagementService.loadRules(schemaId);
+        statistics = await schemaManagementService.loadRulesStatistics(schemaId);
+      } catch (e) {
+        // Rules file may not exist yet
+        console.log(`No rules found for schema ${schemaId}`);
       }
-
-      // Load rules from filesystem
-      const rules = await schemaManagementService['directoryManager'].loadRules(schemaId);
-      const statistics = await schemaManagementService['directoryManager'].loadRulesStatistics(schemaId);
 
       res.status(200).json({
         rules: rules.slice(0, 100), // Paginate
@@ -264,7 +313,6 @@ export const createSchemaExtractionRoutes = (): Router => {
         schemaId: updated.id,
         name: updated.name,
         version: updated.version,
-        previousVersionId: updated.previousVersionId,
         updatedAt: updated.updatedAt,
         message: 'Schema updated with new version',
       });

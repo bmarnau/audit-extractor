@@ -3,9 +3,6 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# System-Dependencies
-RUN apk add --no-cache python3 make g++ cairo-dev jpeg-dev pango-dev giflib-dev pixman-dev
-
 # Copy package files
 COPY package*.json ./
 
@@ -23,8 +20,8 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# System-Dependencies für PDF/Document Processing
-RUN apk add --no-cache cairo jpeg pango giflib pixman
+# Install wget for healthcheck
+RUN apk add --no-cache wget
 
 # Copy package files
 COPY package*.json ./
@@ -37,15 +34,10 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/extraction-rules ./extraction-rules
 COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/docs ./docs
-
-# Copy documentation files for Help Center (from local build context)
-COPY MANUAL-0.18.0.md ./
-COPY RELEASE_NOTES_0.18.0.md ./
-COPY RELEASE_NOTES_0.17.0.md ./
-COPY README.md ./
+COPY --from=builder /app/backend/src/data ./data
 
 # Environment Variables (can be overridden at runtime)
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 ENV PORT=3000
 ENV DATABASE_URL=postgresql://extractor_user:extractor_pass@postgres:5432/extractor_db
 ENV REDIS_URL=redis://redis:6379
@@ -55,7 +47,7 @@ ENV LOG_LEVEL=info
 
 # Health Check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/api/health', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
 
 # Expose Port
 EXPOSE 3000

@@ -12,6 +12,7 @@
  * @status COMPLETE - Rewrite with source verification
  */
 
+import { injectable } from 'tsyringe';
 import { DocumentChunk } from '@core/models/DocumentChunk';
 import { ExtractionResult, ExtractedValue, ExtractionWarning } from '@domain/ExtractionModels';
 
@@ -45,6 +46,7 @@ export interface HallucinationReport {
 /**
  * HallucinationValidator - Phase 9 Implementation
  */
+@injectable()
 export class HallucinationValidator {
   private readonly HALLUCINATION_CONFIDENCE_THRESHOLD = 0.5; // < 50% confidence = suspicious
   private readonly LOW_CONFIDENCE_WARNING_THRESHOLD = 0.7; // < 70% confidence = warning

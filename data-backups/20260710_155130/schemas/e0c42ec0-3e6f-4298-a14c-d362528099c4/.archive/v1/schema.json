@@ -1,0 +1,18 @@
+{
+  "title": "Invoice3Updated",
+  "type": "object",
+  "properties": {
+    "invoiceNumber": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "newField": {
+      "type": "string"
+    }
+  }
+}

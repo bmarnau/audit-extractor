@@ -7,6 +7,7 @@
  * Kritisch: Confidence NEVER reaches 100%!
  */
 
+import { injectable } from 'tsyringe';
 import { Document } from '@core/models';
 import {
   IDocumentClassifier,
@@ -18,6 +19,7 @@ import {
 /**
  * Feature-basierte Klassifikation.
  */
+@injectable()
 export class FeatureBasedClassifier implements IDocumentClassifier {
   getSupportedTypes(): DocumentTypeEnum[] {
     return Object.values(DocumentTypeEnum);

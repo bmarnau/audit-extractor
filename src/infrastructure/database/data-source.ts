@@ -1,6 +1,8 @@
 import { DataSource } from "typeorm";
 import path from "path";
 import { SchemaEntity } from "../../domain/schema/SchemaEntity";
+import { AuditLogEntity } from "./entities/AuditLogEntity";
+import { JobEntity } from "./entities/JobEntity";
 
 /**
  * PostgreSQL DataSource Configuration für TypeORM
@@ -19,7 +21,7 @@ export const AppDataSource = new DataSource({
   synchronize: process.env.NODE_ENV !== "production", // Auto-create tables in dev
   logging: process.env.DB_LOGGING === "true",
   logger: "advanced-console",
-  entities: [SchemaEntity],
+  entities: [SchemaEntity, AuditLogEntity, JobEntity],
   migrations: [path.join(__dirname, "../migrations/*.ts")],
   subscribers: [],
   dropSchema: false,
@@ -27,24 +29,43 @@ export const AppDataSource = new DataSource({
 });
 
 /**
- * Initialize Database Connection
+ * Initialize Database Connection with Retry Logic
  * Wird einmal beim App-Start aufgerufen
+ * Exponential Backoff: 1s → 2s → 4s → 8s → 16s
  */
 export async function initializeDatabase(): Promise<void> {
-  try {
-    if (!AppDataSource.isInitialized) {
-      await AppDataSource.initialize();
-      console.log("✅ Database Connection Established");
+  const maxRetries = 5;
+  const initialDelayMs = 1000;
 
-      // Auto-run migrations
-      if (process.env.NODE_ENV !== "development") {
-        await AppDataSource.runMigrations();
-        console.log("✅ Migrations Applied");
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      if (!AppDataSource.isInitialized) {
+        console.log(`[Database] Attempt ${attempt}/${maxRetries} to initialize...`);
+        await AppDataSource.initialize();
+        console.log("✅ Database Connection Established");
+
+        // Auto-run migrations
+        if (process.env.NODE_ENV !== "development") {
+          await AppDataSource.runMigrations();
+          console.log("✅ Migrations Applied");
+        }
+      }
+      return; // Success - exit early
+    } catch (error) {
+      const delayMs = initialDelayMs * Math.pow(2, attempt - 1);
+      const isLastAttempt = attempt === maxRetries;
+
+      if (isLastAttempt) {
+        console.error("❌ Database Connection Failed after all retries:", error);
+        throw error;
+      } else {
+        console.warn(
+          `⚠️  Database Connection Failed (Attempt ${attempt}/${maxRetries}). ` +
+          `Retrying in ${delayMs}ms...`
+        );
+        await new Promise(resolve => setTimeout(resolve, delayMs));
       }
     }
-  } catch (error) {
-    console.error("❌ Database Connection Failed:", error);
-    throw error;
   }
 }
 

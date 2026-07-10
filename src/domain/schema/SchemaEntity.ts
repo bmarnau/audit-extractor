@@ -12,109 +12,72 @@ import {
  * Jedes Schema wird mit Metadaten und Versionierung gespeichert
  */
 @Entity("schemas")
-@Index(["userId", "name"], { unique: true })
+@Index(["createdBy", "name"], { unique: true })
 @Index(["createdAt"])
 export class SchemaEntity {
   /**
    * Eindeutige Schema ID (UUID)
    */
-  @PrimaryColumn("uuid")
+  @PrimaryColumn("uuid", { name: "id" })
   id!: string;
-
-  /**
-   * User ID (für zukünftige Multi-User Support)
-   * Momentan: "default-user"
-   */
-  @Column("varchar", { length: 255, default: "default-user" })
-  userId!: string;
 
   /**
    * Schema Name (z.B. "Invoice", "Contract", "Product")
    */
-  @Column("varchar", { length: 255 })
+  @Column("varchar", { name: "name", length: 255 })
   name!: string;
 
   /**
    * Beschreibung des Schemas (für UI Anzeige)
    */
-  @Column("text", { nullable: true })
+  @Column("text", { name: "description", nullable: true })
   description?: string;
 
   /**
-   * Version Nummer (automatisch inkrementiert)
-   * Nur letzte 2 Versionen werden gespeichert
+   * Document Type
    */
-  @Column("integer", { default: 1 })
-  version!: number;
+  @Column("varchar", { name: "document_type", length: 100, nullable: true })
+  documentType?: string;
 
   /**
-   * Das vollständige JSON Schema Draft-07
+   * Das vollständige JSON Schema
    */
-  @Column("jsonb")
+  @Column("jsonb", { name: "schema_definition" })
   schema!: Record<string, unknown>;
 
   /**
-   * Anzahl der Beispieldateien
+   * Version String (z.B. "1.0.0")
    */
-  @Column("integer", { default: 0 })
-  examplesCount!: number;
+  @Column("varchar", { name: "version", length: 50, default: "1.0.0" })
+  version!: string;
 
   /**
-   * Anzahl der generierten Regeln
+   * Ist dieses Schema aktiv?
    */
-  @Column("integer", { default: 0 })
-  generatedRulesCount!: number;
+  @Column("boolean", { name: "is_active", default: true })
+  isActive?: boolean;
 
   /**
-   * Durchschnittlicher Confidence Score der generierten Regeln
+   * User ID, der das Schema erstellt hat
    */
-  @Column("decimal", { precision: 3, scale: 2, nullable: true })
-  averageConfidence?: number;
+  @Column("uuid", { name: "created_by", nullable: true })
+  createdBy?: string;
 
   /**
-   * Status des Schemas
-   * "active" | "archived" | "draft"
+   * User ID, der das Schema zuletzt aktualisiert hat
    */
-  @Column("varchar", { length: 50, default: "active" })
-  status!: string;
+  @Column("uuid", { name: "updated_by", nullable: true })
+  updatedBy?: string;
 
   /**
-   * Filesystem Path zur Schema Verzeichnisstruktur
-   * z.B. "/schemas/uuid-1234-5678"
+   * Zeitstempel der Erstellung
    */
-  @Column("varchar", { length: 500 })
-  directoryPath!: string;
-
-  /**
-   * Metadaten (JSON)
-   * Kann für zukünftige Erweiterungen genutzt werden
-   */
-  @Column("jsonb", { default: {} })
-  metadata!: Record<string, unknown>;
-
-  /**
-   * Erstellt am
-   */
-  @CreateDateColumn()
+  @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;
 
   /**
-   * Zuletzt aktualisiert am
+   * Zeitstempel der letzten Aktualisierung
    */
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: "updated_at" })
   updatedAt!: Date;
-
-  /**
-   * Wird zum Archivieren einer Version genutzt
-   * Alte Versionen werden mit diesem Flag versehen
-   */
-  @Column("boolean", { default: false })
-  isArchived!: boolean;
-
-  /**
-   * Parent Schema ID (falls dies eine neue Version ist)
-   * Für Version-Tracking
-   */
-  @Column("uuid", { nullable: true })
-  previousVersionId?: string;
 }

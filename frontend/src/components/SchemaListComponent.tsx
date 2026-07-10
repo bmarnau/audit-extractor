@@ -37,16 +37,12 @@ interface SchemaEntity {
   id: string;
   name: string;
   description: string;
-  version: number;
-  status: 'active' | 'archived' | 'draft';
-  userId: string;
+  version: string;
+  isActive: boolean;
+  createdBy: string;
   fieldsCount?: number;
-  examplesCount?: number;
-  generatedRulesCount?: number;
-  averageConfidence?: number;
   createdAt: string;
   updatedAt: string;
-  directoryPath?: string;
 }
 
 interface SchemaListProps {
@@ -111,7 +107,6 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
     try {
       await updateSchema({
         description: editFormData.description,
-        metadata: { updatedVia: 'frontend-phase17' },
       });
 
       setEditDialogOpen(false);
@@ -159,19 +154,8 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
   /**
    * Get status color chip
    */
-  const getStatusColor = (
-    status: 'active' | 'archived' | 'draft'
-  ): 'success' | 'warning' | 'default' => {
-    switch (status) {
-      case 'active':
-        return 'success';
-      case 'archived':
-        return 'warning';
-      case 'draft':
-        return 'default';
-      default:
-        return 'default';
-    }
+  const getStatusColor = (isActive: boolean): 'success' | 'default' => {
+    return isActive ? 'success' : 'default';
   };
 
   return (
@@ -227,11 +211,10 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
               <TableRow>
                 <TableCell sx={{ fontWeight: 'bold' }}>Schema ID</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Name</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Description</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Version</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Status</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }} align="right">
-                  Rules
-                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }}>Fields</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }}>Created</TableCell>
                 <TableCell sx={{ fontWeight: 'bold' }} align="center">
                   Actions
@@ -257,17 +240,20 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
                     <Typography variant="body2">{schema.name}</Typography>
                   </TableCell>
                   <TableCell>
+                    <Typography variant="body2">{schema.description || '-'}</Typography>
+                  </TableCell>
+                  <TableCell>
                     <Chip label={`v${schema.version}`} variant="outlined" size="small" />
                   </TableCell>
                   <TableCell>
                     <Chip
-                      label={schema.status}
-                      color={schema.status === 'active' ? 'success' : schema.status === 'archived' ? 'warning' : 'default'}
+                      label={schema.isActive ? 'Active' : 'Inactive'}
+                      color={schema.isActive ? 'success' : 'default'}
                       size="small"
                       variant="filled"
                     />
                   </TableCell>
-                  <TableCell align="right">{schema.generatedRulesCount || 0}</TableCell>
+                  <TableCell align="right">{schema.fieldsCount || 0}</TableCell>
                   <TableCell>{new Date(schema.createdAt).toLocaleDateString()}</TableCell>
                   <TableCell align="center">
                     <IconButton

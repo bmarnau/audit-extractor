@@ -1,0 +1,53 @@
+{
+  "backupId": "backup-1783703964641-14c727feba0e",
+  "backupName": "initial-backup",
+  "status": "completed",
+  "createdAt": "2026-07-10T17:19:24.642Z",
+  "reason": "Initial setup test",
+  "items": [
+    {
+      "type": "rules",
+      "path": "extraction-rules",
+      "size": 4096,
+      "fileCount": 14,
+      "lastModified": "2026-07-10T16:51:28.575Z",
+      "checksum": "a0cde633717ca078937be5a165bd12d4c9a499552a07b9e6a5f874e6df429161"
+    },
+    {
+      "type": "schemas",
+      "path": "extraction-rules/schemas",
+      "size": 4096,
+      "fileCount": 5,
+      "lastModified": "2026-07-10T16:51:28.618Z",
+      "checksum": "b348f05c2c0fc2461998750ee8dbc54bb29b26a5447878336c83ef432a3c0df0"
+    },
+    {
+      "type": "configuration",
+      "path": "config",
+      "size": 4096,
+      "fileCount": 1,
+      "lastModified": "2026-07-10T17:19:09.505Z",
+      "checksum": "d08f6318fb00130deedc363a59ae992196b922dc0b4d3b7024e5dcce3cf7e46a"
+    },
+    {
+      "type": "documentation",
+      "path": "docs",
+      "size": 4096,
+      "fileCount": 20,
+      "lastModified": "2026-07-10T10:09:25.000Z",
+      "checksum": "c82c6dc530d76ec6c9abaceab4e866d6d3b33a64cd8e5ffb6d964fa888992793"
+    }
+  ],
+  "itemCount": 4,
+  "totalSize": 493,
+  "duration": 1166,
+  "compression": {
+    "algorithm": "gzip",
+    "ratio": 0.03009033203125,
+    "originalSize": 16384,
+    "compressedSize": 493
+  },
+  "backupChecksum": "9f5cc3ce710486203b418fdc3aa60d4295da86583c77d2c00f1d04d20bb8a3ce",
+  "fileLocation": "/app/backups/backup-1783703964641-14c727feba0e.tar.gz",
+  "appVersion": "0.13.0"
+}

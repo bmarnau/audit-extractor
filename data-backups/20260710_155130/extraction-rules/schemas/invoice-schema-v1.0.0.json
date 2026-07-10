@@ -1,0 +1,103 @@
+/**
+ * SCHEMA - Invoice (Rechnung)
+ *
+ * Zielstruktur für Rechnungs-Extraktion
+ */
+
+{
+  "id": "invoice-schema-v1.0.0",
+  "documentType": "invoice",
+  "version": "1.0.0",
+  "description": "Schema for German Invoice Extraction",
+  "fields": [
+    {
+      "fieldName": "invoiceNumber",
+      "fieldType": "string",
+      "isRequired": true,
+      "description": "Unique invoice number",
+      "constraints": {
+        "minLength": 3,
+        "maxLength": 50
+      }
+    },
+    {
+      "fieldName": "invoiceDate",
+      "fieldType": "date",
+      "isRequired": true,
+      "description": "Invoice issue date (YYYY-MM-DD)"
+    },
+    {
+      "fieldName": "dueDate",
+      "fieldType": "date",
+      "isRequired": false,
+      "description": "Payment due date (YYYY-MM-DD)"
+    },
+    {
+      "fieldName": "customerName",
+      "fieldType": "string",
+      "isRequired": true,
+      "description": "Customer/Client name",
+      "constraints": {
+        "minLength": 2,
+        "maxLength": 200
+      }
+    },
+    {
+      "fieldName": "customerAddress",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Customer address"
+    },
+    {
+      "fieldName": "customerTaxId",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Customer VAT/Tax ID"
+    },
+    {
+      "fieldName": "serviceDescription",
+      "fieldType": "string",
+      "isRequired": true,
+      "description": "Description of services/products"
+    },
+    {
+      "fieldName": "subtotal",
+      "fieldType": "number",
+      "isRequired": true,
+      "description": "Subtotal amount (net)"
+    },
+    {
+      "fieldName": "taxAmount",
+      "fieldType": "number",
+      "isRequired": false,
+      "description": "Tax/VAT amount"
+    },
+    {
+      "fieldName": "taxRate",
+      "fieldType": "number",
+      "isRequired": false,
+      "description": "Tax rate (0-1, e.g. 0.19 = 19%)"
+    },
+    {
+      "fieldName": "totalAmount",
+      "fieldType": "number",
+      "isRequired": true,
+      "description": "Total amount (gross)"
+    },
+    {
+      "fieldName": "currency",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Currency code (EUR, USD, etc.)"
+    },
+    {
+      "fieldName": "paymentTerms",
+      "fieldType": "string",
+      "isRequired": false,
+      "description": "Payment terms (NET30, etc.)"
+    }
+  ],
+  "createdAt": "2026-07-08T00:00:00Z",
+  "updatedAt": "2026-07-08T00:00:00Z",
+  "isActive": true
+}

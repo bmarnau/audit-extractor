@@ -1,0 +1,41 @@
+[
+  {
+    "id": "9e6b0c1a-b667-4b72-a663-3be95bfde6a9",
+    "fieldName": "invoiceNumber",
+    "searchKeywords": [
+      "(INV-2026-001)",
+      "\\b(INV-2026-001)\\b"
+    ],
+    "confidence": 0.85,
+    "isRequired": false,
+    "dataType": "string",
+    "derivedFrom": "schema",
+    "rationale": "Generated from schema definition (string)"
+  },
+  {
+    "id": "c721a87f-80cb-48db-9bd2-bde2d625f585",
+    "fieldName": "date",
+    "searchKeywords": [
+      "(2026-07-10)",
+      "\\b(2026-07-10)\\b"
+    ],
+    "confidence": 0.85,
+    "isRequired": false,
+    "dataType": "string",
+    "derivedFrom": "schema",
+    "rationale": "Generated from schema definition (string)"
+  },
+  {
+    "id": "7d015d36-6b03-42ed-ae1c-ffb1b1f1f263",
+    "fieldName": "amount",
+    "searchKeywords": [
+      "(1250.5)",
+      "\\b(1250.5)\\b"
+    ],
+    "confidence": 0.85,
+    "isRequired": false,
+    "dataType": "number",
+    "derivedFrom": "schema",
+    "rationale": "Generated from schema definition (number)"
+  }
+]

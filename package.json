@@ -1,7 +1,7 @@
 {
   "name": "audit-safe-document-extractor",
-  "version": "0.18.0",
-  "description": "Schema-Driven Document Extraction with Complete Docker Containerization (Phase 18: Multi-Stage Dockerfiles + Docker Compose + Production-Ready)",
+  "version": "0.21.0",
+  "description": "Asynchronous Job API for Extraction Pipeline (Phase 21: JobEntity + JobRepository + JobService + 4 REST Endpoints)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -20,6 +20,11 @@
     "test:phase16:e2e": "ts-node tests/phase16-e2e-test.ts",
     "test:phase16:audit": "ts-node tests/audit-workflow-integration.ts",
     "test:phase16:all": "npm run test:phase16:e2e && npm run test:phase16:audit",
+    "test:e2e:frontend": "playwright test tests/e2e/comprehensive-frontend-test.spec.ts",
+    "test:analyze:startup": "pwsh scripts/analyze-docker-startup.ps1",
+    "test:stability:100": "pwsh scripts/stability-test-100-cycles.ps1 -Cycles 100",
+    "test:stability:10": "pwsh scripts/stability-test-100-cycles.ps1 -Cycles 10",
+    "test:all:comprehensive": "pwsh scripts/run-all-tests.ps1",
     "lint": "eslint src tests",
     "lint:fix": "eslint src tests --fix",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\" \"docs/**/*.md\"",
@@ -43,6 +48,7 @@
     "uuid": "^14.0.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.40.0",
     "@types/express": "^5.0.6",
     "@types/jest": "^29.5.0",
     "@types/multer": "^2.2.0",

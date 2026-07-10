@@ -131,6 +131,7 @@ CREATE TABLE IF NOT EXISTS schemas (
   schema_definition JSONB NOT NULL,
   version VARCHAR(50) DEFAULT '1.0.0',
   is_active BOOLEAN DEFAULT TRUE,
+  protected BOOLEAN DEFAULT FALSE,
   created_by UUID,
   updated_by UUID,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -139,6 +140,9 @@ CREATE TABLE IF NOT EXISTS schemas (
 
 CREATE INDEX idx_schemas_document_type ON schemas(document_type);
 CREATE INDEX idx_schemas_is_active ON schemas(is_active);
+
+-- Add protected column if it doesn't exist (for existing databases)
+ALTER TABLE schemas ADD COLUMN IF NOT EXISTS protected BOOLEAN DEFAULT FALSE;
 
 -- ============================================================================
 -- BACKUPS TABLE
@@ -213,12 +217,12 @@ CREATE TRIGGER schemas_update_timestamp BEFORE UPDATE ON schemas
 -- SAMPLE DATA (for testing)
 -- ============================================================================
 
--- Insert sample document type if needed
-INSERT INTO schemas (id, name, description, document_type, schema_definition, is_active)
+-- Insert protected reference schemas (teaching examples)
+INSERT INTO schemas (id, name, description, document_type, schema_definition, version, is_active, protected, created_by)
 VALUES (
   '550e8400-e29b-41d4-a716-446655440000',
   'Invoice Schema v1.0',
-  'Standard invoice extraction schema',
+  'Standard invoice extraction schema - Teaching example with simple fields',
   'invoice',
   '{
     "fields": [
@@ -228,12 +232,55 @@ VALUES (
       {"name": "customer_name", "type": "string", "required": false}
     ]
   }'::jsonb,
-  TRUE
+  '1.0.0',
+  TRUE,
+  TRUE,
+  '00000000-0000-0000-0000-000000000000'
+) ON CONFLICT DO NOTHING;
+
+INSERT INTO schemas (id, name, description, document_type, schema_definition, version, is_active, protected, created_by)
+VALUES (
+  'b26d8d31-dec0-4501-8085-fe134b3c50e9',
+  'JSON Schema Reference',
+  'Advanced invoice schema using JSON Schema format with validation patterns - Teaching example',
+  'invoice',
+  '{
+    "type": "object",
+    "required": ["invoiceNumber", "date", "amount", "vendor"],
+    "properties": {
+      "invoiceNumber": {"type": "string", "pattern": "^INV-\\d{6}$"},
+      "date": {"type": "string", "format": "date"},
+      "vendor": {"type": "string"},
+      "amount": {"type": "number"},
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "description": {"type": "string"},
+            "quantity": {"type": "number"},
+            "price": {"type": "number"}
+          }
+        }
+      }
+    }
+  }'::jsonb,
+  '1.0.0',
+  TRUE,
+  TRUE,
+  '00000000-0000-0000-0000-000000000000'
 ) ON CONFLICT DO NOTHING;
 
 -- ============================================================================
 -- GRANT PERMISSIONS
 -- ============================================================================
+-- Create role if it doesn't exist (for Extraction users)
+DO $$ BEGIN
+  CREATE ROLE extractor WITH LOGIN PASSWORD 'extractor_pass';
+EXCEPTION WHEN duplicate_object THEN
+  -- Role already exists, do nothing
+END $$;
+
 GRANT CONNECT ON DATABASE extractor_db TO extractor;
 GRANT USAGE ON SCHEMA public TO extractor;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO extractor;

@@ -7,6 +7,7 @@
  * - Keine Datengenerierung - nur Validierung!
  */
 
+import { injectable } from 'tsyringe';
 import Ajv, { ValidateFunction } from 'ajv';
 import * as fs from 'fs/promises';
 import * as path from 'path';
@@ -42,6 +43,7 @@ interface CustomSchema {
 /**
  * AJV-basierte Implementation des ValidationService.
  */
+@injectable()
 export class AjvValidationService implements IValidationService {
   private ajv: Ajv;
   private schemasDir: string;

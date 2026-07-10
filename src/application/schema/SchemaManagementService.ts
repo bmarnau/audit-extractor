@@ -25,23 +25,14 @@ export class SchemaManagementService {
     description?: string;
     schema: Record<string, unknown>;
     examples?: Record<string, unknown>[];
-  }): Promise<{
-    schemaEntity: SchemaEntity;
-    paths: SchemaPaths;
-  }> {
+  }): Promise<SchemaEntity> {
     try {
       // 1. Create in database
       const schemaEntity = await this.schemaRepository.create({
-        userId: input.userId,
+        createdBy: input.userId,
         name: input.name,
         description: input.description || '',
         schema: input.schema,
-        examplesCount: input.examples?.length || 0,
-        generatedRulesCount: 0,
-        averageConfidence: 0,
-        status: 'active',
-        directoryPath: '', // Will be set after filesystem creation
-        metadata: { createdAt: new Date().toISOString() },
       });
 
       // 2. Create filesystem structure
@@ -68,19 +59,14 @@ export class SchemaManagementService {
         version: 1,
       });
 
-      // 6. Update database with filesystem path
-      const updated = await this.schemaRepository.update(schemaEntity.id, {
-        directoryPath: paths.schemaRoot,
-      });
-
+      // 6. Filesystem structure created successfully
       console.log(
         `✅ Schema created: DB + Filesystem (${schemaEntity.id})`
       );
+      console.log(`DEBUG: schemaEntity.id = ${schemaEntity.id}`);
+      console.log(`DEBUG: paths.schemaRoot = ${paths.schemaRoot}`);
 
-      return {
-        schemaEntity: updated,
-        paths,
-      };
+      return schemaEntity;
     } catch (error) {
       throw new Error(
         `Failed to create schema: ${error instanceof Error ? error.message : String(error)}`
@@ -106,14 +92,13 @@ export class SchemaManagementService {
       if (!current) throw new Error(`Schema ${schemaId} not found`);
 
       // 2. Archive current version in filesystem
-      await this.directoryManager.archiveVersion(schemaId, current.version);
+      const versionNumber = current.version ? parseInt(current.version.split('.')[0], 10) : 1;
+      await this.directoryManager.archiveVersion(schemaId, versionNumber);
 
       // 3. Update database (triggers versioning logic)
       const updated = await this.schemaRepository.update(schemaId, {
-        version: current.version + 1,
         schema: input.schema || current.schema,
         description: input.description || current.description,
-        metadata: input.metadata || current.metadata,
         updatedAt: new Date(),
       });
 
@@ -122,10 +107,6 @@ export class SchemaManagementService {
         await this.directoryManager.saveSchema(schemaId, input.schema);
       }
 
-      // 5. Update metadata file
-      if (input.metadata) {
-        await this.directoryManager.saveMetadata(schemaId, input.metadata);
-      }
 
       console.log(
         `✅ Schema updated: v${current.version} → v${updated.version}`
@@ -188,15 +169,7 @@ export class SchemaManagementService {
       // 1. Save to filesystem
       await this.directoryManager.saveRules(schemaId, rules, statistics);
 
-      // 2. Update database with counts
-      const entity = await this.schemaRepository.findById(schemaId);
-      if (entity) {
-        await this.schemaRepository.update(schemaId, {
-          generatedRulesCount: rules.length,
-          averageConfidence: this.calculateAverageConfidence(rules),
-        });
-      }
-
+      // Rules saved successfully (no database count tracking for now)
       console.log(`✅ Rules saved for schema ${schemaId}`);
     } catch (error) {
       throw new Error(
@@ -293,20 +266,56 @@ export class SchemaManagementService {
   }
 
   /**
-   * Calculate average confidence from rules array
+   * PUBLIC METHOD: Get all schemas for a user
+   * Used by API routes to fetch schema list without private property access
    */
-  private calculateAverageConfidence(rules: unknown[]): number {
-    if (!Array.isArray(rules) || rules.length === 0) return 0;
+  async getSchemasByUser(userId: string = "00000000-0000-0000-0000-000000000000"): Promise<SchemaEntity[]> {
+    try {
+      return await this.schemaRepository.findAllByUser(userId);
+    } catch (error) {
+      throw new Error(
+        `Failed to get schemas: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+  }
 
-    const confidences = rules
-      .map((rule: any) => rule.confidence || 0)
-      .filter((c: number) => typeof c === 'number');
+  /**
+   * PUBLIC METHOD: Load examples for a schema (replaces private property access)
+   * Safe wrapper around directoryManager.loadExamples()
+   */
+  async loadExamples(schemaId: string): Promise<Record<string, unknown>[]> {
+    try {
+      return await this.directoryManager.loadExamples(schemaId);
+    } catch (error) {
+      console.warn(`No examples found for schema ${schemaId}`);
+      return [];
+    }
+  }
 
-    if (confidences.length === 0) return 0;
+  /**
+   * PUBLIC METHOD: Load rules for a schema (replaces private property access)
+   * Safe wrapper around directoryManager.loadRules()
+   */
+  async loadRules(schemaId: string): Promise<any[]> {
+    try {
+      return await this.directoryManager.loadRules(schemaId);
+    } catch (error) {
+      console.warn(`No rules found for schema ${schemaId}`);
+      return [];
+    }
+  }
 
-    return (
-      confidences.reduce((sum: number, c: number) => sum + c, 0) /
-      confidences.length
-    );
+  /**
+   * PUBLIC METHOD: Load rules statistics (replaces private property access)
+   * Safe wrapper around directoryManager.loadRulesStatistics()
+   */
+  async loadRulesStatistics(schemaId: string): Promise<Record<string, unknown>> {
+    try {
+      return await this.directoryManager.loadRulesStatistics(schemaId);
+    } catch (error) {
+      console.warn(`No rules statistics found for schema ${schemaId}`);
+      return {};
+    }
   }
 }
+

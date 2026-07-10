@@ -21,17 +21,17 @@ $AppRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $AppRoot
 
 # Colors
-function Write-Success { Write-Host "✓ $args" -ForegroundColor Green }
-function Write-Error { Write-Host "✗ $args" -ForegroundColor Red }
-function Write-Warning { Write-Host "⚠ $args" -ForegroundColor Yellow }
+function Write-Success { Write-Host "[OK] $args" -ForegroundColor Green }
+function Write-Error { Write-Host "[ERR] $args" -ForegroundColor Red }
+function Write-Warning { Write-Host "[WARN] $args" -ForegroundColor Yellow }
 function Write-Info { Write-Host $args -ForegroundColor Cyan }
 function Write-Header { Write-Host $args -ForegroundColor Cyan -BackgroundColor Black }
 
 Write-Host ""
-Write-Header "╔═══════════════════════════════════════════════════════╗"
-Write-Header "║  Audit-Safe Document Extractor v0.13.0               ║"
-Write-Header "║  Starting Full Application Stack (Backend + Frontend) ║"
-Write-Header "╚═══════════════════════════════════════════════════════╝"
+Write-Header "+=====================================================+"
+Write-Header "|  Audit-Safe Document Extractor v0.13.0               |"
+Write-Header "|  Starting Full Application Stack (Backend + Frontend) |"
+Write-Header "+=====================================================+"
 Write-Host ""
 
 # Step 1: Cleanup
@@ -166,7 +166,7 @@ if (-not $SkipChrome) {
 
 Write-Host ""
 Write-Header "╔═══════════════════════════════════════════════════════╗"
-Write-Header "║  ✓ Application Started Successfully!                 ║"
+Write-Header "║  [OK] Application Started Successfully!                 ║"
 Write-Header "║                                                       ║"
 Write-Header "║  Frontend:     http://localhost:5173                 ║"
 Write-Header "║  Backend API:  http://localhost:3000                 ║"

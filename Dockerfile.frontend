@@ -7,7 +7,8 @@ WORKDIR /app/frontend
 COPY frontend/package*.json ./
 
 # Install dependencies (with --legacy-peer-deps to resolve Babel conflicts)
-RUN npm ci --legacy-peer-deps
+# Use npm install, don't skip script execution as we need build tools
+RUN npm install --legacy-peer-deps
 
 # Copy source code
 COPY frontend . 
@@ -16,7 +17,7 @@ COPY frontend .
 # This ensures Docker recognizes .env.production changes and rebuilds
 COPY frontend/.env.production .env.production
 
-# Build application
+# Build application using npm run build (tsc + vite)
 RUN npm run build
 
 # Production Stage - Nginx Reverse Proxy

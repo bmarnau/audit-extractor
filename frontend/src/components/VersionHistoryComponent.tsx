@@ -105,7 +105,7 @@ export const VersionHistoryComponent: React.FC = () => {
           {versions.length === 0 ? (
             <Alert severity="info">No version history available</Alert>
           ) : (
-            <Timeline position="alternate">
+            <Timeline position="alternate" {...({} as any)}>
               {versions.map((version, index) => (
                 <TimelineItem key={`v${version.version}`}>
                   <TimelineOppositeContent color="textSecondary" sx={{ flex: 0.3 }}>

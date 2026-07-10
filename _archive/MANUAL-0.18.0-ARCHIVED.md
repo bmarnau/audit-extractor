@@ -82,6 +82,24 @@ docker-compose ps
 docker-compose logs -f backend
 ```
 
+### Option 4: Lokale Entwicklung (npm, ohne Docker)
+
+```powershell
+# Windows PowerShell
+.\start-app.ps1
+
+# Oder manuell 2 Terminal-Fenster:
+# Terminal 1 - Backend (Port 3000)
+cd backend
+npm run dev
+
+# Terminal 2 - Frontend (Port 5173)
+cd frontend
+npm run dev
+```
+
+⚠️ **Voraussetzung**: Node.js 18+, npm, lokale PostgreSQL (falls ohne Docker-DB)
+
 ---
 
 ## 📍 Zugriffspunkte
@@ -166,6 +184,20 @@ docker-compose build --no-cache backend
 
 ### 4. Services stoppen
 
+#### Option 1: Automatisierte Stop-Skripte (Empfohlen)
+
+**Docker stoppen (mit Option zum Löschen von Volumes):**
+```cmd
+# Windows CMD
+stop-docker.cmd
+
+# PowerShell
+.\stop-docker.ps1              # Normalerweise stoppen
+.\stop-docker.ps1 -RemoveVolumes  # Mit Datenlöschung
+```
+
+#### Option 2: Manuelle Befehle
+
 ```bash
 # Alle pausieren (Container bleiben)
 docker-compose stop
@@ -176,6 +208,19 @@ docker-compose down
 # Alles inklusive Daten löschen (⚠️ VORSICHT!)
 docker-compose down -v
 ```
+
+#### Option 3: Lokale Entwicklung stoppen
+
+Falls Sie lokal (ohne Docker) arbeiten:
+```cmd
+# Windows CMD
+stop-app.cmd
+
+# PowerShell
+.\stop-app.ps1
+```
+
+Dies killt alle Node.js Prozesse auf Port 3000 (Backend) und 5173 (Frontend).
 
 ### 5. Datenbank-Backup
 
@@ -1100,6 +1145,616 @@ docker push registry.example.com/extractor-backend:0.18.0
 
 ### Checkliste
 
+- [ ] Alle Umgebungsvariablen gesetzt
+- [ ] SSL/HTTPS aktiviert
+- [ ] Secrets Manager konfiguriert
+- [ ] Backups automatisiert
+- [ ] Monitoring eingerichtet
+- [ ] Logs zentralisiert
+
+---
+
+## 👨‍💻 Entwicklungsworkflow für neue Features
+
+Dieser Workflow wird für **jede neue Funktion** verwendet. Er verbindet lokale Entwicklung, Testen, Dokumentation und Docker-Deployment.
+
+### Phase 1: Feature planen & Branch erstellen
+
+```bash
+# Feature Branch erstellen
+git checkout -b feature/schema-validation-v2
+git branch -u origin/develop feature/schema-validation-v2
+```
+
+### Phase 2: Lokal entwickeln & testen
+
+**2.1 Backend-Feature entwickeln (TypeScript, Express)**
+
+```powershell
+# Terminal 1: Backend starten (Port 3000)
+cd backend
+npm install  # Falls neue Dependencies
+npm run dev
+
+# Code schreiben im Editor: src/services/*, src/routes/*
+# Tests schreiben: src/**/__tests__/*.test.ts
+npm run test
+npm run lint
+```
+
+**2.2 Frontend-Feature entwickeln (React, TypeScript)**
+
+```powershell
+# Terminal 2: Frontend starten (Port 5173)
+cd frontend
+npm install  # Falls neue Dependencies
+npm run dev
+
+# Code schreiben: src/components/*, src/pages/*
+# Tests schreiben: src/**/__tests__/*.test.tsx
+npm run test
+npm run lint
+```
+
+**2.3 Lokale Integration testen**
+
+```bash
+# Beide Services auf Port 3000 & 5173 laufen
+# Frontend http://localhost:5173
+# Backend  http://localhost:3000/api
+
+# Manuell testen in Browser oder:
+curl http://localhost:3000/api/health  # Backend Health
+curl http://localhost:3000/api/config  # Sample Endpoint
+```
+
+### Phase 3: Dokumentation & Manual aktualisieren
+
+**3.1 Code-Dokumentation (JSDoc/TypeDoc)**
+
+```typescript
+/**
+ * Generates extraction rules from sample documents
+ * @param schemaId - The schema ID to generate rules for
+ * @param samples - Array of sample documents with known values
+ * @returns Promise<GeneratedRules> with confidence scores
+ * @example
+ * const rules = await generateExtractionRules('invoice-schema', [...]);
+ */
+export async function generateExtractionRules(
+  schemaId: string,
+  samples: SampleDocument[]
+): Promise<GeneratedRules> {
+  // Implementation
+}
+```
+
+**3.2 Manual (MANUAL-0.18.0.md) aktualisieren**
+
+Falls neue Features für Endanwender relevant sind:
+- Neues Kapitel unter "🚀 Schnellstart" oder "🔧 Häufige Aufgaben"
+- Beispiele & Screenshots
+- API-Endpoints dokumentieren
+- Fehlerbehebung hinzufügen
+
+```bash
+# Beispiel: Für neue Schema-Validierung
+## Neue Feature: Schema-Validierung
+
+Mit Version 0.18.1 können Schemas vor dem Upload validiert werden.
+
+### Schema validieren
+
+\`\`\`bash
+curl -X POST http://localhost:3000/api/schema/validate \
+  -H "Content-Type: application/json" \
+  -d @schema-invoice.json
+\`\`\`
+```
+
+**3.3 CHANGELOG.md aktualisieren**
+
+```markdown
+## [0.18.1] - 2026-07-15
+
+### Added
+- Schema validation endpoint (/api/schema/validate)
+- Pre-upload field type checking
+- Confidence score requirements
+
+### Fixed
+- Schema name uniqueness validation now case-insensitive
+- Improved error messages for invalid field definitions
+```
+
+### Phase 4: Commit & Push zu GitHub
+
+```bash
+# Changes prüfen
+git status
+git diff
+
+# Committen
+git add .
+git commit -m "feat: Add schema validation
+
+- Endpoint POST /api/schema/validate
+- Field type checking with comprehensive rules
+- Confidence score validation min 0.5
+- Returns detailed validation errors
+
+Fixes #123"
+
+# Zu remote pushen
+git push origin feature/schema-validation-v2
+```
+
+**Commit Message Format (Conventional Commits):**
+- `feat:` Neue Feature
+- `fix:` Bugfix
+- `docs:` Dokumentation nur
+- `test:` Tests hinzufügen/ändern
+- `refactor:` Code-Umstrukturierung
+- `perf:` Performance-Optimierung
+
+### Phase 5: PR & Code Review
+
+1. **Pull Request erstellen** auf GitHub
+2. **Description mit:**
+   - Was wurde implementiert?
+   - Warum? (Context)
+   - Testing durchgeführt?
+   - Breaking Changes?
+3. **Warten auf Review & Tests** (CI/CD Pipeline)
+4. **Merge zu develop** (nach Approval)
+
+### Phase 6: Docker aktualisieren
+
+Nachdem PR gemerged ist:
+
+**6.1 Version in package.json erhöhen**
+
+```json
+{
+  "name": "extractor",
+  "version": "0.18.1",  // ← Erhöhen
+  "description": "Audit-Safe Document Extractor"
+}
+```
+
+**6.2 Docker Images bauen**
+
+```bash
+# Nur geänderte Services bauen
+docker-compose build backend   # Falls nur Backend geändert
+docker-compose build frontend  # Falls nur Frontend geändert
+
+# Oder alles
+docker-compose build
+
+# Mit Fresh (ohne Cache)
+docker-compose build --no-cache
+```
+
+**6.3 Docker Images testen**
+
+```bash
+# Images mit neuem Code starten
+docker-compose down
+docker-compose up -d
+
+# Health Checks warten
+sleep 5
+
+# Test der neuen Feature
+curl http://localhost:3000/api/schema/validate
+curl http://localhost/schemas  # Frontend öffnen
+
+# Logs kontrollieren
+docker-compose logs backend | grep -i error
+docker-compose logs frontend | grep -i error
+```
+
+**6.4 Tagging & Deployment**
+
+```bash
+# Version taggen in Git
+git tag v0.18.1
+git push origin v0.18.1
+
+# Docker Images taggen (für Registry)
+docker tag extractor-backend:latest myregistry.azurecr.io/extractor-backend:0.18.1
+docker tag extractor-frontend:latest myregistry.azurecr.io/extractor-frontend:0.18.1
+
+# In Registry pushen
+docker push myregistry.azurecr.io/extractor-backend:0.18.1
+docker push myregistry.azurecr.io/extractor-frontend:0.18.1
+```
+
+### Workflow Checkliste für jede neue Feature
+
+```
+✓ Feature Branch erstellen
+✓ Lokal entwickeln & npm run dev testen
+✓ Unit Tests schreiben & testen (npm run test)
+✓ Linting überprüfen (npm run lint)
+✓ Manual/Dokumentation aktualisieren
+✓ CHANGELOG.md aktualisieren
+✓ Commit mit Conventional Commit Format
+✓ Push & PR erstellen
+✓ Code Review warten & Fix Feedback
+✓ Merge zu develop
+✓ Version in package.json erhöhen
+✓ docker-compose build (alle Services)
+✓ docker-compose up -d & Health Check
+✓ Feature Test im Container
+✓ Git Tag erstellen (v0.18.1)
+✓ Docker Images in Registry pushen
+```
+
+---
+
+## 📋 Schema-Erstellung in der Praxis: Rechnungsextraktion mit Beispielschema
+
+Dieses Kapitel führt Sie **Schritt-für-Schritt** durch die Erstellung eines Rechnungs-Extraction-Schemas mit unserem vorbereiteten **invoice-schema.json** Beispiel.
+
+### Szenario
+
+Sie möchten automatisch Rechnungs-PDFs verarbeiten und folgende Daten extrahieren:
+- Rechnungsnummer
+- Rechnungsdatum
+- Kundenname
+- Rechnungsbetrag
+- Zahlungsfälligkeitsdatum
+- Einzelne Rechnungspositionen (Artikel, Menge, Preis)
+
+**Unser Beispielschema ist bereits vorkonfiguriert mit realistischen Mustern!**
+
+### Schritt 1: Beispielschema ansehen
+
+Die Datei `example-schemas/invoice-schema.json` liegt im Projekt vor:
+
+```json
+{
+  "name": "Invoice Extraction Schema",
+  "description": "Schema for automated invoice data extraction from PDF documents",
+  "documentType": "invoice",
+  "version": "1.0.0",
+  "fields": [
+    {
+      "fieldName": "invoiceNumber",
+      "type": "string",
+      "isRequired": true,
+      "pattern": "^(?:INV|RG|RECH)?[-]?[0-9]{4,12}$",
+      "confidence": 0.95,
+      "description": "Invoice number from header section"
+    },
+    {
+      "fieldName": "invoiceDate",
+      "type": "date",
+      "isRequired": true,
+      "pattern": "^\\d{1,2}[./\\\\-]\\d{1,2}[./\\\\-]\\d{4}$",
+      "confidence": 0.98,
+      "description": "Invoice issue date"
+    },
+    {
+      "fieldName": "customerName",
+      "type": "string",
+      "isRequired": true,
+      "pattern": "^[A-Za-zÄÖÜäöü0-9\\s.,&-]{3,100}$",
+      "confidence": 0.92,
+      "description": "Customer company name from bill-to section"
+    },
+    {
+      "fieldName": "invoiceAmount",
+      "type": "number",
+      "isRequired": true,
+      "pattern": "^[0-9]{1,10}[.,][0-9]{2}$",
+      "confidence": 0.97,
+      "description": "Total invoice amount in EUR"
+    },
+    {
+      "fieldName": "dueDate",
+      "type": "date",
+      "isRequired": true,
+      "pattern": "^\\d{1,2}[./\\\\-]\\d{1,2}[./\\\\-]\\d{4}$",
+      "confidence": 0.94,
+      "description": "Payment due date"
+    },
+    {
+      "fieldName": "lineItems",
+      "type": "array",
+      "isRequired": false,
+      "confidence": 0.85,
+      "description": "Array of invoice line items with description, quantity, unit price, total"
+    }
+  ]
+}
+```
+
+**Dieses Schema ist optimiert für echte Rechnungs-PDFs mit:**
+- ✅ Realistische Regex-Muster für Nummern, Daten, Beträge
+- ✅ Deutsche Umlaute in Kundennamen-Pattern
+- ✅ Flexible Datums-Formate (dd.mm.yyyy, dd/mm/yyyy, dd-mm-yyyy)
+- ✅ Betrag mit Dezimaltrennzeichen (1000,50 oder 1000.50)
+- ✅ Line Items als Array für mehrzeilige Positionen
+
+### Schritt 2: Schema hochladen via UI
+
+**2.1 Frontend öffnen**
+
+```bash
+# Frontend läuft (von docker-compose up)
+# Browser: http://localhost
+# Oder: http://localhost:5173 (Dev-Mode)
+```
+
+**2.2 Schema Upload aufrufen**
+
+- Menu öffnen (Hamburger Icon)
+- "Schema Upload" klicken
+- Oder direkt: http://localhost/#/schema-wizard
+
+**2.3 Schema hochladen**
+
+```
+1. "Create New Schema" Button klicken
+2. Name: "Invoice Extraction Schema"
+3. Description: "Automated extraction of invoice data from PDF documents"
+4. Document Type: "invoice"
+5. Fields hinzufügen (oder JSON einfügen):
+   - invoiceNumber (String, required, pattern)
+   - invoiceDate (Date, required, pattern)
+   - customerName (String, required, pattern)
+   - invoiceAmount (Number, required, pattern)
+   - dueDate (Date, required, pattern)
+   - lineItems (Array, optional)
+6. "Create Schema" Button klicken
+```
+
+**Oder per Datei hochladen:**
+```
+1. "Upload from JSON File" Button
+2. example-schemas/invoice-schema.json wählen
+3. "Upload" klicken
+```
+
+### Schritt 3: Schema hochladen via API (PowerShell)
+
+Falls Sie lieber automatisieren möchten:
+
+```powershell
+# invoice-schema.json hochladen
+$schemaPath = "example-schemas/invoice-schema.json"
+$schema = Get-Content $schemaPath | ConvertFrom-Json
+
+$body = @{
+    name = $schema.name
+    description = $schema.description
+    documentType = $schema.documentType
+    version = $schema.version
+    fields = $schema.fields
+} | ConvertTo-Json -Depth 10
+
+Invoke-WebRequest -Uri "http://localhost:3000/api/schema/upload" `
+    -Method POST `
+    -ContentType "application/json" `
+    -Body $body | Select-Object StatusCode, @{
+        Name = "Response"
+        Expression = { $_.Content | ConvertFrom-Json | ConvertTo-Json -Depth 10 }
+    }
+```
+
+**Erwartete Antwort (200 OK):**
+```json
+{
+  "schemaId": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+  "name": "Invoice Extraction Schema",
+  "version": "1.0.0",
+  "fieldCount": 6,
+  "created": "2026-07-10T12:34:56.789Z",
+  "message": "Schema created successfully"
+}
+```
+
+### Schritt 4: Extraktionsregeln generieren
+
+Nachdem Schema hochgeladen ist, können automatische Extraktionsregeln generiert werden:
+
+**4.1 Beispieldokument vorbereiten**
+
+```
+example-schemas/invoice-example-1.json
+
+{
+  "filename": "invoice-techcorp-2026-001234.pdf",
+  "knownValues": {
+    "invoiceNumber": "INV-2026-001234",
+    "invoiceDate": "10.07.2026",
+    "customerName": "TechCorp GmbH",
+    "invoiceAmount": "15999.99",
+    "dueDate": "24.08.2026",
+    "lineItems": [
+      {"description": "Softwarelizenzen", "quantity": 5, "unitPrice": "1000.00", "total": "5000.00"},
+      {"description": "Support & Maintenance", "quantity": 12, "unitPrice": "1000.00", "total": "12000.00"}
+    ]
+  }
+}
+```
+
+**4.2 Regeln generieren (API)**
+
+```bash
+curl -X POST http://localhost:3000/api/schema/a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d/generate-rules \
+  -H "Content-Type: application/json" \
+  -d '{
+    "strategy": "pattern-learning",
+    "confidence": 0.85,
+    "sampleDocuments": [
+      {
+        "documentPath": "example-schemas/invoice-example-1.json",
+        "knownValues": {
+          "invoiceNumber": "INV-2026-001234",
+          "invoiceDate": "10.07.2026",
+          "customerName": "TechCorp GmbH",
+          "invoiceAmount": "15999.99",
+          "dueDate": "24.08.2026"
+        }
+      }
+    ]
+  }'
+```
+
+**Rückgabe: Gelernte Muster**
+
+```json
+{
+  "rulesId": "rules-invoice-v1-2026",
+  "schemaId": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+  "generatedRules": 6,
+  "averageConfidence": 0.945,
+  "rules": [
+    {
+      "field": "invoiceNumber",
+      "extractionPattern": "(?:Invoice|Rech|INV).*?([A-Z]+-?\\d{4,12})",
+      "confidence": 0.98,
+      "exampleMatches": ["INV-2026-001234", "INV-2026-001235"]
+    },
+    {
+      "field": "customerName",
+      "extractionPattern": "Bill To:?\\s*([A-Za-z0-9äöü\\s.,&-]{3,100})",
+      "confidence": 0.92,
+      "exampleMatches": ["TechCorp GmbH", "Tech Solutions LLC"]
+    }
+  ]
+}
+```
+
+### Schritt 5: Mit echtem Rechnungs-PDF testen
+
+**5.1 Test-PDF hochladen**
+
+```bash
+# PDF mit Rechnungsdaten hochladen
+curl -X POST http://localhost:3000/api/documents/upload \
+  -F "file=@path/to/invoice-sample.pdf" \
+  -F "schemaId=a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"
+```
+
+**5.2 Extraktion ausführen**
+
+```bash
+curl -X POST http://localhost:3000/api/extract \
+  -H "Content-Type: application/json" \
+  -d '{
+    "documentId": "doc-uuid-123",
+    "schemaId": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+    "rulesId": "rules-invoice-v1-2026"
+  }'
+```
+
+**Erwartete Ergebnisse:**
+
+```json
+{
+  "extractionId": "extr-uuid-456",
+  "documentId": "doc-uuid-123",
+  "schemaId": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+  "timestamp": "2026-07-10T12:40:15.123Z",
+  "extractedData": {
+    "invoiceNumber": {
+      "value": "INV-2026-001234",
+      "confidence": 0.98,
+      "source": "page 1, position (150, 50)"
+    },
+    "invoiceDate": {
+      "value": "10.07.2026",
+      "confidence": 0.99,
+      "source": "page 1, position (300, 150)"
+    },
+    "customerName": {
+      "value": "TechCorp GmbH",
+      "confidence": 0.91,
+      "source": "page 1, position (100, 200)"
+    },
+    "invoiceAmount": {
+      "value": "15999.99",
+      "confidence": 0.97,
+      "source": "page 1, position (500, 500)"
+    },
+    "dueDate": {
+      "value": "24.08.2026",
+      "confidence": 0.96,
+      "source": "page 1, position (300, 520)"
+    }
+  },
+  "overallConfidence": 0.962,
+  "status": "SUCCESS"
+}
+```
+
+### Schritt 6: Schema im UI verwalten
+
+Navigieren zu: http://localhost/#/schemas
+
+**Ansicht:**
+```
+Schema Management
+
+ID: a1b2c3d4...
+Name: Invoice Extraction Schema
+Description: Automated extraction of invoice data from PDF documents
+Version: 1.0.0
+Status: Active
+Fields: 6
+Created: 7/10/2026
+
+Aktionen: [Edit] [Version History] [Delete]
+```
+
+**Mögliche Aktionen:**
+- **Edit**: Schema-Felder anpassen, Patterns optimieren
+- **Version History**: Frühere Versionen ansehen & Rollback
+- **Delete**: Schema entfernen (⚠️ Vorsicht mit aktiven Extraktionen)
+
+### Häufige Probleme & Lösungen
+
+#### Problem 1: "Schema name already exists"
+
+**Ursache:** Schema mit gleichem Namen existiert bereits
+
+**Lösung:**
+```bash
+# Eindeutigen Namen verwenden
+curl http://localhost:3000/api/schema/list  # Existierende Schemas prüfen
+# Name ändern zu: "Invoice Extraction Schema v2.0"
+```
+
+#### Problem 2: "Field pattern is invalid"
+
+**Ursache:** Regex-Pattern ist fehlerhaft
+
+**Lösung:**
+```bash
+# Regex in Online-Tool testen: https://regex101.com/
+# Pattern beispiel testen:
+pattern: "^[0-9]{1,10}[.,][0-9]{2}$"
+test-value: "15999.99"  # ✅ Match
+test-value: "15999,99"  # ✅ Match
+test-value: "abc"       # ❌ No match
+```
+
+#### Problem 3: "Confidence too low"
+
+**Ursache:** Extraktionsregeln haben zu niedrige Confidence Scores
+
+**Lösung:**
+```bash
+# Mehr/bessere Beispiele hinzufügen für generate-rules
+# Oder Pattern manuell verfeinern
+# Confidence-Threshold senken (aber: mehr False Positives möglich)
+```
+
 - [ ] Passwörter geändert
 - [ ] Secrets in Manager gespeichert
 - [ ] HTTPS/TLS konfiguriert
@@ -1436,6 +2091,80 @@ Lösung:
 - 📖 **Mehr Details?** Siehe [PHASE_18_DOCKER_COMPLETION_REPORT.md](PHASE_18_DOCKER_COMPLETION_REPORT.md)
 - 🔌 **API-Fragen?** Siehe REST API Übersicht oben
 
+
+---
+
+## ?? Log File Viewer - Logs und Fehler durchsuchen
+
+### Zugriff
+
+Die **Log File Viewer** Komponente ist �ber das Men� erreichbar:
+- **URL**: http://localhost/#/logs
+- **Menu**: Logs (Icon: ??)
+- **Status**: ? Production-Ready
+
+### Features
+
+#### 1. **Filtern nach Log-Level**
+- debug - Detaillierte Informationen
+- info - Allgemeine Informationen  
+- warn - Warnungen
+- error - Fehler
+
+#### 2. **Filtern nach Source**
+- parser - Schema-Parser
+- llm - LLM-Integration
+- alidator - Datenvalidation
+- pi - API-Calls
+- system - Systemereignisse
+
+#### 3. **Zeitraum-Filter**
+Geben Sie Start- und Enddatum ein, um Logs f�r einen bestimmten Zeitraum zu sehen.
+
+#### 4. **Suche**
+Volltext-Suche mit regul�ren Ausdr�cken.
+
+#### 5. **Export**
+Logs exportieren in:
+- **JSON** - Vollst�ndige Daten mit Context
+- **CSV** - Tabellarisches Format
+- **TXT** - Lesbar formatiert
+
+### Beispiel-Workflow
+
+`
+1. �ffne Logs: http://localhost/#/logs
+2. Filtere nach Level: 'error'
+3. Gebe Zeitraum ein: Letzte 24 Stunden
+4. Suche nach Stichwort: 'schema'
+5. Klicke auf Eintrag f�r vollst�ndige Details
+6. Exportiere in JSON f�r weitere Analyse
+`
+
+### Fehlerbehebung
+
+**Problem**: Keine Logs angezeigt
+- **L�sung**: F�hre einen Extract durch, um Logs zu generieren
+- **Check**: Backend-Health �berpr�fen (http://localhost:3000/health)
+
+**Problem**: Logs zu alt
+- **L�sung**: Verwende Zeitraum-Filter um relevante Logs zu finden
+- **Cleanup**: Alte Logs werden automatisch nach 30 Tagen gel�scht
+
+**Problem**: Export fehlgeschlagen
+- **L�sung**: Browser-Konsole �berpr�fen (F12 ? Console)
+- **Alternative**: Copy-Paste aus UI oder API direkt abfragen
+
+---
+
+### Technical Details
+
+- **Component**: [frontend/src/components/workbench/LogBrowser.tsx]
+- **Hook**: [frontend/src/hooks/useLogs.ts]
+- **Route**: GET /api/logs (Backend)
+- **Limit**: Max 500 Logs pro Anfrage (Pagination m�glich)
+- **Format**: ISO-8601 Timestamps, Millisekunden-Genauigkeit
 ---
 
 **Version 0.18.0 — Docker Containerization Ready** 🐳
+

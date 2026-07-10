@@ -46,7 +46,27 @@ docker-compose up -d
 
 ---
 
-## 🚀 System starten (3 Optionen)
+## � System stoppen
+
+```bash
+# Option 1: Automatisierte Stop-Skripte
+stop-docker.cmd                    # Windows CMD
+.\stop-docker.ps1                  # PowerShell
+.\stop-docker.ps1 -RemoveVolumes   # Mit Datenlöschung
+
+# Option 2: Manuelle Docker Befehle
+docker-compose stop        # Nur pausieren
+docker-compose down        # Stoppen & Container löschen
+docker-compose down -v     # + Volumes löschen (⚠️)
+
+# Option 3: Lokale Entwicklung
+stop-app.cmd               # Windows CMD
+.\stop-app.ps1             # PowerShell
+```
+
+---
+
+## �🚀 System starten (3 Optionen)
 
 # 5. Regeln generieren
 ✅ 10+ Regeln mit ~0.87 avg Confidence

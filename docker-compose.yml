@@ -1,5 +1,24 @@
 version: '3.9'
 
+# Phase 21 - Asynchrone Job API mit Daten-Persistenz
+# 
+# Volume-Strategie:
+#   - Named Volumes (postgres_data, redis_data): Automatische Persistierung
+#   - Bind-Mounts (schemas, extraction-rules, backups): Lokale Sicherung
+#   - Read-Only Flags (:ro): Für unveränderliche Daten
+#
+# Backup-Integration:
+#   - Vor Docker Build: .\backup-before-build.ps1
+#   - Nach Docker Build: .\restore-after-build.ps1
+#   - Orchestriert: .\build-with-persistence.ps1
+#
+# Datenverfügbarkeit:
+#   - Schemas werden aus ./schemas/ geladen (lokal)
+#   - Backups werden aus ./backups/ geladen (lokal)
+#   - Results werden in ./results/ gespeichert (lokal)
+#   - PostgreSQL Daten in Docker Volume postgres_data (persistent)
+#   - Redis Daten in Docker Volume redis_data (persistent)
+
 services:
   # PostgreSQL Database
   postgres:
@@ -17,8 +36,9 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U extractor_user"]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 5
+      start_period: 15s
     networks:
       - extractor-network
     restart: unless-stopped
@@ -67,7 +87,7 @@ services:
       dockerfile: Dockerfile.backend
     container_name: extractor-backend
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
       PORT: 3000
       DB_HOST: postgres
       DB_PORT: 5432
@@ -81,10 +101,11 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./extraction-rules:/app/extraction-rules
+      - ./extraction-rules:/app/extraction-rules:ro
       - ./results:/app/results
-      - ./schemas:/app/schemas
-      - ./source-documents:/app/source-documents
+      - ./schemas:/app/schemas:ro
+      - ./backups:/app/backups
+      - ./source-documents:/app/source-documents:ro
     networks:
       - extractor-network
     restart: unless-stopped
@@ -94,7 +115,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -113,9 +134,10 @@ services:
       - extractor-network
     restart: unless-stopped
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/index.html"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -124,10 +146,22 @@ services:
 volumes:
   postgres_data:
     driver: local
+    labels:
+      com.extractor.description: "PostgreSQL database persistent storage"
+      com.extractor.phase: "21"
+      com.extractor.backup: "automatic"
+  
   pgadmin_data:
     driver: local
+    labels:
+      com.extractor.description: "pgAdmin configuration and settings"
+      com.extractor.phase: "21"
+  
   redis_data:
     driver: local
+    labels:
+      com.extractor.description: "Redis cache persistent storage"
+      com.extractor.phase: "21"
 
 networks:
   extractor-network:

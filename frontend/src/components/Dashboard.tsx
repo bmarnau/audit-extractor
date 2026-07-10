@@ -7,9 +7,12 @@
  * - API Status
  * - Anzahl Regeln
  * - Anzahl Konfigurationen
+ * - Anzahl Schemas
+ * - Anzahl Dokumente/Extraktionen
+ * - Anzahl Manuals/Dokumentation
  *
- * @version 0.13.0
- * @phase 13
+ * @version 0.19.0
+ * @phase 18
  */
 
 import React, { useEffect, useState, useCallback } from 'react';
@@ -33,6 +36,9 @@ import {
   CheckCircle as HealthyIcon,
   Error as ErrorIcon,
   Warning as WarningIcon,
+  Schema as SchemaIcon,
+  Description as DocumentIcon,
+  Help as ManualIcon,
 } from '@mui/icons-material';
 import { useConfig } from '@/hooks/useConfig';
 import { useBackup } from '@/hooks/useBackup';
@@ -51,6 +57,9 @@ interface DashboardStats {
   ruleCount: number;
   apiHealth: HealthStatus;
   configCount: number;
+  schemaCount: number;
+  documentCount: number;
+  manualCount: number;
 }
 
 const Dashboard: React.FC = () => {
@@ -62,6 +71,9 @@ const Dashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [schemaCount, setSchemaCount] = useState(0);
+  const [documentCount, setDocumentCount] = useState(0);
+  const [manualCount, setManualCount] = useState(0);
 
   // Load all dashboard data (reusable function)
   const loadDashboardData = useCallback(async () => {
@@ -73,10 +85,50 @@ const Dashboard: React.FC = () => {
       // Load backups  
       await listBackups(50);
 
+      // Load schemas count
+      try {
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+        const schemasResponse = await fetch(`${apiBase}/schema/schemas`);
+        if (schemasResponse.ok) {
+          const schemasData = await schemasResponse.json();
+          setSchemaCount(Array.isArray(schemasData.data) ? schemasData.data.length : 0);
+        }
+      } catch (err) {
+        console.warn('[Dashboard] Failed to load schemas count:', err);
+        setSchemaCount(0);
+      }
+
+      // Load documents/runs count
+      try {
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+        const runsResponse = await fetch(`${apiBase}/revision/runs?limit=1000`);
+        if (runsResponse.ok) {
+          const runsData = await runsResponse.json();
+          setDocumentCount(runsData.data?.runs?.length || 0);
+        }
+      } catch (err) {
+        console.warn('[Dashboard] Failed to load runs count:', err);
+        setDocumentCount(0);
+      }
+
+      // Load manual count (from help/manual endpoint if available)
+      try {
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+        const manualResponse = await fetch(`${apiBase}/help/manual`);
+        if (manualResponse.ok) {
+          const manualData = await manualResponse.json();
+          // Count chapters in manual if available
+          setManualCount(manualData?.data?.chapters?.length || 0);
+        }
+      } catch (err) {
+        console.warn('[Dashboard] Failed to load manual count:', err);
+        setManualCount(0); // No manual chapters available
+      }
+
       // Check API health (just for verification)
-      await fetch(
-        `${import.meta.env.VITE_API_URL || 'http://localhost:3000/api'}/health`
-      ).catch(() => {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+      const baseUrl = apiBase.replace('/api', '');
+      await fetch(`${baseUrl}/health`).catch(() => {
         // Silent fail - health check is informational
       });
     } catch (err) {
@@ -120,13 +172,16 @@ const Dashboard: React.FC = () => {
         ruleCount: rules.length,
         apiHealth,
         configCount: 1,
+        schemaCount,
+        documentCount,
+        manualCount,
       };
 
       setStats(newStats);
     } catch (err) {
       console.error('[Dashboard] Stats calculation failed:', err);
     }
-  }, [config, backups, rules, loading]);
+  }, [config, backups, rules, loading, schemaCount, documentCount, manualCount]);
 
   if (loading) {
     return (
@@ -282,6 +337,60 @@ const Dashboard: React.FC = () => {
               <Typography variant="h5">{stats.configCount}</Typography>
               <Typography variant="caption" color="textSecondary">
                 Active config version
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Schemas Count Card */}
+        <Grid item xs={12} sm={6} md={4}>
+          <Card>
+            <CardContent>
+              <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+                <SchemaIcon sx={{ color: '#2196F3', mt: 0.5 }} />
+                <Typography color="textSecondary" gutterBottom>
+                  Schemas
+                </Typography>
+              </Stack>
+              <Typography variant="h5">{stats.schemaCount}</Typography>
+              <Typography variant="caption" color="textSecondary">
+                Active schemas
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Documents Count Card */}
+        <Grid item xs={12} sm={6} md={4}>
+          <Card>
+            <CardContent>
+              <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+                <DocumentIcon sx={{ color: '#FF9800', mt: 0.5 }} />
+                <Typography color="textSecondary" gutterBottom>
+                  Documents
+                </Typography>
+              </Stack>
+              <Typography variant="h5">{stats.documentCount}</Typography>
+              <Typography variant="caption" color="textSecondary">
+                Extraction runs
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Manual Count Card */}
+        <Grid item xs={12} sm={6} md={4}>
+          <Card>
+            <CardContent>
+              <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
+                <ManualIcon sx={{ color: '#4CAF50', mt: 0.5 }} />
+                <Typography color="textSecondary" gutterBottom>
+                  Manuals
+                </Typography>
+              </Stack>
+              <Typography variant="h5">{stats.manualCount}</Typography>
+              <Typography variant="caption" color="textSecondary">
+                Documentation sections
               </Typography>
             </CardContent>
           </Card>

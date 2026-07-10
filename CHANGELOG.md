@@ -10,6 +10,206 @@ Folge [Semantic Versioning](https://semver.org/):
 
 ---
 
+## [0.21.0] - 2026-07-10 (Phase 21 Extended: Asynchronous Job API - COMPLETE ✓)
+
+### Added - Phase 21 Extended: Asynchronous Job Processing
+- ✅ **JobEntity**: TypeORM entity for PostgreSQL jobs table
+  - Full lifecycle tracking: queued → running → completed/failed/cancelled
+  - Automatic timestamps: requestedAt, startedAt, completedAt
+  - JSONB storage for flexible job input and result data
+  - Error handling: errorMessage and errorDetails fields
+  - Performance metrics: duration tracking and retry counter
+  - Automatic indexes on status, requestedAt, userId for fast queries
+
+- ✅ **JobRepository**: Data Access Layer with 10 methods
+  - `create()`: Create new job with metadata
+  - `findById()`: Retrieve job details
+  - `updateStatus()`: Atomic status transitions
+  - `start()`: Mark job as running
+  - `complete()`: Mark job as completed with results
+  - `fail()`: Mark job as failed with error details
+  - `cancel()`: Mark job as cancelled
+  - `query()`: Advanced filtering by status, userId, documentId, jobType, date range
+  - `getStatistics()`: Job metrics (totalJobs, byStatus, averageDuration, failureRate, lastHour)
+  - `exportAsJson()` / `exportAsCsv()`: Export jobs with filters
+  - `clearOldJobs()`: Retention policy enforcement
+
+- ✅ **JobService**: Business Logic & Orchestration
+  - `createJob()`: Start async job with automatic processing
+  - `getJob()`: Retrieve job details
+  - `getJobResult()`: Get job result (status-specific)
+  - `cancelJob()`: Abort running or queued jobs
+  - `retryFailedJob()`: Retry with exponential backoff support
+  - `getStatistics()`: Job system metrics
+  - `queryJobs()`: Advanced job filtering
+  - `exportJobs()`: JSON/CSV export
+  - `cleanupOldJobs()`: Automatic cleanup with retention
+
+- ✅ **4 REST API Endpoints**
+  - `POST /api/jobs`: Create new job (starts async processing)
+  - `GET /api/jobs/{id}`: Get job details and status
+  - `GET /api/jobs/{id}/result`: Get job result (status-aware)
+  - `DELETE /api/jobs/{id}`: Cancel running/queued job
+
+- ✅ **Integration with ExtractionPipeline**
+  - Jobs automatically execute extraction asynchronously
+  - Results stored in resultData field
+  - Error handling with automatic failure marking
+  - Seamless integration with existing extraction logic
+
+- ✅ **Job Status Lifecycle**
+  - queued: Waiting for processing
+  - running: Currently executing
+  - completed: Successfully finished
+  - failed: Execution error occurred
+  - cancelled: User-initiated cancellation
+
+### Fixed - Audit Integration
+- ✅ **LogViewer Component Routing**: LogViewer now properly routed in App.tsx /logs route
+- ✅ **Build Success**: 0 TypeScript errors after LogViewer integration
+
+### Changed
+- App.tsx: Updated /logs route to use LogViewer (Phase 21) instead of LogBrowser (Phase 13)
+- ServiceContainer.ts: Registered JobRepository and JobService as Singletons
+- api/index.ts: Mounted job routes at /api/jobs with proper error handling
+
+### Documentation
+- ✅ Created RELEASE_NOTES_0.21.0.md with comprehensive feature overview
+- ✅ Updated PROJECT.md to version 0.21.0
+- ✅ Integration Audit Report (docs/integration-audit.md): 🟡 72/100 score, findings documented
+
+---
+
+## [0.20.0] - 2026-07-10 (Phase 20-21: Log-Viewer System - COMPLETE ✓)
+
+### Added - Phase 20: Backend Log-Viewer API
+- ✅ **AuditLogEntity**: TypeORM entity for PostgreSQL audit_logs table
+  - Full-text search support via searchText column
+  - JSONB context field for flexible metadata storage
+  - Automatic indexes on timestamp, level, source, documentId
+  - Support for 4 log levels: debug, info, warn, error
+  - Support for 7 sources: parser, llm, validator, api, system, schema, extraction
+
+- ✅ **AuditLogRepository**: Data Access Layer with 6 core methods
+  - `log()`: Create audit log entries with UUID and automatic timestamp
+  - `query()`: Advanced filtering by level, source, time range, search query
+  - `getStatistics()`: Dashboard metrics (byLevel, bySource, errorCount, warningCount, last24Hours)
+  - `exportAsJson()` / `exportAsCsv()`: Export filtered logs
+  - `clearOldLogs()`: Automatic retention policy enforcement (default 90 days)
+
+- ✅ **7 New REST API Endpoints**
+  - `GET /api/logs/sources`: Available levels and sources
+  - `GET /api/logs`: Query with filters (limit, offset, levels, sources, search, documentId, field)
+  - `GET /api/logs/stats`: Dashboard statistics
+  - `POST /api/logs/create`: Create log entry
+  - `POST /api/logs/export`: Export logs (json|csv)
+  - `DELETE /api/logs/cleanup`: Delete logs older than retention period
+  - Standardized response wrapper with timestamp and duration metrics
+
+### Added - Phase 21: Frontend Log-Viewer UI
+- ✅ **LogViewer.tsx**: Full-featured React component (TypeScript)
+  - Dashboard with 4 key metrics (total entries, errors, warnings, last 24h)
+  - Advanced filter panel (levels, sources, time range)
+  - Real-time search with regex support
+  - Expandable log details panel
+  - Color-coded severity indicators (emoji support)
+  - Pagination with page navigation
+  - Export to JSON/CSV with custom filters
+  - Responsive design (desktop, tablet, mobile)
+
+- ✅ **LogViewer.css**: Professional styling
+  - Color-coded severity levels (🟢 info, 🟡 warn, 🔴 error, ⚪ debug)
+  - Responsive grid layout for statistics
+  - Filter panel with checkboxes and date inputs
+  - Expandable log entry details with JSON syntax highlighting
+  - Smooth transitions and hover effects
+  - Mobile-optimized layout
+
+### Performance & Architecture
+- ✅ **Database Indexes**: Composite indexes on (timestamp, level), (source), (documentId)
+- ✅ **Pagination**: Default limit 50, maximum 500 entries per request
+- ✅ **Retention Policy**: Automatic cleanup of logs older than 90 days (configurable)
+- ✅ **Export Optimization**: Streaming CSV generation for large datasets
+- ✅ **Search Performance**: Full-text search via PostgreSQL searchText column
+
+### Security & Compliance
+- ✅ **Audit Trail**: Complete logging of system operations for compliance
+- ✅ **GDPR Compliance**: Configurable retention policies
+- ✅ **Field-Level Logging**: PII-sensitive operations tracked separately
+- ✅ **Request Tracing**: requestId support for distributed tracing
+- ✅ **User Tracking**: userId support for audit logs
+
+### Testing & Validation
+- ✅ **10 Test Scenarios**: Sources, stats, search, filtering, export, pagination
+- ✅ **Docker Integration**: Automatic audit_logs table creation on rebuild
+- ✅ **End-to-End Testing**: All endpoints verified with sample data
+
+### Breaking Changes
+- None - fully backward compatible
+
+### Migration Path
+1. `npm run build` (TypeScript compilation)
+2. `docker-compose down && docker-compose up -d` (rebuild containers)
+3. New `/logs` route displays LogViewer UI
+4. All existing features continue unchanged
+
+### Database Migration
+- **New Table**: audit_logs (UUID id, TIMESTAMPTZ timestamp, VARCHAR level/source, TEXT message, JSONB context, etc.)
+- **Auto-Creation**: TypeORM synchronization creates table on Docker rebuild
+- **No Data Loss**: Existing schema and document data unaffected
+
+### Files Added
+- **Backend**: 
+  - src/infrastructure/database/entities/AuditLogEntity.ts
+  - src/infrastructure/repositories/AuditLogRepository.ts
+  - src/infrastructure/api/routes/logs.ts (rewritten from mock)
+
+- **Frontend**:
+  - frontend/src/components/LogViewer.tsx
+  - frontend/src/components/LogViewer.css
+
+### Files Modified
+- src/infrastructure/database/data-source.ts: Added AuditLogEntity registration
+- src/infrastructure/api/routes/logs.ts: Converted from mock data to database-backed
+
+### Documentation Added
+- RELEASE_NOTES_0.20.0.md: Complete feature documentation
+- PHASE_20_21_IMPLEMENTATION.md: Technical implementation details
+
+---
+
+## [0.19.0] - 2026-07-10 (Phase 19: Schema Bug Fixes - COMPLETE ✓)
+
+### Fixed - Phase 19: Schema Management Bug Fixes
+- ✅ **Encapsulation Violation**: Fixed private property access in SchemaExtractionRoutes
+  - Removed direct access to `schemaManagementService['directoryManager']`
+  - Added public wrapper methods to SchemaManagementService
+
+- ✅ **Missing Public API**: Added 3 public methods to SchemaManagementService
+  - `loadExamples(schemaId)`: Public wrapper with error handling
+  - `loadRules(schemaId)`: Public wrapper with error handling
+  - `loadRulesStatistics(schemaId)`: Public wrapper with error handling
+
+- ✅ **Version Increment Bug**: Fixed SchemaRepository.update()
+  - Properly parses version string (e.g., "1.0.0")
+  - Increments patch version number
+  - Returns correctly versioned entity (e.g., "1.0.0" → "1.0.1")
+
+### Impact
+- Rule generation (Step 5 of schema wizard) now completes without errors
+- Schema versioning works correctly for sequential updates
+- Improved code encapsulation and maintainability
+
+### Testing
+- ✅ 5/5 Schema wizard test cases passed
+- ✅ Schema #3 creation verified with automatic version increment
+- ✅ RuleSet generation functional with 3 rules at 0.85 confidence
+
+### Breaking Changes
+- None - internal fixes only
+
+---
+
 ## [0.14.0] - 2026-07-08 (Phase 1: Automatic Ruleset Generation - COMPLETE ✓)
 
 ### Added - Phase 1: Automatic Ruleset Generation from Schema + Examples

@@ -23,12 +23,11 @@ interface SchemaData {
   id: string;
   name: string;
   description: string;
-  version: number;
-  schema: Record<string, unknown>;
-  generatedRulesCount?: number;
-  averageConfidence?: number;
+  version: string;
+  schema?: Record<string, unknown>;
   createdAt: string;
   updatedAt: string;
+  isActive: boolean;
 }
 
 /**
@@ -68,7 +67,6 @@ export const SchemaEditorComponent: React.FC = () => {
     async (values) => {
       await updateSchema({
         description: values.description,
-        metadata: { updatedVia: 'frontend-phase17' },
       });
       setSuccessMessage('Schema updated successfully');
       refetch();
@@ -96,7 +94,6 @@ export const SchemaEditorComponent: React.FC = () => {
     try {
       await updateSchema({
         description: formData.description,
-        metadata: { lastEditVia: 'frontend-editor' },
       });
       setSuccessMessage('Schema updated successfully');
       refetch();
@@ -187,24 +184,6 @@ export const SchemaEditorComponent: React.FC = () => {
                 {new Date(schema.updatedAt).toLocaleDateString()}
               </Typography>
             </Grid>
-            {schema.generatedRulesCount && (
-              <>
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="caption" color="textSecondary">
-                    Generated Rules
-                  </Typography>
-                  <Typography variant="body2">{schema.generatedRulesCount}</Typography>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Typography variant="caption" color="textSecondary">
-                    Average Confidence
-                  </Typography>
-                  <Typography variant="body2">
-                    {schema.averageConfidence ? (schema.averageConfidence * 100).toFixed(1) : 'N/A'}%
-                  </Typography>
-                </Grid>
-              </>
-            )}
           </Grid>
 
           {/* Edit Fields */}

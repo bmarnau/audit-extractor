@@ -12,6 +12,7 @@
  * - Nur explizite Definitionen werden geladen
  */
 
+import { injectable } from 'tsyringe';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { Rule, FieldType } from './Rule';
@@ -34,6 +35,7 @@ export class RuleLoadError extends Error {
 /**
  * RuleLoader - lädt Rules und Schemas aus Dateien.
  */
+@injectable()
 export class RuleLoader {
   private readonly rulesDir: string;
   private readonly schemasDir: string;
@@ -43,16 +45,17 @@ export class RuleLoader {
   /**
    * Initialisiert den RuleLoader.
    *
-   * @param rulesDir Pfad zum extraction-rules Verzeichnis
+   * @param rulesDir Pfad zum extraction-rules Verzeichnis (optional, defaults to './extraction-rules')
    * @throws RuleLoadError falls Verzeichnisse nicht existieren
    */
-  constructor(rulesDir: string) {
-    if (!rulesDir) {
+  constructor(rulesDir?: string) {
+    const resolvedDir = rulesDir || process.env.RULES_DIR || './extraction-rules';
+    if (!resolvedDir) {
       throw new RuleLoadError('Rules directory path is required');
     }
 
-    this.rulesDir = rulesDir;
-    this.schemasDir = path.join(rulesDir, 'schemas');
+    this.rulesDir = resolvedDir;
+    this.schemasDir = path.join(resolvedDir, 'schemas');
   }
 
   /**

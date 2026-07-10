@@ -6,6 +6,10 @@
  * 2. When run as CLI: starts the Express API server
  */
 
+// MUST be first! tsyringe requires this polyfill
+// Using require() instead of import to ensure it's not optimized away
+require('reflect-metadata');
+
 // Register tsconfig-paths for module resolution
 import 'tsconfig-paths/register';
 
