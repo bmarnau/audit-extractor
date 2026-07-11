@@ -33,6 +33,8 @@ import { createRevisionRoutes } from '../../presentation/RevisionRoutes';
 import { createSchemaExtractionRoutes } from '../../presentation/SchemaExtractionRoutes';
 // Phase 21 Asynchronous Jobs
 import createJobRoutes from './routes/jobs';
+// Phase 22 Job-Based Architecture (DDD)
+import { createJobStructureRoutes } from './routes/job-structure';
 
 const port = parseInt(process.env.PORT || '3000', 10);
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -191,6 +193,15 @@ async function startServer() {
       console.log('[Server] ✓ Job routes (Phase 21) mounted on /api/jobs');
     } catch (routeErr) {
       console.error('[Server] Error mounting job routes:', routeErr);
+      throw routeErr;
+    }
+
+    try {
+      const jobStructureRoutes = createJobStructureRoutes();
+      app.use('/api/v1/jobs', jobStructureRoutes);
+      console.log('[Server] ✓ Job Structure routes (Phase 22) mounted on /api/v1/jobs');
+    } catch (routeErr) {
+      console.error('[Server] Error mounting job structure routes:', routeErr);
       throw routeErr;
     }
 

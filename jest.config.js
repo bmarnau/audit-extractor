@@ -8,7 +8,8 @@ module.exports = {
     '^@domain/(.*)$': '<rootDir>/src/domain/$1',
     '^@application/(.*)$': '<rootDir>/src/application/$1',
     '^@infrastructure/(.*)$': '<rootDir>/src/infrastructure/$1',
-    '^@presentation/(.*)$': '<rootDir>/src/presentation/$1'
+    '^@presentation/(.*)$': '<rootDir>/src/presentation/$1',
+    '^uuid$': '<rootDir>/tests/__mocks__/uuid.js'
   },
   collectCoverageFrom: [
     'src/**/*.ts',

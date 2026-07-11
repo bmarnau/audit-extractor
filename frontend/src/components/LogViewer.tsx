@@ -152,7 +152,7 @@ export const LogViewer: React.FC = () => {
   return (
     <div className="log-viewer">
       <div className="log-viewer-header">
-        <h1>📊 Log Viewer</h1>
+        <h1>📊 Log Browser</h1>
         <p>Real-time system logs with filtering, search, and export</p>
       </div>
 

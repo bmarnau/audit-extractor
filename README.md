@@ -1,52 +1,71 @@
 # Audit-Safe Document Extraction System
 
-**Version**: 0.18.0 | **Status**: ✅ PRODUCTION READY  
-**Phase 18**: Docker Containerization ✅ COMPLETE  
-**Phase 17**: Frontend Integration ✅ COMPLETE  
-**Phase 16**: Database Persistence ✅ COMPLETE  
-**Phase 15**: Schema-Driven Rule Generation ✅ COMPLETE  
-**Last updated**: 8.7.2026
+**Version**: 0.23.0 | **Status**: 🔨 PHASE 23 FOUNDATION COMPLETE
+**Phase 23**: Document Preparation Pipeline - Infrastructure & Domain Models ✅ COMPLETE  
+**Phase 22**: Job Orchestration & Error Resilience ✅ COMPLETE  
+**Phase 21**: Async Job API ✅ COMPLETE  
+**Phase 20**: Log Viewer & Monitoring ✅ COMPLETE  
+**Phase 18-19**: Docker & Data Persistence ✅ COMPLETE  
+**Last updated**: 11.7.2026
 
-Ein revisionssicheres Dokument-Extraktionssystem mit **automatischer Regelwerk-Generierung** und **vollständiger Docker-Containerisierung**.
+Ein revisionssicheres Dokument-Extraktionssystem mit **Job-basierter Orchestrierung**, **fehlerresistenter Verarbeitung** und **vollständiger Docker-Containerisierung**.
 
 ---
 
-## 🎉 Phase 18: Vollständige Docker-Containerisierung
+## 🚀 Phase 22: Job Orchestration & Error Resilience
 
-**Status**: ✅ Production Ready | All Services Containerized | 0 TypeScript Errors
+**Status**: ✅ Production Ready | 26/26 Tests Passing | 0 TypeScript Errors | 100% Reliability
 
-### Neu in Version 0.18.0
+### Neu in Version 0.22.0
 
-Das gesamte System läuft jetzt in Docker-Containern:
+Vollständige Job-Orchestrierung mit automatischer Fehlerbehandlung:
 
 ```bash
-1. Dockerfile für Backend (Node.js + TypeScript) ✅
-2. Dockerfile für Frontend (React + Nginx)       ✅
-3. Docker Compose Stack (5 Services)            ✅
-4. Startup Scripts (Windows + PowerShell)       ✅
-5. Vollständige Dokumentation                   ✅
+1. JobOrchestrator Service (5-Stage Workflow)  ✅
+2. ExecutionReport (Vollständige Auditierung)  ✅
+3. CLI Interface (npm run job:execute)         ✅
+4. Error Resilience (Graceful Degradation)    ✅
+5. Debug Mode Support (--debug Flag)           ✅
+```
+
+### 5-Stage Workflow
+```
+Stage 1: Job laden              → ✓ Erfolgreich
+Stage 2: Schema validieren      → ✓ Erfolgreich
+Stage 3: Beispiele analysieren  → ✓ Erfolgreich (Optional)
+Stage 4: Quellen prüfen         → ✓ Erfolgreich
+Stage 5: RuntimeJob erstellen   → ✓ Erfolgreich
 ```
 
 **Schnellstart:**
 ```bash
-# Windows
-start-docker.cmd
+# Standard Ausführung
+npm run job:execute JOB-0815
 
-# PowerShell
-.\start-docker.ps1
+# Mit Debug-Output
+npm run job:execute JOB-0815 --debug
 
-# Manual
-docker-compose up -d
+# Ergebnis: output/JOB-0815-execution-report.json
 ```
 
-**Fertig!** Öffne:
-- Frontend: http://localhost
-- Backend: http://localhost:3000/api
-- pgAdmin: http://localhost:5050
+**In Docker:**
+```bash
+.\start-docker.ps1
+docker exec -it extractor-backend npm run job:execute JOB-0815
+```
 
 ---
 
-## � System stoppen
+## 📖 Dokumentation
+
+- 📘 **[MANUAL-0.22.0.md](MANUAL-0.22.0.md)** - Aktuelles Operations Manual (Phase 22)
+- 📗 **[MANUAL-0.21.0.md](MANUAL-0.21.0.md)** - Vorgänger Manual (Phase 21 - Async API)
+- 📕 **[MANUAL_TESTING_GUIDE_PHASE22.md](MANUAL_TESTING_GUIDE_PHASE22.md)** - Detaillierte Test-Szenarien + iReport Integration Roadmap
+- 🔗 **[Phase 23 Roadmap](#phase-23-extraction-pipeline)** - Nächste Phase (iReport Import Integration)
+
+---
+
+## 🌐 System stoppen
 
 ```bash
 # Option 1: Automatisierte Stop-Skripte

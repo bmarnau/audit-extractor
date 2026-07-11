@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Delivery Note",
+  "description": "Docusnap Delivery Note Schema v1.5.0 - Shipping/delivery documentation",
+  "version": "1.5.0",
+  "type": "object",
+  "properties": {
+    "deliveryNoteNumber": {
+      "type": "string",
+      "description": "Unique delivery note identifier (e.g., DN-2024-001)",
+      "pattern": "^DN-\\d{4}-\\d{3,6}$"
+    },
+    "deliveryDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Actual or expected delivery date"
+    },
+    "shipmentDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Date shipment left warehouse"
+    },
+    "relatedInvoiceNumber": {
+      "type": "string",
+      "description": "Reference to related invoice"
+    },
+    "relatedOrderNumber": {
+      "type": "string",
+      "description": "Reference to purchase order"
+    },
+    "shipper": {
+      "type": "object",
+      "description": "Shipping company information",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "trackingNumber": {
+          "type": "string"
+        },
+        "estimatedDelivery": {
+          "type": "string",
+          "format": "date"
+        },
+        "carrier": {
+          "type": "string"
+        }
+      }
+    },
+    "from": {
+      "type": "object",
+      "description": "Ship from location (warehouse/supplier)",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "string"
+        }
+      },
+      "required": ["name"]
+    },
+    "to": {
+      "type": "object",
+      "description": "Ship to location (customer/destination)",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "address"]
+    },
+    "items": {
+      "type": "array",
+      "description": "Delivered items with quantities",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Item description"
+          },
+          "sku": {
+            "type": "string",
+            "description": "Stock keeping unit"
+          },
+          "quantityOrdered": {
+            "type": "number"
+          },
+          "quantityDelivered": {
+            "type": "number"
+          },
+          "quantityDamaged": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["pieces", "boxes", "pallets", "kg", "liters"]
+          },
+          "weight": {
+            "type": "number",
+            "description": "Item weight"
+          }
+        },
+        "required": ["description", "quantityDelivered"]
+      },
+      "minItems": 1
+    },
+    "totalItems": {
+      "type": "number",
+      "description": "Total quantity delivered"
+    },
+    "totalWeight": {
+      "type": "number",
+      "description": "Total weight of shipment"
+    },
+    "packagingType": {
+      "type": "string",
+      "enum": ["box", "pallet", "crate", "envelope", "other"],
+      "description": "Type of packaging"
+    },
+    "numberOfPackages": {
+      "type": "number"
+    },
+    "deliveryStatus": {
+      "type": "string",
+      "enum": ["pending", "shipped", "in_transit", "delivered", "returned"],
+      "description": "Current delivery status"
+    },
+    "signedBy": {
+      "type": "string",
+      "description": "Name of recipient who signed"
+    },
+    "damageReport": {
+      "type": "string",
+      "description": "Description of any damages or discrepancies"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional delivery notes"
+    },
+    "specialHandling": {
+      "type": "string",
+      "description": "Special instructions (fragile, temperature control, etc.)"
+    }
+  },
+  "required": [
+    "deliveryNoteNumber",
+    "deliveryDate",
+    "from",
+    "to",
+    "items"
+  ]
+}

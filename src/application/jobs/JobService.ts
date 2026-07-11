@@ -202,7 +202,6 @@ export class JobService {
       console.log(`[JobService] Job completed: ${jobId} (duration: ${duration}ms)`);
 
     } catch (error: any) {
-      const duration = Date.now() - startTime;
       const errorMessage = error.message || String(error);
       const errorCategory = this.categorizeError(error);
       const errorDetails = {
@@ -294,7 +293,7 @@ export class JobService {
     // Update job metadata with retry schedule
     await this.jobRepository.updateStatus(jobId, 'queued', {
       retryCount,
-      errorMessage: null,
+      errorMessage: undefined,
       errorDetails: {
         scheduledRetryAt: new Date(Date.now() + delayMs).toISOString(),
         delayMs,
@@ -361,8 +360,8 @@ export class JobService {
     if (immediate) {
       // Immediate retry (manual retry)
       const updatedJob = await this.jobRepository.updateStatus(jobId, 'queued', {
-        errorMessage: null,
-        errorDetails: null,
+        errorMessage: undefined,
+        errorDetails: undefined,
         retryCount: nextRetryCount,
       });
 
@@ -387,7 +386,6 @@ export class JobService {
   async getDeadLetterQueue(limit: number = 50, offset: number = 0): Promise<any> {
     return await this.jobRepository.query({
       status: 'failed',
-      retryCount: { $gte: 3 }, // Filter: max retries exceeded
       limit,
       offset,
     });

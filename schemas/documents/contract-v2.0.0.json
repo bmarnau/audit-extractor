@@ -1,0 +1,284 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Contract",
+  "description": "Docusnap Contract/SLA Schema v2.0.0 - Service Level Agreement and Contract terms",
+  "version": "2.0.0",
+  "type": "object",
+  "properties": {
+    "contractNumber": {
+      "type": "string",
+      "description": "Unique contract identifier",
+      "pattern": "^CONTRACT-\\d{4}-\\d{5}$"
+    },
+    "contractTitle": {
+      "type": "string",
+      "description": "Name/title of the contract"
+    },
+    "contractType": {
+      "type": "string",
+      "enum": ["SLA", "Service Agreement", "Supply Contract", "Maintenance", "License", "Other"],
+      "description": "Type of contract"
+    },
+    "executionDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Date contract was signed"
+    },
+    "effectiveDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Date contract becomes effective"
+    },
+    "expirationDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Contract end date"
+    },
+    "autoRenewal": {
+      "type": "boolean",
+      "description": "Auto-renewal clause"
+    },
+    "renewalTermMonths": {
+      "type": "number",
+      "description": "Renewal period in months"
+    },
+    "provider": {
+      "type": "object",
+      "description": "Service provider or vendor",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "contactPerson": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "taxId": {
+          "type": "string"
+        }
+      },
+      "required": ["name"]
+    },
+    "client": {
+      "type": "object",
+      "description": "Client/Buyer information",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "department": {
+          "type": "string"
+        },
+        "contactPerson": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        }
+      },
+      "required": ["name"]
+    },
+    "serviceDescription": {
+      "type": "string",
+      "description": "Detailed description of services covered"
+    },
+    "scope": {
+      "type": "array",
+      "description": "Scope of services/coverage",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sla": {
+      "type": "object",
+      "description": "Service Level Agreement parameters",
+      "properties": {
+        "availability": {
+          "type": "number",
+          "description": "Uptime percentage (e.g., 99.9)"
+        },
+        "responseTime": {
+          "type": "object",
+          "properties": {
+            "critical": {
+              "type": "number",
+              "description": "Response time in minutes for critical issues"
+            },
+            "high": {
+              "type": "number"
+            },
+            "medium": {
+              "type": "number"
+            },
+            "low": {
+              "type": "number"
+            }
+          }
+        },
+        "resolutionTime": {
+          "type": "object",
+          "properties": {
+            "critical": {
+              "type": "number",
+              "description": "Resolution time in hours"
+            },
+            "high": {
+              "type": "number"
+            },
+            "medium": {
+              "type": "number"
+            },
+            "low": {
+              "type": "number"
+            }
+          }
+        },
+        "supportHours": {
+          "type": "string",
+          "description": "Support availability (e.g., 24/7, 9-5 business days)"
+        }
+      }
+    },
+    "pricing": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "enum": ["fixed", "hourly", "monthly", "tiered", "usage-based"],
+          "description": "Pricing model"
+        },
+        "monthlyCost": {
+          "type": "number"
+        },
+        "annualCost": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string",
+          "enum": ["EUR", "USD", "GBP", "CHF"]
+        },
+        "minimumCommitment": {
+          "type": "number",
+          "description": "Minimum monthly commitment"
+        },
+        "setupFee": {
+          "type": "number"
+        }
+      }
+    },
+    "paymentTerms": {
+      "type": "string",
+      "description": "Payment conditions and schedule"
+    },
+    "penalties": {
+      "type": "object",
+      "description": "SLA breach penalties",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "creditPercentage": {
+          "type": "number",
+          "description": "Credit percentage for SLA breach"
+        },
+        "maxCredit": {
+          "type": "number",
+          "description": "Maximum monthly credit"
+        }
+      }
+    },
+    "confidentiality": {
+      "type": "boolean",
+      "description": "Confidentiality clause present"
+    },
+    "intellectualProperty": {
+      "type": "string",
+      "description": "Intellectual property ownership terms"
+    },
+    "liabilityLimitation": {
+      "type": "string",
+      "description": "Liability limitation clause"
+    },
+    "terminationClause": {
+      "type": "object",
+      "properties": {
+        "noticePeriodDays": {
+          "type": "number",
+          "description": "Notice period for termination"
+        },
+        "forCauseDays": {
+          "type": "number"
+        },
+        "earlyTerminationFee": {
+          "type": "string"
+        }
+      }
+    },
+    "insuranceRequirements": {
+      "type": "string",
+      "description": "Insurance coverage requirements"
+    },
+    "dataProtection": {
+      "type": "string",
+      "description": "GDPR/Data protection compliance clause"
+    },
+    "signedBy": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "description": "Name of signing authority for provider"
+        },
+        "client": {
+          "type": "string",
+          "description": "Name of signing authority for client"
+        }
+      }
+    },
+    "witnessedBy": {
+      "type": "string"
+    },
+    "notaryStamp": {
+      "type": "boolean",
+      "description": "Notarized contract"
+    },
+    "attachments": {
+      "type": "array",
+      "description": "Referenced attachments or exhibits",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Special notes or amendments"
+    }
+  },
+  "required": [
+    "contractNumber",
+    "contractTitle",
+    "executionDate",
+    "expirationDate",
+    "provider",
+    "client",
+    "serviceDescription"
+  ]
+}

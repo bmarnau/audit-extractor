@@ -1,0 +1,30 @@
+{
+  "invoiceNumber": "INV-2026-001001",
+  "invoiceDate": "2026-07-11",
+  "dueDate": "2026-08-10",
+  "totalAmount": 1500.50,
+  "currency": "EUR",
+  "vendor": {
+    "name": "Tech Solutions GmbH",
+    "address": "Hauptstr. 123, 10115 Berlin",
+    "taxId": "DE123456789"
+  },
+  "buyer": {
+    "name": "Acme Corporation",
+    "address": "Bürostr. 42, 80335 München"
+  },
+  "lineItems": [
+    {
+      "position": 1,
+      "description": "Beratungsleistungen",
+      "quantity": 10,
+      "unit": "Std",
+      "unitPrice": 150,
+      "totalPrice": 1500
+    }
+  ],
+  "subtotal": 1500,
+  "taxRate": 19,
+  "taxAmount": 285,
+  "status": "paid"
+}

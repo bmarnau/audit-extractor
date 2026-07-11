@@ -1,0 +1,196 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Purchase Order",
+  "description": "Docusnap Purchase Order Schema v3.0.0 - Procurement document",
+  "version": "3.0.0",
+  "type": "object",
+  "properties": {
+    "poNumber": {
+      "type": "string",
+      "description": "Purchase order number (e.g., PO-2024-12345)",
+      "pattern": "^PO-\\d{4}-\\d{5}$"
+    },
+    "poDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Date purchase order was created"
+    },
+    "requiredDeliveryDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Requested delivery date"
+    },
+    "orderingParty": {
+      "type": "object",
+      "description": "Company placing the order (buyer)",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "taxId": {
+          "type": "string"
+        },
+        "department": {
+          "type": "string"
+        }
+      },
+      "required": ["name"]
+    },
+    "supplier": {
+      "type": "object",
+      "description": "Supplier/Vendor information",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "string"
+        },
+        "supplierNumber": {
+          "type": "string"
+        }
+      },
+      "required": ["name"]
+    },
+    "deliveryAddress": {
+      "type": "object",
+      "description": "Delivery location (if different from buyer)",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "description": "Ordered items and quantities",
+      "items": {
+        "type": "object",
+        "properties": {
+          "lineNumber": {
+            "type": "number"
+          },
+          "itemDescription": {
+            "type": "string"
+          },
+          "sku": {
+            "type": "string",
+            "description": "Supplier SKU or product code"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["pieces", "boxes", "kg", "liters", "meters", "hours"]
+          },
+          "unitPrice": {
+            "type": "number"
+          },
+          "totalPrice": {
+            "type": "number"
+          },
+          "deliverySchedule": {
+            "type": "string",
+            "description": "Staggered delivery schedule if applicable"
+          }
+        },
+        "required": ["itemDescription", "quantity", "unitPrice"]
+      },
+      "minItems": 1
+    },
+    "subtotal": {
+      "type": "number"
+    },
+    "discount": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "number"
+        },
+        "percentage": {
+          "type": "number"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "tax": {
+      "type": "object",
+      "properties": {
+        "taxRate": {
+          "type": "number",
+          "description": "VAT/Tax percentage"
+        },
+        "taxAmount": {
+          "type": "number"
+        }
+      }
+    },
+    "totalOrderValue": {
+      "type": "number"
+    },
+    "currency": {
+      "type": "string",
+      "enum": ["EUR", "USD", "GBP", "CHF"],
+      "description": "Currency code"
+    },
+    "paymentTerms": {
+      "type": "string",
+      "description": "Payment terms (e.g., Net 30, prepayment)"
+    },
+    "incoterms": {
+      "type": "string",
+      "enum": ["EXW", "FCA", "FAS", "FOB", "CFR", "CIF", "CPT", "CIP", "DAP", "DPU", "DDP"],
+      "description": "International commercial terms"
+    },
+    "shipmentMethod": {
+      "type": "string",
+      "enum": ["Standard", "Express", "Overnight", "Pickup"],
+      "description": "Preferred shipment method"
+    },
+    "shippingCost": {
+      "type": "number"
+    },
+    "approvalStatus": {
+      "type": "string",
+      "enum": ["draft", "submitted", "approved", "rejected", "cancelled"],
+      "description": "PO approval status"
+    },
+    "approvedBy": {
+      "type": "string",
+      "description": "Name of approving manager"
+    },
+    "specialInstructions": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "poNumber",
+    "poDate",
+    "orderingParty",
+    "supplier",
+    "items",
+    "totalOrderValue"
+  ]
+}

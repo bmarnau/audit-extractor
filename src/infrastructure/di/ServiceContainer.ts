@@ -49,6 +49,14 @@ import { SchemaManagementService } from '@application/schema/SchemaManagementSer
 import { JobRepository } from '@infrastructure/repositories/JobRepository';
 import { JobService } from '@application/jobs/JobService';
 
+// Phase 22 Job-Based Architecture
+import { JobStructureService } from '@infrastructure/services/JobStructureService';
+import { JobLoaderService } from '@infrastructure/services/JobLoaderService';
+import { SchemaLoaderService } from '@infrastructure/services/SchemaLoaderService';
+import { ExampleAnalysisService } from '@infrastructure/services/ExampleAnalysisService';
+import { JobStructureApplicationService } from '@application/jobs/JobStructureApplicationService';
+import { JobOrchestrator } from '@application/orchestration/JobOrchestrator';
+
 /**
  * Registriert alle Services im globalen Container
  *
@@ -128,6 +136,16 @@ export function initializeServiceContainer(): void {
   // ============================================================================
   container.registerSingleton(JobRepository);
   container.registerSingleton(JobService);
+
+  // ============================================================================
+  // PHASE 22 - Job-Based Architecture with DDD
+  // ============================================================================
+  container.registerSingleton(JobStructureService);
+  container.registerSingleton(JobLoaderService);
+  container.registerSingleton(SchemaLoaderService);
+  container.registerSingleton(ExampleAnalysisService);
+  container.registerSingleton(JobStructureApplicationService);
+  container.registerSingleton(JobOrchestrator);
 }
 
 /**

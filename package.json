@@ -1,7 +1,7 @@
 {
   "name": "audit-safe-document-extractor",
-  "version": "0.21.0",
-  "description": "Asynchronous Job API for Extraction Pipeline (Phase 21: JobEntity + JobRepository + JobService + 4 REST Endpoints)",
+  "version": "0.24.0",
+  "description": "Document Preparation Pipeline (Phase 23.0: Complete + Phase 24 Planning: Extended Adapters & Services)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -25,6 +25,7 @@
     "test:stability:100": "pwsh scripts/stability-test-100-cycles.ps1 -Cycles 100",
     "test:stability:10": "pwsh scripts/stability-test-100-cycles.ps1 -Cycles 10",
     "test:all:comprehensive": "pwsh scripts/run-all-tests.ps1",
+    "job:execute": "ts-node -r tsconfig-paths/register src/cli/execute-job.ts",
     "lint": "eslint src tests",
     "lint:fix": "eslint src tests --fix",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\" \"docs/**/*.md\"",

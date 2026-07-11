@@ -1,0 +1,20 @@
+{
+  "jobId": "JOB-0815",
+  "documentType": "invoice",
+  "schema": "invoice-v1.0.0",
+  "sources": [
+    {
+      "sourceId": "src-001",
+      "filePath": "/documents/invoice-20260711-001.pdf",
+      "mimeType": "application/pdf",
+      "hash": "abc123def456",
+      "uploadedAt": "2026-07-11T10:00:00Z",
+      "sizeBytes": 45000
+    }
+  ],
+  "options": {
+    "enableOCR": true,
+    "enableValidation": true,
+    "batchSize": 10
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Quote",
+  "description": "Docusnap Quote/Quotation Schema v1.0.0 - Sales quotation document",
+  "version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "quoteNumber": {
+      "type": "string",
+      "description": "Unique quote identifier",
+      "pattern": "^QUOTE-\\d{4}-\\d{5}$"
+    },
+    "quoteDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Date quote was issued"
+    },
+    "validUntil": {
+      "type": "string",
+      "format": "date",
+      "description": "Quote expiration date"
+    },
+    "validityDays": {
+      "type": "number",
+      "description": "Number of days the quote is valid"
+    },
+    "issuer": {
+      "type": "object",
+      "description": "Company issuing the quote (vendor/service provider)",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "logoUrl": {
+          "type": "string"
+        }
+      },
+      "required": ["name"]
+    },
+    "customer": {
+      "type": "object",
+      "description": "Customer to whom quote is addressed",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "contact": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        }
+      },
+      "required": ["name"]
+    },
+    "quoteTitle": {
+      "type": "string",
+      "description": "Subject/title of the quote"
+    },
+    "items": {
+      "type": "array",
+      "description": "Products or services quoted",
+      "items": {
+        "type": "object",
+        "properties": {
+          "lineNumber": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string",
+            "description": "Service/product description"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["pieces", "hours", "days", "projects", "items", "packages"]
+          },
+          "unitPrice": {
+            "type": "number"
+          },
+          "totalPrice": {
+            "type": "number"
+          },
+          "discount": {
+            "type": "number",
+            "description": "Discount percentage or amount"
+          },
+          "notes": {
+            "type": "string"
+          }
+        },
+        "required": ["description", "quantity", "unitPrice"]
+      },
+      "minItems": 1
+    },
+    "subtotal": {
+      "type": "number"
+    },
+    "discount": {
+      "type": "object",
+      "properties": {
+        "percentage": {
+          "type": "number"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "taxRate": {
+      "type": "number",
+      "description": "Tax/VAT percentage"
+    },
+    "taxAmount": {
+      "type": "number"
+    },
+    "totalAmount": {
+      "type": "number"
+    },
+    "currency": {
+      "type": "string",
+      "enum": ["EUR", "USD", "GBP", "CHF"],
+      "description": "Currency code"
+    },
+    "paymentTerms": {
+      "type": "string",
+      "description": "Payment conditions (e.g., 50% deposit, Net 30)"
+    },
+    "deliveryTerms": {
+      "type": "string",
+      "description": "Delivery or service schedule"
+    },
+    "bankDetails": {
+      "type": "object",
+      "properties": {
+        "accountHolder": {
+          "type": "string"
+        },
+        "iban": {
+          "type": "string"
+        },
+        "bic": {
+          "type": "string"
+        }
+      }
+    },
+    "termsAndConditions": {
+      "type": "string",
+      "description": "General T&Cs applicable to this quote"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional remarks or special offers"
+    },
+    "issuedBy": {
+      "type": "string",
+      "description": "Name of salesperson/representative"
+    },
+    "quoteStatus": {
+      "type": "string",
+      "enum": ["draft", "sent", "accepted", "rejected", "expired"],
+      "description": "Current status of the quote"
+    },
+    "acceptanceDeadline": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "quoteNumber",
+    "quoteDate",
+    "issuer",
+    "customer",
+    "items",
+    "totalAmount"
+  ]
+}

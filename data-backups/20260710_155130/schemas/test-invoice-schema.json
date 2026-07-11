@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Invoice Schema",
+  "description": "Schema for invoice documents",
+  "properties": {
+    "invoiceNumber": {
+      "type": "string",
+      "description": "Invoice number"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Invoice amount"
+    },
+    "date": {
+      "type": "string",
+      "description": "Invoice date"
+    },
+    "vendor": {
+      "type": "string",
+      "description": "Vendor name"
+    }
+  },
+  "required": ["invoiceNumber", "amount", "date", "vendor"],
+  "additionalProperties": false
+}

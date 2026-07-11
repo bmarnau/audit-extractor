@@ -2,9 +2,15 @@
 
 **Version**: 0.21.0  
 **Datum**: 2026-07-10  
-**Status**: ✅ Produktionsreife  
+**Status**: ✅ Produktionsreife (Vorgänger-Version)  
 **Phase**: 21 - Asynchrone Job API  
 **Zielgruppe**: Endanwender, Administratoren, DevOps, Entwickler
+
+---
+
+⚡ **HINWEIS**: Dies ist die **Vorgänger-Version**. Die **aktuelle Version ist 0.22.0** mit **Job Orchestration & Error Resilience**.
+
+**→ [Zu MANUAL-0.22.0.md wechseln](MANUAL-0.22.0.md)** für die neuesten Features und Best Practices.
 
 ---
 
@@ -16,12 +22,13 @@ Version 0.21.0 führt **Asynchrone Job API** mit vollständiger Daten-Persistenz
 Phase 18 (0.18.0):  Docker-Containerisierung
 Phase 19 (0.19.0):  Data Persistence
 Phase 20 (0.20.0):  Log Viewer & Monitoring  
-Phase 21 (0.21.0):  Asynchrone Job Processing ← SIE SIND HIER
-  ├─ Job API (REST)
-  ├─ Async Processing (Fire-and-Forget)
-  ├─ Database Persistence (PostgreSQL)
-  ├─ Daten-Persistenz über Rebuilds
-  └─ Backup/Restore System
+Phase 21 (0.21.0):  Asynchrone Job Processing ← DIESE VERSION
+Phase 22 (0.22.0):  Job Orchestration & Error Resilience ← AKTUELL
+  ├─ JobOrchestrator Service
+  ├─ 5-Stage Workflow
+  ├─ Graceful Degradation
+  ├─ Error Tracking
+  └─ Debug Mode
 ```
 
 ### Wichtigste Neuerungen in Phase 21

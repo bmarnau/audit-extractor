@@ -1,0 +1,86 @@
+{
+  "reportId": "report-1783748747368-txjjrdzo0",
+  "jobId": "JOB-0815",
+  "startTime": "2026-07-11T05:45:47.368Z",
+  "endTime": "2026-07-11T05:45:47.447Z",
+  "durationMs": 79,
+  "status": "success",
+  "completionPercentage": 100,
+  "validations": [
+    {
+      "name": "Job Loading",
+      "status": "passed",
+      "message": "Job JOB-0815 loaded successfully",
+      "details": {
+        "documentType": "invoice",
+        "sourceCount": 1,
+        "loadTime": "17ms"
+      }
+    },
+    {
+      "name": "Schema Loading",
+      "status": "passed",
+      "message": "Schema test-invoice-schema loaded successfully",
+      "details": {
+        "totalFields": 4,
+        "requiredFields": 4,
+        "loadTime": "57ms"
+      }
+    },
+    {
+      "name": "Example Analysis",
+      "status": "passed",
+      "message": "Analyzed examples successfully",
+      "details": {
+        "totalExamples": 0,
+        "hintsGenerated": 0,
+        "analysisTime": "5ms"
+      }
+    },
+    {
+      "name": "Source Validation",
+      "status": "passed",
+      "message": "All 1 source(s) validated successfully",
+      "details": {
+        "sourceCount": 1,
+        "totalSizeBytes": 45000
+      }
+    },
+    {
+      "name": "RuntimeJob Creation",
+      "status": "passed",
+      "message": "RuntimeJob created successfully",
+      "details": {
+        "jobId": "JOB-0815",
+        "status": "queued"
+      }
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "statistics": {
+    "totalValidations": 5,
+    "passedValidations": 5,
+    "failedValidations": 0,
+    "warningValidations": 0,
+    "schemaFieldCount": 4,
+    "requiredFieldCount": 4,
+    "sourceCount": 0,
+    "exampleAnalysisTime": 5,
+    "totalExecutionTime": 79
+  },
+  "metadata": {
+    "schemaName": "test-invoice-schema",
+    "schemaVersion": "1.0.0",
+    "exampleCount": 0,
+    "documentType": "invoice",
+    "sourceCount": 1
+  },
+  "result": {
+    "jobLoaded": true,
+    "schemaLoaded": true,
+    "examplesAnalyzed": true,
+    "sourcesValidated": true,
+    "runtimeJobCreated": true
+  }
+}

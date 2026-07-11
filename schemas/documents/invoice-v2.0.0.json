@@ -1,0 +1,170 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Invoice",
+  "description": "Docusnap Invoice Schema v2.0.0 - Complete invoice document structure",
+  "version": "2.0.0",
+  "type": "object",
+  "properties": {
+    "invoiceNumber": {
+      "type": "string",
+      "description": "Unique invoice identifier (e.g., INV-2024-001)",
+      "pattern": "^[A-Z]{2,3}-\\d{4}-\\d{3,6}$"
+    },
+    "invoiceDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of invoice creation (YYYY-MM-DD)"
+    },
+    "dueDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Payment due date (YYYY-MM-DD)"
+    },
+    "vendor": {
+      "type": "object",
+      "description": "Vendor/Supplier information",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Company name"
+        },
+        "contactPerson": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "taxId": {
+          "type": "string"
+        }
+      },
+      "required": ["name"]
+    },
+    "customer": {
+      "type": "object",
+      "description": "Customer/Bill-to information",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "taxId": {
+          "type": "string"
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "description": "Line items",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Item description"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "Quantity ordered"
+          },
+          "unitPrice": {
+            "type": "number",
+            "description": "Price per unit"
+          },
+          "tax": {
+            "type": "number",
+            "description": "Tax percentage or amount"
+          },
+          "total": {
+            "type": "number",
+            "description": "Line total (quantity × unitPrice)"
+          }
+        },
+        "required": ["description", "quantity", "unitPrice"]
+      },
+      "minItems": 1
+    },
+    "subtotal": {
+      "type": "number",
+      "description": "Sum before tax and shipping"
+    },
+    "tax": {
+      "type": "object",
+      "description": "Tax breakdown",
+      "properties": {
+        "amount": {
+          "type": "number"
+        },
+        "percentage": {
+          "type": "number"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["VAT", "GST", "Sales Tax", "Other"]
+        }
+      }
+    },
+    "shipping": {
+      "type": "number",
+      "description": "Shipping cost"
+    },
+    "totalAmount": {
+      "type": "number",
+      "description": "Total invoice amount including tax and shipping"
+    },
+    "currency": {
+      "type": "string",
+      "enum": ["EUR", "USD", "GBP", "CHF"],
+      "description": "Currency code"
+    },
+    "paymentTerms": {
+      "type": "string",
+      "description": "Payment terms (e.g., Net 30)"
+    },
+    "paymentMethod": {
+      "type": "string",
+      "enum": ["Bank Transfer", "Credit Card", "Check", "Cash", "Other"],
+      "description": "Accepted payment method"
+    },
+    "bankDetails": {
+      "type": "object",
+      "description": "Bank account information for payment",
+      "properties": {
+        "accountHolder": {
+          "type": "string"
+        },
+        "iban": {
+          "type": "string"
+        },
+        "bic": {
+          "type": "string"
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional notes or comments"
+    },
+    "referenceNumber": {
+      "type": "string",
+      "description": "Customer reference or PO number"
+    }
+  },
+  "required": [
+    "invoiceNumber",
+    "invoiceDate",
+    "vendor",
+    "items",
+    "totalAmount",
+    "currency"
+  ]
+}

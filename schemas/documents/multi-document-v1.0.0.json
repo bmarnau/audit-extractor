@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Multi-Document Bundle",
+  "description": "Docusnap Multi-Document Bundle Schema v1.0.0 - Combined business documents",
+  "version": "1.0.0",
+  "type": "object",
+  "properties": {
+    "bundleId": {
+      "type": "string",
+      "description": "Unique bundle identifier"
+    },
+    "bundleDate": {
+      "type": "string",
+      "format": "date"
+    },
+    "documents": {
+      "type": "array",
+      "description": "Collection of related documents",
+      "items": {
+        "type": "object",
+        "properties": {
+          "documentType": {
+            "type": "string",
+            "enum": ["invoice", "delivery-note", "purchase-order", "quote", "contract"],
+            "description": "Type of document"
+          },
+          "documentNumber": {
+            "type": "string"
+          },
+          "documentDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "party1": {
+            "type": "string",
+            "description": "First party (vendor/provider)"
+          },
+          "party2": {
+            "type": "string",
+            "description": "Second party (customer/buyer)"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "completed", "cancelled"],
+            "description": "Document status in workflow"
+          }
+        },
+        "required": ["documentType", "documentNumber"]
+      },
+      "minItems": 2,
+      "maxItems": 5
+    },
+    "totalDocuments": {
+      "type": "number"
+    },
+    "totalValue": {
+      "type": "number",
+      "description": "Combined value of all documents"
+    },
+    "transactionChain": {
+      "type": "string",
+      "description": "Relationship between documents (e.g., PO→Invoice→Delivery)"
+    },
+    "businessProcess": {
+      "type": "string",
+      "enum": ["procurement", "sales", "combined"],
+      "description": "Business process represented"
+    },
+    "relatedParties": {
+      "type": "object",
+      "properties": {
+        "supplier": {
+          "type": "string"
+        },
+        "buyer": {
+          "type": "string"
+        },
+        "shipper": {
+          "type": "string"
+        }
+      }
+    },
+    "completeness": {
+      "type": "object",
+      "properties": {
+        "allDocumentsPresent": {
+          "type": "boolean"
+        },
+        "missingDocuments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "bundleId",
+    "bundleDate",
+    "documents",
+    "totalDocuments"
+  ]
+}

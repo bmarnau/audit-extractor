@@ -1,0 +1,34 @@
+{
+  "jobId": "JOB-0815",
+  "documentType": "invoice",
+  "status": "queued",
+  "createdAt": "2026-07-11T10:00:00Z",
+  "updatedAt": "2026-07-11T10:00:00Z",
+  "sources": [
+    {
+      "sourceId": "src-001",
+      "filePath": "/documents/invoice-20260711-001.pdf",
+      "mimeType": "application/pdf",
+      "hash": "abc123def456",
+      "uploadedAt": "2026-07-11T10:00:00Z",
+      "sizeBytes": 45000
+    }
+  ],
+  "schema": {
+    "schemaId": "test-invoice-schema",
+    "schemaName": "test-invoice-schema",
+    "schemaPath": "/schemas/test-invoice-schema.json",
+    "version": "1.0.0",
+    "fieldsCount": 10,
+    "uploadedAt": "2026-07-11T10:00:00Z"
+  },
+  "examples": [],
+  "options": {
+    "enableHallucinationCheck": true,
+    "confidenceThreshold": 0.8,
+    "maxRetries": 3,
+    "timeoutMs": 30000,
+    "enableAuditLogging": true,
+    "notifyOnCompletion": false
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "invoiceNumber": "INV-2026-001002",
+  "invoiceDate": "2026-07-10",
+  "dueDate": "2026-08-09",
+  "totalAmount": 2300.00,
+  "currency": "EUR",
+  "vendor": {
+    "name": "Software Innovators Ltd",
+    "address": "Innovationsstr. 456, 20537 Hamburg",
+    "taxId": "DE987654321"
+  },
+  "buyer": {
+    "name": "Digital Enterprises",
+    "address": "Tech Park 99, 70565 Stuttgart"
+  },
+  "lineItems": [
+    {
+      "position": 1,
+      "description": "Softwareentwicklung",
+      "quantity": 5,
+      "unit": "Tag",
+      "unitPrice": 400,
+      "totalPrice": 2000
+    },
+    {
+      "position": 2,
+      "description": "Testing und QA",
+      "quantity": 3,
+      "unit": "Std",
+      "unitPrice": 100,
+      "totalPrice": 300
+    }
+  ],
+  "subtotal": 2300,
+  "taxRate": 19,
+  "taxAmount": 437,
+  "status": "pending"
+}
