@@ -6,7 +6,10 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc && tsc-alias -p tsconfig.json",
+    "build:verified": "npm run build && node verify-build.js",
     "build:watch": "tsc --watch",
+    "verify": "node verify-build.js",
+    "verify:no-runtime": "node verify-build.js --no-runtime",
     "dev": "ts-node src/index.ts",
     "test": "jest",
     "test:unit": "jest --testMatch='**/tests/unit/**/*.test.ts'",

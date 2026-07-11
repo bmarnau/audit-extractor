@@ -54,14 +54,25 @@ async function startServer() {
       throw diErr;
     }
 
-    // Initialize Database (TypeORM + PostgreSQL)
+    // Initialize HelpContentLoader FIRST (preload markdown files - doesn't need DB)
+    console.log('[Server] Initializing HelpContentLoader...');
+    try {
+      const helpLoader = getHelpContentLoader();
+      await helpLoader.initialize();
+      console.log('[Server] ✓ HelpContentLoader initialized');
+    } catch (helpErr: any) {
+      console.error('[Server] ✗ HelpContentLoader initialization failed:', helpErr);
+      throw helpErr;
+    }
+
+    // Initialize Database (TypeORM + PostgreSQL) - optional, don't block if failed
     console.log('[Server] Initializing Database Connection...');
     try {
       await initializeDatabase();
       console.log('[Server] ✓ Database Connection initialized');
     } catch (dbErr: any) {
-      console.error('[Server] ✗ Database initialization failed:', dbErr);
-      throw dbErr;
+      console.warn('[Server] ⚠️  Database initialization failed (non-critical, continuing without DB):', dbErr.message);
+      // Don't throw - allow server to start with Help/Config services but no database
     }
 
     // Initialize ConfigManager
@@ -75,26 +86,15 @@ async function startServer() {
       throw cfgErr;
     }
 
-    // Initialize BackupService
+    // Initialize BackupService (optional if DB not available)
     console.log('[Server] Initializing BackupService...');
     try {
       const backupService = resolveService(BackupService);
       await backupService.initialize();
       console.log('[Server] ✓ BackupService initialized');
     } catch (bakErr: any) {
-      console.error('[Server] ✗ BackupService initialization failed:', bakErr);
-      throw bakErr;
-    }
-
-    // Initialize HelpContentLoader (preload markdown files)
-    console.log('[Server] Initializing HelpContentLoader...');
-    try {
-      const helpLoader = getHelpContentLoader();
-      await helpLoader.initialize();
-      console.log('[Server] ✓ HelpContentLoader initialized');
-    } catch (helpErr: any) {
-      console.error('[Server] ✗ HelpContentLoader initialization failed:', helpErr);
-      throw helpErr;
+      console.warn('[Server] ⚠️  BackupService initialization failed:', bakErr.message);
+      // Non-critical, continue
     }
 
     // Initialize SchemaDirectoryManager (Phase 16 Filesystem)

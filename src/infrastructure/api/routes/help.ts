@@ -349,20 +349,32 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
     // Load manual from HelpContentLoader instead of JSON file
     const docs = await loader.loadDocumentation();
     
-    // Prioritize MANUAL-*.md files by checking the filename directly
+    // Prioritize MANUAL-0.25.0.md specifically, not just any MANUAL-*.md file
     let manual = docs.find((d: any) => {
       const filename = d.source?.split('/').pop() || '';
-      return filename.startsWith('MANUAL-');
+      return filename === 'MANUAL-0.25.0.md';
     });
+    
+    // Fallback to any MANUAL-*.md if 0.25.0 not found
+    if (!manual) {
+      manual = docs.find((d: any) => {
+        const filename = d.source?.split('/').pop() || '';
+        return filename.startsWith('MANUAL-');
+      });
+    }
     
     if (!manual) {
       return res.json(createSuccessResponse({
-        version: '0.18.0',
-        title: 'Audit-Safe Document Extractor - Benutzerhandbuch',
+        version: '0.25.0',
+        title: '📖 Operationshandbuch - Version 0.25.0',
         chapters: [],
         totalChapters: 0,
       }));
     }
+
+    // Extract version from manual title or filename and override with current version
+    // Always set version 0.25.0 for this release
+    const title = '📖 Operationshandbuch - Version 0.25.0';
 
     // Parse markdown chapters: split by ## headers
     const chapters: any[] = [];
@@ -410,7 +422,7 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
     if (chapters.length === 0) {
       chapters.push({
         id: 'main',
-        title: manual.title,
+        title: title,
         sections: [{
           heading: 'Inhalt',
           content: content
@@ -428,16 +440,16 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
         ));
       }
       return res.json(createSuccessResponse({
-        version: '0.18.0',
-        title: manual.title,
+        version: '0.25.0',
+        title: title,
         chapter: selectedChapter,
         totalChapters: chapters.length,
       }));
     }
 
     res.json(createSuccessResponse({
-      version: '0.18.0',
-      title: manual.title,
+      version: '0.25.0',
+      title: title,
       lastUpdated: new Date().toISOString(),
       chapters: chapters,
       totalChapters: chapters.length,

@@ -326,7 +326,7 @@ export class HelpContentLoader {
 
       // Load from root directory special docs
       const specialDocs = [
-        'MANUAL-0.18.0.md',  // ✅ Current version manual / Betriebshandbuch
+        'MANUAL-0.25.0.md',  // ✅ Current version manual / Betriebshandbuch (Phase 24)
         'README.md',
         'QUICKSTART.md',
         'CONTRIBUTING.md',

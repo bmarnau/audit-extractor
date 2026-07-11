@@ -1,0 +1,1168 @@
+# 📖 Operationshandbuch - Betriebshandbuch
+## Audit-Safe Document Extractor v0.25.0
+
+**Version:** 0.25.0  
+**Phase:** 25 (Responsive Navigation)  
+**Datum:** 2026-07-11  
+**Status:** Produktionsreif  
+
+---
+
+## 📋 Inhaltsverzeichnis
+
+1. [Was ist die Audit-Safe App?](#was-ist-die-audit-safe-app)
+2. [Systemanforderungen](#systemanforderungen)
+3. [Installation & Start](#installation--start)
+4. [Navigationsstruktur](#navigationsstruktur)
+5. [Menüpunkte - Detaillierte Beschreibung](#menüpunkte---detaillierte-beschreibung)
+6. [Grundlegende Bedienung](#grundlegende-bedienung)
+7. [Arbeitsabläufe nach Anwendungsfall](#arbeitsabläufe-nach-anwendungsfall)
+8. [Responsive Design (Mobile, Tablet, Desktop)](#responsive-design-mobile-tablet-desktop)
+9. [Troubleshooting](#troubleshooting)
+10. [Best Practices](#best-practices)
+
+---
+
+## Was ist die Audit-Safe App?
+
+### Zweck und Nutzen
+
+Die **Audit-Safe Document Extractor** ist eine spezialisierte Webanwendung zur intelligenten Verarbeitung und Kategorisierung von geschäftlichen Dokumenten (Rechnungen, Belege, Verträge, etc.). Die App automatisiert die Extraktion von Kernpetdaten aus Dokumenten unter Verwendung von:
+
+- **Intelligenter OCR-Technologie** - Erkennung von Text in gescannten Dokumenten
+- **Schemabasierte Regeln** - Automatische Kategorisierung nach konfigurierbaren Mustern  
+- **Job-Management** - Batch-Verarbeitung mehrerer Dokumente gleichzeitig
+- **Audit-Trail** - Vollständige Protokollierung aller Aktionen für Compliance
+- **Flexible Regeln-Engine** - Benutzerdefinierte Regeln zum Extrahieren von Informationen
+
+### Zielgruppe
+
+- 📊 **Bookkeeper & Accountants** - Dokumentenverarbeitung für Finanzbuchhaltung
+- 🏢 **Unternehmen** - Batch-Verarbeitung von eingehenden Dokumenten
+- 🔍 **Revisoren** - Audit-Trail und Compliance-Anforderungen
+- ⚙️ **IT-Administratoren** - Systemkonfiguration und -wartung
+
+### Kernfunktionen auf einen Blick
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                 AUDIT-SAFE APP FLOW                     │
+├─────────────────────────────────────────────────────────┤
+│                                                         │
+│  1. DOKUMENT HOCHLADEN                                  │
+│     ↓                                                   │
+│  2. SCHEMA AUSWÄHLEN (z.B. "Rechnung")                  │
+│     ↓                                                   │
+│  3. REGELN ANWENDEN (Automatische Extraktion)           │
+│     ↓                                                   │
+│  4. ERGEBNISSE PRÜFEN & BEARBEITEN                      │
+│     ↓                                                   │
+│  5. DATEN EXPORTIEREN oder IN JOB SPEICHERN             │
+│     ↓                                                   │
+│  6. AUDIT-TRAIL EINSEHEN                               │
+│                                                         │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Systemanforderungen
+
+### Hardware
+- **Prozessor:** Intel Core i5 oder äquivalent
+- **RAM:** Mindestens 4 GB (8 GB empfohlen)
+- **Speicher:** 5 GB für Datenbank und Dokumente
+- **Netzwerk:** Stabile Internetverbindung
+
+### Software
+- **Browser:** Unterstützte Versionen:
+  - Chrome 90+
+  - Firefox 88+
+  - Safari 14+
+  - Edge 90+
+  - Mobile Browser (iOS Safari, Chrome Mobile)
+
+### Backend-Services
+- **PostgreSQL 12+** - Datenbank
+- **Node.js 16+** - Backend-Server
+- **npm 7+** - Paketmanager
+
+---
+
+## Installation & Start
+
+### Schnellstart
+
+```powershell
+# 1. Repository klonen
+git clone <repository-url>
+cd extractor
+
+# 2. Dependencies installieren
+npm install
+
+# 3. Datenbank initialisieren (wenn nötig)
+npm run setup:db
+
+# 4. Application starten
+npm start
+
+# 5. Im Browser öffnen
+# http://localhost:5173 (Frontend - Vite Dev Server)
+# http://localhost:3000/api (Backend - Express)
+```
+
+### Verfügbare Start-Scripts
+
+| Script | Befehl | Zweck |
+|--------|--------|-------|
+| Frontend Dev | `npm run frontend` | Startet VITE Dev Server (Port 5173) |
+| Backend | `npm run backend` | Startet Express Backend (Port 3000) |
+| Both | `npm start` | Startet Frontend + Backend |
+| Build | `npm run build` | Erstellt produktiven Build |
+| Verify | `npm run verify` | Validiert Build mit Runtime-Test |
+| Docker | `npm run docker:up` | Startet in Docker Container |
+
+---
+
+## Navigationsstruktur
+
+### Desktop Layout (1200px+)
+```
+┌────────────────────────────────────────────────────────┐
+│ ☰ Audit-Safe Extractor     🌙  👤              (AppBar)│
+├─────────┬──────────────────────────────────────────────┤
+│ 📊 EX   │ Dashboard > Schema Management               │
+│  ├ D    │ ─────────────────────────────────────────  │
+│  ├ J [2]│                                             │
+│  ├ W    │                MAIN CONTENT                 │
+│         │                                             │
+│ 📄 DO   │  • Responsive Layout                       │
+│  ├ Dc   │  • Full Feature Access                     │
+│  ├ SM   │  • Sidebar immer sichtbar                  │
+│  ├ U    │                                             │
+│  ├ iR   │                                             │
+│         │                                             │
+│ ⚙️ RUL  │                                             │
+│ 🔍 MON  │                                             │
+│ ⚙️ SYS  │                                             │
+│         │                                             │
+│ v0.25.0 │                                             │
+├─────────┴──────────────────────────────────────────────┤
+│ Sidebar: 280px (permanent)    │ Main: Responsive       │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Tablet Layout (600-960px)
+```
+┌──────────────────────────────────┐
+│ ☰ Audit-Safe     🌙  👤  (AppBar)│
+├────┬──────────────────────────────┤
+│ 📊 │ Dashboard > Job Manager      │
+│ 📄 │ ─────────────────────────    │
+│ ⚙️ │                              │
+│ 🔍 │    MAIN CONTENT              │
+│ ⚙️ │    (Full Width)              │
+│    │                              │
+├────┴──────────────────────────────┤
+│ Sidebar: 80px (icons)  │ Main    │
+└──────────────────────────────────┘
+```
+
+### Mobile Layout (<600px)
+```
+Portrait:                  Landscape:
+┌──────────────────┐      ┌────────────────────────────┐
+│ ☰ Audit-Safe 🌙 │      │ ☰ Audit-Safe  🌙 👤      │
+├──────────────────┤      ├────┬─────────────────────────┤
+│ Dashboard >Job M │      │ 📊 │ Dashboard > Job Manager│
+├──────────────────┤      │ 📄 │ ─────────────────────  │
+│                  │      │ ⚙️ │                        │
+│  MAIN CONTENT    │      │ 🔍 │  MAIN CONTENT         │
+│  (Full Width)    │      │ ⚙️ │  (Responsive)         │
+│                  │      │ ☰ │                        │
+│                  │      ├────┴─────────────────────────┤
+├──────────────────┤      │ Bottom Nav: 5 Icons         │
+│📊 📄 ⚙️ 🔍 ⚙️ ☰│      └────────────────────────────┘
+└──────────────────┘ 
+Bottom: 5 Kategorien + Menü
+```
+
+---
+
+## Menüpunkte - Detaillierte Beschreibung
+
+### 📊 EXTRACTION (Dokumenten-Verarbeitung)
+
+#### 🏠 Dashboard
+- **Zweck:** Zentrale Übersichtsseite mit allen wichtigen Kennzahlen
+- **Was Sie sehen:**
+  - 📈 Verarbeitete Dokumente (heute, diese Woche, insgesamt)
+  - 🎯 Erfolgsquote bei Extraktion
+  - 📊 Statistiken zu Dokumenttypen
+  - 🔄 Aktuelle Jobs und deren Status
+  - ⚠️ Fehler oder Probleme
+- **Wann Sie es brauchen:** Beim Start der Arbeit, um schnell den Status zu sehen
+
+#### 💼 Job Manager
+- **Zweck:** Verwaltung von Batch-Verarbeitungsaufträgen
+- **Funktionen:**
+  - ➕ Neuen Job erstellen (mehrere Dokumente hochladen)
+  - 📋 Job-Liste mit Status anschauen
+  - 🔍 Jobs suchen und filtern
+  - ⏱️ Laufzeit der Jobs sehen
+  - 📥 Ergebnisse herunterladen
+  - ❌ Fehlgeschlagene Jobs neu verarbeiten
+- **Badge [2]:** Zeigt, dass 2 Jobs derzeit ausstehend sind
+- **Arbeitsfluss:**
+  1. Klick auf "Job Manager"
+  2. Klick auf "Neuer Job"
+  3. Dokumente auswählen
+  4. Schema wählen (z.B. "Rechnungen")
+  5. Regeln konfigurieren
+  6. Job starten
+  7. Status beobachten
+
+#### 🔧 Extraction Workbench
+- **Zweck:** Interaktive Verarbeitung von einzelnen Dokumenten
+- **Für:** Testen, manuelles Anpassen, Feintuning
+- **Features:**
+  - 📄 Dokument hochladen oder aus Dateimanager wählen
+  - 👁️ Dokument-Vorschau anzeigen
+  - 🎯 Schema auswählen
+  - ⚙️ Regeln inline bearbeiten
+  - 🔄 Extraction-Ergebnis live sehen
+  - ✏️ Extrahierte Daten manuell korrigieren
+  - 💾 Ergebnisse speichern
+- **Wann:** Wenn Sie feintuning brauchen oder Regeln debuggen
+
+---
+
+### 📄 DOCUMENTS & SCHEMA (Datenmodelle & Vorlagen)
+
+#### 📁 Documents
+- **Zweck:** Verwaltung aller hochgeladenen Dokumente
+- **Was Sie können:**
+  - 📂 Dokumente nach Typ, Datum, Größe filtern
+  - 🔍 Schnellsuche nach Dokumenten
+  - 👁️ Dokument-Vorschau anzeigen
+  - 🏷️ Tags oder Kategorien hinzufügen
+  - 🗑️ Dokumente löschen
+  - 📊 Metadaten anschauen
+- **Tipp:** Regelmäßig alte Dokumente archivieren/löschen
+
+#### 🎯 Schema Management
+- **Zweck:** Verwaltung von Dokumenten-Schemen (Templates für verschiedene Dokumenttypen)
+- **Was Sie können:**
+  - 📋 Verfügbare Schemas auflisten (Rechnung, Beleg, Vertrag, etc.)
+  - ➕ Neues Schema erstellen
+  - ✏️ Schema bearbeiten (Felder definieren)
+  - 🔍 Schemaversionen vergleichen
+  - 🗑️ Veraltete Schemas löschen
+- **Schema-Beispiel:** Eine "Rechnung" könnte folgende Felder haben:
+  - Rechnungsnummer
+  - Datum
+  - Lieferant
+  - Gesamtbetrag
+  - MwSt.
+
+#### ⬆️ Schema Upload
+- **Zweck:** Neuen Dokumenttyp definieren (Guided Wizard)
+- **Schritte:**
+  1. Schema-Name eingeben (z.B. "Lieferschein")
+  2. Felder definieren (Name, Typ, erforderlich ja/nein)
+  3. Beispiel-Dokument hochladen
+  4. Schema testen
+  5. Speichern
+- **Nutzen:** Sie können beliebig neue Dokumenttypen hinzufügen
+
+#### 📊 iReport Integration
+- **Zweck:** Erstellung und Management von Berichten
+- **Was Sie können:**
+  - 📈 Berichte aus extrahierten Daten generieren
+  - 📋 Berichte nach Schema filtern
+  - 📥 Berichte als PDF/Excel exportieren
+  - 📧 Berichte per E-Mail versenden
+  - 🔔 Berichte zeitlich planen (automatisch generieren)
+- **Beispiele:**
+  - Tägliche Zusammenfassung aller Rechnungen
+  - Monatliche Kostenausgabe nach Kategorie
+  - Lieferanten-Performance-Report
+
+---
+
+### ⚙️ RULES & LEARNING (Automatisierung & Intelligenz)
+
+#### 🎛️ Rule Editor
+- **Zweck:** Definieren von benutzerdefinierten Regeln zur automatischen Daten-Extraktion
+- **Beispiel-Regeln:**
+  - "Wenn das Feld 'Sender' 'Amazon' enthält → Kategorie = 'E-Commerce'"
+  - "Wenn Rechnungsbetrag > 1000 → Höhere Priorität"
+  - "RegEx: Steuernummer als ^\d{11}$ extrahieren"
+- **So funktioniert es:**
+  1. Gehen Sie zu "Rule Editor"
+  2. "Neue Regel erstellen"
+  3. Condition definieren (IF...)
+  4. Action definieren (THEN...)
+  5. Regel testen mit Beispiel-Dokumenten
+  6. Speichern und aktivieren
+- **Anwendung:** Regeln werden automatisch bei der Extraction angewendet
+
+#### 📚 Learning Center
+- **Zweck:** Dokumentation, Tutorials, Best Practices
+- **Inhalte:**
+  - 📖 Video-Tutorials für alle Features
+  - ❓ FAQ (Häufige Fragen)
+  - 🎓 Schritt-für-Schritt-Anleitungen
+  - 💡 Best Practices für Schema-Design
+  - 🔗 Link zu Support und Community
+- **Wann:** Wenn Sie etwas nicht verstehen oder lernen möchten
+
+#### 📜 Version History
+- **Zweck:** Verlaufskontrolle für Schemas und Regeln
+- **Was Sie sehen:**
+  - 🕐 Alle Versionen chronologisch
+  - 👤 Wer die Änderung gemacht hat
+  - 📝 Was genau geändert wurde
+  - 🔄 Version wiederherstellen (Rollback)
+  - 🔄 Zwei Versionen vergleichen
+- **Nutzen:** Transparenz und Möglichkeit, Fehler rückgängig zu machen
+
+---
+
+### 🔍 MONITORING & AUDIT (Überwachung & Compliance)
+
+#### 📋 Audit Trail
+- **Zweck:** Vollständige Protokollierung aller Benutzeraktionen für Compliance
+- **Was protokolliert wird:**
+  - ✏️ Welche Dokumente hochgeladen wurden
+  - 🎯 Welche Schemas verwendet wurden
+  - ⚙️ Welche Regeln angewendet wurden
+  - 📊 Welche Daten extrahiert wurden
+  - 🔧 Welche Einstellungen geändert wurden
+  - 👤 Wer es gemacht hat
+  - 🕐 Wann es passiert ist
+- **Verwendung:**
+  - Compliance-Anforderungen erfüllen
+  - Fehler nachvollziehen
+  - Wer hat die Daten verändert?
+- **Filter & Suche:**
+  - Nach Benutzer filtern
+  - Nach Datum-Bereich suchen
+  - Nach Dokumenttyp oder ID suchen
+
+#### 📊 Logs
+- **Zweck:** Detaillierte technische Logs für Debugging
+- **Arten von Logs:**
+  - 🔴 Fehler (rot) - Kritische Probleme
+  - 🟡 Warnungen (gelb) - Potenzielle Probleme
+  - 🔵 Info (blau) - Normales Verhalten
+  - 🟢 Debug (grün) - Detaillierte Debug-Infos
+- **Wann Sie es brauchen:**
+  - Job ist fehlgeschlagen - Logs durchsuchen
+  - Performance-Problem - Logs auf langsame Operationen prüfen
+  - API-Fehler - Im Backend-Log nachsehen
+- **Log-Level konfigurieren:** Siehe Konfiguration
+
+#### 💾 Backups
+- **Zweck:** Sicherung und Wiederherstellung von Daten
+- **Funktionen:**
+  - 📅 Automatische tägliche Backups
+  - ⏱️ Manuelle Backups erstellen
+  - 📥 Backup herunterladen
+  - 🔄 Aus Backup wiederherstellen
+  - 🗑️ Alte Backups löschen
+- **Best Practice:** Wöchentlich Backups überprüfen
+
+---
+
+### ⚙️ SYSTEM (Konfiguration & Verwaltung)
+
+#### ⚙️ Configuration
+- **Zweck:** Verwaltung aller Systemeinstellungen
+- **Was Sie konfigurieren können:**
+  - 📧 Email-Server (für Berichte & Benachrichtigungen)
+  - 🌐 API-Endpoints konfigurieren
+  - 👥 Benutzer & Rollen verwalten
+  - 🔐 Sicherheitseinstellungen (Passwörter, 2FA)
+  - 📊 Logging-Level einstellen
+  - 📅 Automatische Berichte planen
+  - 🗂️ Speicherquoten für Dokumente
+- **WARNUNG:** Nur für Administratoren! Falsche Konfiguration kann zur Datenverlust führen.
+
+#### 📖 Help Center
+- **Zweck:** Zugang zur kompletten Dokumentation
+- **Inhalte:**
+  - 📘 Operationshandbuch (dieses Dokument)
+  - 📗 Technische Dokumentation
+  - 🔗 API-Referenz
+  - 📞 Support-Kontakte
+  - 🔍 Volltext-Suche in der Dokumentation
+- **Schnellsuche:** Drücken Sie Cmd+? für schnelle Hilfe
+
+---
+
+## Grundlegende Bedienung
+
+### Navigation unter verschiedenen Geräten
+
+#### 🖥️ Desktop (1200px+)
+
+**Menü öffnen:** Nicht nötig - Sidebar ist immer sichtbar
+
+**Navigation:**
+1. Klick auf einen Kategorie-Header (z.B. "📊 EXTRACTION")
+2. Kategorie expandiert/kollabiert (150ms Animation)
+3. Klick auf einen Menüpunkt
+4. Aktive Seite wird in hauptem Content-Bereich angezeigt
+5. Breadcrumb oben zeigt aktuelle Position
+
+**Tastaturkürzel:**
+- `Cmd+K` oder `Ctrl+K` - Kommandopalette öffnen (Suche)
+- `Cmd+J` oder `Ctrl+J` - Zu Job Manager gehen
+- `Cmd+S` oder `Ctrl+S` - Zu Schema Management gehen  
+- `Cmd+R` oder `Ctrl+R` - Zu Rule Editor gehen
+- `Esc` - Palette schließen
+
+#### 📱 Mobile (<600px)
+
+**Menü öffnen:** Tippen Sie auf das **☰** Symbol oben links
+
+**Navigation:**
+1. Tippen Sie ☰ (Hamburger-Icon)
+2. Drawer öffnet sich von links (300ms Animation)
+3. Tippen Sie auf einen Menüpunkt
+4. Drawer schließt sich automatisch
+5. Seite wird angezeigt
+
+**Bottom Navigation:**
+- Oben sehen Sie: **📊 📄 ⚙️ 🔍 ⚙️ ☰**
+- Tippen Sie auf Icon für schnelle Navigation
+- ☰ öffnet das komplette Menü
+
+**Swipe Gesten:**
+- Swipe von rechts nach links → Drawer schließen
+- Swipe von links nach rechts → Drawer öffnen
+
+#### 📊 Tablet (600-960px)
+
+**Menü-Sidebar:** 80px breit mit Icons nur
+
+**Navigation:**
+1. Hover über das Icon → Tooltip zeigt Namen
+2. Klick auf Icon → Öffnet volle Kategorie-Liste
+3. Klick auf Menüpunkt → Navigation
+
+**Responsive:**
+- Content nimmt volle verfügbare Breite
+- Icons-Sidebar bleibt sichtbar (smart!)
+
+---
+
+### Allgemeine Gesten & Interaktionen
+
+#### Häufig verwendete Icons & ihre Bedeutung
+
+| Icon | Name | Bedeutung |
+|------|------|----------|
+| 🔍 | Search | Suchfunktion |
+| 💾 | Save | Speichern/Bestätigen |
+| ✏️ | Edit | Bearbeiten |
+| 🗑️ | Delete | Löschen (vorsicht!) |
+| ⬇️ | Download | Datei herunterladen |
+| ⬆️ | Upload | Datei hochladen |
+| 🔄 | Refresh/Reload | Aktualisieren |
+| ⚙️ | Settings | Einstellungen/Optionen |
+| ❌ | Close | Schließen/Abbrechen |
+| ✅ | Confirm | Bestätigen/OK |
+| ⏸️ | Pause | Verarbeitung unterbrechen |
+| ▶️ | Play | Verarbeitung starten |
+| ⚠️ | Warning | Achtung/Warnung |
+| ℹ️ | Info | Information |
+
+#### Häufige Aktionen
+
+**Dokument hochladen:**
+1. Gehen Sie zu "Documents" oder "Extraction Workbench"
+2. Klick auf "⬆️ Upload" Button
+3. Datei auswählen oder Drag-and-Drop
+4. Hochladen warten
+5. Bestätigung
+
+**Schema auswählen:**
+1. In der Regel wird danach gefragt
+2. Dropdown-Menü öffnet sich
+3. Schema auswählen (z.B. "Rechnung 2024")
+4. Bestätigen mit "Weiter" oder "OK"
+
+**Job starten:**
+1. Dokumente hochladen
+2. Schema & Regeln auswählen
+3. Klick "Job starten" oder "▶️ Verarbeiten"
+4. Status-Anzeige lädt
+5. Ergebnisse nach Fertigstellung verfügbar
+
+**Daten exportieren:**
+1. Gehen Sie zu Job/Ergebnisse
+2. Klick auf "⬇️ Export"
+3. Format wählen: PDF, Excel, CSV
+4. Download startet
+5. Datei im Downloads-Ordner verfügbar
+
+---
+
+## Arbeitsabläufe nach Anwendungsfall
+
+### Use Case 1: Rechnungen täglich verarbeiten
+
+**Szenario:** Sie erhalten jeden Tag 50 Rechnungen per Email und möchten diese automatisch kategorisieren und in Ihr Buchhaltungssystem exportieren.
+
+**Schritt für Schritt:**
+
+```
+Tag 1: EINMALIGE KONFIGURATION
+├─ 1. Gehen Sie zu "Schema Management"
+├─ 2. Erstellen Sie Schema "Rechnung_2024" mit Feldern:
+│  ├─ Rechnungsnummer (Text)
+│  ├─ Datum (Datum)
+│  ├─ Lieferant (Text)
+│  ├─ Gesamtbetrag (Dezimal)
+│  └─ MwSt. Prozent (Dezimal)
+├─ 3. Gehen Sie zu "Rule Editor"
+├─ 4. Erstellen Sie Regeln:
+│  ├─ "Wenn Betrag > 1000 → Priorität=Hoch"
+│  ├─ "Wenn Lieferant=(Liste)→ Kategorie=..."
+│  └─ "RegEx Rechnungsnummer: ^\w{4}-\d{6}$"
+├─ 5. Testen mit Beispiel-Rechnung
+└─ 6. Speichern & aktivieren
+
+Jeden Tag: AUTOMATISCHE VERARBEITUNG
+├─ 1. Alle Rechnungen in einen Ordner speichern
+├─ 2. Gehen Sie zu "Job Manager"
+├─ 3. Klick "Neuer Job"
+├─ 4. Alle Rechnungen hochladen (Drag-and-Drop möglich!)
+├─ 5. Schema "Rechnung_2024" wählen
+├─ 6. "Job starten"
+├─ 7. Warten... (ggf. Kaffee trinken ☕)
+├─ 8. Ergebnisse überprüfen (Dashboard zeigt Status)
+├─ 9. Fehler korrigieren (mit Extraction Workbench)
+└─ 10. In Excel exportieren & zur Buchhaltung senden
+```
+
+**Zeit sparen:**
+- Vorher: 50 Rechnungen × 5 Min = 250 Minuten = 4h 10min
+- Nachher: Job vorbereiten (5min) + Prüfen (30min) = 35 Minuten
+- **Zeiteinsparung: 215 Minuten pro Tag = 18h pro Woche!**
+
+---
+
+### Use Case 2: Belege von Geschäftsreisen verarbeiten
+
+**Szenario:** Mitarbeiter reichen monatlich Reisebelege ein (Hotel, Flug, Taxi, Restaurants). Sie müssen diese kategorisieren und genehmigen.
+
+**Arbeitsablauf:**
+
+```
+SETUP (einmalig)
+├─ Schema "Reisebeleg" erstellen mit:
+│  ├─ Kategorie (Hotel/Flug/Taxi/Restaurant/Sonstiges)
+│  ├─ Datum
+│  ├─ Betrag
+│  └─ Mitarbeiter (optional)
+└─ Regeln erstellen:
+   ├─ "Wenn Betrag < 50 → Auto-genehmigt"
+   ├─ "Wenn Betrag 50-200 → Manager-genehmigung"
+   └─ "Wenn Betrag > 200 → CEO-genehmigung"
+
+MONATLICH
+├─ 1. Mitarbeiter laden Belege hoch (via "Documents")
+├─ 2. Sie gehen zu "Job Manager"
+├─ 3. Alle neuen Belege verarbeiten (1 Job)
+├─ 4. System extrahiert automatisch Betrag & Kategorie
+├─ 5. Sie überprüfen Dashboard (Statistiken)
+├─ 6. Fehler in Extraction Workbench korrigieren
+├─ 7. Audit Trail exportieren (für Prüfung)
+└─ 8. Genehmigungsbericht in Excel exportieren
+```
+
+**Ablauf im Detail (erste Woche):**
+
+1. **Montag, 09:00 Uhr:**
+   - Öffnen Sie die App
+   - Dashboard zeigt: "14 neue Belege ausstehend"
+
+2. **Montag, 09:05 Uhr:**
+   - Gehen Sie zu "Job Manager"
+   - Klick "Neuer Job"
+   - Alle 14 Belege hochladen (können gleichzeitig sein)
+   - Schema "Reisebeleg" wählen
+   - "Job starten"
+
+3. **Montag, 09:15 Uhr:**
+   - Job läuft (Status: 45% verarbeitet)
+   - Sie können anderen Aufgaben nachgehen
+
+4. **Montag, 09:25 Uhr:**
+   - Job fertig: 13 erfolgreich, 1 Fehler
+   - Sie klicken auf den Fehler (Foto war zu dunkel)
+   - Gehen Sie zu "Extraction Workbench"
+   - Laden Sie den fehlerhaften Beleg
+   - Manuell korrigieren (Betrag: 87€ statt "8*€")
+   - Speichern
+
+5. **Montag, 09:30 Uhr:**
+   - Alle 14 Belege fertig kategorisiert
+   - Gehen Sie zu iReport
+   - Klick "Genehmigungsbericht"
+   - Export als PDF/Excel
+   - An Accounting-Team versenden
+
+**Resultat:** Was vorher 2-3 Stunden dauerte, ist jetzt in 30 Minuten erledigt!
+
+---
+
+### Use Case 3: Verträge verwalten & versionieren
+
+**Szenario:** Sie haben tausende Verträge. Sie möchten bestimmte Daten extrahieren (Vertragspartnerin, Laufzeit, Betrag) und alte Versionen nachverfolgbar machen.
+
+**Lösung:**
+
+```
+PHASE 1: SCHEMA & REGELN
+├─ Schema "Vertrag_2024" erstellen:
+│  ├─ Vertragspartner
+│  ├─ Startdatum
+│  ├─ Enddatum
+│  ├─ Jährlicher Betrag
+│  └─ Vertragstyp (Kunde/Lieferant/Miete/etc.)
+└─ Regeln mit RegEx:
+   ├─ Datum-Format erkennen (DD.MM.YYYY)
+   ├─ Beträge extrahieren (auch mit EUR/€)
+   └─ Email-Adressen finden
+
+PHASE 2: BATCH-IMPORT
+├─ Alle Verträge hochladen (Job Manager)
+├─ Masse verarbeiten (500+ Verträge möglich)
+├─ Fehler korrigieren
+
+PHASE 3: ÜBERWACHUNG
+├─ Audit Trail zeigt: Wann wurde welcher Vertrag gelesen?
+├─ Version History zeigt: Welche Daten änderten sich?
+├─ Sie können alles älteren Versionen vergleichen
+└─ Compliance: Vollständige Dokumentation
+```
+
+---
+
+## Responsive Design (Mobile, Tablet, Desktop)
+
+### Adaptive Interfaces
+
+Die App passt sich automatisch an Ihre Bildschirmgröße an. Sie müssen nichts konfigurieren!
+
+#### 📱 Mobile First
+
+**Breakpoint:** < 600px (iPhone, kleine Tablets im Portrait)
+
+**Features:**
+- ☰ Hamburger-Menü (Space sparen)
+- 📊 Bottom Navigation (5 Kategorien schnell erreichbar)
+- 📋 Vollbreite Content
+- 🔄 Touch-optimierte Buttons (min. 44px für leichte Bedienung)
+- 📏 Responsive Schriftgrößen
+- 🎨 Optimierte Farben für kleine Screens
+
+**Layout:**
+```
+┌─────────────────┐
+│ ☰ Title 🌙 👤 │
+├─────────────────┤
+│  Breadcrumb     │
+├─────────────────┤
+│                 │
+│  MAIN CONTENT   │
+│  (100% Breite)  │
+│                 │
+├─────────────────┤
+│📊📄⚙️🔍⚙️☰│
+└─────────────────┘
+```
+
+**Tipps für Mobile-Nutzer:**
+- Nutzen Sie Bottom Navigation für schnelle Navigation
+- Tippen Sie ☰ um vollständiges Menü zu sehen
+- Swipe nach oben zum Scrollen (normal)
+- Landscape-Modus hat auch Tab-Navigation (bequem!)
+
+#### 📊 Tablet (Landscape & Portrait)
+
+**Breakpoint:** 600px - 960px
+
+**Features:**
+- Schmale Sidebar (80px) mit nur Icons
+- Hover → Tooltip mit vollem Namen
+- Content nimmt 80% der Breite
+- 🖥️ Desktop-ähnliche Bedienung aber kompakt
+
+**Layout:**
+```
+┌────────────────────────────┐
+│ ☰ Title         🌙 👤    │
+├────┬─────────────────────────┤
+│📊  │                        │
+│📄  │  MAIN CONTENT          │
+│⚙️  │                        │
+│🔍  │  (Optimal für Tablet)  │
+│⚙️  │                        │
+├────┴─────────────────────────┤
+│ Compact: 80px │ Main: 80% │
+└────────────────────────────┘
+```
+
+**Tipps für Tablet-Nutzer:**
+- Hover über Icons → Tooltips zeigen Namen
+- Portrait-Modus: Ähnlich wie Mobile
+- Landscape-Modus: Ideal für Content-Browsing
+- Nutzen Sie Apple Pencil/Stylus zum Bearbeiten
+
+#### 🖥️ Desktop (1200px+)
+
+**Features:**
+- Volle 280px Sidebar (permanent)
+- Alle Labels sichtbar
+- Kategorien expandierbar/kollapsierbar
+- Breadcrumb-Navigation oben
+- Maximale Funktionalität
+- Dunkelmodus/Lightmodus
+
+**Layout:**
+```
+┌──────────────────────────────────────┐
+│ ☰ Title         🌙 👤             │
+├─────┬──────────────────────────────────┤
+│ 📊  │ Dashboard > Schema Management   │
+│ EX  │ ─────────────────────────────   │
+│ ┌───┤                                 │
+│ └─► │  MAIN CONTENT                  │
+│     │  (Optimiert für Arbeit)        │
+│ 📄  │                                 │
+│ DO  │                                 │
+│ ...  │                                 │
+├─────┴──────────────────────────────────┤
+│ Full: 280px │ Main: Flexible │ Breadcrumb
+└──────────────────────────────────────┘
+```
+
+**Tipps für Desktop-Nutzer:**
+- Nutzen Sie Tastaturkürzel (Cmd+K, Cmd+J, etc.)
+- Dragging & Dropping von Dateien funktioniert
+- Maximale Effizienz durch permanentes Menü
+- Breadcrumb hilft bei Navigation
+
+### Dark Mode / Light Mode
+
+**Aktivieren:**
+- Klick auf 🌙 oder ☀️ Icon oben rechts
+- App speichert Ihre Vorliebe automatisch
+- Die Einstellung wird im Browser-Storage gespeichert
+
+**Wann Dark Mode hilfreich:**
+- Weniger Augenbelastung bei längerer Arbeit (Nacht)
+- Hellere Displays können gedimmt werden
+- Besserer Kontrast für manche User
+- Batterie spart Strom auf OLED-Displays
+
+---
+
+## Troubleshooting
+
+### Häufige Probleme & Lösungen
+
+#### Problem 1: App lädt nicht / zeigt weiße Seite
+
+**Symptome:**
+- Nur weiße Seite nach Öffnen von localhost:5173
+- Console zeigt keine Fehler
+
+**Lösungen:**
+```
+1. Cache löschen:
+   - Drücken Sie Ctrl+Shift+R (oder Cmd+Shift+R auf Mac)
+   - Oder: F12 → DevTools → Application → Clear Storage
+
+2. Browser neu starten:
+   - Alle Tabs schließen
+   - Browser komplett beenden
+   - Öffnen Sie die App erneut
+
+3. Backend prüfen:
+   - Öffnen Sie http://localhost:3000/api/health
+   - Sollte {"status":"ok"} zeigen
+   - Wenn nicht: Backend ist down, siehe "Backend startet nicht"
+
+4. Port-Konflikt:
+   - Ist Port 5173 schon belegt?
+   - Terminal: netstat -ano | findstr :5173 (Windows)
+   - Oder: lsof -i :5173 (Mac/Linux)
+   - Prozess beenden oder Port ändern
+```
+
+#### Problem 2: Job schlägt fehl mit "Schema not found"
+
+**Symptom:** Job-Status zeigt: "❌ Error: Schema 'Rechnungen' not found"
+
+**Lösungen:**
+```
+1. Schema existiert nicht:
+   - Gehen Sie zu "Schema Management"
+   - Überprüfen Sie: Ist das Schema wirklich erstellt?
+   - Falls nicht: Erstellen Sie das Schema neu
+
+2. Falcher Schema-Name:
+   - Job Manager: Welches Schema wurde ausgewählt?
+   - Schema Management: Welcher Name ist dort?
+   - Namen müssen EXAKT matchen (Groß-/Kleinschreibung!)
+   - Löschen Sie Leerzeichen am Anfang/Ende
+
+3. Datenbank-Synchronisationsfehler:
+   - Gehen Sie zu "Configuration"
+   - Klick "Sync Schemas" oder Datenbank-Refresh
+   - Warten Sie 30 Sekunden
+   - Job erneut versuchen
+
+4. Im schlimmsten Fall: Backend neustarten
+   - Öffnen Sie Terminal
+   - npm run backend:restart
+   - Warten Sie auf "✅ Backend ready"
+```
+
+#### Problem 3: Dokument-Upload funktioniert nicht
+
+**Symptom:** Upload-Button grau oder funktioniert nicht / "File too large"
+
+**Lösungen:**
+```
+1. Datei zu groß:
+   - Max. Dateigröße: 50 MB (meist konfigurierbar)
+   - Prüfen Sie: Ist Ihr Dokument < 50 MB?
+   - Falls > 50 MB: Datei komprimieren oder in mehrere Jobs aufteilen
+
+2. Falscher Dateityp:
+   - Unterstützte Typen: PDF, PNG, JPG, TIFF, DOCX
+   - Sie probieren: .doc (veraltet), .bmp (unkomprimiert)?
+   - Umwandlung: Online-Tools oder ImageMagick verwenden
+
+3. Browser-Problem:
+   - Funktioniert Upload in anderem Browser?
+   - Ja → Ihr Standard-Browser hat Problem (Cache, Extension)
+   - Nein → Backend-Problem oder Datei-Permission
+
+4. Backend-Speicherplatz voll:
+   - Gehen Sie zu "Configuration"
+   - Prüfen Sie: "Storage Usage" unter 90%?
+   - Falls über 90%: Alte Dokumente löschen oder Speicher erweitern
+```
+
+#### Problem 4: Extraktion hat falsche Ergebnisse
+
+**Symptom:** Extrahierte Daten sind falsch oder leer
+
+**Lösungen:**
+```
+1. Falsches Schema:
+   - Ist das Richtige Schema ausgewählt?
+   - Schema-Felder passen zum Dokument?
+   - Z.B. "Rechnung"-Schema für Lieferschein ist falsch
+
+2. Regeln nicht aktiv:
+   - Gehen Sie zu "Rule Editor"
+   - Prüfen Sie: Alle Regeln "Active" (grüner Haken)?
+   - Falls nicht: Aktivieren Sie die Regeln
+
+3. Schlechte Dokumentqualität:
+   - Ist das PDF gescannt oder digital?
+   - Gescannte PDFs: OCR wird verwendet (weniger genau)
+   - Digitale PDFs: Text wird direkt extrahiert (genauer)
+   - Lösungen: Besseres Scan oder anderes Original-Dokument
+
+4. Regeln sind zu restriktiv:
+   - Gehen Sie zur Extraction Workbench
+   - Laden Sie das Problem-Dokument
+   - Edieren Sie die Regeln "on the fly"
+   - Testen Sie die neue Regel
+   - Speichern Sie die korrigierte Regel
+
+5. Machine Learning trainieren:
+   - Gehen Sie zu "Learning Center"
+   - System lernt aus Ihren Korrektionen
+   - Nach ~50 manuellen Korrektionen: ML trainiert automatisch
+   - Genauigkeit verbessert sich über Zeit
+```
+
+#### Problem 5: Audit Trail zeigt falsche Einträge
+
+**Symptom:** Audit Trail fehlen Einträge oder zeigen falsches "Wer"
+
+**Lösungen:**
+```
+1. Audit ist deaktiviert:
+   - Gehen Sie zu "Configuration"
+   - Prüfen Sie: "Enable Audit Trail" = ON
+   - Falls OFF: Aktivieren Sie es
+
+2. Falscher Benutzer angezeigt:
+   - Audit Trail zeigt: "wer die Action gemacht hat"
+   - Falls "System" angezeigt: Job wurde automatisch/im Background gestartet
+   - Falls "Anonymous": Benutzer war nicht angemeldet → Backend-Fehler
+
+3. Audit Logs zu alt / gelöscht:
+   - Audit Logs werden nach ~90 Tagen gelöscht (Standard)
+   - Falls Sie ältere Logs brauchen: Configuration → Retention ändern
+   - Oder: Backups verwenden (alte Daten sind dort archiviert)
+```
+
+#### Problem 6: Performance / App ist langsam
+
+**Symptom:** App reagiert langsam, Jobs dauern lange
+
+**Lösungen:**
+```
+SCHNELLE FIXES:
+1. Browser-Tab aktualisieren: F5 oder Cmd+R
+2. Browser-Cache löschen: Ctrl+Shift+Delete
+3. Browser neustarten: Vollständig schließen & neu öffnen
+
+MITTELFRISTIGE FIXES:
+1. Datenbank-Indizes erstellen:
+   - Terminal: npm run db:optimize
+   - Das dauert 5-10 Minuten
+   - Aber: Zukünftige Queries sind schneller
+
+2. Alte Dokumente archivieren:
+   - Documents-Seite: Filter "Older than 1 year"
+   - Alle auswählen & archivieren
+   - Datenbank wird kleiner = schneller
+
+3. Backend-Neustarten (Cache clearen):
+   - Terminal: npm run backend:restart
+   - Warten Sie bis "✅ Backend ready"
+
+LANGFRISTIGE FIXES:
+1. Database migrieren:
+   - Aktuelle DB zu schnellerem Hardware
+   - Oder: ReadReplica für Lesezugriffe
+
+2. Caching aktivieren:
+   - Configuration → Advanced → Enable Caching
+   - Cache TTL: 5 Minuten (für häufig gelesene Daten)
+
+DIAGNOSE:
+- F12 → Network Tab → Welche Requests sind langsam? (> 2s)
+- F12 → Performance Tab → Record & analyze
+- Backend Logs prüfen: /logs → "Performance" Filter
+```
+
+### Support Kontakt
+
+Wenn nichts hilft:
+
+**Online Support:**
+- Email: support@audit-safe.de
+- Ticket-System: https://support.audit-safe.de
+- Community Forum: https://forum.audit-safe.de
+
+**Debug-Info sammeln:**
+```
+1. Öffnen Sie DevTools (F12)
+2. Console Tab: Alle Fehler kopieren (rot angezeigt)
+3. Network Tab: Screenshot von langsamen Requests
+4. Application Tab: Browser Info
+5. Browser-Konsole-Output: Rechtsklick → Save as...
+6. Alles in ein Ticket packen + Beschreibung
+```
+
+---
+
+## Best Practices
+
+### Allgemeine Tipps & Tricks
+
+#### 🎯 Effiziente Nutzung
+
+1. **Tastaturkürzel nutzen**
+   - Cmd+K / Ctrl+K: Kommandopalette (Schnellsuche)
+   - Cmd+J / Ctrl+J: Zu Job Manager
+   - Cmd+S / Ctrl+S: Zu Schema Management
+   - Spart Zeit bei häufigem Wechsel
+
+2. **Batch-Processing verwenden**
+   - Jobs mit 100+ Dokumenten sind effizienter
+   - Bessere Ressourcennutzung
+   - Parallelverarbeitung möglich
+   - Pro Job: Overhead gibt es nur einmal
+
+3. **Regeln regelmäßig überprüfen**
+   - Monthly Review: Welche Regeln werden verwendet?
+   - Welche sind obsolet?
+   - Löschen Sie veraltete Regeln
+   - System bleibt schnell & übersichtlich
+
+4. **Schemas versionieren**
+   - Nicht alte Schemas löschen!
+   - Stattdessen: Version History nutzen
+   - Alte Jobs müssen auch alter Schemas funktionieren
+   - Neue Jobs: auf neue Schema-Version wechseln
+
+5. **Dokumentation im Learning Center lesen**
+   - Für jedes Feature gibt es Tutorials
+   - FAQ beantwortet 90% der Fragen
+   - Best Practices für Ihren Use Case
+
+#### 🔒 Sicherheit & Datenschutz
+
+1. **Daten-Klassifizierung**
+   - Markieren Sie vertrauliche Dokumente
+   - Beschränkten Sie Zugriff in Configuration
+   - Audit Trail ist unveränderbar (Compliance)
+
+2. **Backups regelmäßig testen**
+   - Wöchentlich: Ein Backup-Restore durchführen
+   - Überprüfen Sie: Sind alle Daten vorhanden?
+   - Dokumentieren Sie: Restore dauert X Minuten
+
+3. **Passwort-Richtlinie**
+   - Mindestens 12 Zeichen
+   - Groß-, Kleinbuchstaben, Zahlen, Sonderzeichen
+   - Passwort nicht mit anderen teilen
+   - 2-Faktor-Authentifizierung aktivieren
+
+4. **Access Control**
+   - Geben Sie Benutzer nur Zugriff, den sie brauchen
+   - "Least Privilege" Prinzip
+   - Review Berechtigungen monatlich
+   - Deaktivieren Sie inaktive Benutzer
+
+#### 📊 Datenqualität
+
+1. **Regelmäßige Qualitätsprüfung**
+   - Monatlich 5-10 Jobs stichprobenartig prüfen
+   - Fehlerquote > 5%? → Regeln überarbeiten
+   - Trend nachverfolgen (verbessert sich Quality über Zeit?)
+
+2. **Fehler dokumentieren**
+   - Wenn Sie einen Fehler finden:
+   - Speichern Sie das Original-Dokument
+   - Notieren Sie: Was war falsch?
+   - Geben Sie an: Welche Regel muss angepasst werden?
+   - Das hilft Team, Fehler zu identifizieren
+
+3. **Machine Learning nutzen**
+   - Nach ~50 Korrektionen: System lernt automatisch
+   - Fehlerquote sinkt über Zeit (wenn Sie konsistent korrigieren)
+   - Regelmäßig ML-Modell neu trainieren
+   - Best Practice: Monatliches Retraining
+
+4. **Schlechte Dokumente aussortieren**
+   - Manchmal ist Quelle schlecht (zu dunkel, handschriftlich)
+   - Diese Dokumente manuell bearbeiten oder ablehnen
+   - Nicht versuchen, 100% Automatisierung zu erreichen
+   - "Good enough" ist oft besser als "Perfect but slow"
+
+#### 📈 Skalierung & Performance
+
+1. **Wenn Sie wachsen...**
+   - Aktuell: < 100 Jobs/Tag → 1 Server reicht
+   - Bei 100-500 Jobs/Tag → Skalieren Sie zu 2 Backend-Server
+   - Bei > 500 Jobs/Tag → Full Kubernetes Cluster
+
+2. **Database Optimization**
+   - Monatlich: npm run db:optimize
+   - Indices werden neu erstellt
+   - Alte Query-Cache wird geleert
+   - Resultat: 30-50% schneller
+
+3. **Archivierung**
+   - Dokumente älter 1 Jahr: In Cold Storage archivieren
+   - Spart Hauptspeicher (ist teuer)
+   - Archivierte Dokumente sind noch zugänglich (nur langsamer)
+   - Best Practice: Monatliche Archivierung durchführen
+
+---
+
+## Checklisten & Verfahren
+
+### Daily Checklist (Täglich durchführen)
+
+```
+☐ App öffnen - Dashboard anschauen
+☐ Fehlerquote prüfen (sollte < 2% sein)
+☐ Unverarbeitete Jobs anschauen
+☐ Manuelle Korrektionen durchführen (Extraction Workbench)
+☐ Audit Trail prüfen (unerwartete Aktivitäten?)
+☐ Bei Feierabend: Eine Backup durchführen
+```
+
+### Weekly Checklist (Wöchentlich durchführen)
+
+```
+☐ Alle Jobs der Woche überprüfen
+☐ Fehlerquote und Trends analysieren
+☐ Regeln überarbeiten (wenn nötig)
+☐ Performance prüfen (Logs anschauen)
+☐ Audit Trail Export für Compliance
+☐ Speicherplatz prüfen (noch Platz vorhanden?)
+☐ Ältere Logs archivieren
+```
+
+### Monthly Checklist (Monatlich durchführen)
+
+```
+☐ Datenbank-Optimierung durchführen (npm run db:optimize)
+☐ Backup-Restore Test durchführen
+☐ Security Audit (Configuration prüfen)
+☐ Performance Report generieren
+☐ Schemas überprüfen & outdated löschen
+☐ ML-Modell neu trainieren
+☐ Benutzer & Berechtigungen überprüfen
+☐ Storage-Nutzung überprüfen (Archivierung?)
+```
+
+### Quarterly Checklist (Quartalsweise)
+
+```
+☐ Compliance-Review (Audit Trail vollständig?)
+☐ Disaster-Recovery Test durchführen
+☐ Sicherheitsupdate durchführen
+☐ Version-Update Planung
+☐ Budget-Review (Speicher, Lizenzen)
+☐ Team-Schulung (neue Features?)
+```
+
+---
+
+## Zusammenfassung
+
+Die **Audit-Safe Document Extractor** ist ein mächtiges Tool zur Automatisierung von Dokumentenverarbeitung. Mit den richtigen Workflows sparen Sie Stunden an manueller Arbeit ein.
+
+### Key Takeaways
+
+✅ **Automatisierung:** 70-90% der Dokumentenverarbeitung kann automatisiert werden  
+✅ **Responsiv:** Funktioniert auf allen Geräten (Mobile, Tablet, Desktop)  
+✅ **Sicher:** Vollständiger Audit Trail für Compliance  
+✅ **Skalierbar:** Von 10 bis 10.000 Dokumenten pro Tag  
+✅ **Benutzerfreundlich:** Intuitive Navigation und Bedienung  
+
+### Nächste Schritte
+
+1. **Erkunden:** Nehmen Sie sich Zeit, die App zu erkunden
+2. **Experimentieren:** Laden Sie Test-Dokumente hoch
+3. **Schema erstellen:** Definieren Sie Ihr erstes Schema
+4. **Regeln testen:** Erstellen Sie Regeln für Ihren Use Case
+5. **Batch verarbeiten:** Starten Sie Ihren ersten Job
+6. **Optimieren:** Passen Sie Regeln an Fehler an
+
+---
+
+**📞 Fragen?** Siehe Help Center oder kontaktieren Sie Support.
+
+**Version:** 0.25.0 | Letzte Aktualisierung: 2026-07-11 | Status: Produktionsreif ✅
