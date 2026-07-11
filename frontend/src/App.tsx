@@ -43,6 +43,8 @@ import {
   CloudUpload as CloudUploadIcon,
   Schema as SchemaIcon,
   History as HistoryIcon,
+  AssignmentTurnedIn as JobIcon,
+  InsertDriveFile as ReportIcon,
 } from '@mui/icons-material';
 import { DocumentExplorer } from './components/DocumentExplorer';
 import { ExtractionWorkbench } from './components/ExtractionWorkbench';
@@ -61,6 +63,9 @@ import SchemaEditorComponent from './components/SchemaEditorComponent';
 import VersionHistoryComponent from './components/VersionHistoryComponent';
 // Phase 17: Context
 import { SchemaProvider } from './context/SchemaContext';
+// Phase 24: Job Manager & iReport
+import JobManager from './components/JobManager';
+import IReportIntegration from './components/iReportIntegration';
 // Error Handling
 import ErrorBoundary from './components/ErrorBoundary';
 
@@ -74,6 +79,8 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', path: '/', icon: <DashboardIcon /> },
+  { label: 'Job Manager', path: '/jobs', icon: <JobIcon /> },
+  { label: 'iReport Integration', path: '/ireport', icon: <ReportIcon /> },
   { label: 'Schema Upload', path: '/schema-wizard', icon: <CloudUploadIcon /> },
   { label: 'Schema Management', path: '/schemas', icon: <SchemaIcon /> },
   { label: 'Documents', path: '/documents', icon: <DocumentsIcon /> },
@@ -248,6 +255,10 @@ export const App: React.FC = () => {
           >
             <Routes>
               <Route path="/" element={<Dashboard />} />
+              {/* Phase 24: Job Manager */}
+              <Route path="/jobs" element={<JobManager />} />
+              {/* Phase 24: iReport Integration */}
+              <Route path="/ireport" element={<IReportIntegration />} />
               <Route path="/schema-wizard" element={<SchemaUploadWizard />} />
               {/* Phase 16: Schema Management Routes */}
               <Route path="/schemas" element={<SchemaListComponent />} />
