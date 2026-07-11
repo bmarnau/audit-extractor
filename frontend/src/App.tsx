@@ -9,7 +9,7 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import {
   Box,
   CssBaseline,
@@ -56,21 +56,177 @@ import {
   useRecentlyUsed,
 } from './components/Navigation';
 
-export const App: React.FC = () => {
-  const [darkMode, setDarkMode] = useState(false);
+const AppContent: React.FC<{
+  darkMode: boolean;
+  handleDarkModeToggle: () => void;
+  theme: any;
+  drawerOpen: boolean;
+  setDrawerOpen: (open: boolean) => void;
+}> = ({ darkMode, handleDarkModeToggle, theme, drawerOpen, setDrawerOpen }) => {
   const location = useLocation();
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
+    'extraction': true,
+    'documents': false,
+    'rules': false,
+    'monitoring': false,
+    'system': false,
+  });
   
   // Use responsive navigation hook
   const {
     isMobile,
     isTablet,
     isDesktop,
-    drawerOpen,
-    setDrawerOpen,
-    toggleDrawer,
   } = useResponsiveNavigation();
   
   const { addRecent } = useRecentlyUsed();
+
+  const handleNavigation = useCallback((item: any) => {
+    addRecent(item.path || item);
+    if (isMobile) {
+      setDrawerOpen(false);
+    }
+  }, [isMobile, setDrawerOpen, addRecent]);
+
+  const handleToggleCategory = useCallback((categoryId: string) => {
+    setExpandedCategories((prev) => ({
+      ...prev,
+      [categoryId]: !prev[categoryId],
+    }));
+  }, []);
+
+  return (
+    <Box sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
+      {/* App Bar */}
+      <AppBar
+        position="fixed"
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          width: '100%',
+        }}
+      >
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          {isMobile && (
+            <IconButton
+              color="inherit"
+              onClick={() => setDrawerOpen(!drawerOpen)}
+              sx={{ mr: 2 }}
+              aria-label="toggle navigation"
+            >
+              ☰
+            </IconButton>
+          )}
+          <Typography variant="h6" noWrap sx={{ flex: 1 }}>
+            Audit-Safe Extractor
+          </Typography>
+          <IconButton 
+            color="inherit" 
+            onClick={handleDarkModeToggle}
+            aria-label="toggle dark mode"
+          >
+            {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+
+      {/* Responsive Navigation Drawer */}
+      {!isMobile && (
+        <ResponsiveNavigationDrawer
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+          onNavigate={handleNavigation}
+          onToggleCategory={handleToggleCategory}
+          expandedCategories={expandedCategories}
+        />
+      )}
+
+      {/* Mobile Drawer (Hamburger) */}
+      {isMobile && drawerOpen && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            zIndex: (theme) => theme.zIndex.drawer,
+            display: 'flex',
+          }}
+        >
+          <ResponsiveNavigationDrawer
+            open={drawerOpen}
+            onClose={() => setDrawerOpen(false)}
+            onNavigate={handleNavigation}
+            onToggleCategory={handleToggleCategory}
+            expandedCategories={expandedCategories}
+          />
+          <Box
+            onClick={() => setDrawerOpen(false)}
+            sx={{
+              flex: 1,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }}
+          />
+        </Box>
+      )}
+
+      {/* Main Content */}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          width: '100%',
+          mt: 8,
+          overflow: 'auto',
+          mb: isMobile ? 7 : 0, // Space for bottom navigation on mobile
+        }}
+      >
+        {/* Breadcrumb Navigation */}
+        {!isMobile && (
+          <Box sx={{ px: 3, py: 2 }}>
+            <BreadcrumbNavigation />
+          </Box>
+        )}
+
+        {/* Page Routes */}
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          {/* Phase 24: Job Manager */}
+          <Route path="/jobs" element={<JobManager />} />
+          {/* Phase 24: iReport Integration */}
+          <Route path="/ireport" element={<IReportIntegration />} />
+          <Route path="/schema-wizard" element={<SchemaUploadWizard />} />
+          {/* Phase 16: Schema Management Routes */}
+          <Route path="/schemas" element={<SchemaListComponent />} />
+          <Route path="/schema/:id/edit" element={<SchemaEditorComponent />} />
+          <Route path="/schema/:id/history" element={<VersionHistoryComponent />} />
+          {/* Phase 14 & Earlier Routes */}
+          <Route path="/documents" element={<DocumentExplorer />} />
+          <Route path="/workbench" element={<ExtractionWorkbench />} />
+          <Route path="/rules" element={<RuleEditor />} />
+          <Route path="/learning" element={<LearningPage />} />
+          <Route path="/audit" element={<AuditViewer />} />
+          <Route path="/logs" element={<LogViewer />} />
+          <Route path="/configuration" element={<ConfigEditor />} />
+          <Route path="/backups" element={<BackupManager />} />
+          <Route path="/help" element={<HelpBrowser />} />
+        </Routes>
+      </Box>
+
+      {/* Mobile Bottom Navigation */}
+      {isMobile && (
+        <MobileBottomNavigation
+          onNavigate={handleNavigation}
+          activeItemPath={location.pathname}
+        />
+      )}
+    </Box>
+  );
+};
+
+export const App: React.FC = () => {
+  const [darkMode, setDarkMode] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   // Log frontend info on mount
   useEffect(() => {
@@ -109,143 +265,18 @@ export const App: React.FC = () => {
     setDarkMode(!darkMode);
   };
 
-  const handleNavigation = useCallback((path: string) => {
-    addRecent(path);
-    if (isMobile) {
-      setDrawerOpen(false);
-    }
-  }, [isMobile, setDrawerOpen, addRecent]);
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <ErrorBoundary>
         <SchemaProvider>
-          <Router>
-            <Box sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
-              {/* App Bar */}
-              <AppBar
-                position="fixed"
-                sx={{
-                  zIndex: (theme) => theme.zIndex.drawer + 1,
-                  width: '100%',
-                }}
-              >
-                <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                  {isMobile && (
-                    <IconButton
-                      color="inherit"
-                      onClick={() => setDrawerOpen(!drawerOpen)}
-                      sx={{ mr: 2 }}
-                      aria-label="toggle navigation"
-                    >
-                      ☰
-                    </IconButton>
-                  )}
-                  <Typography variant="h6" noWrap sx={{ flex: 1 }}>
-                    Audit-Safe Extractor
-                  </Typography>
-                  <IconButton 
-                    color="inherit" 
-                    onClick={handleDarkModeToggle}
-                    aria-label="toggle dark mode"
-                  >
-                    {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
-                  </IconButton>
-                </Toolbar>
-              </AppBar>
-
-              {/* Responsive Navigation Drawer */}
-              {!isMobile && (
-                <ResponsiveNavigationDrawer
-                  isOpen={drawerOpen}
-                  onClose={() => setDrawerOpen(false)}
-                  onNavigate={handleNavigation}
-                  activeItemPath={location.pathname}
-                />
-              )}
-
-              {/* Mobile Drawer (Hamburger) */}
-              {isMobile && drawerOpen && (
-                <Box
-                  sx={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    zIndex: (theme) => theme.zIndex.drawer,
-                    display: 'flex',
-                  }}
-                >
-                  <ResponsiveNavigationDrawer
-                    isOpen={drawerOpen}
-                    onClose={() => setDrawerOpen(false)}
-                    onNavigate={handleNavigation}
-                    activeItemPath={location.pathname}
-                  />
-                  <Box
-                    onClick={() => setDrawerOpen(false)}
-                    sx={{
-                      flex: 1,
-                      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    }}
-                  />
-                </Box>
-              )}
-
-              {/* Main Content */}
-              <Box
-                component="main"
-                sx={{
-                  flexGrow: 1,
-                  width: '100%',
-                  mt: 8,
-                  overflow: 'auto',
-                  mb: isMobile ? 7 : 0, // Space for bottom navigation on mobile
-                }}
-              >
-                {/* Breadcrumb Navigation */}
-                {!isMobile && (
-                  <Box sx={{ px: 3, py: 2 }}>
-                    <BreadcrumbNavigation />
-                  </Box>
-                )}
-
-                {/* Page Routes */}
-                <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  {/* Phase 24: Job Manager */}
-                  <Route path="/jobs" element={<JobManager />} />
-                  {/* Phase 24: iReport Integration */}
-                  <Route path="/ireport" element={<IReportIntegration />} />
-                  <Route path="/schema-wizard" element={<SchemaUploadWizard />} />
-                  {/* Phase 16: Schema Management Routes */}
-                  <Route path="/schemas" element={<SchemaListComponent />} />
-                  <Route path="/schema/:id/edit" element={<SchemaEditorComponent />} />
-                  <Route path="/schema/:id/history" element={<VersionHistoryComponent />} />
-                  {/* Phase 14 & Earlier Routes */}
-                  <Route path="/documents" element={<DocumentExplorer />} />
-                  <Route path="/workbench" element={<ExtractionWorkbench />} />
-                  <Route path="/rules" element={<RuleEditor />} />
-                  <Route path="/learning" element={<LearningPage />} />
-                  <Route path="/audit" element={<AuditViewer />} />
-                  <Route path="/logs" element={<LogViewer />} />
-                  <Route path="/configuration" element={<ConfigEditor />} />
-                  <Route path="/backups" element={<BackupManager />} />
-                  <Route path="/help" element={<HelpBrowser />} />
-                </Routes>
-              </Box>
-
-              {/* Mobile Bottom Navigation */}
-              {isMobile && (
-                <MobileBottomNavigation
-                  onNavigate={handleNavigation}
-                  activeItemPath={location.pathname}
-                />
-              )}
-            </Box>
-          </Router>
+          <AppContent 
+            darkMode={darkMode}
+            handleDarkModeToggle={handleDarkModeToggle}
+            theme={theme}
+            drawerOpen={drawerOpen}
+            setDrawerOpen={setDrawerOpen}
+          />
         </SchemaProvider>
       </ErrorBoundary>
     </ThemeProvider>

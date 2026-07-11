@@ -29,6 +29,3 @@ export { NavCategoryGroup } from './NavCategoryGroup';
 export { ResponsiveNavigationDrawer } from './ResponsiveNavigationDrawer';
 export { MobileBottomNavigation } from './MobileBottomNavigation';
 export { BreadcrumbNavigation } from './BreadcrumbNavigation';
-
-// Re-export default App example (for reference only)
-export { App as AppIntegrationExample } from './APP_INTEGRATION_EXAMPLE';
