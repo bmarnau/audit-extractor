@@ -1,6 +1,6 @@
 {
   "name": "audit-safe-document-extractor",
-  "version": "0.26.0",
+  "version": "0.26.1",
   "description": "Document Preparation Pipeline (Phase 26: Responsive Navigation & Layout Improvements)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
