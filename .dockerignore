@@ -5,11 +5,6 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
-# Git (not needed in container)
-.git/
-.gitignore
-.gitattributes
-
 # Build artifacts (rebuild in container)
 dist/
 build/

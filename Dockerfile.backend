@@ -20,8 +20,8 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Install wget for healthcheck
-RUN apk add --no-cache wget
+# Install wget for healthcheck and git for sync detection
+RUN apk add --no-cache wget git
 
 # Copy package files
 COPY package*.json ./
@@ -35,6 +35,9 @@ COPY --from=builder /app/extraction-rules ./extraction-rules
 COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/docs ./docs
 COPY --from=builder /app/backend/src/data ./data
+
+# Copy .git directory for version/sync detection
+COPY .git ./.git
 
 # Environment Variables (can be overridden at runtime)
 ENV NODE_ENV=development
