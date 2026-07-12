@@ -123,6 +123,11 @@ export class BuildMetadataService {
    * Liest Frontend Version
    */
   private getFrontendVersion(): string {
+    // Check environment variable first (set via docker-compose)
+    if (process.env.FRONTEND_VERSION) {
+      return process.env.FRONTEND_VERSION;
+    }
+
     try {
       const frontendPackagePath = path.join(
         this.projectRoot,
