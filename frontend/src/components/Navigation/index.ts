@@ -7,11 +7,10 @@
 // Configuration
 export {
   navigationCategories,
-  getAllNavItems,
+  getAllNavigationItems,
   getCategoryById,
-  getNavItemByPath,
-  getMobileCategories,
-  frequentlyUsedItems,
+  getItemByPath,
+  getCategoryByPath,
   type NavItem,
   type NavCategory,
 } from '../../config/navigationConfig';

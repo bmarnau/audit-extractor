@@ -54,7 +54,6 @@ import {
   MobileBottomNavigation,
   BreadcrumbNavigation,
   useResponsiveNavigation,
-  useRecentlyUsed,
 } from './components/Navigation';
 
 const AppContent: React.FC<{
@@ -74,20 +73,21 @@ const AppContent: React.FC<{
   });
   
   // Use responsive navigation hook
+  const nav = useResponsiveNavigation('dashboard');
   const {
     isMobile,
     isTablet,
     isDesktop,
-  } = useResponsiveNavigation();
-  
-  const { addRecent } = useRecentlyUsed();
+  } = nav;
 
   const handleNavigation = useCallback((item: any) => {
-    addRecent(item.path || item);
+    // Track recent navigation
+    const recentPath = item.path || item;
+    console.log('Navigated to:', recentPath);
     if (isMobile) {
       setDrawerOpen(false);
     }
-  }, [isMobile, setDrawerOpen, addRecent]);
+  }, [isMobile, setDrawerOpen]);
 
   const handleToggleCategory = useCallback((categoryId: string) => {
     setExpandedCategories((prev) => ({
@@ -249,7 +249,7 @@ export const App: React.FC = () => {
     const logLevel = import.meta.env.VITE_LOG_LEVEL || 'warn';
     
     if (logLevel === 'debug') {
-      console.group('🚀 Frontend v0.25.0 - Phase 25: Responsive Navigation');
+      console.group('🚀 Frontend v0.26.0 - Phase 26: Layout Improvements');
       console.log(`API URL: ${apiUrl}`);
       console.log(`Environment: ${import.meta.env.MODE}`);
       console.log(`Tracing: ${import.meta.env.VITE_ENABLE_TRACING === 'true'}`);

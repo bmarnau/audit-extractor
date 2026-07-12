@@ -23,7 +23,7 @@ import {
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
 } from '@mui/icons-material';
-import { NavCategory, NavItem } from '../config/navigationConfig';
+import { NavCategory, NavItem } from '../../config/navigationConfig';
 
 interface NavCategoryGroupProps {
   category: NavCategory;
@@ -61,8 +61,11 @@ export const NavCategoryGroup: React.FC<NavCategoryGroupProps> = ({
           transition: 'all 150ms ease-in-out',
         }}
       >
-        <ListItemIcon sx={{ minWidth: isCompact ? 24 : 40, color: category.color }}>
-          {category.icon}
+        <ListItemIcon sx={{ minWidth: isCompact ? 24 : 40, color: category.color as any }}>
+          {(() => {
+            const IconComp = category.icon;
+            return <IconComp />;
+          })()}
         </ListItemIcon>
         {!isCompact && (
           <>
@@ -141,14 +144,17 @@ export const NavCategoryGroup: React.FC<NavCategoryGroupProps> = ({
                       fontSize: '1.2rem',
                     }}
                   >
-                    {item.icon}
+                    {item.icon && (() => {
+                      const IconComp = item.icon;
+                      return <IconComp />;
+                    })()}
                   </ListItemIcon>
                   {!isCompact && (
                     <ListItemText
                       primary={
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           <span>{item.label}</span>
-                          {item.badge !== undefined && item.badge > 0 && (
+                          {item.badge !== undefined && (typeof item.badge === 'number' ? item.badge > 0 : parseInt(item.badge || '0') > 0) && (
                             <Chip
                               label={item.badge}
                               size="small"

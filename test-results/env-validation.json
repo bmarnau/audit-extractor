@@ -1,0 +1,118 @@
+{
+  "timestamp": "2026-07-12T06:59:44.427Z",
+  "environment": {
+    "nodeVersion": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64",
+    "cwd": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor"
+  },
+  "summary": {
+    "total": 8,
+    "passed": 7,
+    "failed": 0,
+    "warnings": 1,
+    "success": true
+  },
+  "details": {
+    "errors": [],
+    "warnings": [
+      {
+        "timestamp": "2026-07-12T06:59:43.508Z",
+        "level": "warning",
+        "component": "Environment",
+        "message": "Optionale Umgebungsvariablen fehlen",
+        "details": {
+          "missing": [
+            "VITE_API_URL",
+            "LOG_LEVEL"
+          ],
+          "present": 0
+        }
+      }
+    ],
+    "successes": [
+      {
+        "timestamp": "2026-07-12T06:59:42.217Z",
+        "level": "success",
+        "component": "Node.js",
+        "message": "Version 24.16.0 erforderliche Mindestversion erfüllt",
+        "details": {
+          "version": "24.16.0",
+          "minVersion": "18.0.0"
+        }
+      },
+      {
+        "timestamp": "2026-07-12T06:59:43.026Z",
+        "level": "success",
+        "component": "npm",
+        "message": "Version 11.17.0 erforderliche Mindestversion erfüllt",
+        "details": {
+          "version": "11.17.0",
+          "minVersion": "9.0.0"
+        }
+      },
+      {
+        "timestamp": "2026-07-12T06:59:43.501Z",
+        "level": "success",
+        "component": "Docker",
+        "message": "Docker und Docker Compose installiert",
+        "details": {
+          "docker": "Docker version 29.6.1, build 8900f1d",
+          "dockerCompose": "Docker Compose version v5.2.0"
+        }
+      },
+      {
+        "timestamp": "2026-07-12T06:59:43.506Z",
+        "level": "success",
+        "component": "Configuration",
+        "message": "Alle 5 erforderlichen Konfigurationsdateien gefunden",
+        "details": {
+          "files": [
+            "package.json",
+            "tsconfig.json",
+            "jest.config.js",
+            "docker-compose.yml",
+            ".env.local"
+          ]
+        }
+      },
+      {
+        "timestamp": "2026-07-12T06:59:43.507Z",
+        "level": "success",
+        "component": "Environment",
+        "message": "Alle erforderlichen Umgebungsvariablen gesetzt",
+        "details": {
+          "count": 1,
+          "variables": [
+            "NODE_ENV"
+          ]
+        }
+      },
+      {
+        "timestamp": "2026-07-12T06:59:43.513Z",
+        "level": "success",
+        "component": "npm",
+        "message": "npm Dependencies installiert",
+        "details": {
+          "dependencies": 13,
+          "devDependencies": 16,
+          "total": 29
+        }
+      },
+      {
+        "timestamp": "2026-07-12T06:59:44.425Z",
+        "level": "success",
+        "component": "Docker Compose",
+        "message": "docker-compose.yml ist gültig",
+        "details": {
+          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\docker-compose.yml",
+          "size": 5329
+        }
+      }
+    ],
+    "infos": []
+  },
+  "recommendations": [
+    "Einige optionale Umgebungsvariablen sind nicht gesetzt"
+  ]
+}

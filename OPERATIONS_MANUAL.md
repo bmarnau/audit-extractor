@@ -19,7 +19,8 @@
 7. [Arbeitsabläufe nach Anwendungsfall](#arbeitsabläufe-nach-anwendungsfall)
 8. [Responsive Design (Mobile, Tablet, Desktop)](#responsive-design-mobile-tablet-desktop)
 9. [Troubleshooting](#troubleshooting)
-10. [Best Practices](#best-practices)
+10. [System-Checks & Wartung](#system-checks--wartung)
+11. [Best Practices](#best-practices)
 
 ---
 
@@ -944,6 +945,103 @@ MITTELFRISTIGE FIXES:
    - Datenbank wird kleiner = schneller
 
 3. Backend-Neustarten (Cache clearen):
+   - Terminal: npm run dev (im Backend-Verzeichnis)
+   - Oder im Taskmanager Node-Prozess beenden und erneut starten
+```
+
+---
+
+## 10. System-Checks & Wartung
+
+### Überblick
+
+Ein **System-Check** ist eine automatisierte Überprüfung aller Systemkomponenten, um sicherzustellen, dass die Anwendung korrekt funktioniert.
+
+### Wann sollte man einen Check durchführen?
+
+✅ **Nach Versions-Update** - Wenn die Version erhöht wurde (0.25.0 → 0.26.0)  
+✅ **Nach Schema-Änderungen** - Wenn neue Schemas hochgeladen wurden  
+✅ **Nach Backup-Restore** - Nach dem Wiederherstellen eines Backups  
+✅ **Nach Konfigurationsänderungen** - Nach wichtigen Einstellungsänderungen  
+✅ **Nach Restart** - Um zu überprüfen, dass alle Daten persistent sind  
+✅ **Wenn Fehler auftreten** - Zur Diagnose von Problemen  
+
+### Detaillierter Guide
+
+**📖 Vollständige Dokumentation:** [COMPREHENSIVE_CHECK_GUIDE.md](COMPREHENSIVE_CHECK_GUIDE.md)
+
+Der umfassende Check-Guide dokumentiert:
+- **7 Checkpunkte** - Service-Health, APIs, Frontend, Database, Performance, etc.
+- **Schema-Persistenz Test** - Überprüft, dass Schemas nach Restart verfügbar bleiben
+- **Fehlerbehandlung** - Lösungen für häufige Check-Fehler
+- **Automatisierte vs. Manuelle Checks** - Je nach Anforderung
+
+### Schnell-Check (2 Minuten)
+
+```powershell
+# 1. Backend läuft?
+curl http://localhost:3000/health
+
+# 2. Frontend erreichbar?
+curl http://localhost:5173
+
+# 3. API antwortet?
+curl http://localhost:3000/api/config
+
+# 4. Schemas vorhanden?
+curl http://localhost:3000/api/schema/list
+
+# Ergebnis: Alle sollten "200 OK" zurückgeben
+```
+
+### Schema-Persistenz Überprüfung (Wichtig!)
+
+**Phase 26 Issue:** "Schemas sind nach Restart nicht sichtbar"
+
+**Test:**
+```
+1. http://localhost:5173/schema öffnen
+2. Anzahl der Schemas notieren (z.B. 5)
+3. App Restart: Backend & Frontend neu starten
+4. Schemas-Seite neu laden
+5. ✅ PASS: Gleiche Anzahl Schemas sichtbar
+6. ❌ FAIL: Weniger oder keine Schemas sichtbar
+```
+
+**Falls FAIL - Debugging:**
+```bash
+# Prüfe PostgreSQL direkt:
+psql -U postgres -d extractor_db
+SELECT COUNT(*) FROM schemas;
+
+# Falls 0: Schemas sind nicht in DB
+# Falls > 0: Problem ist im Frontend/API-Abfrage
+```
+
+### Versionierungsprozess
+
+**Was passiert bei v0.25.0 → v0.26.0?**
+
+1. **Version-Bumping**: package.json, App.tsx, etc. aktualisieren
+2. **Compilation**: `npm run build` durchführen
+3. **Testing**: System-Tests laufen
+4. **Documentation**: RELEASE_NOTES.md, MANUAL.md erstellen
+5. **Archivierung**: Alte Phase-Dateien in archive/ verschieben
+6. **Git Commit**: `git commit -m "Phase 26: ..."`
+7. **Git Tag**: `git tag v0.26.0`
+8. **Git Push**: `git push origin master --tags`
+
+**Dokumentation dazu:** [COMPREHENSIVE_CHECK_GUIDE.md#versionierungsprozess](COMPREHENSIVE_CHECK_GUIDE.md#versionierungsprozess)
+
+### Best Practices für Wartung
+
+- 🔄 **Regelmäßige Backups**: Mindestens täglich
+- 📊 **Performance-Monitoring**: Jede Woche prüfen
+- 🔍 **Audit-Logs überprüfen**: Auf verdächtige Aktivitäten prüfen
+- 📦 **Datenbank-Optimierung**: Monatlich `npm run db:optimize`
+- 🔐 **Security-Updates**: Sobald verfügbar installieren
+
+---
    - Terminal: npm run backend:restart
    - Warten Sie bis "✅ Backend ready"
 

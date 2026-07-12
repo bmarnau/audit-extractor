@@ -1,0 +1,21 @@
+{
+  "version": "0.26.0",
+  "buildNumber": "20260712152343-15b0c79",
+  "buildTime": "2026-07-12T15:23:43.737Z",
+  "buildTimestamp": 1783869823737,
+  "environment": "development",
+  "gitInfo": {
+    "hash": "15b0c792e4714b3c94a30c2cd64e4db00768f2e8",
+    "shortHash": "15b0c79",
+    "branch": "master",
+    "lastCommitTime": "2026-07-12T04:13:13.000Z",
+    "lastCommitMsg": "Phase 26: Layout Improvements & Flex Architecture - Content Readability Enhanced\n\n- Restructure App.tsx with flex-based layout (column at root, flex row for sidebar+content)\n- Update ResponsiveNavigationDrawer drawer height for flex parent (100% instead of calc)\n- Fix content display on all breakpoints (no more cut-off right side)\n- Implement proper scrolling behavior with overflow:auto\n- Update version to 0.26.0 in package.json, App.tsx, ResponsiveNavigationDrawer\n- Archive obsolete Phase-24 files and test artifacts\n- Create RELEASE_NOTES_0.26.0.md with comprehensive changelog\n- Update MANUAL-0.26.0.md and OPERATIONS_MANUAL.md with new version info\n- Responsive design validated on desktop (1920x1080), tablet (768x1024), mobile (375x667)",
+    "isDirty": true,
+    "remoteUrl": "https://github.com/bmarnau/audit-extractor.git",
+    "lastPushTime": "HEAD)"
+  },
+  "frontendVersion": "0.26.0",
+  "backendVersion": "0.26.0",
+  "versionMatch": true,
+  "syncStatus": "synced"
+}

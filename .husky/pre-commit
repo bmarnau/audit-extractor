@@ -1,4 +1,11 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+# Phase 22: Version Check (Prevents version mismatches from being committed)
+node scripts/pre-commit-version-check.js
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+
+# Linting
 npm run lint

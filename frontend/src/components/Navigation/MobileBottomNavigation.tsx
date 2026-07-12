@@ -17,10 +17,14 @@ import { navigationCategories, NavCategory } from '../../config/navigationConfig
 
 interface MobileBottomNavigationProps {
   onCategorySelect?: (category: NavCategory) => void;
+  onNavigate?: (item: any) => void;
+  activeItemPath?: string;
 }
 
 export const MobileBottomNavigation: React.FC<MobileBottomNavigationProps> = ({
   onCategorySelect,
+  onNavigate,
+  activeItemPath,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,8 +57,12 @@ export const MobileBottomNavigation: React.FC<MobileBottomNavigationProps> = ({
   };
 
   // Calculate total badge count
-  const getTotalBadgeCount = (category: NavCategory): number => {
-    return category.items.reduce((sum, item) => sum + (item.badge || 0), 0);
+  const getTotalBadgeCount = (category: NavCategory): number | null => {
+    const count = category.items.reduce((sum, item) => {
+      const badgeNum = typeof item.badge === 'number' ? item.badge : (item.badge ? parseInt(item.badge) : 0);
+      return sum + badgeNum;
+    }, 0);
+    return count > 0 ? count : null;
   };
 
   return (
@@ -87,6 +95,7 @@ export const MobileBottomNavigation: React.FC<MobileBottomNavigationProps> = ({
       >
         {navigationCategories.map((category, index) => {
           const badgeCount = getTotalBadgeCount(category);
+          const IconComponent = category.icon;
           return (
             <Tooltip
               key={category.id}
@@ -95,12 +104,12 @@ export const MobileBottomNavigation: React.FC<MobileBottomNavigationProps> = ({
               arrow
             >
               <Badge
-                badgeContent={badgeCount > 0 ? badgeCount : null}
+                badgeContent={badgeCount}
                 color="error"
               >
                 <BottomNavigationAction
                   label={category.label}
-                  icon={category.icon}
+                  icon={<IconComponent />}
                   value={index}
                 />
               </Badge>
