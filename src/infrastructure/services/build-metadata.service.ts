@@ -167,7 +167,7 @@ export class BuildMetadataService {
   }
 
   /**
-   * Sammelt Git-Informationen
+   * Sammelt Git-Informationen (aus git commands oder Environment Variables)
    */
   private getGitInfo(): GitInfo {
     try {
@@ -215,13 +215,19 @@ export class BuildMetadataService {
         lastPushTime,
       };
     } catch (err) {
-      console.warn('[BuildMetadataService] Git info collection failed:', err);
+      console.warn('[BuildMetadataService] Git info collection failed, using environment variables:', err);
+      
+      // Fallback to environment variables (passed from docker-compose or build args)
+      const envCommit = process.env.GIT_COMMIT || 'unknown';
+      const envBranch = process.env.GIT_BRANCH || 'unknown';
+      const shortCommit = envCommit.substring(0, 7);
+      
       return {
-        hash: 'unknown',
-        shortHash: 'unknown',
-        branch: 'unknown',
+        hash: envCommit,
+        shortHash: shortCommit,
+        branch: envBranch,
         lastCommitTime: new Date().toISOString(),
-        lastCommitMsg: 'unable to retrieve',
+        lastCommitMsg: 'retrieved from environment',
         isDirty: false,
         remoteUrl: 'unknown',
       };

@@ -36,8 +36,9 @@ COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/docs ./docs
 COPY --from=builder /app/backend/src/data ./data
 
-# Copy .git directory for version/sync detection
-COPY .git ./.git
+# Accept git metadata as build arguments
+ARG GIT_COMMIT=unknown
+ARG GIT_BRANCH=unknown
 
 # Environment Variables (can be overridden at runtime)
 ENV NODE_ENV=development

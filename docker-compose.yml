@@ -85,6 +85,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.backend
+      args:
+        - GIT_COMMIT=cfa203b
+        - GIT_BRANCH=master
     container_name: extractor-backend
     environment:
       NODE_ENV: development
@@ -99,6 +102,8 @@ services:
       CORS_ORIGIN: http://localhost:5173,http://localhost
       LOG_LEVEL: info
       FRONTEND_VERSION: 0.26.1
+      GIT_COMMIT: cfa203b
+      GIT_BRANCH: master
     ports:
       - "3000:3000"
     volumes:
