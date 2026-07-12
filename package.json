@@ -1,7 +1,7 @@
 {
   "name": "audit-safe-document-extractor",
-  "version": "0.24.0",
-  "description": "Document Preparation Pipeline (Phase 23.0: Complete + Phase 24 Planning: Extended Adapters & Services)",
+  "version": "0.26.0",
+  "description": "Document Preparation Pipeline (Phase 26: Responsive Navigation & Layout Improvements)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

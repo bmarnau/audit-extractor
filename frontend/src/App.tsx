@@ -1,11 +1,12 @@
 /**
- * Main App Component - Phase 25 (Responsive Navigation)
+ * Main App Component - Phase 26 (Layout Improvements)
  * 
  * Responsive Navigation mit kategorisiertem Menu
  * Mobile (Hamburger + Bottom Nav), Tablet (Icon-only), Desktop (Full Sidebar)
+ * Flex-basierte Layout-Architektur für bessere Content-Lesbarkeit
  * 
- * @version 0.25.0
- * @phase 25
+ * @version 0.26.0
+ * @phase 26
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -96,13 +97,14 @@ const AppContent: React.FC<{
   }, []);
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
-      {/* App Bar */}
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      {/* App Bar - Fixed at top */}
       <AppBar
         position="fixed"
         sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
           width: '100%',
+          top: 0,
         }}
       >
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -129,30 +131,18 @@ const AppContent: React.FC<{
         </Toolbar>
       </AppBar>
 
-      {/* Responsive Navigation Drawer */}
-      {!isMobile && (
-        <ResponsiveNavigationDrawer
-          open={drawerOpen}
-          onClose={() => setDrawerOpen(false)}
-          onNavigate={handleNavigation}
-          onToggleCategory={handleToggleCategory}
-          expandedCategories={expandedCategories}
-        />
-      )}
-
-      {/* Mobile Drawer (Hamburger) */}
-      {isMobile && drawerOpen && (
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            zIndex: (theme) => theme.zIndex.drawer,
-            display: 'flex',
-          }}
-        >
+      {/* Main Container - Flex layout for Sidebar + Content */}
+      <Box
+        sx={{
+          display: 'flex',
+          flex: 1,
+          mt: 8, // Height of AppBar (64px)
+          overflow: 'hidden',
+          position: 'relative',
+        }}
+      >
+        {/* Responsive Navigation Drawer - Desktop/Tablet */}
+        {!isMobile && (
           <ResponsiveNavigationDrawer
             open={drawerOpen}
             onClose={() => setDrawerOpen(false)}
@@ -160,60 +150,85 @@ const AppContent: React.FC<{
             onToggleCategory={handleToggleCategory}
             expandedCategories={expandedCategories}
           />
-          <Box
-            onClick={() => setDrawerOpen(false)}
-            sx={{
-              flex: 1,
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            }}
-          />
-        </Box>
-      )}
+        )}
 
-      {/* Main Content */}
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          width: '100%',
-          mt: 8,
-          overflow: 'auto',
-          mb: isMobile ? 7 : 0, // Space for bottom navigation on mobile
-        }}
-      >
-        {/* Breadcrumb Navigation */}
-        {!isMobile && (
-          <Box sx={{ px: 3, py: 2 }}>
-            <BreadcrumbNavigation />
+        {/* Mobile Drawer Overlay */}
+        {isMobile && drawerOpen && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: (theme) => theme.zIndex.drawer,
+              display: 'flex',
+            }}
+          >
+            <ResponsiveNavigationDrawer
+              open={drawerOpen}
+              onClose={() => setDrawerOpen(false)}
+              onNavigate={handleNavigation}
+              onToggleCategory={handleToggleCategory}
+              expandedCategories={expandedCategories}
+            />
+            <Box
+              onClick={() => setDrawerOpen(false)}
+              sx={{
+                flex: 1,
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              }}
+            />
           </Box>
         )}
 
-        {/* Page Routes */}
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          {/* Phase 24: Job Manager */}
-          <Route path="/jobs" element={<JobManager />} />
-          {/* Phase 24: iReport Integration */}
-          <Route path="/ireport" element={<IReportIntegration />} />
-          <Route path="/schema-wizard" element={<SchemaUploadWizard />} />
-          {/* Phase 16: Schema Management Routes */}
-          <Route path="/schemas" element={<SchemaListComponent />} />
-          <Route path="/schema/:id/edit" element={<SchemaEditorComponent />} />
-          <Route path="/schema/:id/history" element={<VersionHistoryComponent />} />
-          {/* Phase 14 & Earlier Routes */}
-          <Route path="/documents" element={<DocumentExplorer />} />
-          <Route path="/workbench" element={<ExtractionWorkbench />} />
-          <Route path="/rules" element={<RuleEditor />} />
-          <Route path="/learning" element={<LearningPage />} />
-          <Route path="/audit" element={<AuditViewer />} />
-          <Route path="/logs" element={<LogViewer />} />
-          <Route path="/configuration" element={<ConfigEditor />} />
-          <Route path="/backups" element={<BackupManager />} />
-          <Route path="/help" element={<HelpBrowser />} />
-        </Routes>
+        {/* Main Content Area - Scrollable */}
+        <Box
+          component="main"
+          sx={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'auto',
+            pb: isMobile ? 7 : 0, // Space for bottom navigation on mobile
+          }}
+        >
+          {/* Breadcrumb Navigation */}
+          {!isMobile && (
+            <Box sx={{ px: 3, py: 2, borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}>
+              <BreadcrumbNavigation />
+            </Box>
+          )}
+
+          {/* Page Content */}
+          <Box sx={{ flex: 1, p: 3 }}>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              {/* Phase 24: Job Manager */}
+              <Route path="/jobs" element={<JobManager />} />
+              {/* Phase 24: iReport Integration */}
+              <Route path="/ireport" element={<IReportIntegration />} />
+              <Route path="/schema-wizard" element={<SchemaUploadWizard />} />
+              {/* Phase 16: Schema Management Routes */}
+              <Route path="/schemas" element={<SchemaListComponent />} />
+              <Route path="/schema/:id/edit" element={<SchemaEditorComponent />} />
+              <Route path="/schema/:id/history" element={<VersionHistoryComponent />} />
+              {/* Phase 14 & Earlier Routes */}
+              <Route path="/documents" element={<DocumentExplorer />} />
+              <Route path="/workbench" element={<ExtractionWorkbench />} />
+              <Route path="/rules" element={<RuleEditor />} />
+              <Route path="/learning" element={<LearningPage />} />
+              <Route path="/audit" element={<AuditViewer />} />
+              <Route path="/logs" element={<LogViewer />} />
+              <Route path="/configuration" element={<ConfigEditor />} />
+              <Route path="/backups" element={<BackupManager />} />
+              <Route path="/help" element={<HelpBrowser />} />
+            </Routes>
+          </Box>
+        </Box>
       </Box>
 
-      {/* Mobile Bottom Navigation */}
+      {/* Mobile Bottom Navigation - Fixed at bottom */}
       {isMobile && (
         <MobileBottomNavigation
           onNavigate={handleNavigation}

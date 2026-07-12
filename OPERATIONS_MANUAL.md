@@ -1,9 +1,9 @@
 # 📖 Operationshandbuch - Betriebshandbuch
-## Audit-Safe Document Extractor v0.25.0
+## Audit-Safe Document Extractor v0.26.0
 
-**Version:** 0.25.0  
-**Phase:** 25 (Responsive Navigation)  
-**Datum:** 2026-07-11  
+**Version:** 0.26.0  
+**Phase:** 26 (Layout Improvements & Flex Architecture)  
+**Datum:** 2026-07-12  
 **Status:** Produktionsreif  
 
 ---

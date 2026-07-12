@@ -139,7 +139,7 @@ export const ResponsiveNavigationDrawer: React.FC<ResponsiveNavigationDrawerProp
             textAlign: 'center',
           }}
         >
-          v0.25.0
+          v0.26.0
         </Box>
       )}
     </Box>
@@ -178,10 +178,11 @@ export const ResponsiveNavigationDrawer: React.FC<ResponsiveNavigationDrawerProp
           boxSizing: 'border-box',
           backgroundColor: theme.palette.background.paper,
           borderRight: `1px solid ${theme.palette.divider}`,
-          mt: 8, // Below AppBar
-          height: 'calc(100vh - 64px)',
+          height: '100%', // Full height of parent flex container
+          overflow: 'auto',
         },
       }}
+      open={open}
     >
       {drawerContent}
     </Drawer>
