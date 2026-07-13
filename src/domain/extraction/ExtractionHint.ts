@@ -89,6 +89,11 @@ export class ExtractionHintFactory {
     occurrenceCount: number = 0,
     nullValueCount: number = 0
   ): ExtractionHint {
+    // Auto-detect naming convention if not provided or 'unknown'
+    const detectedConvention = namingConvention === 'unknown' || !namingConvention
+      ? this.detectNamingConvention(field)
+      : namingConvention;
+
     const depth = fieldPath.length - 1;
     const uniqueValues = new Set(exampleValues);
     const stringExamples = exampleValues.filter((v) => typeof v === 'string');
@@ -101,7 +106,7 @@ export class ExtractionHintFactory {
       exampleValues: Array.from(exampleValues),
       uniqueValueCount: uniqueValues.size,
       patterns,
-      namingConvention,
+      namingConvention: detectedConvention,
       hasPrefix: this.detectPrefix(stringExamples),
       hasSuffix: this.detectSuffix(stringExamples),
       commonSeparators: this.detectSeparators(stringExamples),
@@ -112,9 +117,39 @@ export class ExtractionHintFactory {
         exampleValues.length,
         uniqueValues.size,
         patterns.length,
-        namingConvention
+        detectedConvention
       ),
     };
+  }
+
+  /**
+   * Detect naming convention from field name
+   */
+  private static detectNamingConvention(field: string): NamingConvention {
+    if (!field) return 'unknown';
+
+    // Check for SCREAMING_KEBAB
+    if (/^[A-Z]+(-[A-Z]+)+$/.test(field)) return 'SCREAMING-KEBAB';
+    
+    // Check for kebab-case
+    if (/^[a-z]+(-[a-z]+)+$/.test(field)) return 'kebab-case';
+    
+    // Check for UPPER_SNAKE
+    if (/^[A-Z]+(_[A-Z]+)+$/.test(field)) return 'UPPER_SNAKE';
+    
+    // Check for snake_case
+    if (/^[a-z]+(_[a-z]+)+$/.test(field)) return 'snake_case';
+    
+    // Check for PascalCase
+    if (/^[A-Z][a-zA-Z0-9]*([A-Z][a-z0-9]*)*$/.test(field) && field !== field.toLowerCase() && field !== field.toUpperCase()) {
+      return 'PascalCase';
+    }
+    
+    // Check for camelCase
+    if (/^[a-z]+([A-Z][a-z0-9]*)*$/.test(field)) return 'camelCase';
+    
+    // Default
+    return 'unknown';
   }
 
   private static detectPrefix(examples: string[]): boolean {

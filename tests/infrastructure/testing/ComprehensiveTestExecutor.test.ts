@@ -233,7 +233,7 @@ describe('Phase 31: Comprehensive Test Executor', () => {
 
         results.forEach(r => aggregator.addResult(r));
 
-        const componentResults = (aggregator as any).componentMap.get('service_1');
+        const componentResults = (aggregator as any).componentResults.get('service_1');
         expect(componentResults.totalTests).toBe(3);
         expect(componentResults.passedTests).toBe(2);
         expect(componentResults.failedTests).toBe(1);
@@ -312,6 +312,7 @@ describe('Phase 31: Comprehensive Test Executor', () => {
       }));
 
       const results = [...passedResults, ...failedResults];
+        results.forEach(r => aggregator.addResult(r));
         const report = aggregator.generateReport('exec_test', new Date(), new Date());
 
         expect(report.overallSuccessRate).toBeCloseTo(80, 1);

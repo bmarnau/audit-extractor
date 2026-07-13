@@ -1,29 +1,29 @@
 ﻿{
     "statistics":  {
                        "skipped_tests":  0,
-                       "success_rate":  93.1,
-                       "passed_tests":  459,
-                       "total_tests":  493,
-                       "failed_tests":  34
+                       "success_rate":  98.1,
+                       "passed_tests":  406,
+                       "total_tests":  414,
+                       "failed_tests":  8
                    },
-    "duration_seconds":  49.32,
-    "timestamp":  "2026-07-13 20:31:45",
+    "duration_seconds":  131.35,
+    "timestamp":  "2026-07-13 20:54:44",
     "services":  [
                      {
                          "status":  "RUNNING",
-                         "timestamp":  "20:31:46",
+                         "timestamp":  "20:54:45",
                          "service":  "Docker Daemon",
                          "action":  "none"
                      },
                      {
                          "status":  "RUNNING",
-                         "timestamp":  "20:31:46",
+                         "timestamp":  "20:54:46",
                          "service":  "PostgreSQL",
                          "action":  "none"
                      },
                      {
                          "status":  "RUNNING",
-                         "timestamp":  "20:31:46",
+                         "timestamp":  "20:54:46",
                          "service":  "Redis",
                          "action":  "none"
                      }

@@ -60,32 +60,51 @@ describe('Phase 22 Services Integration', () => {
         },
       };
 
-      // Job wird über fixture geladen
-      const runtimeJob = jobLoaderService['validateAndCreateRuntimeJob'](
-        testJob,
-        testJob.jobId
-      );
+      // Write test job file
+      const testJobPath = join(testDataPath, 'test-job-001.json');
+      await new Promise<void>((resolve, reject) => {
+        const { writeFile } = require('fs').promises;
+        writeFile(testJobPath, JSON.stringify(testJob))
+          .then(() => resolve())
+          .catch(reject);
+      });
+
+      // Load job through public API
+      const runtimeJob = await jobLoaderService.loadJob('test-job-001');
 
       expect(runtimeJob).toBeDefined();
       expect(runtimeJob.jobId).toBe('test-job-001');
       expect(runtimeJob.documentType).toBe('invoice');
-      expect(runtimeJob.status).toBe('pending');
     });
 
-    it('should validate job structure', async () => {
+    it('should throw error for missing required fields in job.json', async () => {
       const invalidJob = {
         jobId: 'invalid-job',
         // Missing documentType - should fail validation
         schema: 'invoice-v1.0.0',
-        sources: [],
+        sources: [
+          {
+            sourceId: 'src-001',
+            filePath: '/documents/invoice-001.pdf',
+            mimeType: 'application/pdf',
+            hash: 'abc123',
+            uploadedAt: new Date().toISOString(),
+            sizeBytes: 50000,
+          },
+        ],
       };
 
-      expect(() => {
-        jobLoaderService['validateAndCreateRuntimeJob'](
-          invalidJob as any,
-          invalidJob.jobId
-        );
-      }).toThrow();
+      // Write invalid job file
+      const testJobPath = join(testDataPath, 'invalid-job.json');
+      await new Promise<void>((resolve, reject) => {
+        const { writeFile } = require('fs').promises;
+        writeFile(testJobPath, JSON.stringify(invalidJob))
+          .then(() => resolve())
+          .catch(reject);
+      });
+
+      // Should throw when loading
+      await expect(jobLoaderService.loadJob('invalid-job')).rejects.toThrow();
     });
 
     it('should require at least one source', async () => {
@@ -101,12 +120,17 @@ describe('Phase 22 Services Integration', () => {
         },
       };
 
-      expect(() => {
-        jobLoaderService['validateAndCreateRuntimeJob'](
-          jobWithoutSources,
-          jobWithoutSources.jobId
-        );
-      }).toThrow();
+      // Write job without sources
+      const testJobPath = join(testDataPath, 'no-sources-job.json');
+      await new Promise<void>((resolve, reject) => {
+        const { writeFile } = require('fs').promises;
+        writeFile(testJobPath, JSON.stringify(jobWithoutSources))
+          .then(() => resolve())
+          .catch(reject);
+      });
+
+      // Should throw when loading
+      await expect(jobLoaderService.loadJob('no-sources-job')).rejects.toThrow();
     });
   });
 

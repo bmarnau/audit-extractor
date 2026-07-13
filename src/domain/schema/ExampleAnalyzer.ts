@@ -62,10 +62,11 @@ export class ExampleAnalyzer {
   private analyzeField(field: SchemaField, examples: any[]): FieldCharacteristics {
     const values = this.extractFieldValues(field.jsonPath, examples);
     const observedTypes = this.getObservedTypes(values);
-    const frequency = values.length / examples.length;
-
+    
     // Generate patterns from non-null values
     const nonNullValues = values.filter((v) => v !== null && v !== undefined);
+    // Frequency should only count defined values, not null/undefined
+    const frequency = nonNullValues.length / examples.length;
     const { pattern, patternConfidence } = this.generatePattern(nonNullValues, field.dataType);
 
     // Extract numeric bounds if applicable
@@ -82,8 +83,8 @@ export class ExampleAnalyzer {
     const enumCandidates = this.findEnumValues(nonNullValues);
 
     // Check if typically an array
-    const arrayValues = values.filter((v) => Array.isArray(v));
-    const isArray = arrayValues.length / values.length > 0.5;
+    const arrayValues = nonNullValues.filter((v) => Array.isArray(v));
+    const isArray = nonNullValues.length > 0 ? arrayValues.length / nonNullValues.length > 0.5 : false;
 
     return {
       fieldName: field.fieldName,

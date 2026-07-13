@@ -220,7 +220,8 @@ export class TestResultAggregator {
     }
 
     // Calculate metrics
-    componentResult.successRate = (componentResult.passedTests / componentResult.totalTests) * 100;
+    const successRate = (componentResult.passedTests / componentResult.totalTests) * 100;
+    componentResult.successRate = Math.round(successRate * 100) / 100; // Round to 2 decimal places
 
     // Determine overall status
     if (componentResult.failedTests === 0 && componentResult.errorTests === 0 && componentResult.timeoutTests === 0) {
@@ -337,7 +338,7 @@ export class TestResultAggregator {
       passedTests,
       failedTests,
       skippedTests,
-      overallSuccessRate: (passedTests / totalTests) * 100,
+      overallSuccessRate: Math.round((passedTests / totalTests) * 100 * 100) / 100, // Round to 2 decimal places
       criticalFailures,
       highFailures,
       mediumFailures,
