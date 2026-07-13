@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-07-12T06:59:44.427Z",
+  "timestamp": "2026-07-13T17:38:57.784Z",
   "environment": {
     "nodeVersion": "v24.16.0",
     "platform": "win32",
@@ -17,7 +17,7 @@
     "errors": [],
     "warnings": [
       {
-        "timestamp": "2026-07-12T06:59:43.508Z",
+        "timestamp": "2026-07-13T17:38:56.826Z",
         "level": "warning",
         "component": "Environment",
         "message": "Optionale Umgebungsvariablen fehlen",
@@ -32,7 +32,7 @@
     ],
     "successes": [
       {
-        "timestamp": "2026-07-12T06:59:42.217Z",
+        "timestamp": "2026-07-13T17:38:53.428Z",
         "level": "success",
         "component": "Node.js",
         "message": "Version 24.16.0 erforderliche Mindestversion erfüllt",
@@ -42,7 +42,7 @@
         }
       },
       {
-        "timestamp": "2026-07-12T06:59:43.026Z",
+        "timestamp": "2026-07-13T17:38:56.035Z",
         "level": "success",
         "component": "npm",
         "message": "Version 11.17.0 erforderliche Mindestversion erfüllt",
@@ -52,7 +52,7 @@
         }
       },
       {
-        "timestamp": "2026-07-12T06:59:43.501Z",
+        "timestamp": "2026-07-13T17:38:56.815Z",
         "level": "success",
         "component": "Docker",
         "message": "Docker und Docker Compose installiert",
@@ -62,7 +62,7 @@
         }
       },
       {
-        "timestamp": "2026-07-12T06:59:43.506Z",
+        "timestamp": "2026-07-13T17:38:56.825Z",
         "level": "success",
         "component": "Configuration",
         "message": "Alle 5 erforderlichen Konfigurationsdateien gefunden",
@@ -77,7 +77,7 @@
         }
       },
       {
-        "timestamp": "2026-07-12T06:59:43.507Z",
+        "timestamp": "2026-07-13T17:38:56.826Z",
         "level": "success",
         "component": "Environment",
         "message": "Alle erforderlichen Umgebungsvariablen gesetzt",
@@ -89,24 +89,24 @@
         }
       },
       {
-        "timestamp": "2026-07-12T06:59:43.513Z",
+        "timestamp": "2026-07-13T17:38:56.831Z",
         "level": "success",
         "component": "npm",
         "message": "npm Dependencies installiert",
         "details": {
-          "dependencies": 13,
+          "dependencies": 14,
           "devDependencies": 16,
-          "total": 29
+          "total": 30
         }
       },
       {
-        "timestamp": "2026-07-12T06:59:44.425Z",
+        "timestamp": "2026-07-13T17:38:57.783Z",
         "level": "success",
         "component": "Docker Compose",
         "message": "docker-compose.yml ist gültig",
         "details": {
           "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\docker-compose.yml",
-          "size": 5329
+          "size": 5478
         }
       }
     ],

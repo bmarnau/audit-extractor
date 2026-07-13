@@ -1,0 +1,20 @@
+﻿[
+    {
+        "status":  "RUNNING",
+        "timestamp":  "19:36:54",
+        "service":  "Docker Daemon",
+        "action":  "none"
+    },
+    {
+        "status":  "RUNNING",
+        "timestamp":  "19:36:55",
+        "service":  "PostgreSQL",
+        "action":  "none"
+    },
+    {
+        "status":  "RUNNING",
+        "timestamp":  "19:36:55",
+        "service":  "Redis",
+        "action":  "none"
+    }
+]

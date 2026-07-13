@@ -1,0 +1,21 @@
+﻿{
+    "statistics":  {
+                       "success_rate":  93.1,
+                       "failed":  34,
+                       "skipped":  0,
+                       "total":  493,
+                       "passed":  459
+                   },
+    "duration_seconds":  139.28,
+    "timestamp":  "2026-07-13 19:36:51",
+    "services":  {
+                     "restarted_count":  0,
+                     "already_running":  3,
+                     "actions":  [
+                                     "System.Collections.Hashtable",
+                                     "System.Collections.Hashtable",
+                                     "System.Collections.Hashtable"
+                                 ]
+                 },
+    "exit_code":  1
+}
