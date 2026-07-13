@@ -20,3 +20,9 @@ export * from './similarity';
 // Phase 12: Extraction Pipeline Orchestration
 export { ExtractionPipeline } from './ExtractionPipeline';
 export type { PipelineStep, PipelineResult, AuditEvent } from './ExtractionPipeline';
+
+// Phase 27: Issue Management System
+export { IssueService, type IssueSummary } from './IssueService';
+
+// Phase 28: Test Registry System
+export { TestRegistryService, type BuildAssessmentReport, type ManualContent } from './TestRegistryService';

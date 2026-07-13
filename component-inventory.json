@@ -1,0 +1,3579 @@
+{
+  "generatedAt": "2026-07-13T16:58:17.920Z",
+  "totalComponents": 152,
+  "byType": {
+    "endpoint": 0,
+    "controller": 0,
+    "service": 143,
+    "repository": 9,
+    "page": 0,
+    "component": 0
+  },
+  "components": [
+    {
+      "componentId": "service_83",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/validation/ValidationServiceImpl.ts",
+        "lineNumber": 46,
+        "columnNumber": 0
+      },
+      "name": "AjvValidationService",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "loadSchema",
+        "validate",
+        "loadAllSchemas",
+        "getSupportedDocumentTypes",
+        "findSchemaFile",
+        "convertExtractionResultToValidationData",
+        "findMissingFields",
+        "extractRequiredFields",
+        "extractOptionalFields",
+        "isValidCustomSchema",
+        "convertCustomSchemaToJsonSchema",
+        "mapFieldTypeToJsonType",
+        "getValueAt"
+      ]
+    },
+    {
+      "componentId": "service_94",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/api-discovery/services/api-discovery.service.ts",
+        "lineNumber": 21,
+        "columnNumber": 0
+      },
+      "name": "ApiDiscoveryService",
+      "dependencies": [
+        "string",
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "discoverEndpoints",
+        "discoverControllers",
+        "generateInventory",
+        "exportInventory",
+        "getExpressApp",
+        "extractFromExpressApp",
+        "getStaticAnalysisEndpoints",
+        "extractFromRouteFiles",
+        "extractFromControllerFiles",
+        "createEndpoint"
+      ]
+    },
+    {
+      "componentId": "service_139",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/services/api-endpoint-discovery.service.ts",
+        "lineNumber": 34,
+        "columnNumber": 0
+      },
+      "name": "ApiEndpointDiscoveryService",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "discover",
+        "scanRoutes",
+        "scanPresentationRoutes",
+        "analyzeRouteFile",
+        "getBasePath",
+        "checkAuthRequirement",
+        "extractMiddleware",
+        "extractHandlerName",
+        "extractDescription",
+        "generateInventory",
+        "getPackageVersion",
+        "exportToJson"
+      ]
+    },
+    {
+      "componentId": "service_88",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/api/routes/server.ts",
+        "lineNumber": 14,
+        "columnNumber": 0
+      },
+      "name": "ApiResponseError",
+      "dependencies": [
+        "string",
+        "number",
+        "string",
+        "Record<string, unknown>"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_89",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/api/server.ts",
+        "lineNumber": 16,
+        "columnNumber": 0
+      },
+      "name": "ApiResponseError",
+      "dependencies": [
+        "string",
+        "number",
+        "string",
+        "Record<string, unknown>"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_140",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/services/api-smoke-tests.service.ts",
+        "lineNumber": 39,
+        "columnNumber": 0
+      },
+      "name": "ApiSmokeTestsService",
+      "dependencies": [
+        "string",
+        "number"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "runTests",
+        "testEndpoint",
+        "makeRequest",
+        "getTestPayload",
+        "getExpectedStatus",
+        "shouldSkip",
+        "createSkipResult",
+        "generateReport",
+        "aggregateErrors",
+        "exportToJson"
+      ]
+    },
+    {
+      "componentId": "service_99",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/database/entities/AuditLogEntity.ts",
+        "lineNumber": 7,
+        "columnNumber": 0
+      },
+      "name": "AuditLogEntity",
+      "dependencies": [
+        "Partial<AuditLogEntity>"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "repository_129",
+      "componentType": "repository",
+      "location": {
+        "filePath": "src/infrastructure/repositories/AuditLogRepository.ts",
+        "lineNumber": 10,
+        "columnNumber": 0
+      },
+      "name": "AuditLogRepository",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "log",
+        "query",
+        "getStatistics",
+        "exportAsJson",
+        "exportAsCsv",
+        "clearOldLogs"
+      ]
+    },
+    {
+      "componentId": "service_151",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/presentation/AuditReportGenerator.ts",
+        "lineNumber": 7,
+        "columnNumber": 0
+      },
+      "name": "AuditReportGenerator",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "generateJSON",
+        "generateCSV",
+        "generateMarkdown",
+        "toAuditObject",
+        "escapeCsv"
+      ]
+    },
+    {
+      "componentId": "service_141",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/services/BackupService.ts",
+        "lineNumber": 31,
+        "columnNumber": 0
+      },
+      "name": "BackupService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "initialize",
+        "createBackup",
+        "listBackups",
+        "getBackup",
+        "restoreFromBackup",
+        "deleteBackup",
+        "getBackupFile",
+        "getStatistics",
+        "calculateChecksum",
+        "calculateChecksumFile",
+        "getAllFiles",
+        "countFiles",
+        "loadBackupMetadata"
+      ]
+    },
+    {
+      "componentId": "service_120",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/parsers/BaseParser.ts",
+        "lineNumber": 15,
+        "columnNumber": 0
+      },
+      "name": "BaseParser",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "extractText",
+        "extractImages",
+        "canHandle",
+        "getSupportedFormat",
+        "parse",
+        "extractMetadata",
+        "createMetadata",
+        "createChunks",
+        "createImageReferences",
+        "generateDocumentId",
+        "detectDocumentType",
+        "parseFormat"
+      ]
+    },
+    {
+      "componentId": "service_90",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/api/services/BatchTestingService.ts",
+        "lineNumber": 46,
+        "columnNumber": 0
+      },
+      "name": "BatchTestingService",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "initialize",
+        "runBatchTest",
+        "calculateImprovement",
+        "generateMockTestResult",
+        "generateMockTestResults",
+        "saveReport",
+        "getReport"
+      ]
+    },
+    {
+      "componentId": "service_0",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/buildPipeline/BuildAssessmentReport.ts",
+        "lineNumber": 63,
+        "columnNumber": 0
+      },
+      "name": "BuildAssessmentReport",
+      "dependencies": [
+        "BuildAssessmentReportData"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "getSummary",
+        "toMarkdown",
+        "toJSON"
+      ]
+    },
+    {
+      "componentId": "service_37",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/buildPipeline/BuildId.ts",
+        "lineNumber": 9,
+        "columnNumber": 0
+      },
+      "name": "BuildId",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "generate",
+        "from",
+        "getValue",
+        "equals",
+        "toString",
+        "toJSON"
+      ]
+    },
+    {
+      "componentId": "service_142",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/services/build-metadata.service.ts",
+        "lineNumber": 56,
+        "columnNumber": 0
+      },
+      "name": "BuildMetadataService",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "generateBuildMetadata",
+        "getBuildMetadata",
+        "getPackageVersion",
+        "getFrontendVersion",
+        "getBackendVersion",
+        "generateBuildNumber",
+        "getGitInfo",
+        "execGit",
+        "verifyVersions",
+        "exportMetadata",
+        "exportVersionReport"
+      ]
+    },
+    {
+      "componentId": "service_38",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/buildPipeline/BuildMetrics.ts",
+        "lineNumber": 23,
+        "columnNumber": 0
+      },
+      "name": "BuildMetrics",
+      "dependencies": [
+        "BuildMetricsData"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "calculateHealthScore",
+        "determineRiskLevel",
+        "canBuildPass",
+        "getSummary",
+        "toJSON"
+      ]
+    },
+    {
+      "componentId": "service_39",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/buildPipeline/BuildRecommendation.ts",
+        "lineNumber": 32,
+        "columnNumber": 0
+      },
+      "name": "BuildRecommendation",
+      "dependencies": [
+        "RecommendationData"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "isBlocking",
+        "getUrgencyScore",
+        "toJSON"
+      ]
+    },
+    {
+      "componentId": "service_40",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/buildPipeline/BuildRisk.ts",
+        "lineNumber": 36,
+        "columnNumber": 0
+      },
+      "name": "BuildRisk",
+      "dependencies": [
+        "RiskData"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "getImpactScore",
+        "isBlocking",
+        "toJSON"
+      ]
+    },
+    {
+      "componentId": "service_1",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/buildPipeline/BuildVerificationService.ts",
+        "lineNumber": 57,
+        "columnNumber": 0
+      },
+      "name": "BuildVerificationService",
+      "dependencies": [
+        "TestRegistryServiceLike",
+        "IssueServiceLike"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "runBuildPipeline",
+        "stageTestDiscovery",
+        "stageTestExecution",
+        "stageIssueCollection",
+        "stageSeverityEvaluation",
+        "extractRisks",
+        "generateRecommendations",
+        "stageBuildAssessment",
+        "generateMarkdownReport",
+        "exportReportAsJson"
+      ]
+    },
+    {
+      "componentId": "service_32",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/similarity/ChromaDbSimilarityService.ts",
+        "lineNumber": 32,
+        "columnNumber": 0
+      },
+      "name": "ChromaDbSimilarityService",
+      "dependencies": [
+        "string",
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "initialize",
+        "createEmbedding",
+        "storeEmbedding",
+        "findSimilarDocuments",
+        "findSimilarByEmbedding",
+        "calculateSimilarity",
+        "getLocations",
+        "generateEmbeddingStub",
+        "simpleHash"
+      ]
+    },
+    {
+      "componentId": "service_2",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/chunking/ChunkingEngine.ts",
+        "lineNumber": 24,
+        "columnNumber": 0
+      },
+      "name": "ChunkingEngine",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "registerStrategy",
+        "chunk",
+        "chunkWithStrategy",
+        "getAvailableStrategies",
+        "setDefaultConfig"
+      ]
+    },
+    {
+      "componentId": "service_6",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/chunking/ChunkingStrategy.ts",
+        "lineNumber": 44,
+        "columnNumber": 0
+      },
+      "name": "ChunkingError",
+      "dependencies": [
+        "string",
+        "string",
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_42",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/document/ChunkQualityReport.ts",
+        "lineNumber": 58,
+        "columnNumber": 0
+      },
+      "name": "ChunkQualityReportFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "createMetrics",
+        "create",
+        "reset"
+      ]
+    },
+    {
+      "componentId": "service_7",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/classification/DocumentClassifier.ts",
+        "lineNumber": 67,
+        "columnNumber": 0
+      },
+      "name": "ClassificationError",
+      "dependencies": [
+        "string",
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_101",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/discovery/ComponentDiscoveryService.ts",
+        "lineNumber": 26,
+        "columnNumber": 0
+      },
+      "name": "ComponentDiscoveryService",
+      "dependencies": [
+        "string",
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "discoverAll",
+        "exportResults",
+        "generateMarkdownSummary",
+        "printSummary"
+      ]
+    },
+    {
+      "componentId": "service_102",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/discovery/ComponentScanner.ts",
+        "lineNumber": 39,
+        "columnNumber": 0
+      },
+      "name": "ComponentScanner",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "scanAll",
+        "loadSourceFiles",
+        "scanFile",
+        "visitNode",
+        "processClassDeclaration",
+        "processInterfaceDeclaration",
+        "processFunctionDeclaration",
+        "processVariableDeclaration",
+        "hasJSXReturn",
+        "extractRouteType",
+        "extractRoutePath",
+        "normalizeFilePath",
+        "generateInventory"
+      ]
+    },
+    {
+      "componentId": "service_41",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/ConfidenceScore.ts",
+        "lineNumber": 8,
+        "columnNumber": 0
+      },
+      "name": "ConfidenceScore",
+      "dependencies": [
+        "number"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "getValue",
+        "isHighConfidence",
+        "isAcceptable",
+        "isLow",
+        "exact",
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    {
+      "componentId": "service_98",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/config/ConfigManager.ts",
+        "lineNumber": 19,
+        "columnNumber": 0
+      },
+      "name": "ConfigManager",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "initialize",
+        "getConfig",
+        "updateConfig",
+        "updateSection",
+        "getChanges",
+        "getChange",
+        "revertToVersion",
+        "exportConfig",
+        "importConfig",
+        "getStats",
+        "saveConfig",
+        "saveChangelog",
+        "getAuditTrail"
+      ]
+    },
+    {
+      "componentId": "service_43",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/document/DocumentAdapter.ts",
+        "lineNumber": 130,
+        "columnNumber": 0
+      },
+      "name": "DocumentAdapterError",
+      "dependencies": [
+        "string",
+        "string",
+        "string",
+        "Record<string, unknown>",
+        "Error"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "validation",
+        "loading",
+        "processing",
+        "unsupported",
+        "toObject"
+      ]
+    },
+    {
+      "componentId": "service_44",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/document/DocumentChunk.ts",
+        "lineNumber": 38,
+        "columnNumber": 0
+      },
+      "name": "DocumentChunkFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "estimateReadingTime",
+        "reset"
+      ]
+    },
+    {
+      "componentId": "service_137",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/ResultRepository.ts",
+        "lineNumber": 108,
+        "columnNumber": 0
+      },
+      "name": "DocumentHasher",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "hash",
+        "verify"
+      ]
+    },
+    {
+      "componentId": "service_45",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/document/DocumentId.ts",
+        "lineNumber": 19,
+        "columnNumber": 0
+      },
+      "name": "DocumentId",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "fromString",
+        "toString",
+        "getUuid",
+        "equals",
+        "validateFormat"
+      ]
+    },
+    {
+      "componentId": "service_46",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/document/DocumentMetadata.ts",
+        "lineNumber": 56,
+        "columnNumber": 0
+      },
+      "name": "DocumentMetadataFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "createForPdf",
+        "createForHtml",
+        "createForDocx",
+        "createForText",
+        "estimateReadingTime",
+        "getMimeTypeForSourceType"
+      ]
+    },
+    {
+      "componentId": "service_47",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/document/DocumentPage.ts",
+        "lineNumber": 48,
+        "columnNumber": 0
+      },
+      "name": "DocumentPageFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "createEmpty",
+        "merge"
+      ]
+    },
+    {
+      "componentId": "service_9",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/DocumentRuleAssociation.ts",
+        "lineNumber": 8,
+        "columnNumber": 0
+      },
+      "name": "DocumentRuleAssociationService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "associate",
+        "matchesPattern"
+      ]
+    },
+    {
+      "componentId": "service_48",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/document/DocumentSection.ts",
+        "lineNumber": 71,
+        "columnNumber": 0
+      },
+      "name": "DocumentSectionFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "reset"
+      ]
+    },
+    {
+      "componentId": "service_50",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/document/DocumentStructure.ts",
+        "lineNumber": 63,
+        "columnNumber": 0
+      },
+      "name": "DocumentStructureFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "createNode",
+        "create",
+        "flattenNodes",
+        "calculateDepth",
+        "detectNumerationScheme",
+        "reset"
+      ]
+    },
+    {
+      "componentId": "service_49",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/document/DocumentSection.ts",
+        "lineNumber": 131,
+        "columnNumber": 0
+      },
+      "name": "DocumentTableFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "reset",
+        "formatTableAsText"
+      ]
+    },
+    {
+      "componentId": "service_84",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/adapters/DocxDocumentAdapter.ts",
+        "lineNumber": 32,
+        "columnNumber": 0
+      },
+      "name": "DocxDocumentAdapter",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "canHandle",
+        "getName",
+        "getSupportedMimeTypes",
+        "validate",
+        "load",
+        "parsePages",
+        "extractTitle",
+        "extractSections",
+        "detectHeadingLevel"
+      ]
+    },
+    {
+      "componentId": "service_122",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/parsers/DocxParser.ts",
+        "lineNumber": 15,
+        "columnNumber": 0
+      },
+      "name": "DocxParser",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "canHandle",
+        "getSupportedFormat",
+        "extractText",
+        "extractMetadata",
+        "extractImages"
+      ]
+    },
+    {
+      "componentId": "service_104",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/environment-test/services/environment-check.service.ts",
+        "lineNumber": 40,
+        "columnNumber": 0
+      },
+      "name": "EnvironmentCheckerService",
+      "dependencies": [
+        "string",
+        "{ major: number; minor: number }",
+        "{ major: number; minor: number }"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "checkNodeVersion",
+        "checkNpmVersion",
+        "checkDocker",
+        "checkDockerService",
+        "checkDockerCompose",
+        "checkPostgreSQL",
+        "checkPostgreSQLService",
+        "checkPostgreSQLConnectivity",
+        "checkConfigFiles",
+        "checkEnvironmentVariables",
+        "checkDirectoryStructure",
+        "checkFilePermissions",
+        "checkDiskSpace",
+        "checkPortAvailability",
+        "runAllChecks",
+        "testDatabaseConnection",
+        "isPortListening",
+        "isPortAvailable",
+        "commandExists",
+        "canRead",
+        "isWritable",
+        "formatBytes",
+        "createFailedCheck"
+      ]
+    },
+    {
+      "componentId": "service_105",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/environment-test/services/environment-error-classifier.service.ts",
+        "lineNumber": 18,
+        "columnNumber": 0
+      },
+      "name": "EnvironmentErrorClassifierService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "classifyError",
+        "determineErrorType",
+        "determineSeverity",
+        "isBlockingBuild",
+        "isBlockingDeploy",
+        "determineRootCause",
+        "getRecommendations"
+      ]
+    },
+    {
+      "componentId": "service_106",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/environment-test/services/environment-reporter.service.ts",
+        "lineNumber": 26,
+        "columnNumber": 0
+      },
+      "name": "EnvironmentReporterService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "generateReport",
+        "exportAsJSON",
+        "exportAsHTML",
+        "exportAsMarkdown",
+        "generateSummary",
+        "getOSInfo",
+        "getSystemInfo",
+        "calculateSummary",
+        "classifyIssues",
+        "determineHealthStatus",
+        "calculateHealthScore",
+        "generateRecommendations",
+        "generateHTML",
+        "generateMarkdown"
+      ]
+    },
+    {
+      "componentId": "service_111",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/governance/services/error-collector.service.ts",
+        "lineNumber": 16,
+        "columnNumber": 0
+      },
+      "name": "ErrorCollectorService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "collectFromJestResults",
+        "collectFromPlaywrightResults",
+        "addManualFailure",
+        "groupByCategory",
+        "groupByModule",
+        "analyzeCommonPatterns",
+        "analyzeRootCauses",
+        "getAllFailures",
+        "getStatistics",
+        "reset",
+        "inferCategory",
+        "extractModuleName",
+        "extractPattern",
+        "identifyRootCause"
+      ]
+    },
+    {
+      "componentId": "service_143",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/services/ExampleAnalysisService.ts",
+        "lineNumber": 24,
+        "columnNumber": 0
+      },
+      "name": "ExampleAnalysisService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "analyzeExamples",
+        "loadExampleFiles",
+        "collectFieldData",
+        "extractFieldsFromObject",
+        "generateHint",
+        "inferDataType",
+        "detectPatterns",
+        "detectDatePattern",
+        "detectNumericPattern",
+        "detectUuidPattern",
+        "detectEmailPattern",
+        "detectUrlPattern",
+        "detectNamingConvention"
+      ]
+    },
+    {
+      "componentId": "service_74",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/schema/ExampleAnalyzer.ts",
+        "lineNumber": 18,
+        "columnNumber": 0
+      },
+      "name": "ExampleAnalyzer",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "analyzeExamples",
+        "analyzeField",
+        "extractFieldValues",
+        "getNestedValue",
+        "getObservedTypes",
+        "generatePattern",
+        "findEnumValues",
+        "isAllEmail",
+        "isAllPhoneNumber",
+        "isAllDateFormat",
+        "isAllCurrency",
+        "generateSearchStrategies",
+        "assessDataQuality",
+        "createEmptyResult"
+      ]
+    },
+    {
+      "componentId": "service_14",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/generation/ExampleDataLoader.ts",
+        "lineNumber": 60,
+        "columnNumber": 0
+      },
+      "name": "ExampleDataLoader",
+      "dependencies": [
+        "ExampleLoaderOptions"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "loadExample",
+        "loadAllExamples",
+        "sanitizeFileName",
+        "checkDepth",
+        "validateAgainstSchema",
+        "getFieldValues"
+      ]
+    },
+    {
+      "componentId": "service_15",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/generation/ExampleDataLoader.ts",
+        "lineNumber": 267,
+        "columnNumber": 0
+      },
+      "name": "ExampleDataLoaderFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "createDefault"
+      ]
+    },
+    {
+      "componentId": "service_130",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/repositories/ExampleRepository.ts",
+        "lineNumber": 137,
+        "columnNumber": 0
+      },
+      "name": "ExampleNotFoundError",
+      "dependencies": [
+        "string",
+        "'document' | 'expected-json' | 'expected-images'"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_73",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/orchestration/ExecutionReport.ts",
+        "lineNumber": 103,
+        "columnNumber": 0
+      },
+      "name": "ExecutionReportFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "createEmpty",
+        "addValidation",
+        "addError",
+        "addWarning",
+        "finalize"
+      ]
+    },
+    {
+      "componentId": "service_12",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/ExtractionEngine.ts",
+        "lineNumber": 44,
+        "columnNumber": 0
+      },
+      "name": "ExtractionEngine",
+      "dependencies": [
+        "ExtractionRule[]"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "extract",
+        "applyConfidenceFilter",
+        "generateWarnings",
+        "getAuditTrail",
+        "getAuditJSON"
+      ]
+    },
+    {
+      "componentId": "service_54",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/ExtractionFieldName.ts",
+        "lineNumber": 5,
+        "columnNumber": 0
+      },
+      "name": "ExtractionFieldName",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "toString",
+        "equals"
+      ]
+    },
+    {
+      "componentId": "service_53",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/extraction/ExtractionHint.ts",
+        "lineNumber": 81,
+        "columnNumber": 0
+      },
+      "name": "ExtractionHintFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "detectPrefix",
+        "detectSuffix",
+        "detectSeparators",
+        "calculateConfidence"
+      ]
+    },
+    {
+      "componentId": "service_13",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/ExtractionPipeline.ts",
+        "lineNumber": 156,
+        "columnNumber": 0
+      },
+      "name": "ExtractionPipeline",
+      "dependencies": [
+        "any",
+        "any",
+        "any",
+        "any"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "execute",
+        "executeStep",
+        "determineStatus",
+        "handlePipelineError",
+        "logPipelineCompletion",
+        "getAuditTrailJson",
+        "mapDocumentFormat"
+      ]
+    },
+    {
+      "componentId": "service_10",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/DocumentRuleAssociation.ts",
+        "lineNumber": 40,
+        "columnNumber": 0
+      },
+      "name": "ExtractionResultBuilder",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "withResultId",
+        "withDocument",
+        "addExtractedField",
+        "addMissingField",
+        "addWarning",
+        "setVersion",
+        "setRuleSetVersion",
+        "build"
+      ]
+    },
+    {
+      "componentId": "service_8",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/classification/DocumentClassifierImpl.ts",
+        "lineNumber": 22,
+        "columnNumber": 0
+      },
+      "name": "FeatureBasedClassifier",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "getSupportedTypes",
+        "classify",
+        "scoreInvoice",
+        "scoreContract",
+        "scoreResume",
+        "scoreEmail",
+        "scoreReport",
+        "createUnknownResult",
+        "generateReasoning",
+        "generateUncertainty"
+      ]
+    },
+    {
+      "componentId": "service_91",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/api/services/FeedbackService.ts",
+        "lineNumber": 39,
+        "columnNumber": 0
+      },
+      "name": "FeedbackService",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "initialize",
+        "recordFeedback",
+        "generateSuggestions",
+        "suggestPatternImprovement",
+        "extractCommonPattern",
+        "getFeedbackSummary",
+        "getTopIssues",
+        "saveSuggestions"
+      ]
+    },
+    {
+      "componentId": "repository_132",
+      "componentType": "repository",
+      "location": {
+        "filePath": "src/infrastructure/repositories/ExampleRepositoryImpl.ts",
+        "lineNumber": 32,
+        "columnNumber": 0
+      },
+      "name": "FileSystemExampleRepository",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "loadExample",
+        "loadExpectedJson",
+        "loadExpectedImages",
+        "compareResults",
+        "listExamples",
+        "findExamplesByTags",
+        "loadSourceDocument",
+        "extractExampleId",
+        "loadOrCreateMetadata",
+        "guessDocumentType",
+        "isValidExtractionResult",
+        "getSourceFileName"
+      ]
+    },
+    {
+      "componentId": "repository_135",
+      "componentType": "repository",
+      "location": {
+        "filePath": "src/infrastructure/repositories/ResultRepositoryImpl.ts",
+        "lineNumber": 21,
+        "columnNumber": 0
+      },
+      "name": "FileSystemResultRepository",
+      "dependencies": [
+        "string",
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "saveResult",
+        "loadResult",
+        "listVersions",
+        "deleteVersion",
+        "saveReport",
+        "getLocations",
+        "getNextVersion",
+        "serializeResult",
+        "deserializeResult"
+      ]
+    },
+    {
+      "componentId": "service_144",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/services/git-sync.service.ts",
+        "lineNumber": 41,
+        "columnNumber": 0
+      },
+      "name": "GitSyncService",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "checkSyncStatus",
+        "getRemoteInfo",
+        "generateSyncMessage",
+        "saveSyncStatus",
+        "loadSyncStatus",
+        "isPushRequired",
+        "isPullRequired",
+        "execGit",
+        "exportSyncStatus",
+        "getSyncStatus"
+      ]
+    },
+    {
+      "componentId": "service_93",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/api-discovery/adapters/governance-adapter.ts",
+        "lineNumber": 16,
+        "columnNumber": 0
+      },
+      "name": "GovernanceAdapterService",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "generateGovernanceReport",
+        "makeReleaseDecision"
+      ]
+    },
+    {
+      "componentId": "service_117",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/issue-tracking/services/governance-issue.integrator.ts",
+        "lineNumber": 18,
+        "columnNumber": 0
+      },
+      "name": "GovernanceIssueIntegrator",
+      "dependencies": [
+        "IssueManagerService"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "processGovernanceReport",
+        "categorizeTestFailure",
+        "extractComponent",
+        "mapTestCategoryToSeverity",
+        "mapSeverityToPriority",
+        "categorizeRisk",
+        "mapRiskToPriority",
+        "mapRiskToSeverity",
+        "checkReleaseBlocked",
+        "generateReleaseApprovalReport"
+      ]
+    },
+    {
+      "componentId": "service_110",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/governance/reporters/governance-report.generator.ts",
+        "lineNumber": 31,
+        "columnNumber": 0
+      },
+      "name": "GovernanceReportGenerator",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "generateReport",
+        "exportAsJSON",
+        "exportAsText",
+        "collectFailures",
+        "assessSeverity",
+        "generateRecommendations",
+        "analyzeRisks",
+        "makeReleaseDecision",
+        "assessCompliance",
+        "collectMetrics",
+        "calculateQualityScore",
+        "groupFailuresByCategory",
+        "groupFailuresByModule",
+        "generateMitigationPlan"
+      ]
+    },
+    {
+      "componentId": "service_55",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/HallucinationValidator.ts",
+        "lineNumber": 49,
+        "columnNumber": 0
+      },
+      "name": "HallucinationValidator",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "validate",
+        "validateField",
+        "validateSourceReferences",
+        "calculateTextSimilarity"
+      ]
+    },
+    {
+      "componentId": "service_145",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/services/HelpContentLoader.ts",
+        "lineNumber": 48,
+        "columnNumber": 0
+      },
+      "name": "HelpContentLoader",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "initialize",
+        "findProjectRoot",
+        "loadGlossary",
+        "parseGlossary",
+        "loadReleaseNotes",
+        "parseReleaseNote",
+        "loadDocumentation",
+        "parseDoc",
+        "getDefaultGlossary"
+      ]
+    },
+    {
+      "componentId": "service_85",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/adapters/HtmlDocumentAdapter.ts",
+        "lineNumber": 32,
+        "columnNumber": 0
+      },
+      "name": "HtmlDocumentAdapter",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "canHandle",
+        "getName",
+        "getSupportedMimeTypes",
+        "validate",
+        "load",
+        "extractMetadata",
+        "extractRawText",
+        "extractSections",
+        "extractTables"
+      ]
+    },
+    {
+      "componentId": "service_123",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/parsers/HtmlParser.ts",
+        "lineNumber": 15,
+        "columnNumber": 0
+      },
+      "name": "HtmlParser",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "canHandle",
+        "getSupportedFormat",
+        "extractText",
+        "extractMetadata",
+        "extractImages",
+        "createChunks"
+      ]
+    },
+    {
+      "componentId": "service_5",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/chunking/ChunkingEngine.ts",
+        "lineNumber": 353,
+        "columnNumber": 0
+      },
+      "name": "HybridChunkingStrategy",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "getName",
+        "chunk"
+      ]
+    },
+    {
+      "componentId": "service_131",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/repositories/ExampleRepository.ts",
+        "lineNumber": 150,
+        "columnNumber": 0
+      },
+      "name": "InvalidExampleError",
+      "dependencies": [
+        "string",
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_56",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/issue/Issue.ts",
+        "lineNumber": 13,
+        "columnNumber": 0
+      },
+      "name": "Issue",
+      "dependencies": [
+        "IssueId",
+        "string",
+        "string",
+        "string",
+        "string",
+        "Severity",
+        "string",
+        "string",
+        "string",
+        "string",
+        "string",
+        "string",
+        "Date",
+        "IssueStatus"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "fromPersistence",
+        "validateInputs",
+        "getIssueId",
+        "getTitle",
+        "getDescription",
+        "getCategory",
+        "getComponent",
+        "getSeverity",
+        "getRootCause",
+        "getRecommendation",
+        "getConsequenceIfResolved",
+        "getConsequenceIfIgnored",
+        "getDetectedBy",
+        "getBuildVersion",
+        "getTimestamp",
+        "getStatus",
+        "getCreatedAt",
+        "getUpdatedAt",
+        "updateStatus",
+        "isResolved",
+        "isCritical",
+        "isHighPriority",
+        "updateRecommendation",
+        "updateSeverity",
+        "toPersistence",
+        "toJSON"
+      ]
+    },
+    {
+      "componentId": "service_57",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/issue/IssueFactory.ts",
+        "lineNumber": 14,
+        "columnNumber": 0
+      },
+      "name": "IssueFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "createIssue",
+        "createFromTestFailure",
+        "createFromLintError",
+        "createFromApiTestFailure",
+        "createFromPerformanceFailure",
+        "createFromValidationFailure",
+        "createFromIntegrationFailure",
+        "reconstituteFromPersistence",
+        "createTestIssue",
+        "validate"
+      ]
+    },
+    {
+      "componentId": "service_58",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/issue/IssueId.ts",
+        "lineNumber": 7,
+        "columnNumber": 0
+      },
+      "name": "IssueId",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "generate",
+        "from",
+        "getValue",
+        "equals",
+        "toString",
+        "toJSON"
+      ]
+    },
+    {
+      "componentId": "service_118",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/issue-tracking/services/issue-manager.service.ts",
+        "lineNumber": 22,
+        "columnNumber": 0
+      },
+      "name": "IssueManagerService",
+      "dependencies": [
+        "IssueRepositoryService"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "generateIssueId",
+        "mapSeverityToPriority",
+        "createFromTestFailure",
+        "createFromCodeQuality",
+        "createFromCoverageGap",
+        "createFromPerformance",
+        "createFromRegression",
+        "createFromDependency",
+        "classifyError",
+        "assignIssue",
+        "resolveIssue",
+        "closeIssue",
+        "markAsWontFix",
+        "getReleaseBlocers",
+        "generateReport",
+        "getSummary",
+        "getRepository"
+      ]
+    },
+    {
+      "componentId": "service_119",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/issue-tracking/services/issue-repository.service.ts",
+        "lineNumber": 23,
+        "columnNumber": 0
+      },
+      "name": "IssueRepositoryService",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "createIssue",
+        "getIssue",
+        "updateIssue",
+        "deleteIssue",
+        "getAllIssues",
+        "filterIssues",
+        "getOpenIssues",
+        "getCriticalIssues",
+        "getIssuesByVersion",
+        "getIssuesByComponent",
+        "getIssuesByCategory",
+        "calculateSummary",
+        "calculateStatistics",
+        "batchCreateIssues",
+        "bulkUpdateIssues",
+        "saveToDisk",
+        "loadFromDisk",
+        "exportAsJSON",
+        "exportAsText",
+        "clear",
+        "getRepositoryStats"
+      ]
+    },
+    {
+      "componentId": "service_18",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/IssueService.ts",
+        "lineNumber": 15,
+        "columnNumber": 0
+      },
+      "name": "IssueService",
+      "dependencies": [
+        "IssueRepository"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "createIssue",
+        "createFromTestFailure",
+        "createFromApiTestFailure",
+        "createFromPerformanceFailure",
+        "createFromLintError",
+        "createFromValidationFailure",
+        "createFromIntegrationFailure",
+        "getIssueById",
+        "getAllIssues",
+        "getIssuesBySeverity",
+        "getCriticalIssues",
+        "getHighPriorityIssues",
+        "getIssuesByComponent",
+        "getIssuesByCategory",
+        "getIssuesByStatus",
+        "getOpenIssues",
+        "getIssuesByBuildVersion",
+        "searchIssuesByTitle",
+        "getIssuesByDateRange",
+        "updateIssueStatus",
+        "updateIssueRecommendation",
+        "updateIssueSeverity",
+        "resolveIssue",
+        "closeIssue",
+        "startResolvingIssue",
+        "archiveIssue",
+        "deleteIssue",
+        "getStatistics",
+        "getComponentStatistics",
+        "getTotalIssueCount",
+        "issueExists",
+        "importIssues",
+        "exportAllIssuesAsJson",
+        "getSummary"
+      ]
+    },
+    {
+      "componentId": "service_59",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/job/Job.ts",
+        "lineNumber": 35,
+        "columnNumber": 0
+      },
+      "name": "Job",
+      "dependencies": [
+        "{\r\n    jobId: JobId;\r\n    documentType: DocumentType;\r\n    status: JobStatus;\r\n    sources: JobSource[];\r\n    schema: JobSchema;\r\n    examples: JobExample[];\r\n    options: JobOptions;\r\n    createdAt: Date;\r\n    updatedAt: Date;\r\n    completedAt?: Date;\r\n    failureReason?: string;\r\n    metadata?: Map<string, unknown>;\r\n  }"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "restore",
+        "validate",
+        "markCompleted",
+        "markFailed",
+        "startProcessing",
+        "cancel",
+        "setMetadata",
+        "getJobId",
+        "getDocumentType",
+        "getStatus",
+        "getSources",
+        "getSchema",
+        "getExamples",
+        "getOptions",
+        "getCreatedAt",
+        "getUpdatedAt",
+        "getCompletedAt",
+        "getFailureReason",
+        "getMetadata",
+        "getMetadataMap",
+        "isCompleted",
+        "isFailed",
+        "isProcessable",
+        "toDTO"
+      ]
+    },
+    {
+      "componentId": "service_64",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/job/JobErrors.ts",
+        "lineNumber": 91,
+        "columnNumber": 0
+      },
+      "name": "JobDirectoryError",
+      "dependencies": [
+        "string",
+        "string",
+        "Error"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_66",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/job/JobErrors.ts",
+        "lineNumber": 131,
+        "columnNumber": 0
+      },
+      "name": "JobDirectoryValidationError",
+      "dependencies": [
+        "string",
+        "string[]",
+        "string[]"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "toJSON"
+      ]
+    },
+    {
+      "componentId": "service_100",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/database/entities/JobEntity.ts",
+        "lineNumber": 15,
+        "columnNumber": 0
+      },
+      "name": "JobEntity",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_60",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/job/JobErrors.ts",
+        "lineNumber": 14,
+        "columnNumber": 0
+      },
+      "name": "JobError",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "toJSON"
+      ]
+    },
+    {
+      "componentId": "service_71",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/job/JobValueObjects.ts",
+        "lineNumber": 103,
+        "columnNumber": 0
+      },
+      "name": "JobExampleFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create"
+      ]
+    },
+    {
+      "componentId": "service_68",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/job/JobId.ts",
+        "lineNumber": 20,
+        "columnNumber": 0
+      },
+      "name": "JobId",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "createWithIndex",
+        "fromString",
+        "isValid",
+        "toString",
+        "toJSON",
+        "toDirectoryName",
+        "equals"
+      ]
+    },
+    {
+      "componentId": "service_146",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/services/JobLoaderService.ts",
+        "lineNumber": 17,
+        "columnNumber": 0
+      },
+      "name": "JobLoaderService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "loadJob",
+        "validateAndCreateRuntimeJob",
+        "loadJobs"
+      ]
+    },
+    {
+      "componentId": "service_62",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/job/JobErrors.ts",
+        "lineNumber": 57,
+        "columnNumber": 0
+      },
+      "name": "JobNotFoundError",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_72",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/job/JobValueObjects.ts",
+        "lineNumber": 142,
+        "columnNumber": 0
+      },
+      "name": "JobOptionsFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "validate"
+      ]
+    },
+    {
+      "componentId": "service_23",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/orchestration/JobOrchestrator.ts",
+        "lineNumber": 25,
+        "columnNumber": 0
+      },
+      "name": "JobOrchestrator",
+      "dependencies": [
+        "JobLoaderService",
+        "SchemaLoaderService",
+        "ExampleAnalysisService"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "orchestrateJob",
+        "validateSources",
+        "writeReport",
+        "getReportPath"
+      ]
+    },
+    {
+      "componentId": "service_65",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/job/JobErrors.ts",
+        "lineNumber": 111,
+        "columnNumber": 0
+      },
+      "name": "JobPersistenceError",
+      "dependencies": [
+        "string",
+        "string",
+        "Error"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "repository_133",
+      "componentType": "repository",
+      "location": {
+        "filePath": "src/infrastructure/repositories/JobRepository.ts",
+        "lineNumber": 35,
+        "columnNumber": 0
+      },
+      "name": "JobRepository",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "getRepository",
+        "create",
+        "findById",
+        "updateStatus",
+        "start",
+        "complete",
+        "fail",
+        "cancel",
+        "query",
+        "findByStatus",
+        "delete",
+        "getStatistics",
+        "exportAsJson",
+        "exportAsCsv",
+        "clearOldJobs"
+      ]
+    },
+    {
+      "componentId": "service_70",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/job/JobValueObjects.ts",
+        "lineNumber": 78,
+        "columnNumber": 0
+      },
+      "name": "JobSchemaFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create"
+      ]
+    },
+    {
+      "componentId": "service_19",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/jobs/JobService.ts",
+        "lineNumber": 41,
+        "columnNumber": 0
+      },
+      "name": "JobService",
+      "dependencies": [
+        "JobRepository",
+        "ExtractionPipeline"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "createJob",
+        "getJob",
+        "getJobResult",
+        "cancelJob",
+        "processJobAsync",
+        "categorizeError",
+        "scheduleRetryWithBackoff",
+        "moveToDeadLetterQueue",
+        "logDeadLetterEvent",
+        "retryFailedJob",
+        "getDeadLetterQueue",
+        "analyzeDeadLetterJob",
+        "getStatistics",
+        "queryJobs",
+        "exportJobs",
+        "cleanupOldJobs"
+      ]
+    },
+    {
+      "componentId": "service_67",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/job/JobErrors.ts",
+        "lineNumber": 172,
+        "columnNumber": 0
+      },
+      "name": "JobSourceError",
+      "dependencies": [
+        "string",
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_69",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/job/JobValueObjects.ts",
+        "lineNumber": 51,
+        "columnNumber": 0
+      },
+      "name": "JobSourceFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create"
+      ]
+    },
+    {
+      "componentId": "service_63",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/job/JobErrors.ts",
+        "lineNumber": 72,
+        "columnNumber": 0
+      },
+      "name": "JobStatusError",
+      "dependencies": [
+        "string",
+        "string",
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_20",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/jobs/JobStructureApplicationService.ts",
+        "lineNumber": 28,
+        "columnNumber": 0
+      },
+      "name": "JobStructureApplicationService",
+      "dependencies": [
+        "JobStructureService"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "createJob",
+        "getJobStatus",
+        "updateJobStatus",
+        "validateJobStructure",
+        "deleteJob",
+        "listJobs",
+        "getJobSize",
+        "validateCreateJobRequest",
+        "handleError"
+      ]
+    },
+    {
+      "componentId": "service_147",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/services/JobStructureService.ts",
+        "lineNumber": 57,
+        "columnNumber": 0
+      },
+      "name": "JobStructureService",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "createJobStructure",
+        "loadJobMetadata",
+        "saveJobMetadata",
+        "updateJobMetadata",
+        "validateJobDirectory",
+        "ensureDirectories",
+        "deleteJobDirectory",
+        "getJobDirectorySize",
+        "listJobs",
+        "getJobPaths",
+        "directoryExists",
+        "fileExists",
+        "calculateDirectorySize",
+        "directoryExistsSync"
+      ]
+    },
+    {
+      "componentId": "service_61",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/job/JobErrors.ts",
+        "lineNumber": 35,
+        "columnNumber": 0
+      },
+      "name": "JobValidationError",
+      "dependencies": [
+        "string",
+        "Record<string, string[]>"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "toJSON"
+      ]
+    },
+    {
+      "componentId": "repository_127",
+      "componentType": "repository",
+      "location": {
+        "filePath": "src/infrastructure/persistence/JsonIssueRepository.ts",
+        "lineNumber": 16,
+        "columnNumber": 0
+      },
+      "name": "JsonIssueRepository",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "initialize",
+        "save",
+        "update",
+        "findById",
+        "findAll",
+        "findBySeverity",
+        "findByComponent",
+        "findByCategory",
+        "findByStatus",
+        "findByBuildVersion",
+        "findByTitleContains",
+        "findByDateRange",
+        "getStatistics",
+        "getComponentStatistics",
+        "delete",
+        "count",
+        "exists",
+        "saveMany",
+        "deleteAll",
+        "persistToFile",
+        "fileExists",
+        "ensureInitialized",
+        "getStorageDir",
+        "setStorageDir",
+        "getInMemoryIssues",
+        "setInMemoryIssues"
+      ]
+    },
+    {
+      "componentId": "repository_128",
+      "componentType": "repository",
+      "location": {
+        "filePath": "src/infrastructure/persistence/JsonTestRegistryRepository.ts",
+        "lineNumber": 16,
+        "columnNumber": 0
+      },
+      "name": "JsonTestRegistryRepository",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "initializeDataDirectory",
+        "loadFromDisk",
+        "saveToDisk",
+        "getRegistryFilePath",
+        "register",
+        "update",
+        "findById",
+        "findAll",
+        "findByCategory",
+        "findByComponent",
+        "findBySeverityImpact",
+        "findBuildBlockingTests",
+        "findEnabledTests",
+        "findDisabledTests",
+        "findByFramework",
+        "findByTags",
+        "findByNameContains",
+        "findFlakyTests",
+        "findByDependencies",
+        "getStatistics",
+        "getComponentOverview",
+        "deregister",
+        "count",
+        "exists",
+        "registerMany",
+        "deleteAll",
+        "exportAsJson",
+        "getInMemoryRegistry",
+        "setInMemoryRegistry"
+      ]
+    },
+    {
+      "componentId": "service_21",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/LearningComponent.ts",
+        "lineNumber": 14,
+        "columnNumber": 0
+      },
+      "name": "LearningComponent",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "recordSuccessfulExtraction",
+        "recordFailedExtraction",
+        "getOptimizationSuggestions",
+        "getStatistics",
+        "validateNoDataGeneration"
+      ]
+    },
+    {
+      "componentId": "service_22",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/LLMExtractor.ts",
+        "lineNumber": 56,
+        "columnNumber": 0
+      },
+      "name": "LLMExtractor",
+      "dependencies": [
+        "LLMExtractorConfig"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "extract",
+        "buildPrompt",
+        "callLLM",
+        "callOpenAI",
+        "callAzureOpenAI",
+        "mockLLMResponse",
+        "parseResponse",
+        "buildExtractionResult",
+        "mapDocumentType"
+      ]
+    },
+    {
+      "componentId": "service_25",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/quality/QualityEvaluatorImpl.ts",
+        "lineNumber": 19,
+        "columnNumber": 0
+      },
+      "name": "MetricsBasedQualityEvaluator",
+      "dependencies": [
+        "QualityEvaluatorConfig"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "evaluate",
+        "evaluateCompleteness",
+        "evaluateVerifiability",
+        "evaluateConsistency",
+        "evaluateSchemaConformity",
+        "findTypeViolations"
+      ]
+    },
+    {
+      "componentId": "service_124",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/parsers/ParserFactory.ts",
+        "lineNumber": 16,
+        "columnNumber": 0
+      },
+      "name": "ParserFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "getParser",
+        "getParsers",
+        "getSupportedFormats",
+        "isSupported",
+        "parse"
+      ]
+    },
+    {
+      "componentId": "service_125",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/parsers/ParserService.ts",
+        "lineNumber": 12,
+        "columnNumber": 0
+      },
+      "name": "ParserService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "parse",
+        "canHandle",
+        "getSupportedFormat",
+        "extractText",
+        "extractMetadata",
+        "extractImages"
+      ]
+    },
+    {
+      "componentId": "service_121",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/parsers/DocumentParser.ts",
+        "lineNumber": 77,
+        "columnNumber": 0
+      },
+      "name": "ParsingError",
+      "dependencies": [
+        "string",
+        "string",
+        "string",
+        "Error"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_16",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/generation/PatternInferrer.ts",
+        "lineNumber": 23,
+        "columnNumber": 0
+      },
+      "name": "PatternInferrer",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "infer",
+        "generateBasicPattern",
+        "analyzeStructure",
+        "structureToRegex",
+        "testPatternAgainstExamples",
+        "createGenericPattern",
+        "escapeRegex",
+        "generateAlternatives",
+        "evaluatePatterns",
+        "checkReDoS",
+        "testPerformance",
+        "calculateAverageConfidence",
+        "calculateMinConfidence",
+        "calculateMaxConfidence"
+      ]
+    },
+    {
+      "componentId": "service_86",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/adapters/PdfDocumentAdapter.ts",
+        "lineNumber": 31,
+        "columnNumber": 0
+      },
+      "name": "PdfDocumentAdapter",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "canHandle",
+        "getName",
+        "getSupportedMimeTypes",
+        "validate",
+        "load",
+        "parsePdfWithTimeout",
+        "extractMetadata",
+        "extractPages",
+        "estimateTextConfidence",
+        "isScanImage"
+      ]
+    },
+    {
+      "componentId": "service_126",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/parsers/PdfParser.ts",
+        "lineNumber": 21,
+        "columnNumber": 0
+      },
+      "name": "PdfParser",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "canHandle",
+        "getSupportedFormat",
+        "extractText",
+        "extractMetadata",
+        "extractImages"
+      ]
+    },
+    {
+      "componentId": "service_51",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/document/PreparedDocument.ts",
+        "lineNumber": 51,
+        "columnNumber": 0
+      },
+      "name": "PreparedDocumentFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "reset"
+      ]
+    },
+    {
+      "componentId": "service_11",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/ExtractionEngine.ts",
+        "lineNumber": 16,
+        "columnNumber": 0
+      },
+      "name": "ProvenanceAuditor",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "record",
+        "getAuditTrail",
+        "toJSON"
+      ]
+    },
+    {
+      "componentId": "service_24",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/quality/QualityEvaluator.ts",
+        "lineNumber": 117,
+        "columnNumber": 0
+      },
+      "name": "QualityEvaluatorError",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_112",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/governance/services/recommendation-engine.service.ts",
+        "lineNumber": 20,
+        "columnNumber": 0
+      },
+      "name": "RecommendationEngineService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "generateRecommendations",
+        "generateActionItems",
+        "generateExecutionPlan",
+        "generateCriticalRecommendations",
+        "generateCoverageRecommendations",
+        "generatePerformanceRecommendations",
+        "generateQualityRecommendations",
+        "generateRegressionRecommendation",
+        "generateBestPracticeRecommendations",
+        "generateId"
+      ]
+    },
+    {
+      "componentId": "service_113",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/governance/services/release-decision.service.ts",
+        "lineNumber": 24,
+        "columnNumber": 0
+      },
+      "name": "ReleaseDecisionService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "makeReleaseDecision",
+        "createReleaseChecklist",
+        "generateReleasePlan",
+        "generateManagementSummary",
+        "identifyReleaseBlockers",
+        "identifyWarnings",
+        "generateRecommendedActions",
+        "determineApprovalLevel",
+        "generateReasoning"
+      ]
+    },
+    {
+      "componentId": "service_107",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/environment-validation/report-generator.ts",
+        "lineNumber": 34,
+        "columnNumber": 0
+      },
+      "name": "ReportGenerator",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "generateReport",
+        "generateRecommendations",
+        "exportJSON",
+        "exportHTML",
+        "generateHTMLReport",
+        "exportMarkdown",
+        "generateMarkdownReport"
+      ]
+    },
+    {
+      "componentId": "service_95",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/api-discovery/services/report-generator.service.ts",
+        "lineNumber": 24,
+        "columnNumber": 0
+      },
+      "name": "ReportGeneratorService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "generateSmokeTestReport",
+        "generateFunctionalReport",
+        "exportReports",
+        "exportSummary",
+        "calculateInventoryHealth",
+        "generateHtmlReport",
+        "buildHtmlReport"
+      ]
+    },
+    {
+      "componentId": "service_26",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/result-mapping/ResultMapper.ts",
+        "lineNumber": 18,
+        "columnNumber": 0
+      },
+      "name": "ResultMapper",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "mapToSchema",
+        "setNestedValue",
+        "validateAgainstSchema",
+        "calculateCoverage",
+        "hasValue"
+      ]
+    },
+    {
+      "componentId": "repository_136",
+      "componentType": "repository",
+      "location": {
+        "filePath": "src/infrastructure/ResultRepository.ts",
+        "lineNumber": 10,
+        "columnNumber": 0
+      },
+      "name": "ResultRepository",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "save",
+        "load",
+        "listResults",
+        "serializeResult",
+        "deserializeResult",
+        "ensureDirectory"
+      ]
+    },
+    {
+      "componentId": "service_134",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/repositories/ResultRepository.ts",
+        "lineNumber": 89,
+        "columnNumber": 0
+      },
+      "name": "ResultRepositoryError",
+      "dependencies": [
+        "string",
+        "string",
+        "number"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_96",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/api-discovery/services/risk-analyzer.service.ts",
+        "lineNumber": 20,
+        "columnNumber": 0
+      },
+      "name": "RiskAnalyzerService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "analyzeEndpoint",
+        "analyzeAll",
+        "calculateRiskScore",
+        "generateRecommendations",
+        "getSummary"
+      ]
+    },
+    {
+      "componentId": "service_114",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/governance/services/risk-analyzer.service.ts",
+        "lineNumber": 20,
+        "columnNumber": 0
+      },
+      "name": "RiskAnalyzerService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "analyzeRisks",
+        "createRiskMatrix",
+        "createRiskRegister",
+        "createMitigationPlan",
+        "visualizeRiskMatrix",
+        "createCriticalFailureRisk",
+        "createCoverageRisk",
+        "createFlakynessRisk",
+        "createRegressionRisk",
+        "createQualityDegradationRisk",
+        "createReleaseReadinessRisk",
+        "calculateRiskScore",
+        "generateMitigation",
+        "calculateMitigationPriority",
+        "assignRiskOwner",
+        "calculateDueDate",
+        "generateRiskId"
+      ]
+    },
+    {
+      "componentId": "service_17",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/generation/RuleGenerator.ts",
+        "lineNumber": 95,
+        "columnNumber": 0
+      },
+      "name": "RuleGenerator",
+      "dependencies": [
+        "ExampleDataLoader",
+        "PatternInferrer"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "generate",
+        "generateRuleForField",
+        "validateRequest",
+        "generateId",
+        "toExtractionRules"
+      ]
+    },
+    {
+      "componentId": "service_29",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/rule-generation/RuleGenerator.ts",
+        "lineNumber": 19,
+        "columnNumber": 0
+      },
+      "name": "RuleGenerator",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "generateRules",
+        "generateRuleForField",
+        "generateRationale",
+        "calculateStats",
+        "generateWarnings"
+      ]
+    },
+    {
+      "componentId": "service_36",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/core/rules/RuleLoader.ts",
+        "lineNumber": 38,
+        "columnNumber": 0
+      },
+      "name": "RuleLoader",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "loadRules",
+        "loadSchemas",
+        "loadSchema",
+        "getRule",
+        "getAllRules",
+        "getAllSchemas",
+        "clearCache",
+        "parseRuleFromText",
+        "parseSchemaFromJson",
+        "parseFieldType",
+        "parseBoolean",
+        "parseArray"
+      ]
+    },
+    {
+      "componentId": "service_35",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/core/rules/RuleLoader.ts",
+        "lineNumber": 24,
+        "columnNumber": 0
+      },
+      "name": "RuleLoadError",
+      "dependencies": [
+        "string",
+        "string",
+        "number"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "repository_138",
+      "componentType": "repository",
+      "location": {
+        "filePath": "src/infrastructure/RuleSetRepository.ts",
+        "lineNumber": 9,
+        "columnNumber": 0
+      },
+      "name": "RuleSetRepository",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "loadRuleSet",
+        "saveRuleSet",
+        "listRuleSets",
+        "ensureDirectory"
+      ]
+    },
+    {
+      "componentId": "service_92",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/api/services/RuleVersioningService.ts",
+        "lineNumber": 33,
+        "columnNumber": 0
+      },
+      "name": "RuleVersioningService",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "initialize",
+        "saveVersion",
+        "getHistory",
+        "publishVersion",
+        "rollback",
+        "countChangedRules",
+        "updateHistory"
+      ]
+    },
+    {
+      "componentId": "service_27",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/revision/RunComparisonService.ts",
+        "lineNumber": 17,
+        "columnNumber": 0
+      },
+      "name": "RunComparisonService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "compareRuns",
+        "calculateDifferences",
+        "calculateFieldChanges",
+        "calculateSimilarity",
+        "identifyHighImpactChanges",
+        "generateChangesSummary"
+      ]
+    },
+    {
+      "componentId": "service_28",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/revision/RunHistoryService.ts",
+        "lineNumber": 12,
+        "columnNumber": 0
+      },
+      "name": "RunHistoryService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "saveRun",
+        "getRun",
+        "listRuns",
+        "deleteRun",
+        "getRunHistory",
+        "getRunsBetween",
+        "countRuns",
+        "searchRuns"
+      ]
+    },
+    {
+      "componentId": "service_75",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/schema/SchemaAnalyzer.ts",
+        "lineNumber": 22,
+        "columnNumber": 0
+      },
+      "name": "SchemaAnalyzer",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "analyzeSchema",
+        "parseField",
+        "countTotalFields",
+        "validateSchema",
+        "generateDocumentation",
+        "flattenFields",
+        "generateSchemaId"
+      ]
+    },
+    {
+      "componentId": "service_76",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/schema/SchemaDefinition.ts",
+        "lineNumber": 56,
+        "columnNumber": 0
+      },
+      "name": "SchemaDefinitionFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "fromJsonSchema"
+      ]
+    },
+    {
+      "componentId": "service_109",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/filesystem/SchemaDirectoryManager.ts",
+        "lineNumber": 32,
+        "columnNumber": 0
+      },
+      "name": "SchemaDirectoryManager",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "initialize",
+        "getSchemaPaths",
+        "createSchemaDirectory",
+        "saveSchema",
+        "loadSchema",
+        "saveMetadata",
+        "loadMetadata",
+        "saveRules",
+        "loadRules",
+        "loadRulesStatistics",
+        "saveExamples",
+        "loadExamples",
+        "saveExtractionResult",
+        "archiveVersion",
+        "deleteSchemaDirectory",
+        "getDirectoryStats",
+        "verifyDirectoryStructure",
+        "getBaseDirectory",
+        "schemaDirectoryExists"
+      ]
+    },
+    {
+      "componentId": "service_77",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/schema/SchemaEntity.ts",
+        "lineNumber": 14,
+        "columnNumber": 0
+      },
+      "name": "SchemaEntity",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_148",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/services/SchemaLoaderService.ts",
+        "lineNumber": 20,
+        "columnNumber": 0
+      },
+      "name": "SchemaLoaderService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "loadSchema",
+        "loadSchemas",
+        "validateAndExtractSchema",
+        "extractFields",
+        "extractType",
+        "extractEnum",
+        "extractItems",
+        "extractNestedProperties",
+        "extractVersion"
+      ]
+    },
+    {
+      "componentId": "service_30",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/schema/SchemaManagementService.ts",
+        "lineNumber": 10,
+        "columnNumber": 0
+      },
+      "name": "SchemaManagementService",
+      "dependencies": [
+        "SchemaRepository",
+        "SchemaDirectoryManager"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "createSchema",
+        "updateSchema",
+        "getSchema",
+        "saveRules",
+        "saveExtractionResult",
+        "deleteSchema",
+        "verifySchemaIntegrity",
+        "getSchemasByUser",
+        "loadExamples",
+        "loadRules",
+        "loadRulesStatistics"
+      ]
+    },
+    {
+      "componentId": "repository_78",
+      "componentType": "repository",
+      "location": {
+        "filePath": "src/domain/schema/SchemaRepository.ts",
+        "lineNumber": 10,
+        "columnNumber": 0
+      },
+      "name": "SchemaRepository",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "findById",
+        "findByName",
+        "findAllByUser",
+        "findVersionHistory",
+        "update",
+        "delete",
+        "deleteAllVersions",
+        "getStatistics",
+        "search"
+      ]
+    },
+    {
+      "componentId": "service_31",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/schema/SchemaStorageService.ts",
+        "lineNumber": 9,
+        "columnNumber": 0
+      },
+      "name": "SchemaStorageService",
+      "dependencies": [
+        "SchemaRepository"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "createSchema",
+        "updateSchema",
+        "getSchema",
+        "listSchemas",
+        "deleteSchema",
+        "getVersionHistory",
+        "updateMetadata",
+        "updateExamplesCount",
+        "updateRulesStats",
+        "getStatistics",
+        "searchSchemas"
+      ]
+    },
+    {
+      "componentId": "service_3",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/chunking/ChunkingEngine.ts",
+        "lineNumber": 101,
+        "columnNumber": 0
+      },
+      "name": "SemanticChunkingStrategy",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "getName",
+        "chunk",
+        "isStructureBoundary",
+        "calculateOverlap",
+        "createChunk",
+        "calculateConfidence"
+      ]
+    },
+    {
+      "componentId": "service_115",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/governance/services/severity-assessor.service.ts",
+        "lineNumber": 17,
+        "columnNumber": 0
+      },
+      "name": "SeverityAssessorService",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "assessFailure",
+        "assessAllFailures",
+        "assessCompliance",
+        "assessCoverageImpact",
+        "assessFlakiness",
+        "generateSeverityReport",
+        "calculateSeverityScore",
+        "scoreToLevel",
+        "identifyAffectedSystems",
+        "classifyImpactArea",
+        "calculateOverallRisk"
+      ]
+    },
+    {
+      "componentId": "service_33",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/similarity/SimilarityService.ts",
+        "lineNumber": 113,
+        "columnNumber": 0
+      },
+      "name": "SimilarityServiceError",
+      "dependencies": [
+        "string",
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    },
+    {
+      "componentId": "service_4",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/chunking/ChunkingEngine.ts",
+        "lineNumber": 293,
+        "columnNumber": 0
+      },
+      "name": "SimpleChunkingStrategy",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "getName",
+        "chunk"
+      ]
+    },
+    {
+      "componentId": "service_97",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/api-discovery/services/smoke-test.service.ts",
+        "lineNumber": 25,
+        "columnNumber": 0
+      },
+      "name": "SmokeTestService",
+      "dependencies": [
+        "string",
+        "number"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "runTest",
+        "runAllTests",
+        "validateResponse",
+        "buildDefaultRequest",
+        "executeRequest",
+        "detectBodyType",
+        "getErrorMessage",
+        "classifyError"
+      ]
+    },
+    {
+      "componentId": "service_103",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/discovery/TestDiscoveryEngine.ts",
+        "lineNumber": 51,
+        "columnNumber": 0
+      },
+      "name": "TestDiscoveryEngine",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "analyzeComponentsForTesting",
+        "generateTestPlanForComponent",
+        "getEndpointTestTypes",
+        "getControllerTestTypes",
+        "getServiceTestTypes",
+        "getRepositoryTestTypes",
+        "getComponentTestTypes",
+        "getPageTestTypes",
+        "generateEndpointTests",
+        "generateControllerTests",
+        "generateServiceTests",
+        "generateRepositoryTests",
+        "generateComponentTests",
+        "generatePageTests",
+        "generateReport",
+        "generateRecommendations"
+      ]
+    },
+    {
+      "componentId": "service_116",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/governance/test-governance.framework.ts",
+        "lineNumber": 41,
+        "columnNumber": 0
+      },
+      "name": "TestGovernanceFramework",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "executeGovernanceWorkflow",
+        "getReports",
+        "getLatestReport",
+        "exportReportAsJSON",
+        "exportReportAsText",
+        "createReleaseChecklist",
+        "generateReleasePlan",
+        "generateManagementSummary",
+        "reset",
+        "printGovernanceSummary"
+      ]
+    },
+    {
+      "componentId": "service_79",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/testRegistry/TestId.ts",
+        "lineNumber": 7,
+        "columnNumber": 0
+      },
+      "name": "TestId",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "generate",
+        "from",
+        "getValue",
+        "equals",
+        "toString",
+        "toJSON"
+      ]
+    },
+    {
+      "componentId": "service_80",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/testRegistry/TestRegistryEntry.ts",
+        "lineNumber": 13,
+        "columnNumber": 0
+      },
+      "name": "TestRegistryEntry",
+      "dependencies": [
+        "TestId",
+        "string",
+        "TestCategory",
+        "string",
+        "string",
+        "SeverityImpact",
+        "boolean",
+        "boolean",
+        "string",
+        "string[]",
+        "number",
+        "string[]"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "fromPersistence",
+        "validateInputs",
+        "getTestId",
+        "getTestName",
+        "getCategory",
+        "getDescription",
+        "getComponent",
+        "getSeverityImpact",
+        "isBuildBlocking",
+        "isEnabled",
+        "getFramework",
+        "getTags",
+        "getEstimatedDuration",
+        "getDependencies",
+        "getCreatedAt",
+        "getUpdatedAt",
+        "getLastExecuted",
+        "getExecutionStats",
+        "setEnabled",
+        "setBuildBlocking",
+        "setSeverityImpact",
+        "updateDescription",
+        "addTags",
+        "removeTags",
+        "recordSuccess",
+        "recordFailure",
+        "recordSkipped",
+        "updateAverageDuration",
+        "updateFlakiness",
+        "isFlaky",
+        "isActive",
+        "getSuccessRate",
+        "toPersistence",
+        "toJSON"
+      ]
+    },
+    {
+      "componentId": "service_81",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/testRegistry/TestRegistryFactory.ts",
+        "lineNumber": 13,
+        "columnNumber": 0
+      },
+      "name": "TestRegistryFactory",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "createEntry",
+        "createUnitTest",
+        "createIntegrationTest",
+        "createE2ETest",
+        "createApiTest",
+        "createPerformanceTest",
+        "createSecurityTest",
+        "createSmokeTest",
+        "createRegressionTest",
+        "createContractTest",
+        "createTestEntry",
+        "reconstituteFromPersistence",
+        "validate",
+        "createBatch"
+      ]
+    },
+    {
+      "componentId": "service_149",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/test-registry/services/test-registry-manager.service.ts",
+        "lineNumber": 23,
+        "columnNumber": 0
+      },
+      "name": "TestRegistryManager",
+      "dependencies": [
+        "TestRegistryService"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "registerFromDecorator",
+        "autoRegisterFromFile",
+        "categorizeFromFile",
+        "enableTest",
+        "disableTest",
+        "markAsFlaky",
+        "quarantineTest",
+        "releaseFromQuarantine",
+        "createTestGroup",
+        "addDependency",
+        "generateCategoryReport",
+        "generateComponentReport",
+        "generateHealthReport",
+        "identifyBlockingTests",
+        "identifyRegression",
+        "cleanupOldResults",
+        "validateRegistry",
+        "getRegistry",
+        "getAutoRegistrationResults",
+        "getTestGroup",
+        "listTestGroups"
+      ]
+    },
+    {
+      "componentId": "service_34",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/application/TestRegistryService.ts",
+        "lineNumber": 16,
+        "columnNumber": 0
+      },
+      "name": "TestRegistryService",
+      "dependencies": [
+        "TestRegistryRepository"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "registerTest",
+        "registerUnitTest",
+        "registerIntegrationTest",
+        "registerE2ETest",
+        "registerApiTest",
+        "registerPerformanceTest",
+        "registerSecurityTest",
+        "registerMany",
+        "getTestById",
+        "getAllTests",
+        "getTestsByCategory",
+        "getTestsByComponent",
+        "getTestsBySeverityImpact",
+        "getBuildBlockingTests",
+        "getEnabledTests",
+        "getDisabledTests",
+        "getTestsByFramework",
+        "getTestsByTags",
+        "searchTests",
+        "getFlakyTests",
+        "getTestsByDependencies",
+        "updateTestEnabled",
+        "updateBuildBlocking",
+        "updateSeverityImpact",
+        "recordTestSuccess",
+        "recordTestFailure",
+        "recordTestSkipped",
+        "getCatalogStatistics",
+        "getComponentOverview",
+        "getAllComponentOverviews",
+        "getBuildAssessment",
+        "generateBuildRecommendation",
+        "deregisterTest",
+        "getTestCount",
+        "testExists",
+        "exportCatalog",
+        "generateManual"
+      ]
+    },
+    {
+      "componentId": "service_150",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/test-registry/services/test-registry.service.ts",
+        "lineNumber": 23,
+        "columnNumber": 0
+      },
+      "name": "TestRegistryService",
+      "dependencies": [
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "registerTest",
+        "unregisterTest",
+        "getTest",
+        "getAllTests",
+        "filterTests",
+        "searchTests",
+        "getTestsByCategory",
+        "getTestsByComponent",
+        "getTestsByOwner",
+        "getBuildBlockingTests",
+        "updateTest",
+        "recordTestResult",
+        "updateTestStatus",
+        "batchRegisterTests",
+        "bulkUpdateTests",
+        "calculateSummary",
+        "calculateStatistics",
+        "getReport",
+        "saveToDisk",
+        "saveToDiskSync",
+        "loadFromDisk",
+        "loadFromDiskSync",
+        "exportAsJSON",
+        "exportAsText"
+      ]
+    },
+    {
+      "componentId": "service_87",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/adapters/TxtDocumentAdapter.ts",
+        "lineNumber": 29,
+        "columnNumber": 0
+      },
+      "name": "TxtDocumentAdapter",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "canHandle",
+        "getName",
+        "getSupportedMimeTypes",
+        "validate",
+        "load",
+        "detectEncoding",
+        "parsePages",
+        "extractTitle",
+        "detectStructuredSections"
+      ]
+    },
+    {
+      "componentId": "service_52",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/document/UnifiedDocument.ts",
+        "lineNumber": 29,
+        "columnNumber": 0
+      },
+      "name": "UnifiedDocument",
+      "dependencies": [
+        "DocumentId",
+        "DocumentMetadata",
+        "DocumentPage[]",
+        "DocumentSection[]",
+        "DocumentTable[]"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "create",
+        "restore",
+        "getId",
+        "getMetadata",
+        "getPages",
+        "getPage",
+        "getPageCount",
+        "getSections",
+        "getTables",
+        "getCreatedAt",
+        "getUpdatedAt",
+        "getRawText",
+        "getWordCount",
+        "getCharacterCount",
+        "hasContent",
+        "hasTables",
+        "hasSections",
+        "addSection",
+        "addTable",
+        "getSummary",
+        "toObject"
+      ]
+    },
+    {
+      "componentId": "service_108",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/infrastructure/environment-validation/validation-logger.ts",
+        "lineNumber": 17,
+        "columnNumber": 0
+      },
+      "name": "ValidationLogger",
+      "dependencies": [],
+      "testCoverageStatus": "uncovered",
+      "methods": [
+        "log",
+        "error",
+        "warning",
+        "info",
+        "success",
+        "getErrors",
+        "getWarnings",
+        "getAllLogs",
+        "hasErrors",
+        "clear",
+        "getSummary",
+        "toJSON",
+        "printToConsole"
+      ]
+    },
+    {
+      "componentId": "service_82",
+      "componentType": "service",
+      "location": {
+        "filePath": "src/domain/validation/ValidationService.ts",
+        "lineNumber": 86,
+        "columnNumber": 0
+      },
+      "name": "ValidationServiceError",
+      "dependencies": [
+        "string",
+        "string",
+        "string"
+      ],
+      "testCoverageStatus": "uncovered",
+      "methods": []
+    }
+  ]
+}
