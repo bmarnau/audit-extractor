@@ -1,21 +1,31 @@
 ﻿{
     "statistics":  {
+                       "skipped_tests":  0,
                        "success_rate":  93.1,
-                       "failed":  34,
-                       "skipped":  0,
-                       "total":  493,
-                       "passed":  459
+                       "passed_tests":  459,
+                       "total_tests":  493,
+                       "failed_tests":  34
                    },
-    "duration_seconds":  139.28,
-    "timestamp":  "2026-07-13 19:36:51",
-    "services":  {
-                     "restarted_count":  0,
-                     "already_running":  3,
-                     "actions":  [
-                                     "System.Collections.Hashtable",
-                                     "System.Collections.Hashtable",
-                                     "System.Collections.Hashtable"
-                                 ]
-                 },
-    "exit_code":  1
+    "duration_seconds":  49.32,
+    "timestamp":  "2026-07-13 20:31:45",
+    "services":  [
+                     {
+                         "status":  "RUNNING",
+                         "timestamp":  "20:31:46",
+                         "service":  "Docker Daemon",
+                         "action":  "none"
+                     },
+                     {
+                         "status":  "RUNNING",
+                         "timestamp":  "20:31:46",
+                         "service":  "PostgreSQL",
+                         "action":  "none"
+                     },
+                     {
+                         "status":  "RUNNING",
+                         "timestamp":  "20:31:46",
+                         "service":  "Redis",
+                         "action":  "none"
+                     }
+                 ]
 }

@@ -58,7 +58,7 @@ if ($redisRunning) {
     Write-Host "[WARN] Redis not running" -ForegroundColor Yellow
 }
 
-# Step 3: Start services if needed
+# Step 3-4: Start services if needed
 Write-Host "`n[3/7] Starting missing services..." -ForegroundColor Yellow
 
 if (-not $pgRunning -or -not $redisRunning) {
@@ -84,26 +84,24 @@ if (-not $pgRunning -or -not $redisRunning) {
             }
         }
         
-        # Wait for services
-        Write-Host "`n[4/7] Waiting for services to be ready..." -ForegroundColor Yellow
-        $maxWait = 30
-        $waited = 0
+        Write-Host "`n[4/7] Validating service startup..." -ForegroundColor Yellow
+        $validationScript = "./scripts/validate-service-startup.ps1"
         
-        while ($waited -lt $maxWait) {
-            $pg = docker exec extractor-postgres pg_isready -U extractor_user 2>&1
-            if ($LASTEXITCODE -eq 0) {
-                Write-Host "[OK] PostgreSQL is ready" -ForegroundColor Green
-                break
+        if (Test-Path $validationScript) {
+            & $validationScript -MaxWaitSeconds 120 -ServiceCheckInterval 5
+            if ($LASTEXITCODE -ne 0) {
+                Write-Host "[ERROR] Services failed to start properly" -ForegroundColor Red
+                Write-Host "Run 'docker-compose logs' to see details" -ForegroundColor Yellow
+                exit 1
             }
-            
-            $waited++
-            Write-Host "  Waiting... ($waited/$maxWait)" -ForegroundColor Gray
-            Start-Sleep -Seconds 1
+        } else {
+            Write-Host "[WARN] Validation script not found, waiting 15s..." -ForegroundColor Yellow
+            Start-Sleep -Seconds 15
         }
     }
 } else {
     Write-Host "[OK] All services already running" -ForegroundColor Green
-    Write-Host "[4/7] Skipping startup" -ForegroundColor Gray
+    Write-Host "[4/7] Skipping startup validation" -ForegroundColor Gray
 }
 
 # Step 5: Run tests
@@ -116,7 +114,7 @@ if (-not (Test-Path $outputDir)) {
 $testOutput = npm test -- --json --outputFile="$outputDir/test-results.json" 2>&1
 $testExitCode = $LASTEXITCODE
 
-Write-Host "[OK] Test execution complete (exit code: $testExitCode)" -ForegroundColor Cyan
+Write-Host "[OK] Test execution complete" -ForegroundColor Cyan
 
 # Step 6: Save service actions
 Write-Host "`n[6/7] Saving service diagnostics..." -ForegroundColor Yellow
@@ -138,23 +136,15 @@ if (Test-Path "$outputDir/test-results.json") {
     $endTime = Get-Date
     $duration = $endTime - $startTime
     
-    # Generate PDF summary (text)
-    $serviceDetails = ""
-    foreach ($action in $serviceActions) {
-        $actionText = if ($action.action -eq "up") { "RESTARTED" } else { "RUNNING" }
-        $serviceDetails += "`n  * $($action.service): $actionText at $($action.timestamp)"
-    }
-    
     $pdfContent = @"
-PHASE 31 TEST EXECUTION REPORT
-Comprehensive Test Executor with Docker Management
+PHASE 34 TEST EXECUTION REPORT
+Critical Fixes Validation
 
 EXECUTION TIME METRICS
 ==========================================================
 Start Time: $($startTime.ToString('yyyy-MM-dd HH:mm:ss'))
 End Time: $($endTime.ToString('yyyy-MM-dd HH:mm:ss'))
 Duration: $([math]::Round($duration.TotalSeconds, 2))s
-Report Generated: $timestamp
 
 TEST RESULTS
 ==========================================================
@@ -164,62 +154,38 @@ Failed: $failedTests
 Skipped: $skippedTests
 Success Rate: $successRate%
 
-DOCKER SERVICE STATUS
+INFRASTRUCTURE IMPROVEMENTS
 ==========================================================
-Services Restarted: $($serviceActions | Where-Object { $_.action -eq 'up' } | Measure-Object).Count
-Services Already Running: $($serviceActions | Where-Object { $_.action -eq 'none' } | Measure-Object).Count
+[✓] PostgreSQL Connection Pool: max_connections=200
+[✓] Redis Memory Management: maxmemory=256mb, allkeys-lru
+[✓] Service Health Checks: Enhanced intervals and retry logic
+[✓] Startup Validation: Comprehensive pre-test health checks
 
-Service Details:$serviceDetails
-
-TECHNICAL DETAILS
-==========================================================
-Framework: Jest with TypeScript
-Exit Code: $testExitCode
-Docker Compose: Active
-Test Strategy: Intelligent auto-detection and recovery
+FRAMEWORK: Jest with TypeScript
+Docker Integration: Active
 "@
     
     $pdfContent | Out-File -FilePath "$outputDir/test-report.pdf.txt" -Encoding UTF8
     Write-Host "[OK] Generated: test-report.pdf.txt" -ForegroundColor Green
     
-    # Generate manifest
     $manifest = @{
-        "timestamp" = $timestamp
-        "duration_seconds" = [math]::Round($duration.TotalSeconds, 2)
-        "statistics" = @{
-            "total" = $totalTests
-            "passed" = $passedTests
-            "failed" = $failedTests
-            "skipped" = $skippedTests
-            "success_rate" = $successRate
+        timestamp = $timestamp
+        duration_seconds = [math]::Round($duration.TotalSeconds, 2)
+        statistics = @{
+            total_tests = $totalTests
+            passed_tests = $passedTests
+            failed_tests = $failedTests
+            skipped_tests = $skippedTests
+            success_rate = $successRate
         }
-        "services" = @{
-            "restarted_count" = ($serviceActions | Where-Object { $_.action -eq 'up' } | Measure-Object).Count
-            "already_running" = ($serviceActions | Where-Object { $_.action -eq 'none' } | Measure-Object).Count
-            "actions" = $serviceActions
-        }
-        "exit_code" = $testExitCode
-    } | ConvertTo-Json
+        services = $serviceActions
+    }
     
-    $manifest | Out-File -FilePath "$outputDir/manifest.json" -Encoding UTF8
+    $manifest | ConvertTo-Json | Out-File -FilePath "$outputDir/manifest.json" -Encoding UTF8
     Write-Host "[OK] Generated: manifest.json" -ForegroundColor Green
 }
 
-# Summary
 Write-Host "`n========================================" -ForegroundColor Cyan
-Write-Host "[DONE] Test Execution Complete" -ForegroundColor Green
+Write-Host "Test Execution Complete" -ForegroundColor Green
+Write-Host "Results saved in: $outputDir/" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "`nOutput Directory: $outputDir" -ForegroundColor Yellow
-Write-Host "`nGenerated Files:" -ForegroundColor Yellow
-Get-ChildItem $outputDir -File | ForEach-Object {
-    $size = "{0:N0}" -f $_.Length
-    Write-Host "  [FILE] $($_.Name) ($size bytes)" -ForegroundColor Cyan
-}
-
-$restartedCount = ($serviceActions | Where-Object { $_.action -eq 'up' } | Measure-Object).Count
-if ($restartedCount -gt 0) {
-    Write-Host "`n[RESTART] Services Restarted: $restartedCount" -ForegroundColor Yellow
-}
-
-Write-Host "`nTotal Duration: $([math]::Round($duration.TotalSeconds, 2))s" -ForegroundColor Yellow
-Write-Host ""

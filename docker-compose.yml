@@ -28,6 +28,8 @@ services:
       POSTGRES_USER: extractor_user
       POSTGRES_PASSWORD: extractor_pass
       POSTGRES_DB: extractor_db
+      # Connection Pool Configuration for Stability
+      POSTGRES_INITDB_ARGS: "-c max_connections=200 -c shared_buffers=256MB -c password_encryption=scram-sha-256"
     ports:
       - "5432:5432"
     volumes:
@@ -35,22 +37,33 @@ services:
       - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/01-init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U extractor_user"]
-      interval: 10s
+      interval: 5s
       timeout: 10s
-      retries: 5
-      start_period: 15s
+      retries: 8
+      start_period: 30s
     networks:
       - extractor-network
     restart: unless-stopped
+    # Resource limits to prevent pool exhaustion
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
 
   # pgAdmin for database management
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: extractor-pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@extractor.local
+      PGADMIN_DEFAULT_EMAIL: admin@extractor.test
       PGADMIN_DEFAULT_PASSWORD: admin-pass
       PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_ENHANCED_COOKIE_PROTECTION: 'False'
+      PGADMIN_CONFIG_COOKIE_DEFAULT_SECURE: 'False'
     ports:
       - "5050:80"
     volumes:
@@ -66,19 +79,28 @@ services:
   redis:
     image: redis:7-alpine
     container_name: extractor-redis
-    command: redis-server --appendonly yes
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
     ports:
       - "6379:6379"
     volumes:
       - redis_data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
+      interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 8
+      start_period: 15s
     networks:
       - extractor-network
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
 
   # Backend API Service
   backend:
