@@ -1,0 +1,73 @@
+============================================================
+API DISCOVERY & SMOKE TEST REPORT
+============================================================
+
+Overall Health: DEGRADED
+API Health Score: 63/100
+Generated: 2026-07-13T06:25:29.830Z
+
+INVENTORY SUMMARY
+------------------------------------------------------------
+Total Endpoints: 63
+Total Controllers: 0
+Public Endpoints: 0
+Protected Endpoints: 63
+
+SMOKE TEST SUMMARY
+------------------------------------------------------------
+Total Tests: 63
+Passed: 0
+Failed: 63
+Pass Rate: 0.0%
+Health: CRITICAL
+
+RISK ANALYSIS SUMMARY
+------------------------------------------------------------
+Critical Issues: 0
+High Issues: 0
+Medium Issues: 0
+Low Issues: 63
+
+TOP RECOMMENDATIONS
+------------------------------------------------------------
+
+[CRITICAL] AUTHENTICATION_MISSING
+Affects: 63 endpoint(s)
+  • Add authentication requirement to endpoint
+  • Define authType (JWT, OAuth2, APIKey, etc.)
+
+[HIGH] NO_TEST_COVERAGE
+Affects: 63 endpoint(s)
+  • Add authentication requirement to endpoint
+  • Define authType (JWT, OAuth2, APIKey, etc.)
+
+[HIGH] DOCUMENTATION_MISSING
+Affects: 63 endpoint(s)
+  • Add authentication requirement to endpoint
+  • Define authType (JWT, OAuth2, APIKey, etc.)
+
+[HIGH] VALIDATION_MISSING
+Affects: 24 endpoint(s)
+  • Add authentication requirement to endpoint
+  • Define authType (JWT, OAuth2, APIKey, etc.)
+
+
+TOP FAILURES
+------------------------------------------------------------
+
+http://localhost:3000/dummy-documentId (GET)
+Error: Unknown error
+
+http://localhost:3000/dummy-documentId/field/dummy-fieldName (GET)
+Error: Unknown error
+
+http://localhost:3000/export (POST)
+Error: Unknown error
+
+http://localhost:3000/stats (GET)
+Error: Unknown error
+
+http://localhost:3000/create (POST)
+Error: Unknown error
+
+============================================================

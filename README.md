@@ -1,14 +1,53 @@
 # Audit-Safe Document Extraction System
 
-**Version**: 0.23.0 | **Status**: 🔨 PHASE 23 FOUNDATION COMPLETE
-**Phase 23**: Document Preparation Pipeline - Infrastructure & Domain Models ✅ COMPLETE  
+**Version**: 0.27.0 | **Status**: ✅ PHASE 25 API DISCOVERY COMPLETE
+**Phase 25**: API Discovery & Governance Framework ✅ COMPLETE  
+**Phase 26**: Responsive Navigation & Layout Improvements ✅ COMPLETE  
+**Phase 24**: Test Governance Framework ✅ COMPLETE  
+**Phase 23**: Document Preparation Pipeline ✅ COMPLETE  
 **Phase 22**: Job Orchestration & Error Resilience ✅ COMPLETE  
 **Phase 21**: Async Job API ✅ COMPLETE  
 **Phase 20**: Log Viewer & Monitoring ✅ COMPLETE  
 **Phase 18-19**: Docker & Data Persistence ✅ COMPLETE  
-**Last updated**: 11.7.2026
+**Last updated**: 13.7.2026
 
-Ein revisionssicheres Dokument-Extraktionssystem mit **Job-basierter Orchestrierung**, **fehlerresistenter Verarbeitung** und **vollständiger Docker-Containerisierung**.
+Ein revisionssicheres Dokument-Extraktionssystem mit **API Discovery Framework**, **Governance Integration**, **Job-basierter Orchestrierung**, **fehlerresistenter Verarbeitung** und **vollständiger Docker-Containerisierung**.
+
+---
+
+## 🆕 Phase 25: API Discovery & Governance Framework
+
+**Status**: ✅ Production Ready | 37/37 Tests Passing | 0 TypeScript Errors | 6 Artifacts Generated
+
+### API Discovery Features (Phase 25)
+
+**Automatic Endpoint Discovery** (63 Endpoints)
+- Static analysis of Express routes across multiple directories
+- Complete metadata extraction: path, method, controller, handler, parameters
+- HTTP method distribution: GET (34), POST (19), PUT (4), PATCH (1), DELETE (5)
+- Authentication requirement detection
+
+**Comprehensive Smoke Testing** (8-Point Validation)
+1. Status code validation
+2. Response header verification
+3. Response structure validation
+4. Required fields checking
+5. Response size analysis
+6. Performance timing
+7. Error message extraction
+8. Authentication verification
+
+**Risk Analysis** (14 Categories)
+- Authentication missing, Validation missing, Unsafe methods, Security issues
+- Error handling, Performance, Documentation, Deprecated endpoints
+- Rate limiting, Large payloads, Broken schemas, No test coverage
+- Weighted scoring system (0-100) with severity multipliers
+
+**Multi-Format Reporting**
+- JSON: Machine-readable inventory and test results
+- HTML: Interactive dashboard with responsive design
+- Text: Human-readable summary for documentation
+- Governance: Release decision integration
 
 ---
 

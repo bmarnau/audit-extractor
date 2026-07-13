@@ -1,0 +1,13 @@
+{
+  "failures": 63,
+  "criticalRisks": 0,
+  "highRisks": 0,
+  "canRelease": false,
+  "healthScore": 63,
+  "summary": "API Health: DEGRADED | Tests: 0.0% | Risks: 0 Critical, 0 High",
+  "releaseDecision": {
+    "canRelease": false,
+    "reason": "Pass Rate: 0.0% | Critical Risks: 0 | High Risks: 0 | Health Score: 63/100"
+  },
+  "timestamp": "2026-07-13T06:25:29.854Z"
+}

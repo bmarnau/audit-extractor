@@ -10,6 +10,132 @@ Folge [Semantic Versioning](https://semver.org/):
 
 ---
 
+## [0.27.0] - 2026-07-13 (Phase 25 Complete: API Discovery Framework - ✅ COMPLETE)
+
+### Added - Phase 25: API Discovery & Governance Framework
+- ✅ **API Discovery Service**: Automatic endpoint detection from Express application
+  - Static analysis of route files across multiple directories
+  - Complete metadata extraction: path, method, controller, handler, parameters
+  - Support for path parameters `:id` extraction
+  - HTTP method distribution analysis (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS)
+  - Authentication requirement detection
+
+- ✅ **Smoke Test Service**: Comprehensive endpoint validation (8-point validation)
+  - HTTP client with automatic retry logic (2 retries, 5000ms timeout)
+  - Status code validation
+  - Response header verification
+  - Response structure validation
+  - Required fields checking
+  - Response size analysis
+  - Performance timing
+  - Error message extraction
+  - Per-endpoint detailed validation results
+
+- ✅ **Risk Analyzer Service**: 14-category risk assessment system
+  - Authentication missing detection
+  - Validation layer assessment
+  - Unsafe HTTP methods identification
+  - Security issue flagging
+  - Error handling validation
+  - Performance monitoring
+  - Documentation completeness checks
+  - Weighted scoring system (0-100)
+  - Severity multipliers (0.5-1.5)
+  - Critical/High/Medium/Low risk categorization
+
+- ✅ **Report Generator Service**: Multi-format output
+  - JSON export (machine-readable inventory and test results)
+  - HTML interactive dashboard with responsive design
+  - Text summary for documentation
+  - Health score calculation (0-100)
+  - Severity distribution tracking
+  - Results aggregation by HTTP method
+
+- ✅ **API Inventory Report**: `api-inventory.json`
+  - 63 discovered endpoints with complete metadata
+  - HTTP method distribution breakdown
+  - Controller and handler mapping
+  - Path parameters and authentication requirements
+
+- ✅ **Smoke Test Report**: `api-smoke-report.json`
+  - 63 endpoints tested with 8-point validation
+  - Per-endpoint check results
+  - Pass/fail statistics
+  - Results grouped by HTTP method
+  - Response type detection
+
+- ✅ **Functional Report**: `api-functional-report.json`
+  - Combined inventory + smoke tests + risks
+  - Overall health status (HEALTHY/DEGRADED/CRITICAL)
+  - Health score calculation
+  - Risk summary by severity level
+  - Top failures and recommendations
+  - Smoke test pass rate statistics
+
+- ✅ **Governance Framework Integration**: `governance-adapter.ts`
+  - Automatic conversion of API risks to governance failures
+  - Release decision engine with configurable thresholds (STRICT/NORMAL/RELAXED)
+  - Severity assessment aggregation
+  - Integration with TestGovernanceFramework
+
+- ✅ **Governance Report**: `api-governance-report.json`
+  - Failure count from API analysis
+  - Critical and high risk metrics
+  - Release decision (APPROVED/BLOCKED)
+  - Reasoning and health score
+  - Integration timestamp
+
+- ✅ **HTML Dashboard**: `api-discovery-report.html`
+  - Professional gradient design
+  - Status indicators (HEALTHY/DEGRADED/CRITICAL)
+  - Health score visualization (0-100)
+  - Interactive tables for inventory and results
+  - Responsive layout
+  - Real-time metrics display
+
+- ✅ **Text Summary**: `api-report-summary.txt`
+  - Human-readable endpoint inventory
+  - Smoke test results summary
+  - Risk analysis overview
+  - Recommendations
+
+### New npm Scripts - Phase 25
+```bash
+npm run api:discover              # Discover API endpoints only
+npm run api:smoke                 # Run smoke tests only
+npm run api:risks                 # Perform risk analysis only
+npm run api:full-pipeline         # Complete discovery pipeline
+npm run api:governance            # Full pipeline + governance integration
+```
+
+### Implementation Details
+- **Discovery Service**: `src/infrastructure/api-discovery/services/api-discovery.service.ts`
+- **Smoke Test Service**: `src/infrastructure/api-discovery/services/smoke-test.service.ts`
+- **Risk Analyzer**: `src/infrastructure/api-discovery/services/risk-analyzer.service.ts`
+- **Report Generator**: `src/infrastructure/api-discovery/services/report-generator.service.ts`
+- **Governance Adapter**: `src/infrastructure/api-discovery/adapters/governance-adapter.ts`
+- **Type Definitions**: `src/infrastructure/api-discovery/api-discovery.types.ts`
+- **Main Index**: `src/infrastructure/api-discovery/index.ts`
+- **Test Suite**: `src/infrastructure/api-discovery/__tests__/api-discovery.test.ts` (37/37 passing)
+
+### Test Coverage - Phase 25
+- ✅ 37/37 tests passing
+- API Discovery (7 tests)
+- Smoke Testing (7 tests)
+- Risk Analysis (7 tests)
+- Report Generation (5 tests)
+- Governance Integration (4 tests)
+- Error Handling (3 tests)
+- Data Validation (2 tests)
+- Performance (2 tests)
+
+### Documentation Updates
+- API_REFERENCE.md: Added API Discovery Framework section
+- START_GUIDE.md: Added API testing workflow
+- OPERATIONS_MANUAL.md: Added governance report interpretation
+
+---
+
 ## [0.21.0] - 2026-07-10 (Phase 21 Extended: Asynchronous Job API - COMPLETE ✓)
 
 ### Added - Phase 21 Extended: Asynchronous Job Processing

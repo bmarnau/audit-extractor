@@ -1,0 +1,194 @@
+{
+  "reportId": "FUNC-REPORT-1783923929830",
+  "generatedAt": "2026-07-13T06:25:29.830Z",
+  "inventorySummary": {
+    "totalEndpoints": 63,
+    "totalControllers": 0,
+    "publicEndpoints": 0,
+    "protectedEndpoints": 63
+  },
+  "smokeTestSummary": {
+    "totalTests": 63,
+    "passedTests": 0,
+    "failedTests": 63,
+    "passRate": 0
+  },
+  "riskSummary": {
+    "totalEndpointsAnalyzed": 63,
+    "criticalRisks": 0,
+    "highRisks": 0,
+    "mediumRisks": 0,
+    "lowRisks": 63
+  },
+  "topRisks": [],
+  "topFailures": [
+    {
+      "testId": "TEST-EP-GET-/:documentId-1783923922761-1783923922831",
+      "endpointId": "EP-GET-/:documentId-1783923922761",
+      "endpoint": "http://localhost:3000/dummy-documentId",
+      "method": "GET",
+      "error": "Unknown error",
+      "errorType": "Unknown",
+      "failedChecks": [
+        "Status Code"
+      ]
+    },
+    {
+      "testId": "TEST-EP-GET-/:documentId/field/:fieldName-1783923922761-1783923923044",
+      "endpointId": "EP-GET-/:documentId/field/:fieldName-1783923922761",
+      "endpoint": "http://localhost:3000/dummy-documentId/field/dummy-fieldName",
+      "method": "GET",
+      "error": "Unknown error",
+      "errorType": "Unknown",
+      "failedChecks": [
+        "Status Code"
+      ]
+    },
+    {
+      "testId": "TEST-EP-POST-/export-1783923922761-1783923923153",
+      "endpointId": "EP-POST-/export-1783923922761",
+      "endpoint": "http://localhost:3000/export",
+      "method": "POST",
+      "error": "Unknown error",
+      "errorType": "Unknown",
+      "failedChecks": [
+        "Status Code"
+      ]
+    },
+    {
+      "testId": "TEST-EP-GET-/stats-1783923922761-1783923923261",
+      "endpointId": "EP-GET-/stats-1783923922761",
+      "endpoint": "http://localhost:3000/stats",
+      "method": "GET",
+      "error": "Unknown error",
+      "errorType": "Unknown",
+      "failedChecks": [
+        "Status Code"
+      ]
+    },
+    {
+      "testId": "TEST-EP-POST-/create-1783923922762-1783923923370",
+      "endpointId": "EP-POST-/create-1783923922762",
+      "endpoint": "http://localhost:3000/create",
+      "method": "POST",
+      "error": "Unknown error",
+      "errorType": "Unknown",
+      "failedChecks": [
+        "Status Code"
+      ]
+    },
+    {
+      "testId": "TEST-EP-GET-/list-1783923922762-1783923923479",
+      "endpointId": "EP-GET-/list-1783923922762",
+      "endpoint": "http://localhost:3000/list",
+      "method": "GET",
+      "error": "Unknown error",
+      "errorType": "Unknown",
+      "failedChecks": [
+        "Status Code"
+      ]
+    },
+    {
+      "testId": "TEST-EP-GET-/:backupId/download-1783923922762-1783923923590",
+      "endpointId": "EP-GET-/:backupId/download-1783923922762",
+      "endpoint": "http://localhost:3000/dummy-backupId/download",
+      "method": "GET",
+      "error": "Unknown error",
+      "errorType": "Unknown",
+      "failedChecks": [
+        "Status Code"
+      ]
+    },
+    {
+      "testId": "TEST-EP-GET-/:backupId-1783923922762-1783923923698",
+      "endpointId": "EP-GET-/:backupId-1783923922762",
+      "endpoint": "http://localhost:3000/dummy-backupId",
+      "method": "GET",
+      "error": "Unknown error",
+      "errorType": "Unknown",
+      "failedChecks": [
+        "Status Code"
+      ]
+    },
+    {
+      "testId": "TEST-EP-POST-/:backupId/restore-1783923922762-1783923923808",
+      "endpointId": "EP-POST-/:backupId/restore-1783923922762",
+      "endpoint": "http://localhost:3000/dummy-backupId/restore",
+      "method": "POST",
+      "error": "Unknown error",
+      "errorType": "Unknown",
+      "failedChecks": [
+        "Status Code"
+      ]
+    },
+    {
+      "testId": "TEST-EP-DELETE-/:backupId-1783923922762-1783923923914",
+      "endpointId": "EP-DELETE-/:backupId-1783923922762",
+      "endpoint": "http://localhost:3000/dummy-backupId",
+      "method": "DELETE",
+      "error": "Unknown error",
+      "errorType": "Unknown",
+      "failedChecks": [
+        "Status Code"
+      ]
+    }
+  ],
+  "prioritizedRecommendations": [
+    {
+      "category": "AUTHENTICATION_MISSING",
+      "priority": "CRITICAL",
+      "affectedEndpointCount": 63,
+      "recommendations": [
+        "Add authentication requirement to endpoint",
+        "Define authType (JWT, OAuth2, APIKey, etc.)",
+        "Add unit tests for this endpoint",
+        "Add integration tests",
+        "Add endpoint description",
+        "Document request/response formats"
+      ]
+    },
+    {
+      "category": "NO_TEST_COVERAGE",
+      "priority": "HIGH",
+      "affectedEndpointCount": 63,
+      "recommendations": [
+        "Add authentication requirement to endpoint",
+        "Define authType (JWT, OAuth2, APIKey, etc.)",
+        "Add unit tests for this endpoint",
+        "Add integration tests",
+        "Add endpoint description",
+        "Document request/response formats"
+      ]
+    },
+    {
+      "category": "DOCUMENTATION_MISSING",
+      "priority": "HIGH",
+      "affectedEndpointCount": 63,
+      "recommendations": [
+        "Add authentication requirement to endpoint",
+        "Define authType (JWT, OAuth2, APIKey, etc.)",
+        "Add unit tests for this endpoint",
+        "Add integration tests",
+        "Add endpoint description",
+        "Document request/response formats"
+      ]
+    },
+    {
+      "category": "VALIDATION_MISSING",
+      "priority": "HIGH",
+      "affectedEndpointCount": 24,
+      "recommendations": [
+        "Add authentication requirement to endpoint",
+        "Define authType (JWT, OAuth2, APIKey, etc.)",
+        "Define request body validation schema",
+        "Add input validation middleware",
+        "Add unit tests for this endpoint",
+        "Add integration tests",
+        "Add endpoint description",
+        "Document request/response formats"
+      ]
+    }
+  ],
+  "overallHealth": "DEGRADED",
+  "apiHealthScore": 63
+}

@@ -1,0 +1,915 @@
+{
+  "inventoryId": "API-INV-1783923922790",
+  "generatedAt": "2026-07-13T06:25:22.750Z",
+  "projectName": "Audit-Safe Document Extractor",
+  "totalEndpoints": 63,
+  "totalControllers": 0,
+  "methodCounts": {
+    "GET": 34,
+    "POST": 19,
+    "PUT": 4,
+    "PATCH": 1,
+    "DELETE": 5,
+    "HEAD": 0,
+    "OPTIONS": 0
+  },
+  "groups": [],
+  "endpoints": [
+    {
+      "endpointId": "EP-GET-/:documentId-1783923922775",
+      "path": "/:documentId",
+      "method": "GET",
+      "name": "GET /:documentId",
+      "controller": "audit",
+      "handler": "handler",
+      "pathParams": [
+        "documentId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/:documentId/field/:fieldName-1783923922775",
+      "path": "/:documentId/field/:fieldName",
+      "method": "GET",
+      "name": "GET /:documentId/field/:fieldName",
+      "controller": "audit",
+      "handler": "handler",
+      "pathParams": [
+        "documentId",
+        "fieldName"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/export-1783923922775",
+      "path": "/export",
+      "method": "POST",
+      "name": "POST /export",
+      "controller": "audit",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/stats-1783923922775",
+      "path": "/stats",
+      "method": "GET",
+      "name": "GET /stats",
+      "controller": "audit",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/create-1783923922775",
+      "path": "/create",
+      "method": "POST",
+      "name": "POST /create",
+      "controller": "backup",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/list-1783923922775",
+      "path": "/list",
+      "method": "GET",
+      "name": "GET /list",
+      "controller": "backup",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/:backupId/download-1783923922775",
+      "path": "/:backupId/download",
+      "method": "GET",
+      "name": "GET /:backupId/download",
+      "controller": "backup",
+      "handler": "handler",
+      "pathParams": [
+        "backupId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/:backupId-1783923922775",
+      "path": "/:backupId",
+      "method": "GET",
+      "name": "GET /:backupId",
+      "controller": "backup",
+      "handler": "handler",
+      "pathParams": [
+        "backupId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/:backupId/restore-1783923922775",
+      "path": "/:backupId/restore",
+      "method": "POST",
+      "name": "POST /:backupId/restore",
+      "controller": "backup",
+      "handler": "handler",
+      "pathParams": [
+        "backupId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-DELETE-/:backupId-1783923922775",
+      "path": "/:backupId",
+      "method": "DELETE",
+      "name": "DELETE /:backupId",
+      "controller": "backup",
+      "handler": "handler",
+      "pathParams": [
+        "backupId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/-1783923922776",
+      "path": "/",
+      "method": "GET",
+      "name": "GET /",
+      "controller": "config",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-PUT-/-1783923922776",
+      "path": "/",
+      "method": "PUT",
+      "name": "PUT /",
+      "controller": "config",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-PATCH-/:section-1783923922776",
+      "path": "/:section",
+      "method": "PATCH",
+      "name": "PATCH /:section",
+      "controller": "config",
+      "handler": "handler",
+      "pathParams": [
+        "section"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/changes-1783923922776",
+      "path": "/changes",
+      "method": "GET",
+      "name": "GET /changes",
+      "controller": "config",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/changes/:changeId-1783923922776",
+      "path": "/changes/:changeId",
+      "method": "GET",
+      "name": "GET /changes/:changeId",
+      "controller": "config",
+      "handler": "handler",
+      "pathParams": [
+        "changeId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/revert/:version-1783923922776",
+      "path": "/revert/:version",
+      "method": "POST",
+      "name": "POST /revert/:version",
+      "controller": "config",
+      "handler": "handler",
+      "pathParams": [
+        "version"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/import-1783923922776",
+      "path": "/import",
+      "method": "POST",
+      "name": "POST /import",
+      "controller": "config",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/audit-1783923922776",
+      "path": "/audit",
+      "method": "GET",
+      "name": "GET /audit",
+      "controller": "config",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/:id-1783923922776",
+      "path": "/:id",
+      "method": "GET",
+      "name": "GET /:id",
+      "controller": "documents",
+      "handler": "handler",
+      "pathParams": [
+        "id"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/upload-1783923922776",
+      "path": "/upload",
+      "method": "POST",
+      "name": "POST /upload",
+      "controller": "documents",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-DELETE-/:id-1783923922776",
+      "path": "/:id",
+      "method": "DELETE",
+      "name": "DELETE /:id",
+      "controller": "documents",
+      "handler": "handler",
+      "pathParams": [
+        "id"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/pdf-1783923922776",
+      "path": "/pdf",
+      "method": "POST",
+      "name": "POST /pdf",
+      "controller": "extract-phase14",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/html-1783923922776",
+      "path": "/html",
+      "method": "POST",
+      "name": "POST /html",
+      "controller": "extract-phase14",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/rules-1783923922776",
+      "path": "/rules",
+      "method": "GET",
+      "name": "GET /rules",
+      "controller": "extract-phase14",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/rules/:docType-1783923922776",
+      "path": "/rules/:docType",
+      "method": "GET",
+      "name": "GET /rules/:docType",
+      "controller": "extract-phase14",
+      "handler": "handler",
+      "pathParams": [
+        "docType"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/validate-1783923922776",
+      "path": "/validate",
+      "method": "POST",
+      "name": "POST /validate",
+      "controller": "extract-phase14",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/quality-1783923922776",
+      "path": "/quality",
+      "method": "GET",
+      "name": "GET /quality",
+      "controller": "extract-phase14",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-PUT-/rules/:docType-1783923922777",
+      "path": "/rules/:docType",
+      "method": "PUT",
+      "name": "PUT /rules/:docType",
+      "controller": "extract-phase14",
+      "handler": "handler",
+      "pathParams": [
+        "docType"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/rules/:docType/test-batch-1783923922777",
+      "path": "/rules/:docType/test-batch",
+      "method": "POST",
+      "name": "POST /rules/:docType/test-batch",
+      "controller": "extract-phase14",
+      "handler": "handler",
+      "pathParams": [
+        "docType"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/rules/:docType/history-1783923922777",
+      "path": "/rules/:docType/history",
+      "method": "GET",
+      "name": "GET /rules/:docType/history",
+      "controller": "extract-phase14",
+      "handler": "handler",
+      "pathParams": [
+        "docType"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/rules/:docType/publish-1783923922777",
+      "path": "/rules/:docType/publish",
+      "method": "POST",
+      "name": "POST /rules/:docType/publish",
+      "controller": "extract-phase14",
+      "handler": "handler",
+      "pathParams": [
+        "docType"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/extraction/:resultId/feedback-1783923922777",
+      "path": "/extraction/:resultId/feedback",
+      "method": "POST",
+      "name": "POST /extraction/:resultId/feedback",
+      "controller": "extract-phase14",
+      "handler": "handler",
+      "pathParams": [
+        "resultId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/extraction/:resultId/suggestions-1783923922777",
+      "path": "/extraction/:resultId/suggestions",
+      "method": "GET",
+      "name": "GET /extraction/:resultId/suggestions",
+      "controller": "extract-phase14",
+      "handler": "handler",
+      "pathParams": [
+        "resultId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/rules/:docType/improve-1783923922777",
+      "path": "/rules/:docType/improve",
+      "method": "POST",
+      "name": "POST /rules/:docType/improve",
+      "controller": "extract-phase14",
+      "handler": "handler",
+      "pathParams": [
+        "docType"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/results/:resultId-1783923922777",
+      "path": "/results/:resultId",
+      "method": "GET",
+      "name": "GET /results/:resultId",
+      "controller": "extract-phase14",
+      "handler": "handler",
+      "pathParams": [
+        "resultId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/-1783923922777",
+      "path": "/",
+      "method": "POST",
+      "name": "POST /",
+      "controller": "extraction",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/search-1783923922777",
+      "path": "/search",
+      "method": "GET",
+      "name": "GET /search",
+      "controller": "help",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/categories-1783923922777",
+      "path": "/categories",
+      "method": "GET",
+      "name": "GET /categories",
+      "controller": "help",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/glossary-1783923922777",
+      "path": "/glossary",
+      "method": "GET",
+      "name": "GET /glossary",
+      "controller": "help",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/item/:itemId-1783923922777",
+      "path": "/item/:itemId",
+      "method": "GET",
+      "name": "GET /item/:itemId",
+      "controller": "help",
+      "handler": "handler",
+      "pathParams": [
+        "itemId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/release-notes-1783923922777",
+      "path": "/release-notes",
+      "method": "GET",
+      "name": "GET /release-notes",
+      "controller": "help",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/documentation-1783923922777",
+      "path": "/documentation",
+      "method": "GET",
+      "name": "GET /documentation",
+      "controller": "help",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/manual-1783923922777",
+      "path": "/manual",
+      "method": "GET",
+      "name": "GET /manual",
+      "controller": "help",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/structure-1783923922778",
+      "path": "/structure",
+      "method": "POST",
+      "name": "POST /structure",
+      "controller": "job-structure",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/:jobId/structure-1783923922778",
+      "path": "/:jobId/structure",
+      "method": "GET",
+      "name": "GET /:jobId/structure",
+      "controller": "job-structure",
+      "handler": "handler",
+      "pathParams": [
+        "jobId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/:jobId/validate-1783923922778",
+      "path": "/:jobId/validate",
+      "method": "GET",
+      "name": "GET /:jobId/validate",
+      "controller": "job-structure",
+      "handler": "handler",
+      "pathParams": [
+        "jobId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-PUT-/:jobId-1783923922778",
+      "path": "/:jobId",
+      "method": "PUT",
+      "name": "PUT /:jobId",
+      "controller": "job-structure",
+      "handler": "handler",
+      "pathParams": [
+        "jobId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-DELETE-/:jobId-1783923922778",
+      "path": "/:jobId",
+      "method": "DELETE",
+      "name": "DELETE /:jobId",
+      "controller": "job-structure",
+      "handler": "handler",
+      "pathParams": [
+        "jobId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/:jobId/size-1783923922778",
+      "path": "/:jobId/size",
+      "method": "GET",
+      "name": "GET /:jobId/size",
+      "controller": "job-structure",
+      "handler": "handler",
+      "pathParams": [
+        "jobId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/:id/result-1783923922778",
+      "path": "/:id/result",
+      "method": "GET",
+      "name": "GET /:id/result",
+      "controller": "jobs",
+      "handler": "handler",
+      "pathParams": [
+        "id"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/:id/retry-1783923922778",
+      "path": "/:id/retry",
+      "method": "POST",
+      "name": "POST /:id/retry",
+      "controller": "jobs",
+      "handler": "handler",
+      "pathParams": [
+        "id"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/dead-letter/queue-1783923922778",
+      "path": "/dead-letter/queue",
+      "method": "GET",
+      "name": "GET /dead-letter/queue",
+      "controller": "jobs",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/dead-letter/analyze/:id-1783923922778",
+      "path": "/dead-letter/analyze/:id",
+      "method": "GET",
+      "name": "GET /dead-letter/analyze/:id",
+      "controller": "jobs",
+      "handler": "handler",
+      "pathParams": [
+        "id"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/stats/summary-1783923922778",
+      "path": "/stats/summary",
+      "method": "GET",
+      "name": "GET /stats/summary",
+      "controller": "jobs",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/sources-1783923922778",
+      "path": "/sources",
+      "method": "GET",
+      "name": "GET /sources",
+      "controller": "logs",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-DELETE-/cleanup-1783923922778",
+      "path": "/cleanup",
+      "method": "DELETE",
+      "name": "DELETE /cleanup",
+      "controller": "logs",
+      "handler": "handler",
+      "pathParams": [],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-PUT-/:id-1783923922779",
+      "path": "/:id",
+      "method": "PUT",
+      "name": "PUT /:id",
+      "controller": "rules",
+      "handler": "handler",
+      "pathParams": [
+        "id"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/:id/duplicate-1783923922779",
+      "path": "/:id/duplicate",
+      "method": "POST",
+      "name": "POST /:id/duplicate",
+      "controller": "rules",
+      "handler": "handler",
+      "pathParams": [
+        "id"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/:id/test-1783923922779",
+      "path": "/:id/test",
+      "method": "POST",
+      "name": "POST /:id/test",
+      "controller": "rules",
+      "handler": "handler",
+      "pathParams": [
+        "id"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-POST-/:schemaId/generate-rules-1783923922779",
+      "path": "/:schemaId/generate-rules",
+      "method": "POST",
+      "name": "POST /:schemaId/generate-rules",
+      "controller": "schema",
+      "handler": "handler",
+      "pathParams": [
+        "schemaId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/:schemaId-1783923922779",
+      "path": "/:schemaId",
+      "method": "GET",
+      "name": "GET /:schemaId",
+      "controller": "schema",
+      "handler": "handler",
+      "pathParams": [
+        "schemaId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-GET-/:schemaId/rules-1783923922779",
+      "path": "/:schemaId/rules",
+      "method": "GET",
+      "name": "GET /:schemaId/rules",
+      "controller": "schema",
+      "handler": "handler",
+      "pathParams": [
+        "schemaId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    },
+    {
+      "endpointId": "EP-DELETE-/:schemaId-1783923922779",
+      "path": "/:schemaId",
+      "method": "DELETE",
+      "name": "DELETE /:schemaId",
+      "controller": "schema",
+      "handler": "handler",
+      "pathParams": [
+        "schemaId"
+      ],
+      "queryParams": [],
+      "requiresAuth": true,
+      "isImplemented": true,
+      "discoveredAt": "2026-07-13T06:25:22.750Z"
+    }
+  ],
+  "protectedEndpoints": 63,
+  "publicEndpoints": 0,
+  "deprecatedEndpoints": 0,
+  "untestedEndpoints": 63
+}
