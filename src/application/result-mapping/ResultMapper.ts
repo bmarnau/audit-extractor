@@ -95,7 +95,12 @@ export class ResultMapper {
    * Calculate what % of schema fields were extracted
    */
   private calculateCoverage(schemaFields: any[], data: Record<string, any>): number {
-    if (schemaFields.length === 0) return 0;
+    // If no schema fields provided, derive from data structure
+    if (schemaFields.length === 0) {
+      // Count all non-empty values in the data object
+      const flattenedData = this.flattenObject(data);
+      return flattenedData.length > 0 ? 100 : 0;
+    }
 
     let extractedCount = 0;
 
@@ -106,6 +111,27 @@ export class ResultMapper {
     }
 
     return Math.round((extractedCount / schemaFields.length) * 100);
+  }
+
+  /**
+   * Flatten object to get all leaf values
+   */
+  private flattenObject(obj: Record<string, any>): any[] {
+    const result: any[] = [];
+    const recurse = (current: any) => {
+      if (current === null || current === undefined) return;
+      if (typeof current !== 'object') {
+        result.push(current);
+        return;
+      }
+      if (Array.isArray(current)) {
+        current.forEach(item => recurse(item));
+        return;
+      }
+      Object.values(current).forEach(value => recurse(value));
+    };
+    recurse(obj);
+    return result;
   }
 
   /**

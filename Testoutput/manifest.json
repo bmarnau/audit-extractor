@@ -6,24 +6,24 @@
                        "total_tests":  414,
                        "failed_tests":  8
                    },
-    "duration_seconds":  131.35,
-    "timestamp":  "2026-07-13 20:54:44",
+    "duration_seconds":  96.5,
+    "timestamp":  "2026-07-13 20:58:17",
     "services":  [
                      {
                          "status":  "RUNNING",
-                         "timestamp":  "20:54:45",
+                         "timestamp":  "20:58:19",
                          "service":  "Docker Daemon",
                          "action":  "none"
                      },
                      {
                          "status":  "RUNNING",
-                         "timestamp":  "20:54:46",
+                         "timestamp":  "20:58:20",
                          "service":  "PostgreSQL",
                          "action":  "none"
                      },
                      {
                          "status":  "RUNNING",
-                         "timestamp":  "20:54:46",
+                         "timestamp":  "20:58:20",
                          "service":  "Redis",
                          "action":  "none"
                      }

@@ -187,7 +187,7 @@ export class UnifiedDocument {
    * @param separator - Text between pages (default: "\n\n")
    */
   getRawText(separator: string = '\n\n'): string {
-    const sortedPages = Array.from(this.pages.values());
+    const sortedPages = Array.from(this.pages.values()).sort((a, b) => a.pageNumber - b.pageNumber);
     return sortedPages.map((page) => page.rawText).join(separator);
   }
 
@@ -202,8 +202,8 @@ export class UnifiedDocument {
   /**
    * Get character count (all pages)
    */
-  getCharacterCount(): boolean {
-    return this.getPages().reduce((sum, page) => sum + page.textLength, 0) > 0;
+  getCharacterCount(): number {
+    return this.getPages().reduce((sum, page) => sum + page.textLength, 0);
   }
 
   /**
