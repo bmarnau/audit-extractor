@@ -1,8 +1,8 @@
-import { Issue, IssueStatus } from '../../domain/issue/Issue';
-import { IssueId } from '../../domain/issue/IssueId';
-import { IssueRepository, IssueStatistics, ComponentStatistics } from '../../domain/issue/IssueRepository';
-import { IssueFactory } from '../../domain/issue/IssueFactory';
-import { Severity } from '../../domain/issue/Severity';
+import { Issue, IssueStatus } from '../domain/issue/Issue';
+import { IssueId } from '../domain/issue/IssueId';
+import { IssueRepository, IssueStatistics, ComponentStatistics } from '../domain/issue/IssueRepository';
+import { IssueFactory } from '../domain/issue/IssueFactory';
+import { Severity } from '../domain/issue/Severity';
 
 /**
  * IssueService - Application Service

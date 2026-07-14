@@ -129,7 +129,7 @@ export class ExtractionHintFactory {
     if (!field) return 'unknown';
 
     // Check for SCREAMING_KEBAB
-    if (/^[A-Z]+(-[A-Z]+)+$/.test(field)) return 'SCREAMING-KEBAB';
+    if (/^[A-Z]+(_[A-Z]+)+$/.test(field)) return 'SCREAMING_KEBAB';
     
     // Check for kebab-case
     if (/^[a-z]+(-[a-z]+)+$/.test(field)) return 'kebab-case';

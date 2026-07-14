@@ -15,7 +15,7 @@ import { Router, Response } from 'express';
 import path from 'path';
 import fs from 'fs/promises';
 import { ApiRequest, ApiResponseError, createSuccessResponse } from './server';
-import { DocumentMetadata, DocumentListResponse } from '../../domain/api/types';
+import { DocumentMetadata, DocumentListResponse } from '../../../domain/api/types';
 
 const router = Router();
 
@@ -64,7 +64,7 @@ router.get('/', (req: ApiRequest, res: Response) => {
     timestamp: new Date().toISOString(),
   };
 
-  res.json(createSuccessResponse(response.data, req));
+  res.json(createSuccessResponse(response.data));
 });
 
 /**
@@ -72,7 +72,7 @@ router.get('/', (req: ApiRequest, res: Response) => {
  * Get document metadata
  */
 router.get('/:id', (req: ApiRequest, res: Response) => {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
   const doc = mockDocuments.get(id);
 
   if (!doc) {
@@ -84,7 +84,7 @@ router.get('/:id', (req: ApiRequest, res: Response) => {
     );
   }
 
-  res.json(createSuccessResponse(doc, req));
+  res.json(createSuccessResponse(doc));
 });
 
 /**
@@ -92,7 +92,7 @@ router.get('/:id', (req: ApiRequest, res: Response) => {
  * Upload a new document
  */
 router.post('/upload', async (req: ApiRequest, res: Response) => {
-  const { filename, format, content } = req.body;
+  const { filename, format, content } = req.body as Record<string, unknown>;
 
   if (!filename || !format) {
     throw new ApiResponseError(
@@ -102,7 +102,7 @@ router.post('/upload', async (req: ApiRequest, res: Response) => {
     );
   }
 
-  if (!['pdf', 'docx', 'html'].includes(format)) {
+  if (!['pdf', 'docx', 'html'].includes(format as string)) {
     throw new ApiResponseError(
       'INVALID_FORMAT',
       400,
@@ -117,9 +117,9 @@ router.post('/upload', async (req: ApiRequest, res: Response) => {
   const docId = `doc-${Date.now()}`;
   const doc: DocumentMetadata = {
     id: docId,
-    filename,
+    filename: filename as string,
     format: format as 'pdf' | 'docx' | 'html',
-    size: content ? content.length : 0,
+    size: typeof content === 'string' ? content.length : 0,
     uploadedAt: new Date().toISOString(),
     status: 'processing',
   };
@@ -136,7 +136,7 @@ router.post('/upload', async (req: ApiRequest, res: Response) => {
     }
   }, 2000);
 
-  res.status(201).json(createSuccessResponse(doc, req));
+  res.status(201).json(createSuccessResponse(doc));
 });
 
 /**
@@ -144,7 +144,7 @@ router.post('/upload', async (req: ApiRequest, res: Response) => {
  * Delete a document
  */
 router.delete('/:id', async (req: ApiRequest, res: Response) => {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
   const doc = mockDocuments.get(id);
 
   if (!doc) {
@@ -159,8 +159,7 @@ router.delete('/:id', async (req: ApiRequest, res: Response) => {
   mockDocuments.delete(id);
 
   res.json(createSuccessResponse(
-    { id, message: 'Document deleted successfully' },
-    req
+    { id, message: 'Document deleted successfully' }
   ));
 });
 

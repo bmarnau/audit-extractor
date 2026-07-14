@@ -1,7 +1,7 @@
 {
   "name": "audit-safe-document-extractor",
-  "version": "0.27.0",
-  "description": "Document Preparation Pipeline with API Discovery Framework (Phase 27: API Discovery & Governance)",
+  "version": "0.35.0",
+  "description": "Document Preparation Pipeline with API Discovery Framework (Phase 37a: Navigation Test Infrastructure)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

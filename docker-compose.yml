@@ -28,8 +28,6 @@ services:
       POSTGRES_USER: extractor_user
       POSTGRES_PASSWORD: extractor_pass
       POSTGRES_DB: extractor_db
-      # Connection Pool Configuration for Stability
-      POSTGRES_INITDB_ARGS: "-c max_connections=200 -c shared_buffers=256MB -c password_encryption=scram-sha-256"
     ports:
       - "5432:5432"
     volumes:
@@ -123,7 +121,7 @@ services:
       API_URL: http://backend:3000/api
       CORS_ORIGIN: http://localhost:5173,http://localhost
       LOG_LEVEL: info
-      FRONTEND_VERSION: 0.26.1
+      FRONTEND_VERSION: 0.34.0
       GIT_COMMIT: cfa203b
       GIT_BRANCH: master
     ports:
@@ -131,7 +129,7 @@ services:
     volumes:
       - ./extraction-rules:/app/extraction-rules:ro
       - ./results:/app/results
-      - ./schemas:/app/schemas:ro
+      - ./schemas:/app/schemas
       - ./backups:/app/backups
       - ./source-documents:/app/source-documents:ro
     networks:

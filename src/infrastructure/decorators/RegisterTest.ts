@@ -1,5 +1,5 @@
-import { TestRegistryService } from '../application/TestRegistryService';
-import { TestCategory, SeverityImpact } from '../domain/testRegistry/TestMetadata';
+import { TestRegistryService } from '../../application/TestRegistryService';
+import { TestCategory, SeverityImpact } from '../../domain/testRegistry/TestMetadata';
 
 /**
  * Global Test Registry Service (Singleton)

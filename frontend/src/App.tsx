@@ -36,6 +36,7 @@ import { ConfigEditor } from './components/workbench/ConfigEditor';
 import { BackupManager } from './components/workbench/BackupManager';
 import LearningPage from './pages/LearningPage';
 import Dashboard from './components/Dashboard';
+import HealthPage from './pages/HealthPage';
 import SchemaUploadWizard from './components/SchemaUploadWizard';
 // Phase 16 Components
 import SchemaListComponent from './components/SchemaListComponent';
@@ -220,6 +221,7 @@ const AppContent: React.FC<{
               <Route path="/learning" element={<LearningPage />} />
               <Route path="/audit" element={<AuditViewer />} />
               <Route path="/logs" element={<LogViewer />} />
+              <Route path="/health" element={<HealthPage />} />
               <Route path="/configuration" element={<ConfigEditor />} />
               <Route path="/backups" element={<BackupManager />} />
               <Route path="/help" element={<HelpBrowser />} />

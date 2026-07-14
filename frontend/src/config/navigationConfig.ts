@@ -13,6 +13,8 @@ import {
   Description as FileTextIcon,
   BarChart as BarChartIcon,
   Work as WorkIcon,
+  Help as HelpIcon,
+  Tune as ServicesIcon,
 } from '@mui/icons-material';
 
 export interface NavItem {
@@ -122,66 +124,52 @@ export const navigationCategories: NavCategory[] = [
     ],
   },
   {
-    id: 'backup',
-    label: 'Backup',
-    icon: BackupIcon,
-    description: 'Backup and restore data',
+    id: 'services',
+    label: 'Services',
+    icon: ServicesIcon,
+    description: 'System services and configuration',
     order: 6,
     color: 'secondary',
-    items: [
-      {
-        id: 'backup-list',
-        path: '/backup',
-        label: 'Backups',
-        description: 'Backup management',
-      },
-    ],
-  },
-  {
-    id: 'health',
-    label: 'Health',
-    icon: HealthyIcon,
-    description: 'System health status',
-    order: 7,
-    color: 'success',
     items: [
       {
         id: 'health-check',
         path: '/health',
         label: 'Health',
-        description: 'System health check',
+        description: 'System health status',
       },
-    ],
-  },
-  {
-    id: 'api',
-    label: 'API',
-    icon: ApiIcon,
-    description: 'API documentation',
-    order: 8,
-    color: 'info',
-    items: [
       {
         id: 'api-docs',
         path: '/api/docs',
         label: 'API Docs',
-        description: 'API documentation',
+        description: 'API documentation and discovery',
       },
-    ],
-  },
-  {
-    id: 'settings',
-    label: 'Settings',
-    icon: SettingsIcon,
-    description: 'System settings',
-    order: 9,
-    color: 'action',
-    items: [
+      {
+        id: 'backup-list',
+        path: '/backup',
+        label: 'Backups',
+        description: 'Backup and restore management',
+      },
       {
         id: 'settings-config',
         path: '/settings',
         label: 'Settings',
-        description: 'Configuration settings',
+        description: 'System configuration settings',
+      },
+    ],
+  },
+  {
+    id: 'help',
+    label: 'Help',
+    icon: HelpIcon,
+    description: 'Help and documentation',
+    order: 7,
+    color: 'info',
+    items: [
+      {
+        id: 'help-center',
+        path: '/help',
+        label: 'Help Center',
+        description: 'Help documentation and guides',
       },
     ],
   },

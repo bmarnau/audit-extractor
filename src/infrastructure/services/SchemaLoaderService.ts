@@ -173,7 +173,7 @@ export class SchemaLoaderService {
 
     // Try to compile schema with AJV
     try {
-      this.ajv.compile(schema as JSONSchemaType<unknown>);
+      this.ajv.compile(schema as unknown as JSONSchemaType<unknown>);
     } catch (error) {
       const err = error instanceof Error ? error : new Error(String(error));
       throw new JobValidationError('Schema compilation failed', {

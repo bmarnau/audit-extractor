@@ -48,6 +48,7 @@ export const NavCategoryGroup: React.FC<NavCategoryGroupProps> = ({
     <Box sx={{ mb: 1 }}>
       {/* Category Header */}
       <ListItemButton
+        data-testid={`nav-category-${category.id}`}
         onClick={onToggle}
         sx={{
           borderRadius: 1,
@@ -107,8 +108,7 @@ export const NavCategoryGroup: React.FC<NavCategoryGroupProps> = ({
               arrow
             >
               <ListItem
-                disablePadding
-                onClick={() => onItemClick?.(item)}
+                disablePadding                data-testid={`nav-item-${item.id}`}                onClick={() => onItemClick?.(item)}
                 component={Link}
                 to={item.path}
                 sx={{

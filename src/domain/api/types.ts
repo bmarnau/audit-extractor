@@ -76,6 +76,16 @@ export interface ExtractionStep {
   error?: string;
 }
 
+export interface ExtractionWorkflow {
+  id: string;
+  documentId: string;
+  documentName: string;
+  startedAt: string;
+  completedAt: string;
+  steps: ExtractionStep[];
+  overallStatus: 'pending' | 'in-progress' | 'completed' | 'failed';
+}
+
 export interface ExtractionResultField {
   fieldName: string;
   value: unknown;

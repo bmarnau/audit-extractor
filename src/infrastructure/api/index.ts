@@ -35,6 +35,11 @@ import { createSchemaExtractionRoutes } from '../../presentation/SchemaExtractio
 import createJobRoutes from './routes/jobs';
 // Phase 22 Job-Based Architecture (DDD)
 import { createJobStructureRoutes } from './routes/job-structure';
+import buildInfoRoutes from './routes/buildInfo';
+import healthRoutes from './routes/health';
+// Phase 27 - Fix: Missing API endpoints
+import docsRoutes from './routes/docs';
+import settingsRoutes from './routes/settings';
 
 const port = parseInt(process.env.PORT || '3000', 10);
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -202,6 +207,38 @@ async function startServer() {
       console.log('[Server] ✓ Job Structure routes (Phase 22) mounted on /api/v1/jobs');
     } catch (routeErr) {
       console.error('[Server] Error mounting job structure routes:', routeErr);
+      throw routeErr;
+    }
+
+    try {
+      app.use('/api/buildInfo', buildInfoRoutes);
+      console.log('[Server] ✓ Build Info routes mounted on /api/buildInfo');
+    } catch (routeErr) {
+      console.error('[Server] Error mounting build info routes:', routeErr);
+      throw routeErr;
+    }
+
+    try {
+      app.use('/api/health', healthRoutes);
+      console.log('[Server] ✓ Health routes mounted on /api/health');
+    } catch (routeErr) {
+      console.error('[Server] Error mounting health routes:', routeErr);
+      throw routeErr;
+    }
+
+    try {
+      app.use('/api/docs', docsRoutes);
+      console.log('[Server] ✓ API Docs routes mounted on /api/docs');
+    } catch (routeErr) {
+      console.error('[Server] Error mounting docs routes:', routeErr);
+      throw routeErr;
+    }
+
+    try {
+      app.use('/api/settings', settingsRoutes);
+      console.log('[Server] ✓ Settings routes mounted on /api/settings');
+    } catch (routeErr) {
+      console.error('[Server] Error mounting settings routes:', routeErr);
       throw routeErr;
     }
 

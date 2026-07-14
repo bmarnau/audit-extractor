@@ -16,6 +16,76 @@ const router = Router();
 const loader = getHelpContentLoader();
 
 /**
+ * GET /api/help - Get help overview (index)
+ */
+router.get('/', async (req: ApiRequest, res: Response, next: NextFunction) => {
+  try {
+    console.log(`[Help] Getting help overview`);
+    
+    // Return aggregated help data
+    const [glossary, documentation, releaseNotes, categories] = await Promise.all([
+      loader.loadGlossary().catch(() => []),
+      loader.loadDocumentation().catch(() => []),
+      loader.loadReleaseNotes().catch(() => []),
+      Promise.resolve([
+        { name: 'guide', description: 'User Guides' },
+        { name: 'glossary', description: 'Glossary Terms' },
+        { name: 'api', description: 'API Documentation' },
+        { name: 'troubleshooting', description: 'Troubleshooting' },
+        { name: 'overview', description: 'Overview' },
+      ])
+    ]);
+
+    const overview = {
+      status: 'available',
+      sections: {
+        glossary: {
+          name: 'Glossary',
+          items: glossary.length,
+          description: 'Glossary of terms and concepts',
+          endpoint: '/api/help/glossary'
+        },
+        documentation: {
+          name: 'Documentation',
+          items: documentation.length,
+          description: 'User documentation and guides',
+          endpoint: '/api/help/documentation'
+        },
+        releaseNotes: {
+          name: 'Release Notes',
+          items: releaseNotes.length,
+          description: 'Release notes and changelog',
+          endpoint: '/api/help/release-notes'
+        }
+      },
+      categories: categories,
+      totalItems: glossary.length + documentation.length + releaseNotes.length,
+      availableEndpoints: [
+        { method: 'GET', path: '/api/help', description: 'Help overview' },
+        { method: 'GET', path: '/api/help/search', description: 'Search help content' },
+        { method: 'GET', path: '/api/help/categories', description: 'Get help categories' },
+        { method: 'GET', path: '/api/help/glossary', description: 'Get glossary entries' },
+        { method: 'GET', path: '/api/help/documentation', description: 'Get documentation' },
+        { method: 'GET', path: '/api/help/release-notes', description: 'Get release notes' },
+        { method: 'GET', path: '/api/help/stats', description: 'Get help statistics' }
+      ]
+    };
+
+    res.json(createSuccessResponse(overview));
+  } catch (error) {
+    console.error(`[Help] Overview error:`, error);
+    const err = error as any;
+    if (err.statusCode) return next(err);
+    return next(new ApiResponseError(
+      'HELP_OVERVIEW_FAILED',
+      500,
+      'Failed to get help overview',
+      { error: err.message }
+    ));
+  }
+});
+
+/**
  * GET /api/help/search - Search help content with full-text search
  */
 router.get('/search', async (req: ApiRequest, res: Response, next: NextFunction) => {

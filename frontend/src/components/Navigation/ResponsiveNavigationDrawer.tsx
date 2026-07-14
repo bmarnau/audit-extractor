@@ -56,6 +56,7 @@ export const ResponsiveNavigationDrawer: React.FC<ResponsiveNavigationDrawerProp
 
   const drawerContent = (
     <Box
+      data-testid="navigation-drawer-content"
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -66,6 +67,7 @@ export const ResponsiveNavigationDrawer: React.FC<ResponsiveNavigationDrawerProp
       {/* Drawer Header */}
       {!isCompact && (
         <Box
+          data-testid="navigation-header"
           sx={{
             p: 2,
             borderBottom: `1px solid ${theme.palette.divider}`,
@@ -91,6 +93,7 @@ export const ResponsiveNavigationDrawer: React.FC<ResponsiveNavigationDrawerProp
 
       {/* Navigation List */}
       <List
+        data-testid="navigation-list"
         sx={{
           flex: 1,
           overflow: 'auto',
@@ -131,6 +134,7 @@ export const ResponsiveNavigationDrawer: React.FC<ResponsiveNavigationDrawerProp
       {/* Footer Info */}
       {!isCompact && (
         <Box
+          data-testid="navigation-footer"
           sx={{
             p: 2,
             borderTop: `1px solid ${theme.palette.divider}`,
@@ -139,7 +143,7 @@ export const ResponsiveNavigationDrawer: React.FC<ResponsiveNavigationDrawerProp
             textAlign: 'center',
           }}
         >
-          v0.26.0
+          v0.35.0
         </Box>
       )}
     </Box>

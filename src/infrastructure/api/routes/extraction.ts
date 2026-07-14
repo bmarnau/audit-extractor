@@ -10,7 +10,7 @@
 
 import { Router, Response } from 'express';
 import { ApiRequest, ApiResponseError, createSuccessResponse } from './server';
-import { ExtractionWorkflow, ExtractionStep } from '../../domain/api/types';
+import { ExtractionWorkflow, ExtractionStep } from '../../../domain/api/types';
 
 const router = Router();
 
@@ -172,7 +172,7 @@ router.post('/', async (req: ApiRequest, res: Response) => {
   };
 
   // In production, this would be async and stream progress updates via SSE or WebSocket
-  res.status(202).json(createSuccessResponse(workflow, req));
+  res.status(202).json(createSuccessResponse(workflow));
 });
 
 export default router;

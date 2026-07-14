@@ -17,7 +17,7 @@
 
 import { Router, Response } from 'express';
 import { ApiRequest, ApiResponseError, createSuccessResponse } from './server';
-import { ExtractionRuleDTO, SaveRuleRequest, TestRuleResponse, RuleListResponse } from '../../domain/api/types';
+import { ExtractionRuleDTO, SaveRuleRequest, TestRuleResponse, RuleListResponse } from '../../../domain/api/types';
 
 const router = Router();
 
@@ -67,21 +67,21 @@ router.get('/', (req: ApiRequest, res: Response) => {
     total: rules.length,
     timestamp: new Date().toISOString(),
   };
-  res.json(createSuccessResponse(response.data, req));
+  res.json(createSuccessResponse(response.data));
 });
 
 /**
  * GET /api/rules/:id
  */
 router.get('/:id', (req: ApiRequest, res: Response) => {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
   const rule = mockRules.get(id);
 
   if (!rule) {
     throw new ApiResponseError('NOT_FOUND', 404, `Rule ${id} not found`, { id });
   }
 
-  res.json(createSuccessResponse(rule, req));
+  res.json(createSuccessResponse(rule));
 });
 
 /**
@@ -114,14 +114,14 @@ router.post('/', (req: ApiRequest, res: Response) => {
   };
 
   mockRules.set(ruleId, rule);
-  res.status(201).json(createSuccessResponse(rule, req));
+  res.status(201).json(createSuccessResponse(rule));
 });
 
 /**
  * PUT /api/rules/:id
  */
 router.put('/:id', (req: ApiRequest, res: Response) => {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
   const body = req.body as SaveRuleRequest;
   const existingRule = mockRules.get(id);
 
@@ -143,14 +143,14 @@ router.put('/:id', (req: ApiRequest, res: Response) => {
   };
 
   mockRules.set(id, updatedRule);
-  res.json(createSuccessResponse(updatedRule, req));
+  res.json(createSuccessResponse(updatedRule));
 });
 
 /**
  * DELETE /api/rules/:id
  */
 router.delete('/:id', (req: ApiRequest, res: Response) => {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
   const rule = mockRules.get(id);
 
   if (!rule) {
@@ -158,14 +158,14 @@ router.delete('/:id', (req: ApiRequest, res: Response) => {
   }
 
   mockRules.delete(id);
-  res.json(createSuccessResponse({ id, message: 'Rule deleted successfully' }, req));
+  res.json(createSuccessResponse({ id, message: 'Rule deleted successfully' }));
 });
 
 /**
  * POST /api/rules/:id/duplicate
  */
 router.post('/:id/duplicate', (req: ApiRequest, res: Response) => {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
   const { newFieldName } = req.body;
   const original = mockRules.get(id);
 
@@ -191,14 +191,14 @@ router.post('/:id/duplicate', (req: ApiRequest, res: Response) => {
   };
 
   mockRules.set(duplicateId, duplicate);
-  res.status(201).json(createSuccessResponse(duplicate, req));
+  res.status(201).json(createSuccessResponse(duplicate));
 });
 
 /**
  * POST /api/rules/:id/test
  */
 router.post('/:id/test', async (req: ApiRequest, res: Response) => {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
   const { testInput } = req.body;
   const rule = mockRules.get(id);
 
@@ -243,7 +243,7 @@ router.post('/:id/test', async (req: ApiRequest, res: Response) => {
     timestamp: new Date().toISOString(),
   };
 
-  res.json(createSuccessResponse(response, req));
+  res.json(createSuccessResponse(response));
 });
 
 export default router;
