@@ -419,10 +419,10 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
     // Load manual from HelpContentLoader instead of JSON file
     const docs = await loader.loadDocumentation();
     
-    // Prioritize MANUAL-0.25.0.md specifically, not just any MANUAL-*.md file
+    // Prioritize MANUAL-0.35.0.md specifically, not just any MANUAL-*.md file
     let manual = docs.find((d: any) => {
       const filename = d.source?.split('/').pop() || '';
-      return filename === 'MANUAL-0.25.0.md';
+      return filename === 'MANUAL-0.35.0.md';
     });
     
     // Fallback to any MANUAL-*.md if 0.25.0 not found
@@ -435,16 +435,16 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
     
     if (!manual) {
       return res.json(createSuccessResponse({
-        version: '0.25.0',
-        title: '📖 Operationshandbuch - Version 0.25.0',
+        version: '0.35.0',
+        title: '📖 Operationshandbuch - Version 0.35.0',
         chapters: [],
         totalChapters: 0,
       }));
     }
 
     // Extract version from manual title or filename and override with current version
-    // Always set version 0.25.0 for this release
-    const title = '📖 Operationshandbuch - Version 0.25.0';
+    // Always set version 0.35.0 for this release
+    const title = '📖 Operationshandbuch - Version 0.35.0';
 
     // Parse markdown chapters: split by ## headers
     const chapters: any[] = [];
