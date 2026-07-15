@@ -103,7 +103,8 @@ const JobManager: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setJobs(data.data || []);
+        // API returns: { data: { jobs: [], total, limit, offset, hasMore } }
+        setJobs(data.data?.jobs || []);
       } else if (response.status === 404) {
         // Jobs endpoint not yet implemented, use mock data
         setJobs(

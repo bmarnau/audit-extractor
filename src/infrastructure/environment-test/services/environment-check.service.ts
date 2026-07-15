@@ -933,7 +933,7 @@ export class EnvironmentCheckerService implements IEnvironmentChecker {
         availableSpace = parseInt(data[3]);
       } catch {
         // Fallback for systems where df doesn't work
-        availableSpace = require('os').freemem();
+        availableSpace = os.freemem();
         totalSpace = availableSpace * 2; // Estimate
       }
 

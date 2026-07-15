@@ -13,10 +13,11 @@
 
 import * as fs from 'fs/promises';
 import * as fsSync from 'fs';
+import { createWriteStream, createReadStream } from 'fs';
+import { Readable } from 'stream';
 import * as path from 'path';
 import * as zlib from 'zlib';
 import * as crypto from 'crypto';
-import { createReadStream, createWriteStream } from 'fs';
 import { injectable } from 'tsyringe';
 import {
   BackupMetadata,
@@ -63,7 +64,7 @@ export class BackupService {
     reason?: string,
     createdBy?: string
   ): Promise<BackupMetadata> {
-    const backupId = `backup-${Date.now()}-${crypto.randomBytes(6).toString('hex')}`;
+    const backupId = `backup-${Date.now()}-${(crypto.randomBytes as any)(6).toString('hex')}`;
     const backupFile = path.join(this.backupDir, `${backupId}.tar.gz`);
     const metadataFile = path.join(this.metadataDir, `${backupId}.json`);
 
@@ -133,12 +134,11 @@ export class BackupService {
       const gzipStream = zlib.createGzip({ level: 9 });
       const writeStream = createWriteStream(backupFile);
       
-      await new Promise((resolve, reject) => {
-        const { Readable } = require('stream');
+      await new Promise<void>((resolve, reject) => {
         Readable.from([mockBackupContent])
           .pipe(gzipStream)
           .pipe(writeStream)
-          .on('finish', resolve)
+          .on('finish', () => resolve())
           .on('error', reject);
       });
 

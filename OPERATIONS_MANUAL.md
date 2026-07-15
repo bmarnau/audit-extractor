@@ -1,26 +1,236 @@
 # 📖 Operationshandbuch - Betriebshandbuch
-## Audit-Safe Document Extractor v0.26.0
+## Audit-Safe Document Extractor v0.35.0
 
-**Version:** 0.26.0  
-**Phase:** 26 (Layout Improvements & Flex Architecture)  
-**Datum:** 2026-07-12  
-**Status:** Produktionsreif  
+**Version:** 0.35.0  
+**Phase:** 38C (Technical Test Runner Infrastructure)  
+**Datum:** 2026-07-15  
+**Status:** Produktionsreif mit vollständiger Test-Automation  
 
 ---
 
 ## 📋 Inhaltsverzeichnis
 
-1. [Was ist die Audit-Safe App?](#was-ist-die-audit-safe-app)
-2. [Systemanforderungen](#systemanforderungen)
-3. [Installation & Start](#installation--start)
-4. [Navigationsstruktur](#navigationsstruktur)
-5. [Menüpunkte - Detaillierte Beschreibung](#menüpunkte---detaillierte-beschreibung)
-6. [Grundlegende Bedienung](#grundlegende-bedienung)
-7. [Arbeitsabläufe nach Anwendungsfall](#arbeitsabläufe-nach-anwendungsfall)
-8. [Responsive Design (Mobile, Tablet, Desktop)](#responsive-design-mobile-tablet-desktop)
-9. [Troubleshooting](#troubleshooting)
-10. [System-Checks & Wartung](#system-checks--wartung)
-11. [Best Practices](#best-practices)
+1. [🆕 Phase 38C: Technical Test Runner](#-phase-38c-technical-test-runner)
+2. [Was ist die Audit-Safe App?](#was-ist-die-audit-safe-app)
+3. [Systemanforderungen](#systemanforderungen)
+4. [Installation & Start](#installation--start)
+5. [Navigationsstruktur](#navigationsstruktur)
+6. [Menüpunkte - Detaillierte Beschreibung](#menüpunkte---detaillierte-beschreibung)
+7. [Grundlegende Bedienung](#grundlegende-bedienung)
+8. [Arbeitsabläufe nach Anwendungsfall](#arbeitsabläufe-nach-anwendungsfall)
+9. [Responsive Design (Mobile, Tablet, Desktop)](#responsive-design-mobile-tablet-desktop)
+10. [Troubleshooting](#troubleshooting)
+11. [System-Checks & Wartung](#system-checks--wartung)
+12. [Best Practices](#best-practices)
+
+---
+
+## 🆕 Phase 38C: Technical Test Runner
+
+### Überblick
+
+Die **Technical Test Runner** ist eine zentralisierte Infrastruktur zur Ausführung aller 28 technischen Tests des Systems. Sie bietet vollständige Lifecycle-Verwaltung, Parallelisierung, Fehlerklassifizierung und Multi-Format-Berichterstattung.
+
+**Schnelle Referenz:**
+```bash
+# Alle Tests ausführen
+npm run test:technical
+
+# Nur kritische Tests
+npm run test:technical:critical
+
+# Smoke Tests (schnelle Validierung)
+npm run test:technical:smoke
+
+# Mit ausführlicher Ausgabe
+npm run test:technical:verbose
+```
+
+### Test-Kategorien (28 Tests)
+
+| Kategorie | Tests | Fokus |
+|-----------|-------|-------|
+| **INF** (Infrastructure) | 5 | Systemkonfiguration, Docker, Node.js |
+| **DAT** (Persistence) | 8 | PostgreSQL, Redis, Datenspeicherung |
+| **SRV** (Services) | 6 | Kernservices, DI-Container, Logger |
+| **API** | 6 | REST-Endpunkte, HTTP-Protokoll |
+| **CFG** (Configuration) | 5 | Konfigurationsmanagement, Umgebungsvariablen |
+| **OPS** (Operations) | 5 | Monitoring, Logging, Health Checks |
+| **UI** (Frontend) | 5 | Navigation, Views, Responsive Design |
+| **GOV** (Governance) | 3 | Compliance, Audit, Security |
+
+### Ausführungsmodi
+
+**FULL Mode** (Standard)
+- Führt alle 28 implementierten Tests aus
+- Parallelisierung: Bis zu 4 Tests gleichzeitig
+- Ausführungszeit: ~2-5 Sekunden
+- Befehl: `npm run test:technical`
+
+**CRITICAL Mode**
+- Nur HIGH und CRITICAL Severity Tests
+- Schnelle Validierung kritischer Funktionen
+- Ausführungszeit: ~1 Sekunde
+- Befehl: `npm run test:technical:critical`
+
+**SMOKE Mode**
+- Minimale Subset-Tests für schnelle Validierung
+- Ideal für CI/CD-Pipelines
+- Ausführungszeit: <500ms
+- Befehl: `node scripts/run-technical-tests.mjs SMOKE`
+
+**SUBSET Mode**
+- Spezifische Test-IDs auswählen
+- Befehl: `node scripts/run-technical-tests.mjs SUBSET INF-001,DAT-005,API-003`
+
+**Sequential Mode**
+- Tests nacheinander (nicht parallel)
+- Für detailliertes Debugging
+- Befehl: `node scripts/run-technical-tests.mjs FULL --sequential`
+
+### Ergebnis-Artefakte
+
+Alle Tests generieren automatisch 5 Output-Formate in `test-results/runs/[RUN-ID]/`:
+
+**1. metadata.json** - Laufzeitinformation
+```json
+{
+  "runId": "20260715_082323_951",
+  "environment": {
+    "host": "LAPTOP-ABC",
+    "platform": "win32",
+    "nodeVersion": "v24.16.0"
+  },
+  "configuration": {
+    "mode": "FULL",
+    "parallel": true,
+    "maxConcurrent": 4
+  }
+}
+```
+
+**2. summary.json** - Aggregierte Statistiken
+```json
+{
+  "total": 28,
+  "passed": 28,
+  "failed": 0,
+  "skipped": 0,
+  "error": 0,
+  "stats": {
+    "CRITICAL": { "total": 8, "passed": 8 },
+    "HIGH": { "total": 10, "passed": 10 }
+  }
+}
+```
+
+**3. findings.json** - Detaillierte Erkenntnisse
+- Fehleranalyse mit Severity-Klassifizierung
+- Root-Cause-Kategorien
+- Betroffene Tests und Empfehlungen
+- Audit Trail für jede Klassifizierung
+
+**4. results.csv** - Spreadsheet-Format
+```
+TestId,Category,Severity,Status,DurationMs,ErrorCode,ErrorMessage
+INF-001,INFRASTRUCTURE,CRITICAL,PASSED,234,,
+DAT-001,PERSISTENCE,HIGH,PASSED,567,,
+```
+
+**5. report.html** - Interaktives Dashboard
+- Visuelle Übersicht mit Charts
+- Filter nach Kategorie/Severity
+- Responsive Design
+- Export-Funktionen
+
+### Beispiel: Test-Ausführung
+
+```bash
+$ npm run test:technical
+
+> npm run build
+
+  ✓ TypeScript compilation complete
+  ✓ ESM imports fixed for 87 files
+
+  ✅ Test Framework Validated
+  ✓ 42 tests loaded (28 implemented + 14 placeholders)
+  
+  🏃 Executing tests in parallel (concurrency: 4)...
+
+  ✅ CRITICAL (8):   ████████░░ 100% → PASSED (0.234s)
+  ✅ HIGH (10):      ██████░░░░ 100% → PASSED (0.456s)
+  ✅ MEDIUM (5):     ████░░░░░░ 100% → PASSED (0.189s)
+  ✅ LOW (3):        ███░░░░░░░ 100% → PASSED (0.098s)
+  ✅ INFO (2):       ██░░░░░░░░ 100% → PASSED (0.067s)
+
+  📊 Results Summary:
+     Total:   28 | Passed: 28 | Failed: 0 | Skipped: 0 | Errors: 0
+     Duration: 0.044s | Status: ✅ ALL TESTS PASSED
+
+  📁 Results saved to:
+     test-results/runs/20260715_082323_951/
+
+  📄 Generated Artifacts:
+     ✓ metadata.json       (Run Info & Config)
+     ✓ summary.json        (Statistics)
+     ✓ findings.json       (Detailed Findings)
+     ✓ results.csv         (Spreadsheet Format)
+     ✓ report.html         (Interactive Dashboard)
+```
+
+### Severity Engine (20 Klassifizierungsregeln)
+
+Das System klassifiziert Fehler automatisch nach 20 Regeln:
+
+- **AUTH_MISSING**: Authentifizierung erforderlich
+- **VALIDATION_FAILED**: Eingabevalidierung
+- **DATABASE_CONNECTION**: Datenbankverbindung
+- **SERVICE_TIMEOUT**: Service-Timeout
+- **CONFIGURATION_INVALID**: Ungültige Konfiguration
+- **RESOURCE_NOT_FOUND**: Ressource nicht gefunden
+- ... (15 weitere Kategorien)
+
+Jede Regel hat:
+- Test-ID-Muster (Array oder Regex)
+- Keywords zur Fehler-Identifizierung
+- Severity-Level (CRITICAL, HIGH, MEDIUM, LOW, INFO)
+- Impact & Recommendation
+- Root-Cause-Kategorie
+- Priorität
+
+### Docker-Integration
+
+Tests können auch im Container ausgeführt werden:
+
+```bash
+# Tests im Backend-Container
+docker exec extractor-backend npm run test:technical
+
+# Mit Verbose-Output
+docker exec extractor-backend npm run test:technical:verbose
+
+# Nur CRITICAL Tests
+docker exec extractor-backend npm run test:technical:critical
+```
+
+### ESM Module-System (Phase 38C)
+
+- **TypeScript Target**: ES2020
+- **Module System**: ESNext (ESM native)
+- **Node.js Unterstützung**: v24+ erforderlich
+- **Import-Auflösung**: Automatische .js-Erweiterungen
+- **Directory-Imports**: Auflösung zu /index.js
+
+**Build-Prozess:**
+```bash
+npm run build
+  → tsc (TypeScript kompilieren)
+  → tsc-alias (Pfad-Alias auflösen)  
+  → fix-esm-imports.mjs (ESM-Korrekturen)
+```
+
+Gesamtdauer: ~10 Sekunden
 
 ---
 

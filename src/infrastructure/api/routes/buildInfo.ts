@@ -4,7 +4,7 @@
  * Provides system build and version information
  * Used by Dashboard to display build metadata
  *
- * @version 0.34.0
+ * @version 0.35.0
  */
 
 import { Router, Response, NextFunction } from 'express';

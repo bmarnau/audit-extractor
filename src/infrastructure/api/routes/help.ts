@@ -510,7 +510,7 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
         ));
       }
       return res.json(createSuccessResponse({
-        version: '0.25.0',
+        version: '0.35.0',
         title: title,
         chapter: selectedChapter,
         totalChapters: chapters.length,
@@ -518,7 +518,7 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
     }
 
     res.json(createSuccessResponse({
-      version: '0.25.0',
+      version: '0.35.0',
       title: title,
       lastUpdated: new Date().toISOString(),
       chapters: chapters,

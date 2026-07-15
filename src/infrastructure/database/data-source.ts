@@ -1,8 +1,13 @@
 import { DataSource } from "typeorm";
 import path from "path";
+import { fileURLToPath } from 'url';
 import { SchemaEntity } from "../../domain/schema/SchemaEntity";
 import { AuditLogEntity } from "./entities/AuditLogEntity";
 import { JobEntity } from "./entities/JobEntity";
+
+// ESM-compatible __dirname shim
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /**
  * PostgreSQL DataSource Configuration für TypeORM

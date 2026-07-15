@@ -19,8 +19,13 @@ import { Router, Response, NextFunction } from 'express';
 import { ApiRequest, ApiResponseError, createSuccessResponse } from '../server';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid';
 import Ajv from 'ajv';
+
+// ESM-compatible __dirname shim
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const router = Router();
 const ajv = new Ajv();

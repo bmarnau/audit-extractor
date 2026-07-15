@@ -4,7 +4,7 @@
  * Displays system health status, database connectivity, cache status,
  * and service availability checks
  * 
- * @version 0.34.0
+ * @version 0.35.0
  */
 
 import React, { useState, useEffect } from 'react';
@@ -36,31 +36,16 @@ import {
 } from '@mui/icons-material';
 
 interface HealthStatus {
-  database: {
-    status: 'healthy' | 'degraded' | 'unhealthy';
-    responseTime: number;
-    connections: number;
-    maxConnections: number;
-  };
-  cache: {
-    status: 'healthy' | 'degraded' | 'unhealthy';
-    memory: number;
-    maxMemory: number;
-    hitRate: number;
-  };
-  services: Array<{
-    name: string;
-    status: 'healthy' | 'degraded' | 'unhealthy';
-    responseTime: number;
-    lastCheck: string;
-  }>;
-  api: {
-    status: 'healthy' | 'degraded' | 'unhealthy';
-    uptime: number;
-    requestsPerSecond: number;
-    errorRate: number;
-  };
+  status: 'healthy' | 'degraded' | 'unhealthy';
   timestamp: string;
+  uptime: number;
+  memory: {
+    rss: number;
+    heapTotal: number;
+    heapUsed: number;
+    external: number;
+  };
+  environment: string;
 }
 
 const HealthPage: React.FC = () => {
@@ -127,6 +112,10 @@ const HealthPage: React.FC = () => {
     }
   };
 
+  const formatBytes = (bytes: number) => {
+    return (bytes / 1024 / 1024).toFixed(2);
+  };
+
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box sx={{ mb: 4 }}>
@@ -165,108 +154,44 @@ const HealthPage: React.FC = () => {
           </Box>
         ) : health ? (
           <>
-            {/* Overall Status Cards */}
+            {/* Main Status Card */}
             <Grid container spacing={3} sx={{ mb: 4 }}>
-              {/* Database Health */}
+              {/* Overall Health */}
               <Grid item xs={12} sm={6} md={3}>
                 <Card>
                   <CardHeader
-                    avatar={getStatusIcon(health.database.status)}
-                    title="Database"
+                    avatar={getStatusIcon(health.status)}
+                    title="Overall Status"
                     titleTypographyProps={{ variant: 'h6' }}
                     action={
                       <Chip
-                        label={health.database.status}
-                        color={getStatusColor(health.database.status)}
+                        label={health.status}
+                        color={getStatusColor(health.status)}
                         size="small"
                       />
                     }
                   />
                   <CardContent>
                     <Typography color="textSecondary" gutterBottom>
-                      Response Time: {health.database.responseTime}ms
+                      System is operational
                     </Typography>
-                    <Typography color="textSecondary" gutterBottom>
-                      Connections: {health.database.connections}/{health.database.maxConnections}
+                    <Typography color="textSecondary" variant="caption">
+                      {new Date(health.timestamp).toLocaleString()}
                     </Typography>
-                    <LinearProgress
-                      variant="determinate"
-                      value={(health.database.connections / health.database.maxConnections) * 100}
-                      sx={{ mt: 2 }}
-                    />
                   </CardContent>
                 </Card>
               </Grid>
 
-              {/* Cache Health */}
+              {/* API Server */}
               <Grid item xs={12} sm={6} md={3}>
                 <Card>
                   <CardHeader
-                    avatar={getStatusIcon(health.cache.status)}
-                    title="Cache (Redis)"
-                    titleTypographyProps={{ variant: 'h6' }}
-                    action={
-                      <Chip
-                        label={health.cache.status}
-                        color={getStatusColor(health.cache.status)}
-                        size="small"
-                      />
-                    }
-                  />
-                  <CardContent>
-                    <Typography color="textSecondary" gutterBottom>
-                      Memory: {(health.cache.memory / 1024 / 1024).toFixed(2)} MB
-                    </Typography>
-                    <Typography color="textSecondary" gutterBottom>
-                      Hit Rate: {(health.cache.hitRate * 100).toFixed(1)}%
-                    </Typography>
-                    <LinearProgress
-                      variant="determinate"
-                      value={(health.cache.memory / health.cache.maxMemory) * 100}
-                      sx={{ mt: 2 }}
-                    />
-                  </CardContent>
-                </Card>
-              </Grid>
-
-              {/* API Health */}
-              <Grid item xs={12} sm={6} md={3}>
-                <Card>
-                  <CardHeader
-                    avatar={getStatusIcon(health.api.status)}
+                    avatar={<CheckCircleIcon sx={{ color: 'success.main' }} />}
                     title="API Server"
                     titleTypographyProps={{ variant: 'h6' }}
                     action={
                       <Chip
-                        label={health.api.status}
-                        color={getStatusColor(health.api.status)}
-                        size="small"
-                      />
-                    }
-                  />
-                  <CardContent>
-                    <Typography color="textSecondary" gutterBottom>
-                      Uptime: {Math.floor(health.api.uptime / 60)}m
-                    </Typography>
-                    <Typography color="textSecondary" gutterBottom>
-                      Req/sec: {health.api.requestsPerSecond.toFixed(2)}
-                    </Typography>
-                    <Typography color="textSecondary" gutterBottom>
-                      Error Rate: {(health.api.errorRate * 100).toFixed(2)}%
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-
-              {/* System Status */}
-              <Grid item xs={12} sm={6} md={3}>
-                <Card>
-                  <CardHeader
-                    title="System"
-                    titleTypographyProps={{ variant: 'h6' }}
-                    action={
-                      <Chip
-                        label="OK"
+                        label="Running"
                         color="success"
                         size="small"
                       />
@@ -274,57 +199,94 @@ const HealthPage: React.FC = () => {
                   />
                   <CardContent>
                     <Typography color="textSecondary" gutterBottom>
-                      All systems operational
+                      Uptime: {Math.floor(health.uptime / 60)}m {Math.floor(health.uptime % 60)}s
                     </Typography>
+                    <Typography color="textSecondary" variant="caption">
+                      Environment: {health.environment}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              {/* Memory Usage */}
+              <Grid item xs={12} sm={6} md={3}>
+                <Card>
+                  <CardHeader
+                    title="Memory Usage"
+                    titleTypographyProps={{ variant: 'h6' }}
+                  />
+                  <CardContent>
                     <Typography color="textSecondary" gutterBottom>
-                      Last check: {new Date(health.timestamp).toLocaleString()}
+                      Heap: {formatBytes(health.memory.heapUsed)} / {formatBytes(health.memory.heapTotal)} MB
+                    </Typography>
+                    <LinearProgress
+                      variant="determinate"
+                      value={(health.memory.heapUsed / health.memory.heapTotal) * 100}
+                      sx={{ mt: 1, mb: 2 }}
+                    />
+                    <Typography color="textSecondary" variant="caption">
+                      RSS: {formatBytes(health.memory.rss)} MB
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+
+              {/* Process Info */}
+              <Grid item xs={12} sm={6} md={3}>
+                <Card>
+                  <CardHeader
+                    title="External Memory"
+                    titleTypographyProps={{ variant: 'h6' }}
+                  />
+                  <CardContent>
+                    <Typography color="textSecondary" gutterBottom>
+                      External: {formatBytes(health.memory.external)} MB
+                    </Typography>
+                    <Typography color="textSecondary" variant="caption">
+                      (Memory used by native addons)
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
             </Grid>
 
-            {/* Services Table */}
-            {health.services && health.services.length > 0 && (
-              <Card>
-                <CardHeader title="Service Status" />
-                <TableContainer>
-                  <Table>
-                    <TableHead>
-                      <TableRow sx={{ backgroundColor: 'action.hover' }}>
-                        <TableCell>Service</TableCell>
-                        <TableCell align="center">Status</TableCell>
-                        <TableCell align="right">Response Time (ms)</TableCell>
-                        <TableCell align="right">Last Check</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {health.services.map((service, idx) => (
-                        <TableRow key={idx}>
-                          <TableCell>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                              {getStatusIcon(service.status)}
-                              {service.name}
-                            </Box>
-                          </TableCell>
-                          <TableCell align="center">
-                            <Chip
-                              label={service.status}
-                              color={getStatusColor(service.status)}
-                              size="small"
-                            />
-                          </TableCell>
-                          <TableCell align="right">{service.responseTime}</TableCell>
-                          <TableCell align="right">
-                            {new Date(service.lastCheck).toLocaleTimeString()}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Card>
-            )}
+            {/* Detailed Memory Table */}
+            <Card>
+              <CardHeader title="Memory Details" />
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow sx={{ backgroundColor: 'action.hover' }}>
+                      <TableCell>Metric</TableCell>
+                      <TableCell align="right">Value</TableCell>
+                      <TableCell align="right">MB</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>RSS (Resident Set Size)</TableCell>
+                      <TableCell align="right">{health.memory.rss}</TableCell>
+                      <TableCell align="right">{formatBytes(health.memory.rss)}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Heap Total</TableCell>
+                      <TableCell align="right">{health.memory.heapTotal}</TableCell>
+                      <TableCell align="right">{formatBytes(health.memory.heapTotal)}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Heap Used</TableCell>
+                      <TableCell align="right">{health.memory.heapUsed}</TableCell>
+                      <TableCell align="right">{formatBytes(health.memory.heapUsed)}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>External</TableCell>
+                      <TableCell align="right">{health.memory.external}</TableCell>
+                      <TableCell align="right">{formatBytes(health.memory.external)}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Card>
           </>
         ) : null}
       </Box>

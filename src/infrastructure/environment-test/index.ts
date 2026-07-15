@@ -6,6 +6,7 @@
  */
 
 import path from 'path';
+import { existsSync, mkdirSync } from 'fs';
 
 // Re-export all types
 export * from './environment.types';
@@ -48,8 +49,8 @@ export async function runEnvironmentTests(
   
   // Ensure directory exists
   const reportDir = path.dirname(reportPath);
-  if (!require('fs').existsSync(reportDir)) {
-    require('fs').mkdirSync(reportDir, { recursive: true });
+  if (!existsSync(reportDir)) {
+    mkdirSync(reportDir, { recursive: true });
   }
 
   // Save JSON report

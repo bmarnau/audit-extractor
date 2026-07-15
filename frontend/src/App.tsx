@@ -47,6 +47,8 @@ import { SchemaProvider } from './context/SchemaContext';
 // Phase 24: Job Manager & iReport
 import JobManager from './components/JobManager';
 import IReportIntegration from './components/iReportIntegration';
+// Phase 38C: Services Page
+import ServicesPage from './pages/ServicesPage';
 // Error Handling
 import ErrorBoundary from './components/ErrorBoundary';
 // Phase 25: New Responsive Navigation
@@ -221,6 +223,8 @@ const AppContent: React.FC<{
               <Route path="/learning" element={<LearningPage />} />
               <Route path="/audit" element={<AuditViewer />} />
               <Route path="/logs" element={<LogViewer />} />
+              {/* Phase 38C: Services Management */}
+              <Route path="/services" element={<ServicesPage />} />
               <Route path="/health" element={<HealthPage />} />
               <Route path="/configuration" element={<ConfigEditor />} />
               <Route path="/backups" element={<BackupManager />} />

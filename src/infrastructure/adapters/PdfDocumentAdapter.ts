@@ -17,8 +17,7 @@
 
 import { readFile, stat } from 'fs/promises';
 import { extname } from 'path';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const pdfParse = require('pdf-parse');
+import pdfParse from 'pdf-parse';
 
 import { DocumentAdapter, DocumentAdapterError, DocumentAdapterOptions } from '@domain/document/DocumentAdapter';
 import { UnifiedDocument } from '@domain/document/UnifiedDocument';

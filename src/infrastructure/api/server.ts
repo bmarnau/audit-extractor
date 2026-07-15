@@ -178,6 +178,8 @@ export function createApiServer(): Express {
       status: 'healthy',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
+      memory: process.memoryUsage(),
+      environment: process.env.NODE_ENV || 'development',
     }, req));
   });
 
@@ -185,7 +187,7 @@ export function createApiServer(): Express {
   app.get('/api/health/database', async (_req: ApiRequest, res) => {
     try {
       // Import AppDataSource to check connection status
-      const { AppDataSource } = await import('../database/data-source');
+      const { AppDataSource } = await import('../database/data-source.js');
       
       if (AppDataSource.isInitialized) {
         // Try a simple query to verify connection
@@ -274,7 +276,7 @@ export function createApiServer(): Express {
   app.get('/api/health/build', async (_req: ApiRequest, res) => {
     try {
       const { BuildMetadataService } = await import(
-        '../services/build-metadata.service'
+        '../services/build-metadata.service.js'
       );
       const service = new BuildMetadataService();
       const metadata = await service.generateBuildMetadata();
@@ -308,7 +310,7 @@ export function createApiServer(): Express {
   // Git Sync Status Endpoint (for Dashboard - GitHub Sync Info)
   app.get('/api/health/sync', async (_req: ApiRequest, res) => {
     try {
-      const { GitSyncService } = await import('../services/git-sync.service');
+      const { GitSyncService } = await import('../services/git-sync.service.js');
       const service = new GitSyncService();
       const syncStatus = await service.checkSyncStatus();
 
@@ -338,7 +340,7 @@ export function createApiServer(): Express {
   app.post('/api/health/verify', async (_req: ApiRequest, res) => {
     try {
       const { BuildMetadataService } = await import(
-        '../services/build-metadata.service'
+        '../services/build-metadata.service.js'
       );
       const service = new BuildMetadataService();
       const report = await service.verifyVersions();

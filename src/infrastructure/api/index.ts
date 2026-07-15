@@ -325,12 +325,7 @@ async function startServer() {
   }
 }
 
-// Only start if run directly
-if (require.main === module) {
-  startServer().catch(err => {
-    console.error('[Fatal] Server crashed:', err);
-    process.exit(1);
-  });
-}
+// Note: Direct execution is handled by src/index.ts in ESM mode
+// The require.main === module check is not applicable in ESM
 
 export { startServer };

@@ -22,6 +22,7 @@ import {
   InsertDriveFile as ReportIcon,
   Analytics as AnalyticsIcon,
   TrendingUp as ProcessIcon,
+  Cloud as CloudIcon,
 } from '@mui/icons-material';
 
 /**
@@ -185,6 +186,13 @@ export const navigationCategories: NavCategory[] = [
         icon: <LogIcon />,
         description: 'Application Logs & Diagnostics',
         badge: 0,
+      },
+      {
+        id: 'services',
+        label: 'Services',
+        path: '/services',
+        icon: <CloudIcon />,
+        description: 'System Services & Health Monitoring',
       },
       {
         id: 'backups',

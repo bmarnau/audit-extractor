@@ -3,7 +3,7 @@
  * 
  * Provides application settings, preferences, and configuration management
  * 
- * @version 0.34.0
+ * @version 0.35.0
  * @phase 27 - Fix: Frontend /api/settings endpoint
  */
 

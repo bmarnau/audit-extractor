@@ -3,7 +3,7 @@
  * 
  * Provides OpenAPI/Swagger documentation for the Audit-Safe Extractor API
  * 
- * @version 0.34.0
+ * @version 0.35.0
  * @phase 27 - Fix: Frontend /api/docs endpoint
  */
 

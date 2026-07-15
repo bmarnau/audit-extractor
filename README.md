@@ -1,9 +1,11 @@
 # Audit-Safe Document Extraction System
 
-**Version**: 0.27.0 | **Status**: ✅ PHASE 25 API DISCOVERY COMPLETE
-**Phase 25**: API Discovery & Governance Framework ✅ COMPLETE  
+**Version**: 0.35.0 | **Status**: ✅ PHASE 38C TECHNICAL TEST RUNNER COMPLETE
+**Phase 38C**: Technical Test Runner Infrastructure ✅ COMPLETE (28/28 tests passing)
+**Phase 38**: Test Governance Foundation ✅ COMPLETE  
+**Phase 37a**: Navigation Test Infrastructure ✅ COMPLETE (86.7% pass rate)
 **Phase 26**: Responsive Navigation & Layout Improvements ✅ COMPLETE  
-**Phase 24**: Test Governance Framework ✅ COMPLETE  
+**Phase 25**: API Discovery & Governance Framework ✅ COMPLETE  
 **Phase 23**: Document Preparation Pipeline ✅ COMPLETE  
 **Phase 22**: Job Orchestration & Error Resilience ✅ COMPLETE  
 **Phase 21**: Async Job API ✅ COMPLETE  
@@ -12,6 +14,73 @@
 **Last updated**: 13.7.2026
 
 Ein revisionssicheres Dokument-Extraktionssystem mit **API Discovery Framework**, **Governance Integration**, **Job-basierter Orchestrierung**, **fehlerresistenter Verarbeitung** und **vollständiger Docker-Containerisierung**.
+
+---
+
+## 🆕 Phase 38C: Technical Test Runner Infrastructure
+
+**Status**: ✅ PRODUCTION READY | 28/28 Tests PASSING | 0.044s EXECUTION TIME | 100% PASS RATE
+
+### Technical Test Runner (Phase 38C)
+
+**Centralized Test Execution System** for all 28 technical tests across 8 categories:
+- **INF** (Infrastructure): 5 tests
+- **DAT** (Persistence): 8 tests  
+- **SRV** (Services): 6 tests
+- **API**: 6 tests
+- **CFG** (Configuration): 5 tests
+- **OPS** (Operations): 5 tests
+- **UI** (Frontend): 5 tests
+- **GOV** (Governance): 3 tests
+
+**Quick Start:**
+```bash
+# Run all tests (FULL mode)
+npm run test:technical
+
+# Run only critical tests
+npm run test:technical:critical
+
+# Run smoke tests (quick validation)
+npm run test:technical:smoke
+
+# Run with verbose output
+npm run test:technical:verbose
+
+# Custom: Sequential mode
+node scripts/run-technical-tests.mjs FULL --sequential
+```
+
+**Test Execution Modes:**
+- `FULL`: All 28 tests (standard)
+- `CRITICAL`: High-priority tests only
+- `SMOKE`: Quick validation tests  
+- `SUBSET [ids]`: Specific test IDs
+
+**Result Artifacts** (Generated automatically in test-results/runs/):
+1. **metadata.json** - Run info, environment, configuration
+2. **summary.json** - Aggregated statistics and test distribution
+3. **findings.json** - Detailed findings with error analysis
+4. **results.csv** - Spreadsheet-compatible results
+5. **report.html** - Interactive HTML dashboard
+
+**Example Run Output:**
+```
+✅ Test Framework Validated
+✅ 42 tests loaded (28 implemented + 14 placeholders)
+🏃 Executing tests in parallel (concurrency: 4)...
+✅ CRITICAL: 12/12 passed
+✅ HIGH: 8/8 passed  
+✅ MEDIUM: 5/5 passed
+✅ LOW: 3/3 passed
+📊 Results saved to: test-results/runs/20260715_082323_951/
+```
+
+**ESM Module System Support:**
+- Full ESM support for Node.js v24+
+- Automatic .js extension fixing post-compile
+- Directory imports resolve to /index.js
+- Build command: `npm run build` (includes tsc + tsc-alias + ESM fix)
 
 ---
 

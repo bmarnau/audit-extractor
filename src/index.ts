@@ -7,11 +7,12 @@
  */
 
 // MUST be first! tsyringe requires this polyfill
-// Using require() instead of import to ensure it's not optimized away
-require('reflect-metadata');
+// Using import for ESM compatibility
+import 'reflect-metadata';
 
 // Register tsconfig-paths for module resolution
-import 'tsconfig-paths/register';
+// Using direct path with .js for ESM compatibility
+import 'tsconfig-paths/register.js';
 
 // Library exports
 export { ExtractionEngine, ProvenanceAuditor } from '@application/ExtractionEngine';
@@ -48,7 +49,7 @@ export type { LearningEntry } from '@application/LearningComponent';
   
   if (isMainModule) {
     try {
-      const { startServer } = await import('@infrastructure/api');
+      const { startServer } = await import('@infrastructure/api/index.js');
       await startServer();
     } catch (err) {
       console.error('[Fatal] Failed to start server:', err);

@@ -12,6 +12,7 @@
  * ✅ Releaseentscheidung treffen
  */
 
+import { writeFileSync } from 'fs';
 import { GovernanceReport } from './types/governance-report.types';
 import { GovernanceReportGenerator } from './reporters/governance-report.generator';
 import { ReleaseDecisionService } from './services/release-decision.service';
@@ -102,9 +103,8 @@ export class TestGovernanceFramework {
    * Exportiert Report als JSON
    */
   public exportReportAsJSON(report: GovernanceReport, filePath: string): void {
-    const fs = require('fs');
     const json = this.reportGenerator.exportAsJSON(report);
-    fs.writeFileSync(filePath, json);
+    writeFileSync(filePath, json);
     console.log(`✅ Report exported to: ${filePath}`);
   }
 
@@ -112,9 +112,8 @@ export class TestGovernanceFramework {
    * Exportiert Report als Text-Dokument
    */
   public exportReportAsText(report: GovernanceReport, filePath: string): void {
-    const fs = require('fs');
     const text = this.reportGenerator.exportAsText(report);
-    fs.writeFileSync(filePath, text);
+    writeFileSync(filePath, text);
     console.log(`✅ Report exported to: ${filePath}`);
   }
 
