@@ -1,0 +1,194 @@
+{
+  "version": "0.36.0",
+  "generatedAt": "2026-07-16T10:00:00Z",
+  "findings": [
+    {
+      "id": "find-001",
+      "title": "High Memory Usage in Backend API",
+      "severity": "critical",
+      "category": "Performance",
+      "risk": "May cause out-of-memory crashes during production traffic spikes. Critical for reliability.",
+      "description": "Memory usage peaks at 85% during high-load tests. Event listeners not being cleaned up properly in data processing pipeline. Process restarts every 2-3 hours under sustained load.",
+      "recommendation": "Profile Node.js process with clinic.js or node --inspect. Identify and fix event listener leaks in document extraction service. Consider implementing memory pooling for large payload processing.",
+      "timestamp": "2026-07-16T09:30:00Z",
+      "category": "Performance",
+      "impactedComponent": "api-server/document-processor",
+      "details": {
+        "peakMemory": "2.1GB of 2.5GB limit",
+        "occurrences": 12,
+        "lastOccurrence": "2026-07-16T09:15:00Z"
+      }
+    },
+    {
+      "id": "find-002",
+      "title": "Database Connection Pool Exhaustion",
+      "severity": "high",
+      "category": "Availability",
+      "risk": "API becomes unresponsive when connection pool depletes. Users cannot process documents.",
+      "description": "PostgreSQL connection pool reaches 95 connections (max 100) during concurrent extraction. Connections not returning to pool properly after queries complete.",
+      "recommendation": "Increase pool size to 150-200. Implement connection timeout of 30s. Add query timeout enforcement. Monitor with pg_stat_activity.",
+      "timestamp": "2026-07-16T09:45:00Z",
+      "impactedComponent": "database/postgres",
+      "details": {
+        "poolSize": 100,
+        "peakConnections": 95,
+        "avgQueryTime": "850ms"
+      }
+    },
+    {
+      "id": "find-003",
+      "title": "Slow API Response Time (avg 850ms)",
+      "severity": "high",
+      "category": "Performance",
+      "risk": "Poor user experience. UI timeouts possible on mobile networks.",
+      "description": "Average API response time for /api/schemas endpoint is 850ms. Queries taking >1s on 20% of requests. N+1 query problem identified in schema list endpoint.",
+      "recommendation": "Implement eager loading for schema relationships. Add query result caching (Redis). Index frequently-queried columns. Consider denormalizing schema metadata.",
+      "timestamp": "2026-07-16T09:50:00Z",
+      "impactedComponent": "api-server/schemas",
+      "details": {
+        "p95ResponseTime": "2100ms",
+        "p99ResponseTime": "3500ms",
+        "affectedEndpoints": ["/api/schemas", "/api/jobs"]
+      }
+    },
+    {
+      "id": "find-004",
+      "title": "Missing Input Validation on File Upload",
+      "severity": "high",
+      "category": "Security",
+      "risk": "Potential for malicious file uploads. Could crash server or enable code execution.",
+      "description": "File upload endpoint does not validate file content. Only checks file extension. No size limit enforcement. No MIME type validation.",
+      "recommendation": "Implement comprehensive file validation: MIME type check, file signature verification, size limits (max 100MB per file), virus scan integration (ClamAV).",
+      "timestamp": "2026-07-16T10:00:00Z",
+      "impactedComponent": "api-server/uploads",
+      "details": {
+        "endpoint": "POST /api/documents/upload",
+        "lastViolation": "2026-07-15T15:30:00Z"
+      }
+    },
+    {
+      "id": "find-005",
+      "title": "No Rate Limiting on API Endpoints",
+      "severity": "medium",
+      "category": "Security",
+      "risk": "Vulnerability to DoS attacks. API can be overwhelmed by requests.",
+      "description": "API endpoints have no rate limiting. Single IP can make unlimited requests. No throttling on CPU-intensive endpoints like /api/extract.",
+      "recommendation": "Implement token bucket rate limiting: 100 req/min for public endpoints, 1000 req/min for authenticated. Use redis-based rate limiter (ratelimit library).",
+      "timestamp": "2026-07-16T10:05:00Z",
+      "impactedComponent": "api-server",
+      "details": {
+        "affectedEndpoints": "All public endpoints"
+      }
+    },
+    {
+      "id": "find-006",
+      "title": "TLS Certificate Expiring in 30 Days",
+      "severity": "high",
+      "category": "Security",
+      "risk": "Website will show security warnings. HTTPS will fail. Data transmission compromised.",
+      "description": "SSL/TLS certificate for audit-safe-document-extractor.com expires on 2026-08-15. No auto-renewal configured.",
+      "recommendation": "Enable Let's Encrypt auto-renewal with certbot. Implement certificate monitoring (certspotter, cert-monitor). Set renewal reminder at 60 days before expiry.",
+      "timestamp": "2026-07-16T10:10:00Z",
+      "impactedComponent": "infrastructure/ssl",
+      "details": {
+        "domain": "audit-safe-document-extractor.com",
+        "expiryDate": "2026-08-15T00:00:00Z",
+        "daysRemaining": 30
+      }
+    },
+    {
+      "id": "find-007",
+      "title": "No Database Backup Strategy",
+      "severity": "critical",
+      "category": "Availability",
+      "risk": "Data loss if database crashes. No recovery possible. Business continuity affected.",
+      "description": "Production database has no automated backups. No WAL archiving. No replication. Single point of failure.",
+      "recommendation": "Implement daily automated backups (pg_dump to S3). Enable PITR with WAL archiving. Set up streaming replication to standby. Test restore procedures monthly.",
+      "timestamp": "2026-07-16T10:15:00Z",
+      "impactedComponent": "infrastructure/database",
+      "details": {
+        "lastBackup": null,
+        "backupStrategy": "None"
+      }
+    },
+    {
+      "id": "find-008",
+      "title": "Frontend Bundle Size Too Large (2.1MB)",
+      "severity": "medium",
+      "category": "Performance",
+      "risk": "Slow page load on mobile networks. Higher bounce rate. Poor SEO.",
+      "description": "Frontend JavaScript bundle is 2.1MB gzipped. Includes unused dependencies. Code splitting not implemented. All libraries loaded on initial page load.",
+      "recommendation": "Implement code splitting (React.lazy + Suspense). Remove unused dependencies (uuid, lodash). Tree-shake Material-UI. Use dynamic imports for routes.",
+      "timestamp": "2026-07-16T10:20:00Z",
+      "impactedComponent": "frontend/bundler",
+      "details": {
+        "bundleSize": "2.1MB",
+        "gzipped": "640KB",
+        "loadTime_3G": "8.2 seconds"
+      }
+    },
+    {
+      "id": "find-009",
+      "title": "Insufficient Error Logging",
+      "severity": "medium",
+      "category": "Operations",
+      "risk": "Cannot debug production issues. Root cause analysis impossible. Extended MTTR.",
+      "description": "API logs lack context. Stack traces incomplete. Request IDs not tracked across services. Error aggregation not implemented.",
+      "recommendation": "Implement structured logging (winston/pino). Add request correlation IDs. Log all errors to centralized system (ELK or CloudWatch). Implement error alerting.",
+      "timestamp": "2026-07-16T10:25:00Z",
+      "impactedComponent": "api-server/logging",
+      "details": {
+        "errorTracked": "15%",
+        "errorLogged": "45%"
+      }
+    },
+    {
+      "id": "find-010",
+      "title": "Missing Health Check Endpoints",
+      "severity": "medium",
+      "category": "Operations",
+      "risk": "Cannot reliably detect when API is down. Load balancer cannot route traffic correctly. False traffic sends to dead servers.",
+      "description": "No /health endpoint. Load balancer using TCP health check only (not ideal). Readiness probe not implemented for Kubernetes.",
+      "recommendation": "Add /health endpoint returning status of all dependencies (db, cache, queue). Add /ready endpoint for Kubernetes. Implement circuit breaker for dependency checks.",
+      "timestamp": "2026-07-16T10:30:00Z",
+      "impactedComponent": "api-server",
+      "details": {
+        "liveness": "TCP only",
+        "readiness": "Not implemented",
+        "dependencies": 4
+      }
+    },
+    {
+      "id": "find-011",
+      "title": "No Automated Deployment Pipeline",
+      "severity": "medium",
+      "category": "Operations",
+      "risk": "Manual deployments error-prone. Deployment takes 30+ minutes. No rollback strategy.",
+      "description": "Deployments are manual via SSH and git pull. No tests run before deployment. No rollback mechanism. Database migrations manual.",
+      "recommendation": "Implement GitOps with GitHub Actions. Automate testing, build, push to registry. Use Docker Compose or Kubernetes for deployment. Implement blue-green deployments.",
+      "timestamp": "2026-07-16T10:35:00Z",
+      "impactedComponent": "infrastructure/deployment",
+      "details": {
+        "deploymentTime": "30 minutes",
+        "frequency": "2-3 per week",
+        "incidents": 3
+      }
+    },
+    {
+      "id": "find-012",
+      "title": "Missing Monitoring and Alerting",
+      "severity": "high",
+      "category": "Operations",
+      "risk": "Issues discovered by users instead of monitoring. Long MTTR. SLA violations.",
+      "description": "No application monitoring (APM). No metrics collection. No alerts configured. Cannot detect anomalies.",
+      "recommendation": "Implement monitoring: Prometheus for metrics, Grafana for dashboards, ELK for logs. Set up alerts for: CPU>80%, Memory>80%, Errors>1%, ResponseTime>2s",
+      "timestamp": "2026-07-16T10:40:00Z",
+      "impactedComponent": "infrastructure/monitoring",
+      "details": {
+        "metrics": "None",
+        "alerts": 0,
+        "dashboards": 0
+      }
+    }
+  ]
+}

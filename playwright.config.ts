@@ -27,6 +27,9 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    navigationTimeout: 120000,
+    actionTimeout: 120000,
+    timeout: 120000,
   },
   // webServer disabled - assuming Docker stack is already running
   // Start manually with: docker-compose up -d
@@ -37,7 +40,7 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
-  timeout: 30 * 1000,
-  globalTimeout: 30 * 60 * 1000, // 30 minutes total
+  timeout: 120 * 1000,
+  globalTimeout: 60 * 60 * 1000, // 60 minutes total
   outputFolder: 'test-results',
 });

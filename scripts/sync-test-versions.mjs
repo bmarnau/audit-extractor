@@ -110,15 +110,31 @@ function updateTestConfigVersion(appVersion) {
 function updateNavigationTestVersion(appVersion) {
   const testContent = readTextFile(NAVIGATION_TEST_PATH);
   
-  // Update test file header version
+  // Update test file header version and all references
   const updatedContent = testContent
     .replace(
       /@version\s+[\d.]+/,
       `@version ${appVersion}`
     )
     .replace(
-      /NAVIGATION TEST SUITE v[\d.]+/,
+      /COMPREHENSIVE NAVIGATION TEST SUITE v[\d.]+/g,
+      `COMPREHENSIVE NAVIGATION TEST SUITE v${appVersion}`
+    )
+    .replace(
+      /NAVIGATION TEST SUITE v[\d.]+/g,
       `NAVIGATION TEST SUITE v${appVersion}`
+    )
+    .replace(
+      /Validiert für v[\d.]+/g,
+      `Validiert für v${appVersion}`
+    )
+    .replace(
+      /nach v[\d.]+/g,
+      `nach v${appVersion}`
+    )
+    .replace(
+      /NEW v[\d.]+/g,
+      `NEW v${appVersion}`
     );
   
   writeTextFile(NAVIGATION_TEST_PATH, updatedContent);
@@ -128,15 +144,23 @@ function updateNavigationTestVersion(appVersion) {
 function updateApiVersionTest(appVersion) {
   const testContent = readTextFile(API_VERSION_TEST_PATH);
   
-  // Update test file header version
+  // Update test file header version and all references
   const updatedContent = testContent
     .replace(
       /@version\s+[\d.]+/,
       `@version ${appVersion}`
     )
     .replace(
-      /API VERIFICATION TEST SUITE v[\d.]+/,
+      /API VERIFICATION TEST SUITE v[\d.]+/g,
       `API VERIFICATION TEST SUITE v${appVersion}`
+    )
+    .replace(
+      /TEST SUITE v[\d.]+/g,
+      `TEST SUITE v${appVersion}`
+    )
+    .replace(
+      /v[\d.]+\s+API/g,
+      `v${appVersion} API`
     );
   
   writeTextFile(API_VERSION_TEST_PATH, updatedContent);

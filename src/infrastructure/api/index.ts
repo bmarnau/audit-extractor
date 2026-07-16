@@ -42,6 +42,10 @@ import docsRoutes from './routes/docs';
 import settingsRoutes from './routes/settings';
 // Phase 40 - System & Wakeup
 import systemRoutes from './routes/system';
+// Phase 43 - Technical Tests: Findings & Recommendations APIs
+import findingsRoutes from '../../api/routes/findings.routes';
+import recommendationsRoutes from '../../api/routes/recommendations.routes';
+import exportRoutes from '../../api/routes/export.routes';
 
 const port = parseInt(process.env.PORT || '3000', 10);
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -250,6 +254,33 @@ async function startServer() {
       console.log('[Server] ✓ System & Wakeup routes mounted on /api/system');
     } catch (routeErr) {
       console.error('[Server] Error mounting system routes:', routeErr);
+      throw routeErr;
+    }
+
+    // Phase 43: Technical Tests - Findings API
+    try {
+      app.use('/api/technical-tests/findings', findingsRoutes);
+      console.log('[Server] ✓ Findings API routes mounted on /api/technical-tests/findings');
+    } catch (routeErr) {
+      console.error('[Server] Error mounting findings routes:', routeErr);
+      throw routeErr;
+    }
+
+    // Phase 43B: Technical Tests - Recommendations API
+    try {
+      app.use('/api/technical-tests/recommendations', recommendationsRoutes);
+      console.log('[Server] ✓ Recommendations API routes mounted on /api/technical-tests/recommendations');
+    } catch (routeErr) {
+      console.error('[Server] Error mounting recommendations routes:', routeErr);
+      throw routeErr;
+    }
+
+    // Phase 43D: Technical Tests - Export API
+    try {
+      app.use('/api/technical-tests/export', exportRoutes);
+      console.log('[Server] ✓ Export API routes mounted on /api/technical-tests/export');
+    } catch (routeErr) {
+      console.error('[Server] Error mounting export routes:', routeErr);
       throw routeErr;
     }
 
