@@ -541,6 +541,134 @@ npm run test:technical:phase43
 
 ---
 
+## 🎨 Phase 43: Frontend UI Navigation
+
+### Wo finde ich die Phase 43 Komponenten?
+
+Die Phase 43 Komponenten sind jetzt integriert in die **Technical Audit Page**:
+
+**URL:** `http://localhost:80/audit` (oder `http://localhost:5173/audit` im Dev-Modus)
+
+### Seiten-Layout
+
+Die TechnicalAuditPage hat jetzt **zwei Tabs**:
+
+#### Tab 1: 📊 Report Viewer
+
+**Inhalt:**
+- **Findings Table**: Alle Audit-Findings mit Severity-Farbcodierung
+  - 🔴 Critical (Rot)
+  - 🟠 High (Orange)
+  - 🟡 Medium (Gelb)
+  - 🟢 Low (Grün)
+- **Recommendations Table**: Empfehlungen mit Prioritäts-Indikatoren
+- **Summary Cards**: Statistiken und Übersicht
+- **Auto-Refresh**: Aktualisiert sich alle 60 Sekunden automatisch
+
+**Was sehe ich:**
+```
+╔════════════════════════════════════════════════════════╗
+║  📊 REPORT VIEWER                                      ║
+╠════════════════════════════════════════════════════════╣
+║  Findings: 12 | Critical: 3 | High: 5 | Medium: 4    ║
+╠════════════════════════════════════════════════════════╣
+║  [TABLE mit allen Findings und Details]               ║
+║  [TABLE mit Recommendations und Aktionen]             ║
+╚════════════════════════════════════════════════════════╝
+```
+
+#### Tab 2: 📈 Dashboard Widget
+
+**Inhalt:**
+- **Health Status**: 🔴 CRITICAL / 🟡 WARNING / 🟢 HEALTHY
+- **Real-time Statistics**: Anzahl der Findings/Recommendations
+- **Export Dialog**: Exportiere Reports als PDF, CSV oder JSON
+- **Quick Overview**: Wichtigste Metriken auf einen Blick
+
+**Gesundheits-Status Logik:**
+- 🔴 **CRITICAL** → Falls Critical Findings > 0
+- 🟡 **WARNING** → Falls High Findings > 0
+- 🟢 **HEALTHY** → Wenn keine Critical/High Findings
+
+**Was sehe ich:**
+```
+╔════════════════════════════════════════════════════════╗
+║  📈 DASHBOARD WIDGET                                   ║
+╠════════════════════════════════════════════════════════╣
+║  Status: 🔴 CRITICAL                                   ║
+║  Findings: 12 (3 Critical, 5 High, 4 Medium)          ║
+║  Recommendations: 8 (5 High, 3 Medium)                ║
+╠════════════════════════════════════════════════════════╣
+║  [📥 Export as PDF]  [📊 Export as CSV]  [📋 Export JSON] ║
+║  [🔄 Refresh Now]                                      ║
+╚════════════════════════════════════════════════════════╝
+```
+
+### Bedienung der UI
+
+**1. Zwischen Tabs wechseln:**
+```
+Klick auf: "📊 Report Viewer" oder "📈 Dashboard Widget"
+```
+
+**2. Findings filtern (in Report Viewer):**
+```
+- Nach Severity filtern
+- Nach Component filtern
+- Pagination verwenden
+```
+
+**3. Report exportieren (in Dashboard Widget):**
+```
+Schritt 1: Klick auf "Export" Button
+Schritt 2: Wähle Format: PDF / CSV / JSON
+Schritt 3: Download beginnt automatisch
+```
+
+**4. Auto-Refresh deaktivieren:**
+```
+- Beide Komponenten laden Daten automatisch alle 60 Sekunden
+- Für manuelles Refresh: Browser F5 drücken oder "Refresh Now" klicken
+```
+
+### API-Daten live sehen
+
+Die TechnicalAuditPage zeigt auch **Phase 43 API-Endpunkte** an:
+
+```
+Phase 43 API Endpoints:
+✓ GET /api/technical-tests/findings
+✓ GET /api/technical-tests/recommendations
+✓ GET /api/technical-tests/export/pdf
+✓ GET /api/technical-tests/export/csv
+✓ GET /api/technical-tests/export/json
+```
+
+### Troubleshooting Frontend
+
+| Problem | Lösung |
+|---------|---------|
+| Seite zeigt nur leere Tabs | Backend-Container prüfen: `docker-compose ps` |
+| Daten laden nicht | Browser-Konsole prüfen (F12) auf Fehler |
+| Export funktioniert nicht | POST-Request im Network Tab prüfen |
+| Auto-Refresh funktioniert nicht | Browser-Konsole auf WebSocket-Fehler prüfen |
+| Komponenten nicht sichtbar | Frontend Container neu starten: `docker-compose restart frontend` |
+
+### Developer Info
+
+**Component Locations:**
+- Report Viewer: `frontend/src/components/ReportViewer/index.tsx` (280 Zeilen)
+- Dashboard Widget: `frontend/src/components/Dashboard/TechnicalAuditWidget.tsx` (280 Zeilen)
+- Main Page: `frontend/src/pages/TechnicalAuditPage.tsx` (800+ Zeilen)
+
+**Abhängigkeiten:**
+- Material-UI v5.14+
+- React 18.2+
+- TypeScript (strict mode)
+- Axios für API-Calls
+
+---
+
 ## Was ist die Audit-Safe App?
 
 ### Zweck und Nutzen
