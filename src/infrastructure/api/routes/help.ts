@@ -420,12 +420,12 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
     const docs = await loader.loadDocumentation();
     
     // Current version constant - update this when releasing new version
-    const CURRENT_VERSION = '0.35.0';
+    const CURRENT_VERSION = '0.37.1';
     const CURRENT_MANUAL_FILE = `MANUAL-${CURRENT_VERSION}.md`;
     
     console.log(`[Help] Manual endpoint called - looking for version ${CURRENT_VERSION}`);
     
-    // Prioritize MANUAL-0.35.0.md specifically
+    // Prioritize MANUAL-0.37.1.md specifically
     let manual = docs.find((d: any) => {
       const filename = d.source?.split('/').pop() || '';
       return filename === CURRENT_MANUAL_FILE;
@@ -539,7 +539,7 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
         ));
       }
       return res.json(createSuccessResponse({
-        version: '0.35.0',
+        version: '0.37.1',
         title: title,
         chapter: selectedChapter,
         totalChapters: chapters.length,
@@ -547,7 +547,7 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
     }
 
     res.json(createSuccessResponse({
-      version: '0.35.0',
+      version: '0.37.1',
       title: title,
       lastUpdated: new Date().toISOString(),
       chapters: chapters,
@@ -573,7 +573,7 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
  */
 router.get('/version', async (req: ApiRequest, res: Response, next: NextFunction) => {
   try {
-    const CURRENT_VERSION = '0.35.0';
+    const CURRENT_VERSION = '0.37.1';
     const CURRENT_MANUAL_FILE = `MANUAL-${CURRENT_VERSION}.md`;
     
     const docs = await loader.loadDocumentation();

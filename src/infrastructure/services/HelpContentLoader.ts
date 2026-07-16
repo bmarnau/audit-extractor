@@ -331,7 +331,7 @@ export class HelpContentLoader {
 
       // Load from root directory special docs
       const specialDocs = [
-        'MANUAL-0.35.0.md',  // ✅ Current version manual / Betriebshandbuch (Phase 37a)
+        'MANUAL-0.37.1.md',  // ✅ Current version manual / Betriebshandbuch (Phase 43)
         'OPERATIONS_MANUAL_V35.md',  // ✅ Operations manual v0.35.0
         'RELEASE_NOTES_0.35.0.md',  // ✅ Release notes v0.35.0
         'MANUAL-0.25.0.md',  // Fallback to previous version
