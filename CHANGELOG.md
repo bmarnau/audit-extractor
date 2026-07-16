@@ -10,6 +10,51 @@ Folge [Semantic Versioning](https://semver.org/):
 
 ---
 
+## [0.36.0] - 2026-07-16 (Phase 42: Release Management - Navigation Routing Fixes & Auto-Sync ✅ COMPLETE)
+
+### Added - Phase 42: Release Management
+- ✅ **Automatic Test Version Synchronization**: New ESM-compatible sync script
+  - `scripts/sync-test-versions.mjs` for atomic version updates
+  - Syncs app version with all test configuration files
+  - Integrated with `npm run sync:tests` command
+  - Prevents manual version mismatches
+  
+- ✅ **New Navigation Pages**: Two critical routes now fully implemented
+  - `/api/docs` - API Documentation page component
+  - `/settings` - Settings page component
+  - Both integrated into responsive navigation
+
+- ✅ **Extended Test Coverage**: Comprehensive test suite expansion
+  - Total tests: 22 (14 navigation + 8 API)
+  - 100% route coverage: all 11 navigation items tested
+  - 100% API endpoint coverage: 9 endpoints verified
+
+### Fixed - Phase 42: Navigation Routing Issues
+- ✅ **Fixed Missing Routes**: 
+  - `/api/docs` now accessible and tested
+  - `/settings` now accessible and tested
+  - Proper error handling for missing routes
+  
+- ✅ **Fixed Path Inconsistency**:
+  - Standardized `/backup` → `/backups` naming
+  - Consistent paths across config and router
+  - All navigation items properly mapped
+
+- ✅ **Fixed Test Version Management**:
+  - All test files synchronized to 0.36.0
+  - Build date: 2026-07-16
+  - No manual intervention required for version updates
+
+### Technical Details - Phase 42
+- Navigation routes: 11/11 (100% coverage)
+- API endpoints: 9/9 (100% verified)
+- Test cases: 22/22 (100% defined)
+- TypeScript compilation: ✅ 0 errors
+- Frontend build: ✅ Success
+- Docker build: ✅ Both images ready
+
+---
+
 ## [0.27.0] - 2026-07-13 (Phase 25 Complete: API Discovery Framework - ✅ COMPLETE)
 
 ### Added - Phase 25: API Discovery & Governance Framework
