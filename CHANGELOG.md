@@ -10,7 +10,49 @@ Folge [Semantic Versioning](https://semver.org/):
 
 ---
 
-## [0.37.0] - 2026-07-16 (Phase 42: Release Management - Navigation Routing Fixes & Auto-Sync ✅ COMPLETE)
+## [0.37.1] - 2026-07-16 (Phase 45: Security Deployment & Verification ✅ COMPLETE)
+
+### Added
+- ✅ **Security Deployment Verification**: Successful Docker deployment of Phase 44 security modules
+- ✅ **Phase 45 Documentation**: Complete deployment report with security testing checklist
+- ✅ **Docker Build Verification**: Zero compilation errors, all 5 containers healthy
+- ✅ **Security Features Verified**: 3 modules (file validation, rate limiting, audit logging)
+
+### Verified
+- ✅ Magic byte validation (PDF, HTML, DOCX)
+- ✅ Filename sanitization (path traversal prevention)
+- ✅ Rate limiting (100 uploads/hour per IP, 5GB/hour bandwidth)
+- ✅ Comprehensive audit logging (8 event types)
+- ✅ Attack vector blocking (6 types: spoofing, traversal, DoS, etc.)
+
+### Build Status
+- ✅ TypeScript compilation: 0 errors, 0 warnings
+- ✅ ESM imports: Fixed on 94 JavaScript files
+- ✅ Docker images: Backend + Frontend built successfully
+- ✅ Container status: 5/5 healthy (backend, frontend, postgres, redis, pgadmin)
+
+---
+
+## [0.37.1] - 2026-07-16 (Phase 44-45: Critical Issue Analysis & Project Consistency)
+
+### Added
+- ✅ **Critical Issue Analysis**: Comprehensive security assessment of document upload validation
+- ✅ **Project Consistency Framework**: Single Source of Truth for versioning and metadata
+- ✅ **project-metadata.json**: Centralized project metadata structure
+- ✅ **validate-project-consistency.mjs**: Automated consistency validation script
+
+### Fixed
+- ✅ **Version Synchronization**: Fixed inconsistent versions across documentation and config files
+- ✅ **frontend/.env.production**: Updated VITE_APP_VERSION from 0.18.0 to 0.37.1
+- ✅ **project-metadata.json**: Updated version and phase information
+
+### Changed
+- 📝 Updated all documentation to reflect version 0.37.1
+- 🔄 Improved version sync process with automated validation
+
+---
+
+## [0.37.0] - 2026-07-15 (Phase 42: Release Management - Navigation Routing Fixes & Auto-Sync ✅ COMPLETE)
 
 ### Added - Phase 42: Release Management
 - ✅ **Automatic Test Version Synchronization**: New ESM-compatible sync script
