@@ -1,7 +1,7 @@
 # Phase 31: Comprehensive Test Execution & Reporting - Handbuch
 
 **Status**: ✅ Implementation Complete  
-**Version**: 0.27.0  
+**Version**: 0.37.0  
 **Datum**: 2026-07-13  
 
 ---

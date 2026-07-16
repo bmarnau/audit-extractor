@@ -80,7 +80,7 @@ docker logs extractor-frontend
 
 ### For Next Version
 ```bash
-# 1. Update version in package.json (e.g., 0.35.0 → 0.36.0)
+# 1. Update version in package.json (e.g., 0.37.0 → 0.37.0)
 # 2. Run auto-sync
 npm run sync:tests
 
@@ -117,8 +117,8 @@ Critical (5):
 ✅ /api/logs
 
 Optional (2):
-✅ /api/docs (NEW in v0.35.0)
-✅ /api/settings (NEW in v0.35.0)
+✅ /api/docs (NEW in 0.37.0)
+✅ /api/settings (NEW in 0.37.0)
 
 Service (2):
 ✅ /api/backup
@@ -213,7 +213,7 @@ API Verification Tests: 8
 
 ## 📈 Version Tracking
 
-### v0.35.0 (Current)
+### 0.37.0 (Current)
 - **Status:** ✅ Complete & Tested
 - **Routes:** 11/11 ✅
 - **Tests:** 18/18 ✅
@@ -221,7 +221,7 @@ API Verification Tests: 8
 - **Docker:** ✅ Built Successfully
 - **Automation:** ✅ Implemented
 
-### v0.34.0 (Previous)
+### 0.37.0 (Previous)
 - Original navigation structure
 - 10 test cases
 - Basic verification
@@ -352,7 +352,7 @@ All navigation routes are verified, all tests are in place, and a complete autom
 
 ---
 
-**Current Version:** 0.35.0  
+**Current Version:** 0.37.0  
 **Build Date:** 2026-07-16  
 **Phase:** 41 Complete  
 **Status:** ✅ Production Ready

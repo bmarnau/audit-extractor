@@ -1,7 +1,7 @@
 # 📖 Operationshandbuch - Betriebshandbuch
-## Audit-Safe Document Extractor v0.35.0
+## Audit-Safe Document Extractor 0.37.0
 
-**Version:** 0.35.0  
+**Version:** 0.37.0  
 **Phase:** 38C (Technical Test Runner Infrastructure)  
 **Datum:** 2026-07-15  
 **Status:** Produktionsreif mit vollständiger Test-Automation  
@@ -99,7 +99,7 @@ Alle Tests generieren automatisch 5 Output-Formate in `test-results/runs/[RUN-ID
   "environment": {
     "host": "LAPTOP-ABC",
     "platform": "win32",
-    "nodeVersion": "v24.16.0"
+    "nodeVersion": "0.37.0"
   },
   "configuration": {
     "mode": "FULL",
@@ -358,7 +358,7 @@ npm start
 │ 🔍 MON  │                                             │
 │ ⚙️ SYS  │                                             │
 │         │                                             │
-│ v0.25.0 │                                             │
+│ 0.37.0 │                                             │
 ├─────────┴──────────────────────────────────────────────┤
 │ Sidebar: 280px (permanent)    │ Main: Responsive       │
 └─────────────────────────────────────────────────────────┘
@@ -1169,7 +1169,7 @@ Ein **System-Check** ist eine automatisierte Überprüfung aller Systemkomponent
 
 ### Wann sollte man einen Check durchführen?
 
-✅ **Nach Versions-Update** - Wenn die Version erhöht wurde (0.25.0 → 0.26.0)  
+✅ **Nach Versions-Update** - Wenn die Version erhöht wurde (0.37.0 → 0.37.0)  
 ✅ **Nach Schema-Änderungen** - Wenn neue Schemas hochgeladen wurden  
 ✅ **Nach Backup-Restore** - Nach dem Wiederherstellen eines Backups  
 ✅ **Nach Konfigurationsänderungen** - Nach wichtigen Einstellungsänderungen  
@@ -1230,7 +1230,7 @@ SELECT COUNT(*) FROM schemas;
 
 ### Versionierungsprozess
 
-**Was passiert bei v0.25.0 → v0.26.0?**
+**Was passiert bei 0.37.0 → 0.37.0?**
 
 1. **Version-Bumping**: package.json, App.tsx, etc. aktualisieren
 2. **Compilation**: `npm run build` durchführen
@@ -1238,7 +1238,7 @@ SELECT COUNT(*) FROM schemas;
 4. **Documentation**: RELEASE_NOTES.md, MANUAL.md erstellen
 5. **Archivierung**: Alte Phase-Dateien in archive/ verschieben
 6. **Git Commit**: `git commit -m "Phase 26: ..."`
-7. **Git Tag**: `git tag v0.26.0`
+7. **Git Tag**: `git tag 0.37.0`
 8. **Git Push**: `git push origin master --tags`
 
 **Dokumentation dazu:** [COMPREHENSIVE_CHECK_GUIDE.md#versionierungsprozess](COMPREHENSIVE_CHECK_GUIDE.md#versionierungsprozess)
@@ -1473,4 +1473,4 @@ Die **Audit-Safe Document Extractor** ist ein mächtiges Tool zur Automatisierun
 
 **📞 Fragen?** Siehe Help Center oder kontaktieren Sie Support.
 
-**Version:** 0.25.0 | Letzte Aktualisierung: 2026-07-11 | Status: Produktionsreif ✅
+**Version:** 0.37.0 | Letzte Aktualisierung: 2026-07-11 | Status: Produktionsreif ✅

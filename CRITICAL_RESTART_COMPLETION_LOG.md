@@ -106,10 +106,10 @@ import { ApiRequest, createSuccessResponse } from '../server';
 ```json
 {
   "data": {
-    "version": "0.34.0",
+    "version": "0.37.0",
     "buildNumber": "local-build",
     "buildTime": "2026-07-14T05:34:25.099Z",
-    "nodeVersion": "v20.20.2",
+    "nodeVersion": "0.37.0",
     "environment": "development",
     "timestamp": "2026-07-14T05:34:25.099Z"
   },
@@ -118,7 +118,7 @@ import { ApiRequest, createSuccessResponse } from '../server';
   "duration": 3
 }
 ```
-✅ **Version 0.34.0 correctly exposed via API**
+✅ **Version 0.37.0 correctly exposed via API**
 
 ### Frontend Routes (localhost:5173)
 
@@ -171,7 +171,7 @@ extractor-redis      Up 15 minutes (healthy) ✅
 
 **Verification:**
 - Before Fix: 404 "Route GET /api/buildInfo not found"
-- After Fix: 200 with build info including version 0.34.0
+- After Fix: 200 with build info including version 0.37.0
 - **Status: ✅ RESOLVED**
 
 ---
@@ -196,7 +196,7 @@ extractor-redis      Up 15 minutes (healthy) ✅
 - [x] Critical API endpoints returning 200 status
 - [x] Frontend routes all accessible (200 responses)
 - [x] Build info endpoint functional (was 404, now 200)
-- [x] Version information correctly exposed (0.34.0)
+- [x] Version information correctly exposed (0.37.0)
 - [x] Frontend Vite dev server running and responsive
 
 ### ⚠️ NON-CRITICAL ISSUES
@@ -233,7 +233,7 @@ extractor-redis      Up 15 minutes (healthy) ✅
 - ⚠️ Multiple API routes non-functional
 
 **AFTER Critical Fix:**
-- ✅ buildInfo endpoint: 200 OK (returns version 0.34.0)
+- ✅ buildInfo endpoint: 200 OK (returns version 0.37.0)
 - ✅ Dashboard can fetch version information
 - ✅ 5/7 main API endpoints functional
 - ✅ All 7 frontend routes responding

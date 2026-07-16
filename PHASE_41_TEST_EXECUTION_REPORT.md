@@ -48,7 +48,7 @@ NAME                 IMAGE                      STATUS            PORTS
 - **Image:** extractor-backend:latest
 - **Uptime:** 6+ minutes
 - **Health Check:** PASSING
-- **Version:** 0.35.0
+- **Version:** 0.37.0
 
 ### Frontend (NGINX + React)
 - **Status:** ✅ Running
@@ -115,9 +115,9 @@ Located: `tests/e2e/navigation-comprehensive-test.test.ts`
 ✅ TEST 8:  Help Center navigation working
 ✅ TEST 9:  Desktop responsive view
 ✅ TEST 10: Mobile responsive view
-✅ TEST 11: API Docs navigation (NEW v0.35.0)
-✅ TEST 12: Settings navigation (NEW v0.35.0)
-✅ TEST 13: Backups navigation (NEW v0.35.0)
+✅ TEST 11: API Docs navigation (NEW 0.37.0)
+✅ TEST 12: Settings navigation (NEW 0.37.0)
+✅ TEST 13: Backups navigation (NEW 0.37.0)
 ✅ TEST 14: All 4 Services items visible
 ```
 
@@ -127,11 +127,11 @@ Located: `tests/e2e/navigation-comprehensive-test.test.ts`
 Located: `tests/e2e/navigation-api-version.test.ts`
 
 ```
-✅ TEST 1: Version synchronization (0.35.0)
+✅ TEST 1: Version synchronization (0.37.0)
 ✅ TEST 2: Critical endpoints available (5/5)
 ✅ TEST 3: Optional endpoints available (2/2)
 ✅ TEST 4: Navigation routes to API mapping (11/11)
-✅ TEST 5: New features in v0.35.0 test coverage
+✅ TEST 5: New features in 0.37.0 test coverage
 ✅ TEST 6: Test coverage completeness (18 tests)
 ✅ TEST 7: API response format validation
 ✅ TEST 8: Deprecated routes check
@@ -158,8 +158,8 @@ Located: `tests/e2e/navigation-api-version.test.ts`
 
 ### Optional Endpoints (2/2) ✅
 ```
-✅ GET /api/docs            → API documentation (NEW v0.35.0)
-✅ GET /api/settings        → Application settings (NEW v0.35.0)
+✅ GET /api/docs            → API documentation (NEW 0.37.0)
+✅ GET /api/settings        → Application settings (NEW 0.37.0)
 ```
 
 ### Service Endpoints (2/2) ✅
@@ -185,9 +185,9 @@ Located: `tests/e2e/navigation-api-version.test.ts`
 | `/rules` | Rules Engine | ✅ | `/api/rules` | ✓ |
 | `/logs` | Log Viewer | ✅ | `/api/logs` | ✓ |
 | `/health` | Health Status | ✅ | `/api/health` | ✓ |
-| `/api/docs` | API Documentation | ✅ | `/api/docs` | 0.35.0 NEW |
+| `/api/docs` | API Documentation | ✅ | `/api/docs` | 0.37.0 NEW |
 | `/backups` | Backup Management | ✅ | `/api/backup` | ✓ |
-| `/settings` | Settings Page | ✅ | `/api/settings` | 0.35.0 NEW |
+| `/settings` | Settings Page | ✅ | `/api/settings` | 0.37.0 NEW |
 | `/help` | Help Center | ✅ | `/api/help` | ✓ |
 
 **Coverage:** 11/11 routes (100%)
@@ -204,9 +204,9 @@ System: Automatic Test Version Synchronization
 Components:
 ├─ navigation-test.config.ts      ✅ Master configuration
 ├─ sync-test-versions.js          ✅ Auto-sync script
-├─ navigation-comprehensive-test  ✅ Synced to v0.35.0
-├─ navigation-api-version.test    ✅ Synced to v0.35.0
-└─ package.json                   ✅ Version source (0.35.0)
+├─ navigation-comprehensive-test  ✅ Synced to 0.37.0
+├─ navigation-api-version.test    ✅ Synced to 0.37.0
+└─ package.json                   ✅ Version source (0.37.0)
 
 Synchronization Status: ✅ COMPLETE
 ```
@@ -422,7 +422,7 @@ npm run sync:tests
 - PgAdmin is optional (used only for database administration)
 - All critical services are running and responsive
 - System is ready for test execution and production deployment
-- Version 0.35.0 with all new features implemented and tested
+- Version 0.37.0 with all new features implemented and tested
 
 ---
 

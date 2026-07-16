@@ -54,10 +54,10 @@
 - Header: "Schema Management"
 - Table with 8 columns: Schema ID, Name, Description, Version, Status, Fields, Created, Actions
 - 4 Schemas displayed:
-  1. TestSchema (v1.0.0)
-  2. Unnamed Schema (v1.0.0)
-  3. JSON Schema Reference (v1.0.0)
-  4. Invoice Schema v1.0 (v1.0.0)
+  1. TestSchema (0.37.0)
+  2. Unnamed Schema (0.37.0)
+  3. JSON Schema Reference (0.37.0)
+  4. Invoice Schema v1.0 (0.37.0)
 - Action buttons: Edit, Version History, Delete
 - Refresh button functional
 
@@ -237,8 +237,8 @@ res.json(createSuccessResponse({
 
 | Component | Version | Status |
 |-----------|---------|--------|
-| Frontend | 0.35.0 | ✅ Running (Nginx on port 5173) |
-| Backend | 0.35.0 | ✅ Running (Node.js on port 3000) |
+| Frontend | 0.37.0 | ✅ Running (Nginx on port 5173) |
+| Backend | 0.37.0 | ✅ Running (Node.js on port 3000) |
 | PostgreSQL | 15-alpine | ✅ Healthy |
 | Redis | 7-alpine | ✅ Healthy |
 | Docker Compose | Latest | ✅ Working |

@@ -360,7 +360,7 @@ Default: Uses `default-user` when not specified.
 **Response (200 OK):**
 ```json
 {
-  "version": "0.18.0",
+  "version": "0.37.0",
   "environment": "development",
   "apiUrl": "http://localhost:3000",
   "features": {
@@ -428,4 +428,4 @@ Events:
 
 **API Version:** v1  
 **Last Updated:** 2026-07-09  
-**Status:** Active (v0.18.0)
+**Status:** Active (0.37.0)

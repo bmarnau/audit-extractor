@@ -1,6 +1,6 @@
 # 📚 Complete API Endpoints Reference
 
-**Version**: 0.18.0  
+**Version**: 0.37.0  
 **Status**: ✅ Production-Ready  
 **Last Updated**: 2026-07-14
 
@@ -43,7 +43,7 @@ http://localhost:3000/api
 **Response**: 200 OK
 ```json
 {
-  "version": "0.18.0",
+  "version": "0.37.0",
   "buildTime": "2026-07-14T05:20:00.000Z",
   "buildNumber": "unknown",
   "environment": "development",
@@ -56,7 +56,7 @@ http://localhost:3000/api
 **Response**: 200 OK
 ```json
 {
-  "version": "0.18.0",
+  "version": "0.37.0",
   "buildNumber": "build-123",
   "gitInfo": {
     "branch": "main",
@@ -98,8 +98,8 @@ http://localhost:3000/api
 {
   "isValid": true,
   "versions": {
-    "frontend": "0.18.0",
-    "backend": "0.18.0"
+    "frontend": "0.37.0",
+    "backend": "0.37.0"
   },
   "versionMatch": true
 }
@@ -274,14 +274,14 @@ The `/api/extract` path is a **base path only**. You must use specific sub-endpo
     "rulesList": [
       {
         "docType": "invoice",
-        "version": "2.1.0",
+        "version": "0.37.0",
         "fieldCount": 12,
         "successRate": 0.94,
         "description": "Invoice extraction rules"
       },
       {
         "docType": "contract",
-        "version": "1.5.0",
+        "version": "0.37.0",
         "fieldCount": 8,
         "successRate": 0.87
       }
@@ -301,7 +301,7 @@ The `/api/extract` path is a **base path only**. You must use specific sub-endpo
 {
   "data": {
     "docType": "invoice",
-    "version": "2.1.0",
+    "version": "0.37.0",
     "rules": [
       {
         "field": "invoice_number",
@@ -438,7 +438,7 @@ curl -X POST http://localhost:3000/api/extract/pdf \
 {
   "data": {
     "docType": "invoice",
-    "version": "2.2.0",
+    "version": "0.37.0",
     "modifyCount": 5,
     "rulesUpdated": 12,
     "changeReason": "Improved pattern for invoices with new formats"
@@ -487,13 +487,13 @@ curl -X POST http://localhost:3000/api/extract/pdf \
     "docType": "invoice",
     "versions": [
       {
-        "version": "2.2.0",
+        "version": "0.37.0",
         "changeReason": "Improved pattern for invoices with new formats",
         "modifiedAt": "2026-07-14T05:20:00Z",
         "modifiedBy": "john.doe@example.com"
       },
       {
-        "version": "2.1.0",
+        "version": "0.37.0",
         "changeReason": "Initial release",
         "modifiedAt": "2026-07-10T10:00:00Z",
         "modifiedBy": "system"
@@ -509,7 +509,7 @@ curl -X POST http://localhost:3000/api/extract/pdf \
 **Request Body**:
 ```json
 {
-  "version": "2.2.0",
+  "version": "0.37.0",
   "publishNotes": "Approved for production use",
   "testBatchId": "test-batch-001"
 }
@@ -520,7 +520,7 @@ curl -X POST http://localhost:3000/api/extract/pdf \
 {
   "data": {
     "docType": "invoice",
-    "publishedVersion": "2.2.0",
+    "publishedVersion": "0.37.0",
     "status": "PUBLISHED",
     "effectiveFrom": "2026-07-14T05:25:00Z",
     "rulesLocked": true
@@ -648,6 +648,6 @@ docker logs extractor-backend
 
 ---
 
-**Version**: 0.18.0  
+**Version**: 0.37.0  
 **Last Updated**: 2026-07-14 05:25 UTC+2  
 **Status**: ✅ All endpoints operational

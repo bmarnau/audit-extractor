@@ -5,7 +5,7 @@ Umfassende Projekt-Übersicht und Roadmap.
 ## Projekt-Information
 
 **Name**: Audit-Safe Document Extractor  
-**Version**: 0.21.0  
+**Version**: 0.37.0  
 **Status**: ✅ Phase 20 COMPLETE | ✅ Phase 21 Extended COMPLETE (Async Job API)
 **Sprache**: TypeScript  
 **Lizenz**: MIT
@@ -230,9 +230,9 @@ Folge **Semantic Versioning** (MAJOR.MINOR.PATCH):
 
 | Change | Beispiel | Version |
 |--------|----------|---------|
-| New required field | invoiceDate jetzt required | v1.0.0 → v2.0.0 (MAJOR) |
-| New optional field | department hinzugefügt | v1.0.0 → v1.1.0 (MINOR) |
-| Bug fix | Regex korrigiert | v1.0.0 → v1.0.1 (PATCH) |
+| New required field | invoiceDate jetzt required | 0.37.0 → 0.37.0 (MAJOR) |
+| New optional field | department hinzugefügt | 0.37.0 → 0.37.0 (MINOR) |
+| Bug fix | Regex korrigiert | 0.37.0 → 0.37.0 (PATCH) |
 
 **Breaking Changes**:
 - Müssen als MAJOR markiert sein
@@ -357,7 +357,7 @@ develop (development)
 - [ ] CLI Tool
 - [ ] Docker Support
 
-### 📈 Phase 3: Advanced (v2.0.0) - Q2 2024
+### 📈 Phase 3: Advanced (0.37.0) - Q2 2024
 
 - [ ] Multi-Document Extractions
 - [ ] Batch Processing
@@ -365,7 +365,7 @@ develop (development)
 - [ ] Web UI for Rule Management
 - [ ] Integration Tests
 
-### 🎯 Phase 4: Enterprise (v3.0.0) - Q3 2024
+### 🎯 Phase 4: Enterprise (0.37.0) - Q3 2024
 
 - [ ] Multi-tenancy Support
 - [ ] Advanced Audit Logging
@@ -449,4 +449,4 @@ develop (development)
 ---
 
 **Zuletzt aktualisiert**: 2026-01-15  
-**Gültig für**: v1.0.0+
+**Gültig für**: 0.37.0+

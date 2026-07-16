@@ -1,8 +1,8 @@
-# 🚀 Quick Start - Audit-Safe Document Extractor (v0.18.0)
+# 🚀 Quick Start - Audit-Safe Document Extractor (0.37.0)
 
 **Status**: ✅ PRODUCTION READY  
 **Phase**: 18 - Docker Containerization  
-**Last Updated**: 8.7.2026
+**Last Updated**: 0.37.0
 
 ---
 
@@ -135,10 +135,10 @@ http://localhost:5050
 
 ## 📖 Weitere Dokumentation
 
-- **Full Manual**: [MANUAL-0.18.0.md](MANUAL-0.18.0.md)
+- **Full Manual**: [MANUAL-0.37.0.md](MANUAL-0.37.0.md)
 - **Docker Guide**: [DOCKER_DEPLOYMENT_GUIDE.md](DOCKER_DEPLOYMENT_GUIDE.md)
 - **Command Reference**: [DOCKER_QUICK_REFERENCE.md](DOCKER_QUICK_REFERENCE.md)
-- **Release Notes**: [RELEASE_NOTES_0.18.0.md](RELEASE_NOTES_0.18.0.md)
+- **Release Notes**: [RELEASE_NOTES_0.37.0.md](RELEASE_NOTES_0.37.0.md)
 
 ---
 
@@ -208,7 +208,7 @@ Oder verwenden Sie die Web-Benutzeroberfläche:
 ## 📖 Weitere Ressourcen
 
 - **Detailliertes Handbuch**: `PHASE15_USER_GUIDE.md`
-- **API Dokumentation**: `RELEASE_NOTES_0.15.0.md`
+- **API Dokumentation**: `RELEASE_NOTES_0.37.0.md`
 - **Architektur**: `docs/PHASE-15-SCHEMA-DRIVEN-GENERATION.md`
 - **Glossar**: `docs/glossary.md`
 
@@ -296,7 +296,7 @@ Für detaillierte Hilfe siehe `PHASE15_USER_GUIDE.md`
 
 ---
 
-**Version**: 0.15.0  
+**Version**: 0.37.0  
 **Last Updated**: 2026-07-08
 
 ## 🔒 Halluzinations-Verhinderung
@@ -327,8 +327,8 @@ ExtractionResult {
     { field: 'dueDate', level: 'info', message: '...' }
   ],
   extractedAt: Date,
-  version: '1.0.0',
-  ruleSetVersion: '1.0.0'
+  version: '0.37.0',
+  ruleSetVersion: '0.37.0'
 }
 ```
 

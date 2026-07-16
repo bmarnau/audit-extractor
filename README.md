@@ -1,6 +1,6 @@
 # Audit-Safe Document Extraction System
 
-**Version**: 0.35.0 | **Status**: ✅ PHASE 38C TECHNICAL TEST RUNNER COMPLETE
+**Version**: 0.37.0 | **Status**: ✅ PHASE 38C TECHNICAL TEST RUNNER COMPLETE
 **Phase 38C**: Technical Test Runner Infrastructure ✅ COMPLETE (28/28 tests passing)
 **Phase 38**: Test Governance Foundation ✅ COMPLETE  
 **Phase 37a**: Navigation Test Infrastructure ✅ COMPLETE (86.7% pass rate)
@@ -11,7 +11,7 @@
 **Phase 21**: Async Job API ✅ COMPLETE  
 **Phase 20**: Log Viewer & Monitoring ✅ COMPLETE  
 **Phase 18-19**: Docker & Data Persistence ✅ COMPLETE  
-**Last updated**: 13.7.2026
+**Last updated**: 0.37.0
 
 Ein revisionssicheres Dokument-Extraktionssystem mit **API Discovery Framework**, **Governance Integration**, **Job-basierter Orchestrierung**, **fehlerresistenter Verarbeitung** und **vollständiger Docker-Containerisierung**.
 
@@ -124,7 +124,7 @@ node scripts/run-technical-tests.mjs FULL --sequential
 
 **Status**: ✅ Production Ready | 26/26 Tests Passing | 0 TypeScript Errors | 100% Reliability
 
-### Neu in Version 0.22.0
+### Neu in Version 0.37.0
 
 Vollständige Job-Orchestrierung mit automatischer Fehlerbehandlung:
 
@@ -166,8 +166,8 @@ docker exec -it extractor-backend npm run job:execute JOB-0815
 
 ## 📖 Dokumentation
 
-- 📘 **[MANUAL-0.22.0.md](MANUAL-0.22.0.md)** - Aktuelles Operations Manual (Phase 22)
-- 📗 **[MANUAL-0.21.0.md](MANUAL-0.21.0.md)** - Vorgänger Manual (Phase 21 - Async API)
+- 📘 **[MANUAL-0.37.0.md](MANUAL-0.37.0.md)** - Aktuelles Operations Manual (Phase 22)
+- 📗 **[MANUAL-0.37.0.md](MANUAL-0.37.0.md)** - Vorgänger Manual (Phase 21 - Async API)
 - 📕 **[MANUAL_TESTING_GUIDE_PHASE22.md](MANUAL_TESTING_GUIDE_PHASE22.md)** - Detaillierte Test-Szenarien + iReport Integration Roadmap
 - 🔗 **[Phase 23 Roadmap](#phase-23-extraction-pipeline)** - Nächste Phase (iReport Import Integration)
 
@@ -207,7 +207,7 @@ stop-app.cmd               # Windows CMD
 - 📖 [PHASE15_SCHEMA_MANAGEMENT.md](PHASE15_SCHEMA_MANAGEMENT.md) - API & Roadmap
 - 📖 [PHASE15_USER_GUIDE.md](PHASE15_USER_GUIDE.md) - User Guide
 - 📖 [PHASE15_COMPLETION_SUMMARY.md](PHASE15_COMPLETION_SUMMARY.md) - Executive Summary
-- 🔗 [RELEASE_NOTES_0.15.0.md](RELEASE_NOTES_0.15.0.md) - Alle Features & Fixes
+- 🔗 [RELEASE_NOTES_0.37.0.md](RELEASE_NOTES_0.37.0.md) - Alle Features & Fixes
 
 ---
 

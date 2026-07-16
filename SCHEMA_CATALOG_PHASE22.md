@@ -1,7 +1,7 @@
 # Docusnap Document Schemas - Phase 22
 ## Catalog of Business Document Types
 
-**Version:** 0.22.0  
+**Version:** 0.37.0  
 **Location:** `schemas/documents/`  
 **Status:** ✅ Complete with 6 document types
 
@@ -11,19 +11,19 @@
 
 | Document Type | Schema File | Version | Fields | Use Case |
 |---|---|---|---|---|
-| Invoice | `invoice-v2.0.0.json` | 2.0.0 | 16 required + 10 optional | Sales billing |
-| Delivery Note | `delivery-note-v1.5.0.json` | 1.5.0 | 10 required + 8 optional | Shipment tracking |
-| Purchase Order | `purchase-order-v3.0.0.json` | 3.0.0 | 8 required + 12 optional | Procurement |
-| Quote | `quote-v1.0.0.json` | 1.0.0 | 6 required + 10 optional | Sales proposals |
-| Contract | `contract-v2.0.0.json` | 2.0.0 | 7 required + 15 optional | SLA/Agreements |
-| Multi-Document | `multi-document-v1.0.0.json` | 1.0.0 | Bundle schema | Combined workflows |
+| Invoice | `invoice-0.37.0.json` | 0.37.0 | 16 required + 10 optional | Sales billing |
+| Delivery Note | `delivery-note-0.37.0.json` | 0.37.0 | 10 required + 8 optional | Shipment tracking |
+| Purchase Order | `purchase-order-0.37.0.json` | 0.37.0 | 8 required + 12 optional | Procurement |
+| Quote | `quote-0.37.0.json` | 0.37.0 | 6 required + 10 optional | Sales proposals |
+| Contract | `contract-0.37.0.json` | 0.37.0 | 7 required + 15 optional | SLA/Agreements |
+| Multi-Document | `multi-document-0.37.0.json` | 0.37.0 | Bundle schema | Combined workflows |
 
 ---
 
 ## 📄 Schema Details
 
-### 1. Invoice (v2.0.0)
-**File:** `invoice-v2.0.0.json`  
+### 1. Invoice (0.37.0)
+**File:** `invoice-0.37.0.json`  
 **Test Size:** 245.6 KB PDF
 
 **Key Fields:**
@@ -64,8 +64,8 @@
 
 ---
 
-### 2. Delivery Note (v1.5.0)
-**File:** `delivery-note-v1.5.0.json`  
+### 2. Delivery Note (0.37.0)
+**File:** `delivery-note-0.37.0.json`  
 **Test Size:** 156.4 KB PDF
 
 **Key Fields:**
@@ -111,8 +111,8 @@
 
 ---
 
-### 3. Purchase Order (v3.0.0)
-**File:** `purchase-order-v3.0.0.json`  
+### 3. Purchase Order (0.37.0)
+**File:** `purchase-order-0.37.0.json`  
 **Test Size:** 89.2 KB HTML
 
 **Key Fields:**
@@ -160,8 +160,8 @@
 
 ---
 
-### 4. Quote (v1.0.0)
-**File:** `quote-v1.0.0.json`  
+### 4. Quote (0.37.0)
+**File:** `quote-0.37.0.json`  
 **Test Size:** 312.4 KB PDF
 
 **Key Fields:**
@@ -208,8 +208,8 @@
 
 ---
 
-### 5. Contract (v2.0.0)
-**File:** `contract-v2.0.0.json`  
+### 5. Contract (0.37.0)
+**File:** `contract-0.37.0.json`  
 **Test Size:** 567.8 KB PDF
 
 **Key Fields:**
@@ -264,8 +264,8 @@
 
 ---
 
-### 6. Multi-Document Bundle (v1.0.0)
-**File:** `multi-document-v1.0.0.json`  
+### 6. Multi-Document Bundle (0.37.0)
+**File:** `multi-document-0.37.0.json`  
 **Test Size:** 970 KB (3 PDFs combined)
 
 **Key Fields:**
@@ -320,8 +320,8 @@
 All schemas are referenced in Phase 22 test fixtures:
 ```javascript
 // File: tests/fixtures/job-test-data.ts
-schemaId: 'invoice-v2.0.0'
-schemaPath: 'schemas/documents/invoice-v2.0.0.json'
+schemaId: 'invoice-0.37.0'
+schemaPath: 'schemas/documents/invoice-0.37.0.json'
 ```
 
 ### Phase 23 ExtractionPipeline (Coming)
@@ -336,8 +336,8 @@ POST `/api/v1/jobs/structure`
 ```json
 {
   "documentType": "pdf",
-  "schemaId": "invoice-v2.0.0",
-  "schemaPath": "schemas/documents/invoice-v2.0.0.json"
+  "schemaId": "invoice-0.37.0",
+  "schemaPath": "schemas/documents/invoice-0.37.0.json"
 }
 ```
 
@@ -414,9 +414,9 @@ Example test creation:
 const job = await service.createJob({
   documentType: 'pdf',
   sourceFiles: [...],
-  schemaId: 'invoice-v2.0.0',
-  schemaPath: 'schemas/documents/invoice-v2.0.0.json',
-  schemaVersion: '2.0.0',
+  schemaId: 'invoice-0.37.0',
+  schemaPath: 'schemas/documents/invoice-0.37.0.json',
+  schemaVersion: '0.37.0',
   options: {...}
 });
 ```

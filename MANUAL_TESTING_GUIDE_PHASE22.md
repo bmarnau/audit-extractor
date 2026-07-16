@@ -1,14 +1,14 @@
 # Phase 22 - Manuelle Test-Dokumentation
 ## Job-Structure API: Komplette Szenario-Tests
 
-**Version:** 0.22.0  
+**Version:** 0.37.0  
 **Erstellungsdatum:** 2026-07-10  
 **Test-Framework:** cURL / Postman oder HTTP Client  
 **Basis-URL:** `http://localhost:3000/api/v1`
 
 ---
 
-📘 **OPERATIONS MANUAL**: Siehe [MANUAL-0.22.0.md](MANUAL-0.22.0.md) für vollständige Operations-Dokumentation, CLI-Referenz, und Fehlerbehandlung.
+📘 **OPERATIONS MANUAL**: Siehe [MANUAL-0.37.0.md](MANUAL-0.37.0.md) für vollständige Operations-Dokumentation, CLI-Referenz, und Fehlerbehandlung.
 
 Dieses Dokument konzentriert sich auf **detaillierte Test-Szenarien** und **Phase 23+ iReport Integration**.
 
@@ -57,9 +57,9 @@ curl -X POST http://localhost:3000/api/v1/jobs/structure \
         "sizeBytes": 245632
       }
     ],
-    "schemaId": "invoice-schema-v2.0.0",
+    "schemaId": "invoice-schema-0.37.0",
     "schemaPath": "schemas/invoice-v2.json",
-    "schemaVersion": "2.0.0",
+    "schemaVersion": "0.37.0",
     "options": {
       "enableHallucinationCheck": true,
       "confidenceThreshold": 0.85,
@@ -92,10 +92,10 @@ curl -X POST http://localhost:3000/api/v1/jobs/structure \
       }
     ],
     "schema": {
-      "schemaId": "invoice-schema-v2.0.0",
-      "schemaName": "invoice-schema-v2.0.0",
+      "schemaId": "invoice-schema-0.37.0",
+      "schemaName": "invoice-schema-0.37.0",
       "schemaPath": "schemas/invoice-v2.json",
-      "version": "2.0.0",
+      "version": "0.37.0",
       "fieldsCount": 0,
       "uploadedAt": "2026-07-10T10:30:00.000Z"
     },
@@ -139,9 +139,9 @@ curl -X POST http://localhost:3000/api/v1/jobs/structure \
         "sizeBytes": 156416
       }
     ],
-    "schemaId": "delivery-schema-v1.5.0",
+    "schemaId": "delivery-schema-0.37.0",
     "schemaPath": "schemas/delivery-v1.5.json",
-    "schemaVersion": "1.5.0",
+    "schemaVersion": "0.37.0",
     "options": {
       "enableHallucinationCheck": true,
       "confidenceThreshold": 0.8,
@@ -171,7 +171,7 @@ curl -X POST http://localhost:3000/api/v1/jobs/structure \
     "sourceFiles": [{"filePath": "test.xlsx", "mimeType": "text/plain", "hash": "abc", "sizeBytes": 100}],
     "schemaId": "schema-1",
     "schemaPath": "schemas/schema.json",
-    "schemaVersion": "1.0.0",
+    "schemaVersion": "0.37.0",
     "options": {}
   }'
 ```
@@ -209,7 +209,7 @@ curl -X POST http://localhost:3000/api/v1/jobs/structure \
     "sourceFiles": [],
     "schemaId": "schema-1",
     "schemaPath": "schemas/schema.json",
-    "schemaVersion": "1.0.0",
+    "schemaVersion": "0.37.0",
     "options": {}
   }'
 ```
@@ -630,9 +630,9 @@ curl -X POST http://localhost:3000/api/v1/jobs/structure \
       {"filePath": "doc2.pdf", "mimeType": "application/pdf", "hash": "hash2", "sizeBytes": 350000},
       {"filePath": "doc3.pdf", "mimeType": "application/pdf", "hash": "hash3", "sizeBytes": 370000}
     ],
-    "schemaId": "multi-schema-v1.0.0",
+    "schemaId": "multi-schema-0.37.0",
     "schemaPath": "schemas/multi.json",
-    "schemaVersion": "1.0.0",
+    "schemaVersion": "0.37.0",
     "options": {}
   }'
 ```
@@ -817,9 +817,9 @@ curl -X POST http://localhost:3000/api/v1/jobs/structure \
   -d '{
     "documentType": "pdf",
     "sourceFiles": [{"filePath": "invoice_final.pdf", "mimeType": "application/pdf", "hash": "final_hash", "sizeBytes": 245632}],
-    "schemaId": "invoice-v2.0.0",
+    "schemaId": "invoice-0.37.0",
     "schemaPath": "schemas/invoice-v2.json",
-    "schemaVersion": "2.0.0",
+    "schemaVersion": "0.37.0",
     "options": {"enableHallucinationCheck": true, "confidenceThreshold": 0.85, "maxRetries": 3, "timeoutMs": 30000, "enableAuditLogging": true}
   }'
 # Response: jobId = JOB-0001
@@ -873,9 +873,9 @@ curl -X POST http://localhost:3000/api/v1/jobs/structure \
       {"filePath": "delivery.pdf", "mimeType": "application/pdf", "hash": "h2", "sizeBytes": 156000},
       {"filePath": "po.pdf", "mimeType": "application/pdf", "hash": "h3", "sizeBytes": 89000}
     ],
-    "schemaId": "multi-v1.0.0",
+    "schemaId": "multi-0.37.0",
     "schemaPath": "schemas/multi.json",
-    "schemaVersion": "1.0.0",
+    "schemaVersion": "0.37.0",
     "options": {"enableHallucinationCheck": true, "confidenceThreshold": 0.8, "maxRetries": 2}
   }'
 # Response: JOB-0005
@@ -906,7 +906,7 @@ curl -X GET http://localhost:3000/api/v1/jobs/JOB-0005/structure
 
 ## 🔗 iReport Integration für Converter-Ergebnisse
 
-**Version:** 0.22.0 (Phase 23+)  
+**Version:** 0.37.0 (Phase 23+)  
 **Zweck:** Import extrahierter Docusnap-Dokumentdaten in iReport für Infrastruktur-Reporting
 
 ### Übersicht: Konverter-Workflow
@@ -915,7 +915,7 @@ curl -X GET http://localhost:3000/api/v1/jobs/JOB-0005/structure
 Phase 22: Job Structure           Phase 23: ExtractionPipeline       Phase 24: iReport Import
 ┌─────────────────────┐          ┌──────────────────────────┐      ┌──────────────────────┐
 │ JOB-0001            │    →     │ OCR + Field Extraction    │  →  │ iReport Data Format  │
-│ invoice-v2.0.0      │          │ (9-Step Orchestration)   │      │ (JSON Schema Import) │
+│ invoice-0.37.0      │          │ (9-Step Orchestration)   │      │ (JSON Schema Import) │
 │ sources/            │          │ Confidence Scoring        │      │ Silumius Integration │
 │ schema/             │          │ Hallucination Detection   │      │ Data Visualization  │
 └─────────────────────┘          └──────────────────────────┘      └──────────────────────┘
@@ -931,7 +931,7 @@ jobs/
     ├── sources/
     │   └── invoice_2024_001.pdf
     ├── schema/
-    │   └── invoice-v2.0.0.json
+    │   └── invoice-0.37.0.json
     ├── examples/
     ├── output/
     │   ├── extraction-results.json      ← Phase 23 OUTPUT
@@ -948,7 +948,7 @@ jobs/
 {
   "jobId": "JOB-0001",
   "documentType": "invoice",
-  "schemaId": "invoice-v2.0.0",
+  "schemaId": "invoice-0.37.0",
   "extractedAt": "2026-07-11T14:30:00.000Z",
   "extractedFields": {
     "invoiceNumber": {
@@ -1054,7 +1054,7 @@ Für iReport wird ein Konverter-Format definiert, das aus dem Phase 23 Output ge
 
 1. **iReport öffnen**
    ```
-   http://127.0.0.1:8000/index.html
+   http://0.37.0.1:8000/index.html
    ```
 
 2. **Daten-Import Dialog öffnen**
@@ -1159,7 +1159,7 @@ Validierungs-Status:
   "field": "dokumentDatum",
   "expected": "date",
   "received": "string",
-  "value": "01.07.2024",
+  "value": "0.37.0",
   "solution": "Datums-Format konvertieren: DD.MM.YYYY → YYYY-MM-DD"
 }
 ```

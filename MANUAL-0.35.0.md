@@ -1,7 +1,7 @@
 # 📖 Operationshandbuch - Betriebshandbuch
-## Audit-Safe Document Extractor v0.35.0
+## Audit-Safe Document Extractor 0.37.0
 
-**Version:** 0.35.0  
+**Version:** 0.37.0  
 **Phase:** 37a (Navigation Test Infrastructure Refinement)  
 **Datum:** 2026-07-14  
 **Status:** Produktionsreif mit verbesserter Test-Zuverlässigkeit  
@@ -11,10 +11,10 @@
 ## 📋 Inhaltsverzeichnis
 
 1. [Was ist die Audit-Safe App?](#was-ist-die-audit-safe-app)
-2. [Neue Features in v0.35.0](#neue-features-in-v0350)
+2. [Neue Features in 0.37.0](#neue-features-in-v0350)
 3. [Systemanforderungen](#systemanforderungen)
 4. [Installation & Start](#installation--start)
-5. [Navigationsstruktur (v0.35.0)](#navigationsstruktur-v0350)
+5. [Navigationsstruktur (0.37.0)](#navigationsstruktur-v0350)
 6. [Menüpunkte - Detaillierte Beschreibung](#menüpunkte---detaillierte-beschreibung)
 7. [Arbeitsabläufe nach Anwendungsfall](#arbeitsabläufe-nach-anwendungsfall)
 8. [Responsive Design (Mobile, Tablet, Desktop)](#responsive-design-mobile-tablet-desktop)
@@ -23,13 +23,13 @@
 11. [System-Checks & Wartung](#system-checks--wartung)
 12. [Test-Infrastruktur (Phase 37a)](#test-infrastruktur-phase-37a)
 13. [Best Practices](#best-practices)
-14. [Migration von v0.34.0 zu v0.35.0](#migration-von-v0340-zu-v0350)
+14. [Migration von 0.37.0 zu 0.37.0](#migration-von-v0340-zu-v0350)
 
 ---
 
-## 🎯 Überblick: Was ist neu in v0.35.0?
+## 🎯 Überblick: Was ist neu in 0.37.0?
 
-Version **0.35.0 (Phase 37a)** enthält entscheidende Verbesserungen für Testzuverlässigkeit und Navigation:
+Version **0.37.0 (Phase 37a)** enthält entscheidende Verbesserungen für Testzuverlässigkeit und Navigation:
 
 ### ✨ Highlights
 
@@ -55,7 +55,7 @@ Die **Audit-Safe Document Extractor** ist eine spezialisierte Webanwendung zur i
 - **Job-Management** - Batch-Verarbeitung mehrerer Dokumente gleichzeitig
 - **Audit-Trail** - Vollständige Protokollierung aller Aktionen für Compliance
 - **Flexible Regeln-Engine** - Benutzerdefinierte Regeln zum Extrahieren von Informationen
-- **Service Management** - Zentralisierte Verwaltung von System-Services (NEU in v0.35.0)
+- **Service Management** - Zentralisierte Verwaltung von System-Services (NEU in 0.37.0)
 - **Verbesserte Test-Zuverlässigkeit** - Data-testid Attribute für zuverlässiges E2E-Testing
 
 ### Zielgruppe
@@ -68,7 +68,7 @@ Die **Audit-Safe Document Extractor** ist eine spezialisierte Webanwendung zur i
 
 ---
 
-## Neue Features in v0.35.0
+## Neue Features in 0.37.0
 
 ### 🎯 Phase 37a: Navigation Test Infrastructure Refinement
 
@@ -104,7 +104,7 @@ Test Execution Results (Phase 37a):
 ✅ PASSED:    13/15 Tests (86.7%)
 ❌ FAILED:    2/15 Tests (13.3% - Edge Cases)
 ⏱️  Duration:  ~44.6 Sekunden
-📊 Improvement: +50.3% Pass Rate vs v0.34.0
+📊 Improvement: +50.3% Pass Rate vs 0.37.0
 ```
 
 ---
@@ -169,7 +169,7 @@ cd frontend && npm install && npm run dev
 
 ---
 
-## Navigationsstruktur (v0.35.0)
+## Navigationsstruktur (0.37.0)
 
 ### 7 Hauptkategorien (Flache Struktur für bessere UX)
 
@@ -188,7 +188,7 @@ cd frontend && npm install && npm run dev
 │                                                 │
 └─────────────────────────────────────────────────┘
 
-⭐ NEU in v0.35.0: Services-Kategorie konsolidiert
+⭐ NEU in 0.37.0: Services-Kategorie konsolidiert
    - Health Check
    - API Dokumentation
    - Backup-Manager
@@ -331,7 +331,7 @@ Neue konsolidierte Kategorie mit 4 System-Services:
    └─ Settings (/settings)          → Konfiguration
 ```
 
-**Neuerung v0.35.0:** Diese 4 Service-Menüpunkte wurden aus einer flachen Liste in eine Kategorie konsolidiert, um die Navigation zu vereinfachen (10 Items → 7 Kategorien).
+**Neuerung 0.37.0:** Diese 4 Service-Menüpunkte wurden aus einer flachen Liste in eine Kategorie konsolidiert, um die Navigation zu vereinfachen (10 Items → 7 Kategorien).
 
 ### Help
 **Pfad:** `/help`  
@@ -647,21 +647,21 @@ npx playwright test -g "Services category"
 
 ---
 
-## Migration von v0.34.0 zu v0.35.0
+## Migration von 0.37.0 zu 0.37.0
 
 ### Änderungen Summary
 
-| Feature | v0.34.0 | v0.35.0 | Status |
+| Feature | 0.37.0 | 0.37.0 | Status |
 |---------|---------|---------|--------|
 | Navigation Categories | 10 Items | 7 Kategorien | ✅ Konsolidiert |
 | Services | Separate Items | Grouped Category | ✅ Neu |
 | Data-testid Attributes | Keine | Alle Components | ✅ Neu |
 | Test Pass Rate | 36.4% | 86.7% | ✅ Improved |
-| Version | 0.34.0 | 0.35.0 | ✅ Updated |
+| Version | 0.37.0 | 0.37.0 | ✅ Updated |
 
 ### Migration Steps
 
-1. **Backup erstellen** (v0.34.0 Daten schützen)
+1. **Backup erstellen** (0.37.0 Daten schützen)
    ```bash
    docker-compose down
    docker volume ls  # Alle Volumes notieren
@@ -673,7 +673,7 @@ npx playwright test -g "Services category"
    docker-compose build --no-cache
    ```
 
-3. **Services starten** (v0.35.0)
+3. **Services starten** (0.37.0)
    ```bash
    docker-compose up -d
    ```
@@ -702,9 +702,9 @@ npx playwright test -g "Services category"
 
 | Version | Datum | Phase | Highlights |
 |---------|-------|-------|-----------|
-| 0.35.0 | 2026-07-14 | 37a | Data-testid, Test Infrastructure |
-| 0.34.0 | 2026-07-12 | 34 | Services Consolidation |
-| 0.33.0 | 2026-07-10 | 33 | Navigation Optimization |
+| 0.37.0 | 2026-07-14 | 37a | Data-testid, Test Infrastructure |
+| 0.37.0 | 2026-07-12 | 34 | Services Consolidation |
+| 0.37.0 | 2026-07-10 | 33 | Navigation Optimization |
 | ... | ... | ... | ... |
 
 ---
@@ -718,11 +718,11 @@ npx playwright test -g "Services category"
 
 **Dokumentation:**
 - 📖 Operationshandbuch: `OPERATIONS_MANUAL_V35.md`
-- 📋 Release Notes: `RELEASE_NOTES_0.35.0.md`
+- 📋 Release Notes: `RELEASE_NOTES_0.37.0.md`
 - 🧪 Test Suite: `tests/e2e/navigation-with-testid.test.ts`
 
 ---
 
 **Letzte Aktualisierung:** 2026-07-14  
 **Status:** ✅ Production Ready  
-**Next Version:** 0.36.0 (Phase 37b - Services Integration Tests)
+**Next Version:** 0.37.0 (Phase 37b - Services Integration Tests)

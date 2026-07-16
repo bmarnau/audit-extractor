@@ -1,7 +1,7 @@
 # 🎯 Phase 41 - Status Dashboard
 
 **Stand:** 2026-07-16 11:30 CET  
-**Version:** 0.35.0  
+**Version:** 0.37.0  
 **Phase:** 41 ✅ COMPLETE
 
 ---
@@ -205,14 +205,14 @@ docker-compose down
 | `tests/e2e/navigation-api-version.test.ts` | 8 API tests | ✅ |
 | `tests/e2e/navigation-test.config.ts` | Master test config | ✅ |
 | `scripts/sync-test-versions.js` | Auto-sync script | ✅ |
-| `package.json` | Version source (0.35.0) | ✅ |
+| `package.json` | Version source (0.37.0) | ✅ |
 | `docker-compose.yml` | Orchestration config | ✅ |
 
 ---
 
-## 🎓 Feature Highlights (v0.35.0)
+## 🎓 Feature Highlights (0.37.0)
 
-### NEW in v0.35.0
+### NEW in 0.37.0
 1. ✅ **API Documentation Page** (`/api/docs`)
    - Full API reference
    - Endpoint documentation

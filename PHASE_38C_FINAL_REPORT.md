@@ -249,4 +249,4 @@ The `/services` route has been implemented and is ready for deployment once Vite
 
 *Report Generated: 2026-07-15 10:36 UTC*  
 *Environment: Docker (Production-like)*  
-*Test Framework: TechnicalTestRunner v0.35.0*
+*Test Framework: TechnicalTestRunner 0.37.0*

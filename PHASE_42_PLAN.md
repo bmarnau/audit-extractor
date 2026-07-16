@@ -33,12 +33,12 @@
 **Dauer:** ~15 Minuten
 
 ```
-1. Update package.json version: 0.35.0 → 0.36.0
+1. Update package.json version: 0.37.0 → 0.37.0
 2. Run: npm run sync:tests
 3. Update CHANGELOG.md mit neuen Features
 4. Update Release Notes
-5. Git Commit: "chore: v0.36.0 release + test sync"
-6. Git Tag: v0.36.0
+5. Git Commit: "chore: 0.37.0 release + test sync"
+6. Git Tag: 0.37.0
 7. Git Push
 ```
 
@@ -63,7 +63,7 @@
 2. Push to main branch
    git push origin main
    
-3. Create GitHub Release (v0.36.0)
+3. Create GitHub Release (0.37.0)
    - Title: "Navigation Enhancements & Test System"
    - Body: Feature highlights + breaking changes
    - Assets: Build artifacts
@@ -352,7 +352,7 @@ Deployment:
 
 ### Sofort (Block 1 & Block 4 Core)
 ```
-1. npm run sync:tests            (Auto-sync to 0.36.0)
+1. npm run sync:tests            (Auto-sync to 0.37.0)
 2. npm run test:nav:verify       (Full test suite)
 3. npm run build:verified        (Production build)
 4. git add . && git commit       (Commit changes)
@@ -381,7 +381,7 @@ Deployment:
 
 ### Kritisch (MUSS HEUTE):
 - ✅ Phase 41 Navigation Tests erfolgreich
-- ⏳ Version synchronisieren (0.36.0)
+- ⏳ Version synchronisieren (0.37.0)
 - ⏳ Full test suite durchlaufen
 - ⏳ GitHub Push & Release
 
@@ -400,7 +400,7 @@ Deployment:
 
 Phase 42 ist erfolgreich wenn:
 
-✅ Version 0.36.0 released  
+✅ Version 0.37.0 released  
 ✅ Alle 22 Tests grün (PASS)  
 ✅ Code zu GitHub gepusht  
 ✅ Release Notes published  

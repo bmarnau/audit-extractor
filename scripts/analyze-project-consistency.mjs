@@ -1,0 +1,218 @@
+#!/usr/bin/env node
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.resolve(__dirname, '..');
+
+// Simple analyzer to find project inconsistencies
+const issues = [];
+let authorityVersion = '';
+
+function getAuthorityVersion() {
+  try {
+    const pkgPath = path.join(projectRoot, 'package.json');
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+    authorityVersion = pkg.version;
+    console.log(`✓ Authority version: ${authorityVersion}`);
+    return true;
+  } catch (err) {
+    console.error('✗ Cannot read package.json:', err.message);
+    return false;
+  }
+}
+
+function scanMarkdownFiles() {
+  console.log('\nScanning markdown files...');
+  try {
+    const files = fs.readdirSync(projectRoot);
+    let mdCount = 0;
+    let versionMismatches = 0;
+
+    files.forEach(file => {
+      if (file.endsWith('.md')) {
+        mdCount++;
+        const content = fs.readFileSync(path.join(projectRoot, file), 'utf-8');
+        const versionMatches = content.match(/v?(\d+\.\d+\.\d+)/g) || [];
+        
+        versionMatches.forEach(match => {
+          const version = match.replace('v', '');
+          if (version !== authorityVersion) {
+            versionMismatches++;
+            issues.push({
+              severity: 'HIGH',
+              type: 'VERSION_MISMATCH',
+              file: file,
+              found: version,
+              expected: authorityVersion
+            });
+          }
+        });
+      }
+    });
+
+    console.log(`✓ Scanned ${mdCount} markdown files, found ${versionMismatches} version mismatches`);
+  } catch (err) {
+    console.error('✗ Error scanning markdown:', err.message);
+  }
+}
+
+function checkForDuplicateDocs() {
+  console.log('\nChecking for duplicate documentation...');
+  const docPattern = /(README|QUICKSTART|CHANGELOG|OPERATIONS_MANUAL|PROJECT|CONTRIBUTING)/i;
+  const docsMap = {};
+
+  try {
+    const files = fs.readdirSync(projectRoot).filter(f => f.endsWith('.md'));
+    let duplicates = 0;
+
+    files.forEach(file => {
+      const match = file.match(docPattern);
+      if (match) {
+        const docType = match[1].toUpperCase();
+        if (!docsMap[docType]) {
+          docsMap[docType] = [];
+        }
+        docsMap[docType].push(file);
+      }
+    });
+
+    Object.entries(docsMap).forEach(([type, files]) => {
+      if (files.length > 1) {
+        duplicates++;
+        issues.push({
+          severity: 'MEDIUM',
+          type: 'DUPLICATE_DOCS',
+          category: type,
+          files: files.join(', '),
+          count: files.length
+        });
+      }
+    });
+
+    console.log(`✓ Found ${duplicates} duplicate document sets`);
+  } catch (err) {
+    console.error('✗ Error checking duplicates:', err.message);
+  }
+}
+
+function checkPhaseSequences() {
+  console.log('\nValidating phase sequences...');
+  try {
+    const files = fs.readdirSync(projectRoot).filter(f => f.match(/PHASE_\d+/));
+    const phases = new Set();
+
+    files.forEach(file => {
+      const match = file.match(/PHASE_(\d+)/);
+      if (match) {
+        phases.add(parseInt(match[1]));
+      }
+    });
+
+    console.log(`✓ Found ${phases.size} phase files`);
+  } catch (err) {
+    console.error('✗ Error checking phases:', err.message);
+  }
+}
+
+function generateReport() {
+  const reportPath = path.join(projectRoot, 'docs', 'PROJECT_CONSISTENCY_ANALYSIS.md');
+  
+  // Ensure docs directory exists
+  const docsDir = path.join(projectRoot, 'docs');
+  if (!fs.existsSync(docsDir)) {
+    fs.mkdirSync(docsDir, { recursive: true });
+  }
+
+  const criticalCount = issues.filter(i => i.severity === 'CRITICAL').length;
+  const highCount = issues.filter(i => i.severity === 'HIGH').length;
+  const mediumCount = issues.filter(i => i.severity === 'MEDIUM').length;
+  const lowCount = issues.filter(i => i.severity === 'LOW').length;
+
+  let report = `# Project Consistency Analysis Report
+**Generated:** ${new Date().toISOString()}  
+**Authority Version:** ${authorityVersion}  
+**Status:** ${issues.length === 0 ? '✅ CONSISTENT' : '⚠️ INCONSISTENCIES FOUND'}  
+
+## Summary
+- 🔴 **Critical:** ${criticalCount}
+- 🟠 **High:** ${highCount}
+- 🟡 **Medium:** ${mediumCount}
+- 🔵 **Low:** ${lowCount}
+- **Total Issues:** ${issues.length}
+
+---
+
+## Issues
+
+`;
+
+  issues.forEach((issue, idx) => {
+    report += `### ${idx + 1}. ${issue.type}\n`;
+    report += `- **Severity:** ${issue.severity}\n`;
+    if (issue.file) report += `- **File:** ${issue.file}\n`;
+    if (issue.found) report += `- **Found:** \`${issue.found}\`\n`;
+    if (issue.expected) report += `- **Expected:** \`${issue.expected}\`\n`;
+    if (issue.files) report += `- **Files:** ${issue.files}\n`;
+    if (issue.count) report += `- **Count:** ${issue.count}\n`;
+    report += '\n';
+  });
+
+  report += `---
+
+## Next Steps
+
+\`\`\`bash
+npm run consistency:check   # Check status
+npm run version:sync        # Auto-fix versions
+\`\`\`
+
+---
+
+Generated by Phase 44A Analysis Script
+`;
+
+  fs.writeFileSync(reportPath, report, 'utf-8');
+  return reportPath;
+}
+
+async function main() {
+  console.log('🔍 PROJECT CONSISTENCY ANALYSIS\n');
+  console.log('Step 1: Reading authority source (package.json)');
+  if (!getAuthorityVersion()) {
+    process.exit(1);
+  }
+
+  console.log('\nStep 2: Scanning markdown files for versions');
+  scanMarkdownFiles();
+
+  console.log('\nStep 3: Checking for duplicate documentation');
+  checkForDuplicateDocs();
+
+  console.log('\nStep 4: Validating phase sequences');
+  checkPhaseSequences();
+
+  const reportPath = generateReport();
+
+  console.log('\n' + '='.repeat(60));
+  console.log('📊 CONSISTENCY ANALYSIS COMPLETE');
+  console.log('='.repeat(60));
+  console.log(`\nReport saved to: ${reportPath}\n`);
+  console.log(`Issues Found:`);
+  console.log(`  🔴 Critical: ${issues.filter(i => i.severity === 'CRITICAL').length}`);
+  console.log(`  🟠 High:     ${issues.filter(i => i.severity === 'HIGH').length}`);
+  console.log(`  🟡 Medium:   ${issues.filter(i => i.severity === 'MEDIUM').length}`);
+  console.log(`  🔵 Low:      ${issues.filter(i => i.severity === 'LOW').length}`);
+  console.log(`  📊 Total:    ${issues.length}`);
+  
+  const hasIssues = issues.filter(i => i.severity === 'CRITICAL' || i.severity === 'HIGH').length > 0;
+  console.log(`\nStatus: ${hasIssues ? '⚠️ ISSUES FOUND' : '✅ CONSISTENT'}\n`);
+
+  process.exit(hasIssues ? 1 : 0);
+}
+
+main().catch(err => {
+  console.error('Analysis error:', err);
+  process.exit(1);
+});

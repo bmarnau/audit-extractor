@@ -244,7 +244,7 @@ const issue = await service.createFromTestFailure({
   testSuite: 'MathSuite',
   errorMessage: 'Assertion failed',
   failureReason: 'Off-by-one error',
-  buildVersion: '1.0.0',
+  buildVersion: '0.37.0',
   component: 'Calculator',
   detectedBy: 'Jest'
 });

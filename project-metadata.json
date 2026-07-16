@@ -1,0 +1,31 @@
+{
+  "project": {
+    "name": "audit-safe-document-extractor",
+    "description": "Document extraction and analysis system",
+    "repository": "https://github.com/bmarnau/audit-extractor"
+  },
+  "versioning": {
+    "current": "0.37.0",
+    "authoritySource": "package.json",
+    "lastUpdated": "2026-07-16T11:19:09.760Z",
+    "updatePolicy": "Auto-sync from package.json only"
+  },
+  "currentPhase": {
+    "number": 44,
+    "name": "Single Source of Truth",
+    "status": "in-progress",
+    "startDate": "2026-07-16"
+  },
+  "build": {
+    "typeScriptStrict": true,
+    "testPassRate": 100,
+    "compilationErrors": 0,
+    "lastBuildTime": "2026-07-16T11:19:09.762Z"
+  },
+  "consistency": {
+    "versionInconsistencies": 0,
+    "documentationDuplicates": 1,
+    "brokenReferences": 0,
+    "lastValidatedAt": "2026-07-16T11:19:09.762Z"
+  }
+}

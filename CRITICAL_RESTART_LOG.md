@@ -8,7 +8,7 @@
 ## PHASE 1: PRE-FLIGHT CHECK
 
 ### 1.1 Docker-Status
-- ✅ Docker Compose v5.2.0 installiert
+- ✅ Docker Compose 0.37.0 installiert
 - ✅ Keine Container laufend
 - ✅ Bereit für sauberen Start
 
@@ -99,7 +99,7 @@
 - [ ] Dashboard renders correctly
 - [ ] Navigation drawer functional
 - [ ] Dark mode toggle works
-- [ ] Version displayed: 0.34.0
+- [ ] Version displayed: 0.37.0
 
 ### 5.3 Database Connectivity
 - [ ] PostgreSQL connection established

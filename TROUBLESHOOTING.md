@@ -300,7 +300,7 @@ ls -la results/backups/
 ### **Problem: Redis connection refused**
 
 **Symptoms:**
-- Error: `ECONNREFUSED 127.0.0.1:6379`
+- Error: `ECONNREFUSED 0.37.0.1:6379`
 - Cache operations fail
 
 **Solutions:**
@@ -521,4 +521,4 @@ docker-compose exec postgres psql -U extractor_user extractor_db < backup_2026-0
 ---
 
 **Last Updated:** 2026-07-09  
-**Version:** 0.18.0
+**Version:** 0.37.0

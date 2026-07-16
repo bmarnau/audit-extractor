@@ -431,7 +431,7 @@ for (const result of testResults) {
     testSuite: result.suite,
     errorMessage: result.error,
     failureReason: result.error,
-    buildVersion: '1.0.0',
+    buildVersion: '0.37.0',
     component: 'TestComponent',
     detectedBy: 'Jest'
   });

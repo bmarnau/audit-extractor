@@ -9,7 +9,7 @@
 
 ## Overview
 
-Phase 43 builds on Phase 42's successful v0.36.0 release. This phase introduces:
+Phase 43 builds on Phase 42's successful 0.37.0 release. This phase introduces:
 - **Findings API:** Structured access to technical audit findings
 - **Recommendations API:** Priority-based actionable recommendations
 - **Report Viewer:** Web UI for browsing reports
@@ -214,7 +214,7 @@ POST   /api/technical-tests/reports/export/pdf
 ```
 HTTP/1.1 200 OK
 Content-Type: application/pdf
-Content-Disposition: attachment; filename=report-v0.36.0-2026-07-16.pdf
+Content-Disposition: attachment; filename=report-0.37.0-2026-07-16.pdf
 
 [Binary PDF data]
 ```
@@ -315,7 +315,7 @@ All via APIs from 43.1 & 43.2
 ### `findings.json` Format
 ```json
 {
-  "version": "0.36.0",
+  "version": "0.37.0",
   "generatedAt": "2026-07-16T10:00:00Z",
   "findings": [
     {
@@ -336,7 +336,7 @@ All via APIs from 43.1 & 43.2
 ### `recommendations.json` Format
 ```json
 {
-  "version": "0.36.0",
+  "version": "0.37.0",
   "generatedAt": "2026-07-16T10:00:00Z",
   "recommendations": [
     {

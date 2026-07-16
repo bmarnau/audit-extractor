@@ -1,6 +1,6 @@
 # API Discovery Framework - Quick Reference
 
-**Version**: 0.27.0  
+**Version**: 0.37.0  
 **Phase**: 25 - Complete  
 **Status**: ✅ Production Ready  
 **Generated**: 2026-07-13
@@ -135,13 +135,13 @@ cat test-results/api-governance-report.json
    └── index.ts
 
 ✅ Root level
-   ├── package.json (version 0.27.0)
+   ├── package.json (version 0.37.0)
    ├── CHANGELOG.md
    ├── README.md
-   └── RELEASE_NOTES_0.27.0.md
+   └── RELEASE_NOTES_0.37.0.md
 
 ✅ Frontend
-   └── frontend/package.json (version 0.27.0)
+   └── frontend/package.json (version 0.37.0)
 
 ✅ Generated
    ├── test-results/api-inventory.json

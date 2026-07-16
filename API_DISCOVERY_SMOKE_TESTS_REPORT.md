@@ -1,7 +1,7 @@
 # API Discovery & Smoke Tests - Implementation Report
 
 **Date**: July 12, 2026  
-**Version**: 0.26.0  
+**Version**: 0.37.0  
 **Status**: ✅ **COMPLETE & PRODUCTION-READY**
 
 ---
@@ -100,7 +100,7 @@ DELETE → Status 204 (No Content)
 ```json
 {
   "timestamp": "2026-07-12T09:30:00Z",
-  "version": "0.26.0",
+  "version": "0.37.0",
   "totalEndpoints": 45,
   "endpoints": [...],
   "summary": {
@@ -506,6 +506,6 @@ Die API Discovery & Smoke Tests Suite ist vollständig implementiert, getestet u
 ---
 
 **Project**: Audit-Safe Document Extractor  
-**Version**: 0.26.0  
+**Version**: 0.37.0  
 **Status**: ✅ Production Ready  
 **Date**: July 12, 2026

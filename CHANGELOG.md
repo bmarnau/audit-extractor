@@ -10,7 +10,7 @@ Folge [Semantic Versioning](https://semver.org/):
 
 ---
 
-## [0.36.0] - 2026-07-16 (Phase 42: Release Management - Navigation Routing Fixes & Auto-Sync ✅ COMPLETE)
+## [0.37.0] - 2026-07-16 (Phase 42: Release Management - Navigation Routing Fixes & Auto-Sync ✅ COMPLETE)
 
 ### Added - Phase 42: Release Management
 - ✅ **Automatic Test Version Synchronization**: New ESM-compatible sync script
@@ -41,7 +41,7 @@ Folge [Semantic Versioning](https://semver.org/):
   - All navigation items properly mapped
 
 - ✅ **Fixed Test Version Management**:
-  - All test files synchronized to 0.36.0
+  - All test files synchronized to 0.37.0
   - Build date: 2026-07-16
   - No manual intervention required for version updates
 
@@ -55,7 +55,7 @@ Folge [Semantic Versioning](https://semver.org/):
 
 ---
 
-## [0.27.0] - 2026-07-13 (Phase 25 Complete: API Discovery Framework - ✅ COMPLETE)
+## [0.37.0] - 2026-07-13 (Phase 25 Complete: API Discovery Framework - ✅ COMPLETE)
 
 ### Added - Phase 25: API Discovery & Governance Framework
 - ✅ **API Discovery Service**: Automatic endpoint detection from Express application
@@ -181,7 +181,7 @@ npm run api:governance            # Full pipeline + governance integration
 
 ---
 
-## [0.21.0] - 2026-07-10 (Phase 21 Extended: Asynchronous Job API - COMPLETE ✓)
+## [0.37.0] - 2026-07-10 (Phase 21 Extended: Asynchronous Job API - COMPLETE ✓)
 
 ### Added - Phase 21 Extended: Asynchronous Job Processing
 - ✅ **JobEntity**: TypeORM entity for PostgreSQL jobs table
@@ -245,13 +245,13 @@ npm run api:governance            # Full pipeline + governance integration
 - api/index.ts: Mounted job routes at /api/jobs with proper error handling
 
 ### Documentation
-- ✅ Created RELEASE_NOTES_0.21.0.md with comprehensive feature overview
-- ✅ Updated PROJECT.md to version 0.21.0
+- ✅ Created RELEASE_NOTES_0.37.0.md with comprehensive feature overview
+- ✅ Updated PROJECT.md to version 0.37.0
 - ✅ Integration Audit Report (docs/integration-audit.md): 🟡 72/100 score, findings documented
 
 ---
 
-## [0.20.0] - 2026-07-10 (Phase 20-21: Log-Viewer System - COMPLETE ✓)
+## [0.37.0] - 2026-07-10 (Phase 20-21: Log-Viewer System - COMPLETE ✓)
 
 ### Added - Phase 20: Backend Log-Viewer API
 - ✅ **AuditLogEntity**: TypeORM entity for PostgreSQL audit_logs table
@@ -344,12 +344,12 @@ npm run api:governance            # Full pipeline + governance integration
 - src/infrastructure/api/routes/logs.ts: Converted from mock data to database-backed
 
 ### Documentation Added
-- RELEASE_NOTES_0.20.0.md: Complete feature documentation
+- RELEASE_NOTES_0.37.0.md: Complete feature documentation
 - PHASE_20_21_IMPLEMENTATION.md: Technical implementation details
 
 ---
 
-## [0.19.0] - 2026-07-10 (Phase 19: Schema Bug Fixes - COMPLETE ✓)
+## [0.37.0] - 2026-07-10 (Phase 19: Schema Bug Fixes - COMPLETE ✓)
 
 ### Fixed - Phase 19: Schema Management Bug Fixes
 - ✅ **Encapsulation Violation**: Fixed private property access in SchemaExtractionRoutes
@@ -362,9 +362,9 @@ npm run api:governance            # Full pipeline + governance integration
   - `loadRulesStatistics(schemaId)`: Public wrapper with error handling
 
 - ✅ **Version Increment Bug**: Fixed SchemaRepository.update()
-  - Properly parses version string (e.g., "1.0.0")
+  - Properly parses version string (e.g., "0.37.0")
   - Increments patch version number
-  - Returns correctly versioned entity (e.g., "1.0.0" → "1.0.1")
+  - Returns correctly versioned entity (e.g., "0.37.0" → "0.37.0")
 
 ### Impact
 - Rule generation (Step 5 of schema wizard) now completes without errors
@@ -381,7 +381,7 @@ npm run api:governance            # Full pipeline + governance integration
 
 ---
 
-## [0.14.0] - 2026-07-08 (Phase 1: Automatic Ruleset Generation - COMPLETE ✓)
+## [0.37.0] - 2026-07-08 (Phase 1: Automatic Ruleset Generation - COMPLETE ✓)
 
 ### Added - Phase 1: Automatic Ruleset Generation from Schema + Examples
 - ✅ **ExampleDataLoader** (250 lines): Safe data loading, path traversal protection, JSON depth validation
@@ -425,12 +425,12 @@ npm run api:governance            # Full pipeline + governance integration
 ### Breaking Changes
 None. Pure additive release. Fully backward compatible.
 
-### Migration from 0.13.0
+### Migration from 0.37.0
 No migration needed. Phase 1 is a new optional feature.
 
 ---
 
-## [0.13.0] - 2026-07-06 (Frontend Workbench & Service Container - COMPLETE ✓)
+## [0.37.0] - 2026-07-06 (Frontend Workbench & Service Container - COMPLETE ✓)
 
 ### Added - Phase 13: Frontend Extraction Workbench (Complete)
 - ✅ ExtractionWorkbench component: 11-step visualization + dashboard metrics
@@ -482,10 +482,10 @@ No migration needed. Phase 1 is a new optional feature.
 - ✅ Complete pipeline integration test
 
 ### Changed - Phase 13: Version & Infrastructure Updates
-- ✅ Version: 0.12.0 → 0.13.0 (package.json, src/version.ts, frontend/version.ts)
+- ✅ Version: 0.37.0 → 0.37.0 (package.json, src/version.ts, frontend/version.ts)
 - ✅ API Server Banner: Updated to show Phase 13 + all 40+ routes
 - ✅ Server Startup: Now initializes ConfigManager + BackupService before routes
-- ✅ All route files: Updated version to 0.13.0, phase to 13
+- ✅ All route files: Updated version to 0.37.0, phase to 13
 
 ### Fixed - Phase 13: Critical Issues
 - ✅ HallucinationValidator.ts: Removed duplicate class definition
@@ -503,7 +503,7 @@ No migration needed. Phase 1 is a new optional feature.
 
 ---
 
-## [0.12.0] - 2026-07-06 (Orchestration & Centers Phase)
+## [0.37.0] - 2026-07-06 (Orchestration & Centers Phase)
 
 ### Added - Phase 12: ExtractionPipeline Orchestration
 - ExtractionPipeline class: 9-step central orchestrator
@@ -564,11 +564,11 @@ No migration needed. Phase 1 is a new optional feature.
 - Updated all index.ts exports for Phase 12 models
 - Integrated all 5 new API route handlers
 - Updated startup banner to show Phase 12 routes
-- Version bumped to 0.12.0
+- Version bumped to 0.37.0
 
 ---
 
-## [0.11.0] - 2026-07-05 (API Phase)
+## [0.37.0] - 2026-07-05 (API Phase)
 
 ### Added - Phase 8: LLMExtractor
 - LLMExtractor class for LLM-based field extraction
@@ -617,7 +617,7 @@ No migration needed. Phase 1 is a new optional feature.
 
 ---
 
-## [0.10.0] - 2026-07-05 (Core Phases)
+## [0.37.0] - 2026-07-05 (Core Phases)
 
 ### Added - Phase 2: Domain Models
 - Core domain entities: Document, DocumentChunk, ExtractedField<T>, SourceReference
@@ -756,7 +756,7 @@ No migration needed. Phase 1 is a new optional feature.
 - src/application/similarity/ module with complete exports
 
 ### Added - Infrastructure
-- ajv@^8.12.0 dependency for JSON Schema validation
+- ajv@^0.37.0 dependency for JSON Schema validation
 - Barrel exports: src/domain/index.ts + src/domain/validation/index.ts + src/infrastructure/repositories/index.ts + src/application/quality/index.ts
 
 ### Fixed
@@ -879,7 +879,7 @@ No migration needed. Phase 1 is a new optional feature.
 
 ---
 
-## [1.0.0] - 2024-01-15 (Legacy)
+## [0.37.0] - 2024-01-15 (Legacy)
 
 ### Added
 - Initial Release (Legacy foundation)

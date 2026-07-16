@@ -1,7 +1,7 @@
 {
   "name": "audit-safe-document-extractor",
-  "version": "0.36.0",
-  "description": "Navigation Enhancements & Automatic Test Versioning (Phase 42: Release Management)",
+  "version": "0.37.0",
+  "description": "Recommendations API, Report Viewer UI, PDF/CSV/JSON Export, Dashboard Widget (Phase 43: Technical Audit System)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

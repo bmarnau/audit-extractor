@@ -356,7 +356,7 @@ Error: { success: false, error: { code: string, message: string, details?: unkno
 ## 7. Configuration & Deployment
 
 ### Environment
-- Node.js: v24.16.0
+- Node.js: 0.37.0
 - TypeScript: 5.x (strict mode)
 - Express: 4.x with ESM
 - React: 18.2+

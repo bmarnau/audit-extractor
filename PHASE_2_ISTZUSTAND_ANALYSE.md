@@ -21,43 +21,43 @@
 ### 1️⃣ VERSION-REGRESSION: 0.26 statt 0.34
 
 **Symptom:**
-- Frontend zeigt "v0.26.0" statt "v0.34.0"
-- Sollte seit Phase 35 auf 0.34.0 aktualisiert sein
+- Frontend zeigt "0.37.0" statt "0.37.0"
+- Sollte seit Phase 35 auf 0.37.0 aktualisiert sein
 
 **Root Causes IDENTIFIZIERT:**
 
 #### A. **package.json Versionsinkonsitenzen**
 ```
-Root:           0.27.0  (SOLLTE: 0.34.0)  ❌
-Frontend:       0.27.0  (SOLLTE: 0.34.0)  ❌
+Root:           0.37.0  (SOLLTE: 0.37.0)  ❌
+Frontend:       0.37.0  (SOLLTE: 0.37.0)  ❌
 ```
 
 #### B. **Hard-Coded Version Strings in TypeScript**
 ```
 src/version.ts:
-  PROJECT_VERSION = '0.18.0'  ← VERALTET! (Phase 2 Baseline)
+  PROJECT_VERSION = '0.37.0'  ← VERALTET! (Phase 2 Baseline)
   
 frontend/src/version.ts:
-  FRONTEND_VERSION = '0.13.0'  ← VERALTET! (Phase 1 Baseline)
-  API_VERSION = '0.13.0'        ← VERALTET! (Phase 1 Baseline)
+  FRONTEND_VERSION = '0.37.0'  ← VERALTET! (Phase 1 Baseline)
+  API_VERSION = '0.37.0'        ← VERALTET! (Phase 1 Baseline)
 ```
 
 #### C. **Component JSDoc Comments**
 ```
 frontend/src/components/Navigation/ResponsiveNavigationDrawer.tsx:142
-  v0.26.0  ← Hard-coded Display-String
+  0.37.0  ← Hard-coded Display-String
   
 frontend/src/components/workbench/AuditViewer.tsx:15
-  @version 0.13.0
+  @version 0.37.0
   
 frontend/src/components/workbench/BackupManager.tsx:15
-  @version 0.13.0
+  @version 0.37.0
 ```
 
 #### D. **Audit Route Response**
 ```
 src/infrastructure/api/routes/audit.ts:231
-  version: '0.13.0'  ← API gibt alte Version zurück!
+  version: '0.37.0'  ← API gibt alte Version zurück!
 ```
 
 **Impact:** Alle Komponenten geben unterschiedliche Versionsinfos!
@@ -199,19 +199,19 @@ Services:
 frontend/src/
 ├── App.tsx                    ✓ (Route Hub, aber unvollständig)
 ├── components/
-│   ├── Navigation/            ✓ (ResponsiveNavigationDrawer mit v0.26.0)
+│   ├── Navigation/            ✓ (ResponsiveNavigationDrawer mit 0.37.0)
 │   ├── LogViewer.tsx          ✓ (Komponente existiert, keine Datenquelle)
 │   ├── Logviewer.tsx          ⚠️ (DUPLIKAT!)
 │   ├── workbench/
 │   │   ├── HelpBrowser.tsx    ✓ (Existiert, nicht in Routes)
-│   │   ├── AuditViewer.tsx    ✓ (v0.13.0 JSDoc)
-│   │   └── BackupManager.tsx  ✓ (v0.13.0 JSDoc)
+│   │   ├── AuditViewer.tsx    ✓ (0.37.0 JSDoc)
+│   │   └── BackupManager.tsx  ✓ (0.37.0 JSDoc)
 │   └── ...
 ├── pages/
 │   ├── HealthPage.tsx         ✗ (FEHLT)
 │   ├── Help.tsx               ✗ (FEHLT)
 │   └── LearningPage.tsx       ✓
-├── version.ts                 ✓ (FALSCH: 0.13.0)
+├── version.ts                 ✓ (FALSCH: 0.37.0)
 └── ...
 
 Verzeichnisse:
@@ -227,14 +227,14 @@ Verzeichnisse:
 ### Backend-Struktur
 ```
 src/
-├── version.ts                 ✗ (FALSCH: 0.18.0)
+├── version.ts                 ✗ (FALSCH: 0.37.0)
 ├── infrastructure/
 │   └── api/
 │       ├── index.ts           ✓ (Routes registriert)
 │       └── routes/
 │           ├── logs.ts        ✓ (Endpoint definiert)
 │           ├── help.ts        ✓ (Endpoint definiert)
-│           └── audit.ts       ✗ (version: 0.13.0 hard-coded)
+│           └── audit.ts       ✗ (version: 0.37.0 hard-coded)
 └── ...
 ```
 
@@ -243,12 +243,12 @@ src/
 ┌─────────────────────┬────────┬────────────┬───────────┐
 │ Quelle              │ Aktuell│ Sollte     │ Status    │
 ├─────────────────────┼────────┼────────────┼───────────┤
-│ package.json (root) │ 0.27.0 │ 0.34.0     │ ❌ FALSCH │
-│ package.json (fe)   │ 0.27.0 │ 0.34.0     │ ❌ FALSCH │
-│ src/version.ts      │ 0.18.0 │ 0.34.0     │ ❌ FALSCH │
-│ frontend/version.ts │ 0.13.0 │ 0.34.0     │ ❌ FALSCH │
-│ Navigation.tsx      │ 0.26.0 │ 0.34.0     │ ❌ FALSCH │
-│ Audit API route     │ 0.13.0 │ 0.34.0     │ ❌ FALSCH │
+│ package.json (root) │ 0.37.0 │ 0.37.0     │ ❌ FALSCH │
+│ package.json (fe)   │ 0.37.0 │ 0.37.0     │ ❌ FALSCH │
+│ src/version.ts      │ 0.37.0 │ 0.37.0     │ ❌ FALSCH │
+│ frontend/version.ts │ 0.37.0 │ 0.37.0     │ ❌ FALSCH │
+│ Navigation.tsx      │ 0.37.0 │ 0.37.0     │ ❌ FALSCH │
+│ Audit API route     │ 0.37.0 │ 0.37.0     │ ❌ FALSCH │
 └─────────────────────┴────────┴────────────┴───────────┘
 ```
 
@@ -320,12 +320,12 @@ Anzahl: ~7 Routes, sollten: 8+
 - [x] Help-Bereich Verbindungen überprüft
 
 ### Phase 3: Version Consolidation (nächst)
-1. `package.json` → 0.34.0
-2. `src/version.ts` → 0.34.0
-3. `frontend/src/version.ts` → 0.34.0
+1. `package.json` → 0.37.0
+2. `src/version.ts` → 0.37.0
+3. `frontend/src/version.ts` → 0.37.0
 4. Alle hard-coded Strings bereinigen
-5. Audit API route v0.13.0 → 0.34.0
-6. Navigation Display "v0.26.0" → "v0.34.0"
+5. Audit API route 0.37.0 → 0.37.0
+6. Navigation Display "0.37.0" → "0.37.0"
 
 ### Phase 4: Navigation/Routing Consolidation
 1. Health-Seite Komponente erstellen
@@ -356,7 +356,7 @@ Anzahl: ~7 Routes, sollten: 8+
 
 ## ✨ NÄCHSTE AKTION
 
-👉 **Phase 3 starten: Version-Konsolidierung auf 0.34.0**
+👉 **Phase 3 starten: Version-Konsolidierung auf 0.37.0**
 
 ```bash
 # Reparaturschritte folgen in nächster Phase

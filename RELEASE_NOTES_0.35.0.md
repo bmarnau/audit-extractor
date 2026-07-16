@@ -1,4 +1,4 @@
-# RELEASE NOTES v0.35.0
+# RELEASE NOTES 0.37.0
 
 **Release Date:** 2026-07-14  
 **Phase:** Phase 37a - Navigation Test Infrastructure Refinement
@@ -29,8 +29,8 @@ Phase 37a focuses on improving E2E test reliability through data-testid attribut
 - No more flaky text-based selectors
 
 #### 3. **Version Updates**
-- Frontend: `0.34.0` → `0.35.0`
-- Backend: `0.34.0` → `0.35.0` (synchronized)
+- Frontend: `0.37.0` → `0.37.0`
+- Backend: `0.37.0` → `0.37.0` (synchronized)
 - Docker images rebuilt with new version
 
 ## Test Results Summary
@@ -62,7 +62,7 @@ Running 15 tests
 1. ❌ Services category with 4 consolidated items (item detection timing)
 2. ❌ Mobile viewport (375x667) (viewport-specific rendering)
 
-## Navigation Structure (v0.35.0)
+## Navigation Structure (0.37.0)
 
 ```
 ┌─ Dashboard
@@ -117,13 +117,13 @@ Running 15 tests
 
 ## Technical Improvements
 
-### ✅ Before (v0.34.0)
+### ✅ Before (0.37.0)
 - Text-based selectors: `text=/Dashboard|Home/i`
 - Flaky element matching in drawers
 - 36.4% test pass rate (4/11 tests)
 - Manual selector debugging required
 
-### ✅ After (v0.35.0)
+### ✅ After (0.37.0)
 - Data-testid selectors: `[data-testid="nav-category-dashboard"]`
 - Deterministic element targeting
 - 86.7% test pass rate (13/15 tests)
@@ -143,7 +143,7 @@ Running 15 tests
 
 - [x] Navigation components updated with data-testid
 - [x] Test suite refactored with deterministic selectors
-- [x] Version bumped to 0.35.0
+- [x] Version bumped to 0.37.0
 - [x] Frontend Docker image rebuilt
 - [x] All services deployed and healthy
 - [x] Test execution: 13/15 passing (86.7%)

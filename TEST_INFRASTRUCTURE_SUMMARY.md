@@ -2,7 +2,7 @@
 
 **Date**: July 13, 2026  
 **Project**: Audit-Safe Document Extractor  
-**Version**: 0.26.1
+**Version**: 0.37.0
 
 ---
 
@@ -22,18 +22,18 @@ The project has a **mature, multi-layered testing framework** with:
 ### Backend Testing Stack
 | Component | Technology | Version | Purpose |
 |-----------|-----------|---------|---------|
-| **Test Framework** | Jest | 29.5.0 | Unit & Integration tests |
-| **Test Transform** | ts-jest | 29.1.0 | TypeScript support |
+| **Test Framework** | Jest | 0.37.0 | Unit & Integration tests |
+| **Test Transform** | ts-jest | 0.37.0 | TypeScript support |
 | **Environment** | Node.js | - | Backend test environment |
 | **Configuration** | jest.config.js | - | Centralized test config |
 
 ### Frontend Testing Stack
 | Component | Technology | Version | Purpose |
 |-----------|-----------|---------|---------|
-| **Test Framework** | Jest | 29.7.0 | React component tests |
-| **E2E Framework** | Playwright | 1.61.1 | End-to-end UI tests |
-| **DOM Testing** | @testing-library/react | 14.0.0 | React component testing |
-| **Environment** | jsdom | 29.7.0 | DOM simulation |
+| **Test Framework** | Jest | 0.37.0 | React component tests |
+| **E2E Framework** | Playwright | 0.37.0 | End-to-end UI tests |
+| **DOM Testing** | @testing-library/react | 0.37.0 | React component testing |
+| **Environment** | jsdom | 0.37.0 | DOM simulation |
 | **Configuration** | jest.config.cjs | - | Frontend Jest config |
 
 ---
@@ -629,14 +629,14 @@ PASS/FAIL
 ### Key Dependencies
 ```json
 {
-  "jest": "^29.5.0",              // Core test runner
-  "ts-jest": "^29.1.0",           // TypeScript support
-  "@types/jest": "^29.5.0",       // Type definitions
-  "@playwright/test": "^1.40.0",  // E2E testing
-  "@testing-library/react": "^14.0.0", // React component testing
-  "eslint": "^8.0.0",             // Linting
-  "prettier": "^3.0.0",           // Code formatting
-  "@typescript-eslint/eslint-plugin": "^6.0.0" // TS linting
+  "jest": "^0.37.0",              // Core test runner
+  "ts-jest": "^0.37.0",           // TypeScript support
+  "@types/jest": "^0.37.0",       // Type definitions
+  "@playwright/test": "^0.37.0",  // E2E testing
+  "@testing-library/react": "^0.37.0", // React component testing
+  "eslint": "^0.37.0",             // Linting
+  "prettier": "^0.37.0",           // Code formatting
+  "@typescript-eslint/eslint-plugin": "^0.37.0" // TS linting
 }
 ```
 
