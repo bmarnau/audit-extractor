@@ -54,6 +54,8 @@ import TechnicalAuditPage from './pages/TechnicalAuditPage';
 // Phase 41: API Docs & Settings Pages
 import ApiDocsPage from './pages/ApiDocsPage';
 import SettingsPage from './pages/SettingsPage';
+// Phase 43: Technical Quality Dashboard
+import TechnicalQualityDashboard from './pages/TechnicalQualityDashboard';
 // Error Handling
 import ErrorBoundary from './components/ErrorBoundary';
 // Phase 25: New Responsive Navigation
@@ -237,6 +239,8 @@ const AppContent: React.FC<{
               {/* Phase 40: Technical Audit Center */}
               <Route path="/technical-audit" element={<TechnicalAuditPage />} />
               <Route path="/services/audit" element={<TechnicalAuditPage />} />
+              {/* Phase 43: Technical Quality Dashboard */}
+              <Route path="/technical-tests" element={<TechnicalQualityDashboard />} />
               {/* Phase 41: API Docs & Settings */}
               <Route path="/api/docs" element={<ApiDocsPage />} />
               <Route path="/settings" element={<SettingsPage />} />
