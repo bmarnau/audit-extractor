@@ -72,7 +72,7 @@ const ApiDocsPage: React.FC = () => {
 
   const getFallbackDocs = () => ({
     title: 'Audit-Safe Document Extractor API',
-    version: '0.35.0',
+    version: '0.37.1',
     description: 'REST API for document extraction, schema management, and audit support',
     baseUrl: 'http://localhost:3000/api',
     endpoints: [
@@ -296,7 +296,7 @@ const ApiDocsPage: React.FC = () => {
   "success": true,
   "data": { /* response data */ },
   "timestamp": "2026-07-16T09:45:00Z",
-  "version": "0.35.0"
+  "version": "0.37.1"
 }`}
               </Box>
             </CardContent>

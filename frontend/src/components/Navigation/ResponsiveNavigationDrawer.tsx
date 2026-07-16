@@ -143,7 +143,7 @@ export const ResponsiveNavigationDrawer: React.FC<ResponsiveNavigationDrawerProp
             textAlign: 'center',
           }}
         >
-          v0.35.0
+          v0.37.1
         </Box>
       )}
     </Box>

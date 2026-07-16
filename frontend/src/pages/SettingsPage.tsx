@@ -100,7 +100,7 @@ const SettingsPage: React.FC = () => {
   const getFallbackSettings = (): Settings => ({
     application: {
       name: 'Audit-Safe Document Extractor',
-      version: '0.35.0',
+      version: '0.37.1',
       mode: 'development',
       debug: true,
     },

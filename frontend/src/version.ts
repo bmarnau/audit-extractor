@@ -4,9 +4,9 @@
  * Centralized version metadata for frontend UI
  */
 
-export const FRONTEND_VERSION = '0.35.0';
-export const API_VERSION = '0.34.0';
-export const PHASE = 13;
+export const FRONTEND_VERSION = '0.37.1';
+export const API_VERSION = '0.37.0';
+export const PHASE = 43;
 
 export const BUILD_INFO = {
   version: FRONTEND_VERSION,

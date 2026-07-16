@@ -228,7 +228,7 @@ function generateMockAuditReport(documentId: string): DocumentAuditReport {
       validator: 'hallucination-validator-v1',
     },
     generatedAt: new Date().toISOString(),
-    version: '0.35.0',
+    version: '0.37.1',
   };
 }
 

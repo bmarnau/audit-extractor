@@ -301,7 +301,7 @@ const HealthPage: React.FC = () => {
             <Box sx={{ mb: 2 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', mb: 1 }}>
                 <Typography variant="h6" component="span">
-                  Version 0.35.0
+                  Version 0.37.1
                 </Typography>
                 <Typography variant="caption" color="textSecondary">
                   Release Date: 2026-07-14
@@ -325,7 +325,7 @@ const HealthPage: React.FC = () => {
               </Box>
               <Box component="li" sx={{ mb: 0.5 }}>
                 <Typography variant="body2">
-                  Synchronized frontend and backend versions to 0.35.0
+                  Synchronized frontend and backend versions to 0.37.1
                 </Typography>
               </Box>
               <Box component="li" sx={{ mb: 0.5 }}>
