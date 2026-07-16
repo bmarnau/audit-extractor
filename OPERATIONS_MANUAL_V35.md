@@ -1,10 +1,10 @@
 # 📖 Operationshandbuch - Betriebshandbuch
-## Audit-Safe Document Extractor 0.37.0
+## Audit-Safe Document Extractor 0.37.1
 
-**Version:** 0.37.0  
-**Phase:** 37a (Navigation Test Infrastructure Refinement)  
-**Datum:** 2026-07-14  
-**Status:** Produktionsreif mit verbesserter Test-Zuverlässigkeit  
+**Version:** 0.37.1  
+**Phase:** 43 (Technical Audit API & Report Viewer Integration)  
+**Datum:** 2026-07-16  
+**Status:** ✅ Produktionsreif - Phase 43 vollständig implementiert  
 
 ---
 
@@ -40,6 +40,7 @@ Die **Audit-Safe Document Extractor** ist eine spezialisierte Webanwendung zur i
 - **Flexible Regeln-Engine** - Benutzerdefinierte Regeln zum Extrahieren von Informationen
 - **Service Management** - Zentralisierte Verwaltung von System-Services (NEU in 0.37.0)
 - **Verbesserte Test-Zuverlässigkeit** - Data-testid Attribute für zuverlässiges E2E-Testing
+- **🆕 Technical Quality Dashboard** - Echtzeitüberwachung der Systemgesundheit, Findings & Recommendations (Phase 43)
 
 ### Zielgruppe
 
@@ -89,6 +90,34 @@ Test Execution Results (Phase 37a):
 ⏱️  Duration:  ~44.6 Sekunden
 📊 Improvement: +50.3% Pass Rate vs 0.37.0
 ```
+
+---
+
+## 🆕 Neue Features in 0.37.1 - Phase 43: Technical Audit API & Report Viewer
+
+### 📊 Technical Quality Dashboard
+**URL:** `http://localhost/technical-tests` oder Navigation → Monitoring & Audit → Quality Dashboard
+
+Eine neue Seite zur Echtzeitüberwachung der Systemgesundheit und technischen Qualität:
+
+#### Dashboard-Abschnitte:
+1. **Executive Summary** - Schnelle Gesundheitsstatus (🔴 Action Required / 🟢 System Healthy)
+2. **Severity Distribution** - Visuelle Verteilung: Critical (rot), High (orange), Medium (gelb), Low (grün)
+3. **Key Insights** - Top kritische Probleme + Prioritätsempfehlungen mit Aufwandsschätzungen
+4. **Tabbed Interface:**
+   - 📊 **Findings Tab** - Alle Sicherheits- und Qualitätsfunde mit Komponentenkaarten
+   - ✅ **Recommendations Tab** - Prioritätsliste der Fixes mit Aufwand (2-10 Stunden)
+   - 📈 **Report History** - Versionsverlauf (0.37.1, 0.37.0, 0.36.0)
+
+#### Export-Funktionalität:
+- 📄 PDF Export - Professioneller Report-Format
+- 📊 CSV Export - Für Tabellenkalkulationen/BI-Tools
+- 📋 JSON Export - Für API-Integration
+
+**Datenkonstante:** Daten werden AUSSCHLIESSLICH über `/api/technical-tests/*` Endpoints geladen (Benutzeranforderung erfüllt)
+
+#### Hinweis zur Verständlichkeit:
+Das Dashboard erfüllt die 10-Sekunden-Regel: Kritische Informationen (Systemstatus, Risiken, Nächste Schritte) sind ohne Scrollen sichtbar.
 
 ---
 
@@ -328,6 +357,33 @@ Neue konsolidierte Kategorie mit 4 System-Services:
        ├─ 31 Glossar-Begriffe
        └─ FAQs & Support-Links
 ```
+
+### 🆕 Audit / Technical Quality Dashboard ⭐ Phase 43
+**Pfad:** `/technical-tests`  
+**Icon:** 📊 Analytics  
+**Kategorie:** Monitoring & Audit  
+**Funktion:** Systemgesundheit & Technical Audit (NEU in 0.37.1)
+
+```
+┌─ Audit (Monitoring & Audit Kategorie)
+   ├─ Technical Audit (/technical-audit)       → Sicherheits-Befunde
+   └─ Quality Dashboard (/technical-tests)     → NEW - Gesundheits-Dashboard
+       ├─ Executive Summary          → Status + Quick Stats
+       ├─ Severity Distribution      → Visual breakdown
+       ├─ Key Insights               → Top findings + next steps
+       ├─ Findings Table             → 6 findings (1C/2H/2M/1L)
+       ├─ Recommendations Table      → Priority actions + effort
+       ├─ Report History             → Version tracking (v0.37.1/v0.37.0/v0.36.0)
+       ├─ Refresh Button             → Manual reload
+       └─ Export Button              → PDF/CSV/JSON exports
+```
+
+**Was ist neu:**
+- Echtzeit-Überwachung der Systemgesundheit
+- 10-Sekunden-Regel erfüllt: Alle kritischen Info ohne Scrollen
+- 7 neue Backend-APIs für Auditing
+- Export-Funktionalität für Reports
+- Daten AUSSCHLIESSLICH über `/api/technical-tests/*` Endpoints
 
 ---
 
