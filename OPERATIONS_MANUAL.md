@@ -2,26 +2,27 @@
 ## Audit-Safe Document Extractor 0.37.0
 
 **Version:** 0.37.0  
-**Phase:** 38C (Technical Test Runner Infrastructure)  
-**Datum:** 2026-07-15  
-**Status:** Produktionsreif mit vollständiger Test-Automation  
+**Phase:** 43 (Technical Audit API & Report Viewer) + 38C (Technical Test Runner)  
+**Datum:** 2026-07-16  
+**Status:** Produktionsreif mit Technical Audit API, Report Viewer und Dashboard Widget  
 
 ---
 
 ## 📋 Inhaltsverzeichnis
 
 1. [🆕 Phase 38C: Technical Test Runner](#-phase-38c-technical-test-runner)
-2. [Was ist die Audit-Safe App?](#was-ist-die-audit-safe-app)
-3. [Systemanforderungen](#systemanforderungen)
-4. [Installation & Start](#installation--start)
-5. [Navigationsstruktur](#navigationsstruktur)
-6. [Menüpunkte - Detaillierte Beschreibung](#menüpunkte---detaillierte-beschreibung)
-7. [Grundlegende Bedienung](#grundlegende-bedienung)
-8. [Arbeitsabläufe nach Anwendungsfall](#arbeitsabläufe-nach-anwendungsfall)
-9. [Responsive Design (Mobile, Tablet, Desktop)](#responsive-design-mobile-tablet-desktop)
-10. [Troubleshooting](#troubleshooting)
-11. [System-Checks & Wartung](#system-checks--wartung)
-12. [Best Practices](#best-practices)
+2. [🆕 Phase 43: Technical Audit API & Report Viewer](#-phase-43-technical-audit-api--report-viewer-v037)
+3. [Was ist die Audit-Safe App?](#was-ist-die-audit-safe-app)
+4. [Systemanforderungen](#systemanforderungen)
+5. [Installation & Start](#installation--start)
+6. [Navigationsstruktur](#navigationsstruktur)
+7. [Menüpunkte - Detaillierte Beschreibung](#menüpunkte---detaillierte-beschreibung)
+8. [Grundlegende Bedienung](#grundlegende-bedienung)
+9. [Arbeitsabläufe nach Anwendungsfall](#arbeitsabläufe-nach-anwendungsfall)
+10. [Responsive Design (Mobile, Tablet, Desktop)](#responsive-design-mobile-tablet-desktop)
+11. [Troubleshooting](#troubleshooting)
+12. [System-Checks & Wartung](#system-checks--wartung)
+13. [Best Practices](#best-practices)
 
 ---
 
@@ -231,6 +232,312 @@ npm run build
 ```
 
 Gesamtdauer: ~10 Sekunden
+
+---
+
+## 🆕 Phase 43: Technical Audit API & Report Viewer (v0.37.0)
+
+### Überblick - Technical Tests Framework
+
+**Phase 43** erweitert das System um eine umfassende REST API für technische Audit-Ergebnisse, Report-Visualisierung und Multi-Format-Export.
+
+| Component | Purpose | Status |
+|-----------|---------|--------|
+| **Phase 43A** | Findings API | ✅ Live |
+| **Phase 43B** | Recommendations API | ✅ Live |
+| **Phase 43C** | Report Viewer UI | ✅ Live |
+| **Phase 43D** | Export Services (PDF/CSV/JSON) | ✅ Live |
+| **Phase 43E** | Dashboard Widget | ✅ Live |
+
+### API Endpoints
+
+#### Phase 43A: Findings API
+
+Retrieve technical audit findings with filtering and statistics.
+
+**Base Endpoint:** `GET /api/technical-tests/findings`
+
+**Request Parameters:**
+```
+?severity=critical      (Optional: critical, high, medium, low)
+?limit=50              (Optional: Results per page, default 20)
+?offset=0              (Optional: Pagination offset)
+```
+
+**Response Structure:**
+```json
+{
+  "success": true,
+  "data": {
+    "findings": [
+      {
+        "id": "string",
+        "title": "string",
+        "severity": "critical|high|medium|low",
+        "component": "string",
+        "description": "string",
+        "affectedArea": "string",
+        "timestamp": "ISO-8601"
+      }
+    ],
+    "total": 0,
+    "filtered": 0,
+    "severityBreakdown": {
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0
+    }
+  }
+}
+```
+
+**Additional Endpoints:**
+- `GET /api/technical-tests/findings/:id` - Get single finding
+- `GET /api/technical-tests/findings/severity/:level` - Filter by severity
+- `GET /api/technical-tests/findings/statistics` - Get statistics
+
+**Example:**
+```bash
+curl http://localhost:3000/api/technical-tests/findings?severity=critical&limit=10
+```
+
+---
+
+#### Phase 43B: Recommendations API
+
+Retrieve technical recommendations with priority and status tracking.
+
+**Base Endpoint:** `GET /api/technical-tests/recommendations`
+
+**Request Parameters:**
+```
+?priority=high         (Optional: critical, high, medium, low)
+?status=open           (Optional: open, in-progress, resolved)
+?limit=50              (Optional: Results per page)
+```
+
+**Response Structure:**
+```json
+{
+  "success": true,
+  "data": {
+    "recommendations": [
+      {
+        "id": "string",
+        "title": "string",
+        "priority": "critical|high|medium|low",
+        "status": "open|in-progress|resolved",
+        "description": "string",
+        "estimatedEffort": "string",
+        "tags": ["string"]
+      }
+    ],
+    "total": 0,
+    "byPriority": { "critical": 0, "high": 0 },
+    "byStatus": { "open": 0, "in-progress": 0, "resolved": 0 }
+  }
+}
+```
+
+**Additional Endpoints:**
+- `GET /api/technical-tests/recommendations/:id` - Get single recommendation
+- `GET /api/technical-tests/recommendations/priority/:priority` - Filter by priority
+- `GET /api/technical-tests/recommendations/status/:status` - Filter by status
+- `GET /api/technical-tests/recommendations/statistics` - Get statistics
+
+---
+
+#### Phase 43D: Export Services
+
+Export technical audit reports in multiple formats.
+
+**PDF Export**
+```bash
+POST /api/technical-tests/export/pdf
+Content-Type: application/json
+
+{
+  "title": "Technical Audit Report",
+  "author": "Audit Team",
+  "includeFindings": true,
+  "includeRecommendations": true,
+  "includeSummary": true
+}
+```
+
+**CSV Export**
+```bash
+POST /api/technical-tests/export/csv
+Content-Type: application/json
+
+{
+  "title": "Technical Findings Export",
+  "includeFindings": true
+}
+```
+
+**JSON Export**
+```bash
+POST /api/technical-tests/export/json
+Content-Type: application/json
+
+{
+  "title": "Technical Audit Data",
+  "includeRecommendations": true
+}
+```
+
+**Response:** File download with appropriate MIME type
+
+---
+
+### React Components
+
+#### Phase 43C: Report Viewer Component
+
+Location: `frontend/src/components/ReportViewer/`
+
+**Features:**
+- Tabular display of findings with severity color-coding
+- Recommendations table with priority indicators
+- Report summary cards with key metrics
+- Auto-refresh polling (60-second interval)
+- Responsive Material-UI design
+
+**Usage:**
+```jsx
+<ReportViewer
+  autoRefresh={true}
+  refreshInterval={60000}
+  severityFilter="all"
+/>
+```
+
+**Severity Color Scheme:**
+- 🔴 **Critical** - Red
+- 🟠 **High** - Orange
+- 🟡 **Medium** - Yellow
+- 🟢 **Low** - Green
+
+---
+
+#### Phase 43E: Dashboard Widget
+
+Location: `frontend/src/components/Dashboard/TechnicalAuditWidget.tsx`
+
+**Features:**
+- Real-time technical audit summary on main dashboard
+- Health indicator (Critical/Warning/Healthy)
+- Export dialog with 3 format options
+- 60-second auto-refresh
+- Quick statistics overview
+
+**Health Status Logic:**
+```
+🔴 CRITICAL   → if critical findings > 0
+🟡 WARNING    → if high findings > 0
+🟢 HEALTHY    → if no critical/high findings
+```
+
+**Integration:**
+Automatically integrated into the main dashboard. No additional configuration required.
+
+---
+
+### Database Schema (Phase 43)
+
+**technical_findings table:**
+```sql
+CREATE TABLE technical_findings (
+  id VARCHAR(36) PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  severity VARCHAR(20) NOT NULL,
+  component VARCHAR(100),
+  description TEXT,
+  affected_area VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_severity ON technical_findings(severity);
+CREATE INDEX idx_component ON technical_findings(component);
+```
+
+**technical_recommendations table:**
+```sql
+CREATE TABLE technical_recommendations (
+  id VARCHAR(36) PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  priority VARCHAR(20) NOT NULL,
+  status VARCHAR(20) NOT NULL,
+  description TEXT,
+  estimated_effort VARCHAR(50),
+  tags JSON,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_priority ON technical_recommendations(priority);
+CREATE INDEX idx_status ON technical_recommendations(status);
+```
+
+---
+
+### Error Handling
+
+All Phase 43 endpoints return standardized error responses:
+
+```json
+{
+  "error": {
+    "code": "NOT_FOUND|VALIDATION_ERROR|INTERNAL_ERROR",
+    "message": "Descriptive error message",
+    "details": {
+      "field": "description of issue"
+    }
+  },
+  "timestamp": "ISO-8601",
+  "path": "/api/technical-tests/findings"
+}
+```
+
+---
+
+### Performance Considerations
+
+| Operation | Timeout | Caching |
+|-----------|---------|---------|
+| Find all findings | 5s | 5 min |
+| Find all recommendations | 5s | 5 min |
+| Export PDF | 30s | None |
+| Export CSV | 30s | None |
+| Export JSON | 10s | None |
+
+---
+
+### Testing Phase 43
+
+**Run all Phase 43 tests:**
+```bash
+npm run test:technical:phase43
+```
+
+**Expected results:**
+- ✅ 16/16 tests passing
+- ✅ 0 TypeScript errors
+- ✅ All 5 components functioning
+
+---
+
+### Troubleshooting Phase 43
+
+| Issue | Solution |
+|-------|----------|
+| API returns 404 | Check if backend container is healthy: `docker-compose ps` |
+| Export fails | Verify request body JSON is valid |
+| No findings in response | Load test data: `npm run seed:findings` |
+| Dashboard widget not showing | Refresh browser and check browser console |
 
 ---
 
