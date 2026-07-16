@@ -124,7 +124,7 @@ services:
       API_URL: http://backend:3000/api
       CORS_ORIGIN: http://localhost:5173,http://localhost
       LOG_LEVEL: info
-      FRONTEND_VERSION: 0.35.0
+      FRONTEND_VERSION: 0.37.1
       GIT_COMMIT: cfa203b
       GIT_BRANCH: master
     ports:
