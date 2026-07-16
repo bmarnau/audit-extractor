@@ -1,14 +1,15 @@
 /**
- * Technical Audit Center - Phase 40
+ * Technical Audit Center - Phase 40 + Phase 43 Integration
  * 
  * Zentrale technische Prüf- und Audit-Zentrale
  * Zeigt Executive Summary, Qualitätsampel, Findings, Empfehlungen
  * Wakeup Control Panel mit Systeminitialisierung
+ * Phase 43 Integration: Report Viewer, Technical Audit Widget, Export Services
  * 
  * Design: Audit-Bericht Stil, nicht Testwerkzeug
  * 
- * @version 0.40.0
- * @phase 40
+ * @version 0.43.0
+ * @phase 40 + 43
  */
 
 import React, { useState, useEffect } from 'react';
@@ -36,7 +37,11 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Tabs,
+  Tab,
 } from '@mui/material';
+import { ReportViewer } from '@/components/ReportViewer';
+import { TechnicalAuditWidget } from '@/components/Dashboard/TechnicalAuditWidget';
 import {
   CheckCircle as CheckIcon,
   Warning as WarningIcon,
@@ -77,6 +82,7 @@ const TechnicalAuditPage: React.FC = () => {
   const [wakeupLog, setWakeupLog] = useState<WakeupLog | null>(null);
   const [showWakeupDialog, setShowWakeupDialog] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [tabValue, setTabValue] = useState(0);
 
   // Load system status on component mount
   useEffect(() => {
@@ -737,7 +743,7 @@ const TechnicalAuditPage: React.FC = () => {
           </Dialog>
 
           {/* HISTORICAL DATA SECTION */}
-          <Card>
+          <Card sx={{ mb: 4 }}>
             <CardHeader title="📊 AUDIT HISTORY & TRACKING" />
             <CardContent>
               <Alert severity="info">
@@ -754,6 +760,123 @@ const TechnicalAuditPage: React.FC = () => {
                   <strong>Quality Trend:</strong> ↗ Improving
                 </Typography>
               </Box>
+            </CardContent>
+          </Card>
+
+          {/* PHASE 43: TECHNICAL AUDIT COMPONENTS */}
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
+              🆕 Phase 43: Technical Audit API & Report Viewer
+            </Typography>
+            <Divider sx={{ mb: 3 }} />
+          </Box>
+
+          {/* Tab Navigation for Phase 43 Components */}
+          <Card sx={{ mb: 4 }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Tabs 
+                value={tabValue} 
+                onChange={(e, newValue) => setTabValue(newValue)}
+                sx={{ backgroundColor: '#f5f5f5' }}
+              >
+                <Tab label="📊 Report Viewer" />
+                <Tab label="📈 Dashboard Widget" />
+              </Tabs>
+            </Box>
+          </Card>
+
+          {/* Tab 1: Report Viewer */}
+          {tabValue === 0 && (
+            <Card sx={{ mb: 4 }}>
+              <CardHeader 
+                title="Report Viewer - Technical Findings & Recommendations"
+                subheader="Phase 43C Component - Interactive Report Display"
+              />
+              <CardContent>
+                <Box sx={{ backgroundColor: '#fafafa', p: 2, borderRadius: 1, minHeight: 400 }}>
+                  <ReportViewer />
+                </Box>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Tab 2: Dashboard Widget */}
+          {tabValue === 1 && (
+            <Card sx={{ mb: 4 }}>
+              <CardHeader 
+                title="Technical Audit Dashboard Widget"
+                subheader="Phase 43E Component - Real-time Audit Summary"
+              />
+              <CardContent>
+                <Box sx={{ backgroundColor: '#fafafa', p: 2, borderRadius: 1 }}>
+                  <TechnicalAuditWidget />
+                </Box>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Phase 43 Info Card */}
+          <Card sx={{ backgroundColor: '#e3f2fd', border: '2px solid #1976d2' }}>
+            <CardHeader 
+              title="Phase 43: Technical Tests API Information"
+              sx={{ backgroundColor: '#bbdefb' }}
+            />
+            <CardContent>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 1 }}>
+                    📡 API Endpoints
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontFamily: 'monospace', mb: 1 }}>
+                    GET /api/technical-tests/findings
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontFamily: 'monospace', mb: 1 }}>
+                    GET /api/technical-tests/recommendations
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontFamily: 'monospace', mb: 1 }}>
+                    POST /api/technical-tests/export/pdf
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontFamily: 'monospace', mb: 1 }}>
+                    POST /api/technical-tests/export/csv
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
+                    POST /api/technical-tests/export/json
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 1 }}>
+                    ✨ Components
+                  </Typography>
+                  <Chip 
+                    label="Phase 43A: Findings API" 
+                    color="success" 
+                    sx={{ mb: 1, mr: 1 }}
+                  />
+                  <Chip 
+                    label="Phase 43B: Recommendations API" 
+                    color="success"
+                    sx={{ mb: 1, mr: 1 }}
+                  />
+                  <Chip 
+                    label="Phase 43C: Report Viewer UI" 
+                    color="success"
+                    sx={{ mb: 1, mr: 1 }}
+                  />
+                  <Chip 
+                    label="Phase 43D: Export Services" 
+                    color="success"
+                    sx={{ mb: 1, mr: 1 }}
+                  />
+                  <Chip 
+                    label="Phase 43E: Dashboard Widget" 
+                    color="success"
+                    sx={{ mb: 1 }}
+                  />
+                </Grid>
+              </Grid>
+              <Alert severity="success" sx={{ mt: 2 }}>
+                ✅ All Phase 43 components are implemented, tested, and integrated! Version 0.37.0
+              </Alert>
             </CardContent>
           </Card>
         </>
