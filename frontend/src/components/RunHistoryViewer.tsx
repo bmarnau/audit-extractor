@@ -36,10 +36,9 @@ import {
   History as HistoryIcon,
   Delete as DeleteIcon,
   Info as InfoIcon,
-  CheckCircle as CheckCircleIcon,
-  Error as ErrorIcon,
-  Warning as WarningIcon,
 } from '@mui/icons-material';
+import { formatDateFull } from '../../utils/dateFormatting';
+import { getStatusIcon, getStatusColor } from '../../utils/colorMapping';
 
 /**
  * Domain Model für ExtractedRun
@@ -170,43 +169,8 @@ const RunHistoryViewer: React.FC<RunHistoryViewerProps> = ({
     }
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'success':
-        return <CheckCircleIcon sx={{ color: 'green' }} />;
-      case 'partial':
-        return <WarningIcon sx={{ color: 'orange' }} />;
-      case 'failed':
-        return <ErrorIcon sx={{ color: 'red' }} />;
-      default:
-        return null;
-    }
-  };
 
-  const getStatusColor = (status: string): 'success' | 'warning' | 'error' => {
-    switch (status) {
-      case 'success':
-        return 'success';
-      case 'partial':
-        return 'warning';
-      case 'failed':
-        return 'error';
-      default:
-        return 'success';
-    }
-  };
 
-  const formatDate = (date: Date | string) => {
-    const d = typeof date === 'string' ? new Date(date) : date;
-    return d.toLocaleString('de-DE', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
-  };
 
   if (loading) {
     return (
@@ -268,7 +232,7 @@ const RunHistoryViewer: React.FC<RunHistoryViewerProps> = ({
                     <TableCell align="center">{idx + 1}.</TableCell>
                     <TableCell>
                       <Typography variant="body2">
-                        {formatDate(run.timestamp)}
+                        {formatDateFull(run.timestamp)}
                       </Typography>
                     </TableCell>
                     <TableCell align="center">

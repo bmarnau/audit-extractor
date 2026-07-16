@@ -50,6 +50,7 @@ import {
   Refresh as RefreshIcon,
   PowerSettingsNew as WakeupIcon,
 } from '@mui/icons-material';
+import { SYSTEM_CONFIG } from '../constants/environment';
 
 interface SystemComponent {
   status: 'active' | 'inactive' | 'error' | 'idle';
@@ -93,7 +94,7 @@ const TechnicalAuditPage: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('http://localhost:3000/api/system/wakeup/status');
+      const response = await fetch(SYSTEM_CONFIG.WAKEUP_CHECK_ENDPOINT);
       if (!response.ok) throw new Error('Failed to fetch system status');
       
       const data = await response.json();
@@ -111,7 +112,7 @@ const TechnicalAuditPage: React.FC = () => {
       setWaking(true);
       setError(null);
       
-      const response = await fetch('http://localhost:3000/api/system/wakeup', {
+      const response = await fetch(SYSTEM_CONFIG.WAKEUP_TRIGGER_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       });

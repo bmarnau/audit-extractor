@@ -36,10 +36,9 @@ import {
 } from '@mui/material';
 import {
   Compare as CompareIcon,
-  Add as AddIcon,
-  Delete as DeleteIcon,
-  Edit as EditIcon,
 } from '@mui/icons-material';
+import { formatDateFull } from '../../utils/dateFormatting';
+import { getChangeIcon, getChangeColor } from '../../utils/colorMapping';
 
 interface ExtractedRun {
   runId: string;
@@ -121,42 +120,8 @@ const DiffViewer: React.FC<DiffViewerProps> = ({ run1, run2 }) => {
     return String(value).substring(0, maxLength);
   };
 
-  const formatDate = (date: Date | string) => {
-    const d = typeof date === 'string' ? new Date(date) : date;
-    return d.toLocaleString('de-DE', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
 
-  const getChangeIcon = (changeType: string) => {
-    switch (changeType) {
-      case 'added':
-        return <AddIcon sx={{ color: 'green' }} />;
-      case 'removed':
-        return <DeleteIcon sx={{ color: 'red' }} />;
-      case 'changed':
-        return <EditIcon sx={{ color: 'orange' }} />;
-      default:
-        return null;
-    }
-  };
 
-  const getChangeColor = (changeType: string) => {
-    switch (changeType) {
-      case 'added':
-        return '#c8e6c9'; // Light green
-      case 'removed':
-        return '#ffcdd2'; // Light red
-      case 'changed':
-        return '#fff9c4'; // Light yellow
-      default:
-        return 'white';
-    }
-  };
 
   if (loading) {
     return (
@@ -187,7 +152,7 @@ const DiffViewer: React.FC<DiffViewerProps> = ({ run1, run2 }) => {
           <Card variant="outlined">
             <CardHeader
               title="Lauf 1"
-              subheader={formatDate(run1.timestamp)}
+              subheader={formatDateFull(run1.timestamp)}
               titleTypographyProps={{ variant: 'subtitle1' }}
               subheaderTypographyProps={{ variant: 'caption' }}
             />
@@ -211,7 +176,7 @@ const DiffViewer: React.FC<DiffViewerProps> = ({ run1, run2 }) => {
           <Card variant="outlined">
             <CardHeader
               title="Lauf 2"
-              subheader={formatDate(run2.timestamp)}
+              subheader={formatDateFull(run2.timestamp)}
               titleTypographyProps={{ variant: 'subtitle1' }}
               subheaderTypographyProps={{ variant: 'caption' }}
             />

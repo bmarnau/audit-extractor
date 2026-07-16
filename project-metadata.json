@@ -1,31 +1,63 @@
 {
-  "project": {
-    "name": "audit-safe-document-extractor",
-    "description": "Document extraction and analysis system",
-    "repository": "https://github.com/bmarnau/audit-extractor"
-  },
-  "versioning": {
-    "current": "0.37.0",
-    "authoritySource": "package.json",
-    "lastUpdated": "2026-07-16T11:19:09.760Z",
-    "updatePolicy": "Auto-sync from package.json only"
-  },
-  "currentPhase": {
-    "number": 44,
-    "name": "Single Source of Truth",
+  "productName": "Audit-Safe Document Extractor",
+  "shortName": "audit-extractor",
+  "description": "Revisionssicheres Dokument-Extraktionssystem mit API Discovery Framework, Governance Integration, Job-basierter Orchestrierung, fehlerresistenter Verarbeitung und vollständiger Docker-Containerisierung",
+  
+  "version": "0.37.1",
+  "releaseStatus": "development",
+  
+  "developmentPhase": {
+    "number": 45,
+    "name": "Project Consistency - Single Source of Truth",
     "status": "in-progress",
-    "startDate": "2026-07-16"
+    "startDate": "2026-07-16",
+    "completedPhases": [
+      {
+        "number": 44,
+        "name": "Critical Issue Analysis - Missing Input Validation"
+      },
+      {
+        "number": 43,
+        "name": "Navigation System Complete Fix & Docker Rebuild"
+      },
+      {
+        "number": 42,
+        "name": "Quality Assurance & Feature Completion"
+      }
+    ]
   },
+  
   "build": {
+    "date": null,
+    "commit": null,
+    "branch": "main",
+    "timestamp": null,
     "typeScriptStrict": true,
-    "testPassRate": 100,
-    "compilationErrors": 0,
-    "lastBuildTime": "2026-07-16T11:19:09.762Z"
+    "compilationErrors": 0
   },
+  
+  "documentation": {
+    "currentOperationsManual": "OPERATIONS_MANUAL.md",
+    "releaseNotesFile": "RELEASE_NOTES_0.37.1.md",
+    "changelogFile": "CHANGELOG.md",
+    "lastUpdated": "2026-07-16T00:00:00Z"
+  },
+  
+  "repository": {
+    "owner": "bmarnau",
+    "name": "audit-extractor",
+    "url": "https://github.com/bmarnau/audit-extractor"
+  },
+  
+  "tech": {
+    "nodeVersion": "^20.0.0",
+    "reactVersion": "18.2.0",
+    "typeScriptVersion": "5.3.3"
+  },
+  
   "consistency": {
-    "versionInconsistencies": 0,
-    "documentationDuplicates": 1,
-    "brokenReferences": 0,
-    "lastValidatedAt": "2026-07-16T11:19:09.762Z"
+    "authoritySource": "package.json",
+    "updatePolicy": "Auto-sync from package.json only",
+    "lastValidatedAt": "2026-07-16T00:00:00Z"
   }
 }

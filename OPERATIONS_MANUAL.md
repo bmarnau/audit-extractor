@@ -1,10 +1,10 @@
 # 📖 Operationshandbuch - Betriebshandbuch
-## Audit-Safe Document Extractor 0.37.0
+## Audit-Safe Document Extractor 0.37.1
 
-**Version:** 0.37.0  
-**Phase:** 43 (Technical Audit API & Report Viewer) + 38C (Technical Test Runner)  
+**Version:** 0.37.1  
+**Phase:** 45 (Project Consistency - Single Source of Truth)
 **Datum:** 2026-07-16  
-**Status:** Produktionsreif mit Technical Audit API, Report Viewer und Dashboard Widget  
+**Status:** In Arbeit - Konsistenzverbesserung und Single Source of Truth Implementation  
 
 ---
 

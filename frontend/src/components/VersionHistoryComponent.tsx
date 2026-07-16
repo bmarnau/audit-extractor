@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineOppositeContent, TimelineDot } from '@mui/lab';
 import { ArrowBack as BackIcon, Info as InfoIcon } from '@mui/icons-material';
+import { formatDateWithTime } from '../utils/dateFormatting';
 import { useVersionHistory } from '../hooks/useSchemaAPI';
 import { useSchemaContext } from '../context/SchemaContext';
 
@@ -61,13 +62,7 @@ export const VersionHistoryComponent: React.FC = () => {
     setDetailsDialogOpen(true);
   };
 
-  /**
-   * Format date for display
-   */
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-  };
+
 
   if (loading) {
     return (
@@ -110,7 +105,7 @@ export const VersionHistoryComponent: React.FC = () => {
                 <TimelineItem key={`v${version.version}`}>
                   <TimelineOppositeContent color="textSecondary" sx={{ flex: 0.3 }}>
                     <Typography variant="caption">
-                      {formatDate(version.createdAt)}
+                      {formatDateWithTime(version.createdAt)}
                     </Typography>
                   </TimelineOppositeContent>
                   <TimelineSeparator>
@@ -138,7 +133,7 @@ export const VersionHistoryComponent: React.FC = () => {
                       )}
 
                       <Typography variant="caption" display="block" color="textSecondary">
-                        Last updated: {formatDate(version.updatedAt)}
+                        Last updated: {formatDateWithTime(version.updatedAt)}
                       </Typography>
 
                       <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
@@ -175,7 +170,7 @@ export const VersionHistoryComponent: React.FC = () => {
                   Created
                 </Typography>
                 <Typography variant="body2">
-                  {formatDate(selectedVersion.createdAt)}
+                  {formatDateWithTime(selectedVersion.createdAt)}
                 </Typography>
               </Box>
               <Box>
@@ -183,7 +178,7 @@ export const VersionHistoryComponent: React.FC = () => {
                   Last Updated
                 </Typography>
                 <Typography variant="body2">
-                  {formatDate(selectedVersion.updatedAt)}
+                  {formatDateWithTime(selectedVersion.updatedAt)}
                 </Typography>
               </Box>
               {selectedVersion.description && (

@@ -44,6 +44,7 @@ import SchemaEditorComponent from './components/SchemaEditorComponent';
 import VersionHistoryComponent from './components/VersionHistoryComponent';
 // Phase 17: Context
 import { SchemaProvider } from './context/SchemaContext';
+import { API_CONFIG } from './constants/environment';
 // Phase 24: Job Manager & iReport
 import JobManager from './components/JobManager';
 import IReportIntegration from './components/iReportIntegration';
@@ -76,10 +77,10 @@ const AppContent: React.FC<{
   const location = useLocation();
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
     'extraction': true,
-    'documents': false,
-    'rules': false,
-    'monitoring': false,
-    'system': false,
+    'documents': true,
+    'rules': true,
+    'monitoring': true,  // 👈 Monitoring & Audit jetzt offen!
+    'system': true,
   });
   
   // Use responsive navigation hook
@@ -267,7 +268,7 @@ export const App: React.FC = () => {
 
   // Log frontend info on mount
   useEffect(() => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+    const apiUrl = API_CONFIG.BASE_URL;
     const logLevel = import.meta.env.VITE_LOG_LEVEL || 'warn';
     
     if (logLevel === 'debug') {

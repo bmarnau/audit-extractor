@@ -32,7 +32,7 @@ export interface NavItem {
   id: string;
   label: string;
   path: string;
-  icon: React.ReactNode;
+  icon: React.ElementType;
   badge?: number;
   description?: string;
   shortcut?: string;
@@ -44,7 +44,7 @@ export interface NavItem {
 export interface NavCategory {
   id: string;
   label: string;
-  icon: React.ReactNode;
+  icon: React.ElementType;
   color?: string;
   items: NavItem[];
   collapsible?: boolean;
@@ -60,7 +60,7 @@ export const navigationCategories: NavCategory[] = [
   {
     id: 'extraction',
     label: 'Extraction',
-    icon: <ProcessIcon />,
+    icon: ProcessIcon,
     color: '#2196f3',
     order: 1,
     collapsible: true,
@@ -69,14 +69,14 @@ export const navigationCategories: NavCategory[] = [
         id: 'dashboard',
         label: 'Dashboard',
         path: '/',
-        icon: <DashboardIcon />,
+        icon: DashboardIcon,
         description: 'System Overview',
       },
       {
         id: 'job-manager',
         label: 'Job Manager',
         path: '/jobs',
-        icon: <JobIcon />,
+        icon: JobIcon,
         badge: 0,
         description: 'Document Extraction Jobs',
         shortcut: 'Cmd+J',
@@ -85,7 +85,7 @@ export const navigationCategories: NavCategory[] = [
         id: 'workbench',
         label: 'Extraction Workbench',
         path: '/workbench',
-        icon: <WorkbenchIcon />,
+        icon: WorkbenchIcon,
         description: 'Manual Extraction & Testing',
       },
     ],
@@ -94,7 +94,7 @@ export const navigationCategories: NavCategory[] = [
   {
     id: 'documents',
     label: 'Documents & Schema',
-    icon: <DocumentsIcon />,
+    icon: DocumentsIcon,
     color: '#4caf50',
     order: 2,
     collapsible: true,
@@ -103,14 +103,14 @@ export const navigationCategories: NavCategory[] = [
         id: 'documents',
         label: 'Documents',
         path: '/documents',
-        icon: <DocumentsIcon />,
+        icon: DocumentsIcon,
         description: 'Browse Uploaded Documents',
       },
       {
         id: 'schema-management',
         label: 'Schema Management',
         path: '/schemas',
-        icon: <SchemaIcon />,
+        icon: SchemaIcon,
         description: 'View & Edit Extraction Schemas',
         shortcut: 'Cmd+S',
       },
@@ -118,14 +118,14 @@ export const navigationCategories: NavCategory[] = [
         id: 'schema-upload',
         label: 'Schema Upload',
         path: '/schema-wizard',
-        icon: <CloudUploadIcon />,
+        icon: CloudUploadIcon,
         description: 'Upload New Schemas',
       },
       {
         id: 'ireport',
         label: 'iReport Integration',
         path: '/ireport',
-        icon: <ReportIcon />,
+        icon: ReportIcon,
         description: 'Document Format Conversion',
       },
     ],
@@ -134,7 +134,7 @@ export const navigationCategories: NavCategory[] = [
   {
     id: 'rules',
     label: 'Rules & Learning',
-    icon: <EditIcon />,
+    icon: EditIcon,
     color: '#ff9800',
     order: 3,
     collapsible: true,
@@ -143,7 +143,7 @@ export const navigationCategories: NavCategory[] = [
         id: 'rule-editor',
         label: 'Rule Editor',
         path: '/rules',
-        icon: <EditIcon />,
+        icon: EditIcon,
         description: 'Create & Manage Extraction Rules',
         shortcut: 'Cmd+R',
       },
@@ -151,14 +151,14 @@ export const navigationCategories: NavCategory[] = [
         id: 'learning',
         label: 'Learning Center',
         path: '/learning',
-        icon: <LearningIcon />,
+        icon: LearningIcon,
         description: 'ML Model Training & Management',
       },
       {
         id: 'history',
         label: 'Version History',
         path: '/schema/:id/history',
-        icon: <AnalyticsIcon />,
+        icon: AnalyticsIcon,
         description: 'Track Schema Changes',
       },
     ],
@@ -167,7 +167,7 @@ export const navigationCategories: NavCategory[] = [
   {
     id: 'monitoring',
     label: 'Monitoring & Audit',
-    icon: <AuditIcon />,
+    icon: AuditIcon,
     color: '#f44336',
     order: 4,
     collapsible: true,
@@ -176,14 +176,14 @@ export const navigationCategories: NavCategory[] = [
         id: 'audit-trail',
         label: 'Audit Trail',
         path: '/audit',
-        icon: <AuditIcon />,
+        icon: AuditIcon,
         description: 'System & User Activity Logs',
       },
       {
         id: 'logs',
         label: 'Logs',
         path: '/logs',
-        icon: <LogIcon />,
+        icon: LogIcon,
         description: 'Application Logs & Diagnostics',
         badge: 0,
       },
@@ -191,28 +191,28 @@ export const navigationCategories: NavCategory[] = [
         id: 'services',
         label: 'Services',
         path: '/services',
-        icon: <CloudIcon />,
+        icon: CloudIcon,
         description: 'System Services & Health Monitoring',
       },
       {
         id: 'technical-audit',
         label: 'Technical Audit',
         path: '/technical-audit',
-        icon: <AuditIcon />,
+        icon: AuditIcon,
         description: 'Comprehensive System Audit & Status Report',
       },
       {
         id: 'technical-tests',
         label: 'Quality Dashboard',
         path: '/technical-tests',
-        icon: <AnalyticsIcon />,
+        icon: AnalyticsIcon,
         description: 'Technical Quality & Report Dashboard',
       },
       {
         id: 'backups',
         label: 'Backups',
         path: '/backups',
-        icon: <BackupIcon />,
+        icon: BackupIcon,
         description: 'System Backups & Recovery',
       },
     ],
@@ -221,7 +221,7 @@ export const navigationCategories: NavCategory[] = [
   {
     id: 'system',
     label: 'System',
-    icon: <SettingsIcon />,
+    icon: SettingsIcon,
     color: '#9c27b0',
     order: 5,
     collapsible: true,
@@ -230,14 +230,14 @@ export const navigationCategories: NavCategory[] = [
         id: 'configuration',
         label: 'Configuration',
         path: '/configuration',
-        icon: <SettingsIcon />,
+        icon: SettingsIcon,
         description: 'System Settings & Preferences',
       },
       {
         id: 'help',
         label: 'Help Center',
         path: '/help',
-        icon: <HelpIcon />,
+        icon: HelpIcon,
         description: 'Documentation & Support',
       },
     ],
@@ -254,6 +254,11 @@ export const getAllNavItems = (): NavItem[] => {
 };
 
 /**
+ * Alias for compatibility with older code
+ */
+export const getAllNavigationItems = getAllNavItems;
+
+/**
  * Get category by ID
  */
 export const getCategoryById = (id: string): NavCategory | undefined => {
@@ -265,6 +270,20 @@ export const getCategoryById = (id: string): NavCategory | undefined => {
  */
 export const getNavItemByPath = (path: string): NavItem | undefined => {
   return getAllNavItems().find((item) => item.path === path);
+};
+
+/**
+ * Alias for compatibility with older code
+ */
+export const getItemByPath = getNavItemByPath;
+
+/**
+ * Get category by path (find category containing item with path)
+ */
+export const getCategoryByPath = (path: string): NavCategory | undefined => {
+  return navigationCategories.find((cat) =>
+    cat.items.some((item) => item.path === path)
+  );
 };
 
 /**

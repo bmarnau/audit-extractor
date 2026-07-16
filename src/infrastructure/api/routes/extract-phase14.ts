@@ -40,7 +40,29 @@ import { RuleVersioningService } from '../services/RuleVersioningService';
 import { BatchTestingService } from '../services/BatchTestingService';
 import { FeedbackService } from '../services/FeedbackService';
 
+// PHASE 44: Security modules
+import { validateUploadedFile, sanitizeFilename } from '../../security/file-validation';
+import { 
+  initializeRateLimiting, 
+  shutdownRateLimiting, 
+  checkRateLimit, 
+  recordUpload,
+  getClientIdentifier,
+} from '../../security/rate-limiter';
+import {
+  logFileUploadSuccess,
+  logFileUploadFailure,
+  logMagicBytesMismatch,
+  logFileSizeExceeded,
+  logRateLimitViolation,
+  logValidationError,
+  SecurityEventSeverity,
+} from '../../security/audit-logging';
+
 const router = Router();
+
+// Initialize rate limiting on router startup
+initializeRateLimiting();
 
 // Base paths (must come before service initialization)
 const PROJECT_ROOT = path.join(__dirname, '../../../..');
@@ -56,7 +78,9 @@ const feedbackService = new FeedbackService(PROJECT_ROOT);
 let pdfParser: PdfParser | null = null;
 let htmlParser: HtmlParser | null = null;
 
-// Multer configuration for file uploads
+/**
+ * PHASE 44 SECURITY: Enhanced Multer configuration with magic byte verification
+ */
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 50 * 1024 * 1024 }, // 50MB max
@@ -66,6 +90,8 @@ const upload = multer({
       'text/html',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
     ];
+    
+    // Basic MIME type check (still needed for client-side filtering)
     if (allowedMimes.includes(file.mimetype) || 
         file.originalname.match(/\.(pdf|html|docx)$/i)) {
       cb(null, true);
@@ -197,6 +223,7 @@ function extractFieldsWithPatterns(text: string, ruleSet: any): any {
 /**
  * POST /api/extract/pdf
  * Upload PDF, extract with rules
+ * PHASE 44 SECURITY: Added magic byte verification, rate limiting, and audit logging
  */
 router.post('/pdf', upload.single('document'), async (req: Request, res: Response) => {
   try {
@@ -204,6 +231,28 @@ router.post('/pdf', upload.single('document'), async (req: Request, res: Respons
 
     const { docType } = req.body;
     const file = (req as any).file;
+
+    // ============================================================================
+    // PHASE 44 SECURITY: Rate limit check
+    // ============================================================================
+    const rateLimitResult = checkRateLimit(req, {
+      windowMs: 3600000, // 1 hour
+      maxRequests: 100, // 100 uploads per hour
+      maxBytes: 5 * 1024 * 1024 * 1024, // 5GB per hour
+    });
+
+    if (!rateLimitResult.allowed) {
+      await logRateLimitViolation(
+        req,
+        rateLimitResult.identifier,
+        rateLimitResult.current.count,
+        rateLimitResult.limit.maxRequests,
+        rateLimitResult.resetTime!
+      );
+      return sendError(res, 'RATE_LIMIT_EXCEEDED', 429, rateLimitResult.message, {
+        retryAfter: rateLimitResult.resetTime?.toISOString(),
+      });
+    }
 
     if (!file) {
       return sendError(res, 'NO_FILE', 400, 'No file uploaded');
@@ -213,16 +262,50 @@ router.post('/pdf', upload.single('document'), async (req: Request, res: Respons
       return sendError(res, 'NO_DOCTYPE', 400, 'Document type (docType) is required');
     }
 
+    // ============================================================================
+    // PHASE 44 SECURITY: Comprehensive file validation
+    // ============================================================================
+    const validationResult = validateUploadedFile(file.buffer, file.originalname, {
+      maxFileSize: 50 * 1024 * 1024, // 50MB
+      allowedExtensions: ['pdf', 'html', 'htm', 'docx'],
+      checkMagicBytes: true,
+    });
+
+    if (!validationResult.isValid) {
+      // Log validation errors
+      await logValidationError(req, file.originalname, validationResult.errors);
+
+      // Log specific errors if they indicate attacks
+      if (validationResult.errors.some((e) => e.includes('Magic byte'))) {
+        const extension = file.originalname.includes('.')
+          ? file.originalname.split('.').pop() || 'unknown'
+          : 'unknown';
+        await logMagicBytesMismatch(req, file.originalname, extension, 'Unknown/Mismatch');
+      }
+
+      return sendError(res, 'FILE_VALIDATION_FAILED', 400, 'File validation failed', {
+        errors: validationResult.errors,
+        sanitizedFilename: validationResult.sanitizedFilename,
+      });
+    }
+
+    // Log warnings if filename was sanitized
+    if (validationResult.warnings.length > 0) {
+      console.warn(`[Phase 14] File validation warnings for ${file.originalname}:`, validationResult.warnings);
+    }
+
     // Load ruleset
     let ruleSet;
     try {
       ruleSet = await loadRuleSetFromJson(docType);
     } catch (err: any) {
+      await logFileUploadFailure(req, validationResult.sanitizedFilename, err.message, 'RULESET_NOT_FOUND');
       return sendError(res, 'RULESET_NOT_FOUND', 404, err.message);
     }
 
     // Parse PDF
     if (!pdfParser!.canHandle(file.originalname)) {
+      await logFileUploadFailure(req, validationResult.sanitizedFilename, 'File is not a valid PDF', 'INVALID_FORMAT');
       return sendError(res, 'INVALID_FORMAT', 400, 'File is not a valid PDF');
     }
 
@@ -238,7 +321,7 @@ router.post('/pdf', upload.single('document'), async (req: Request, res: Respons
     const result = {
       resultId,
       documentReference: {
-        fileName: file.originalname,
+        fileName: validationResult.sanitizedFilename,
         docType,
         fileSize: file.size,
         uploadedAt: new Date().toISOString(),
@@ -266,6 +349,12 @@ router.post('/pdf', upload.single('document'), async (req: Request, res: Respons
       console.warn(`[Phase 14] Could not save result file: ${err.message}`);
     }
 
+    // ============================================================================
+    // PHASE 44 SECURITY: Record upload for rate limiting and log success
+    // ============================================================================
+    recordUpload(req, file.size, { windowMs: 3600000 });
+    await logFileUploadSuccess(req, validationResult.sanitizedFilename, file.size, resultId);
+
     return sendSuccess(res, result, 'PDF extracted successfully');
   } catch (err: any) {
     console.error('[Phase 14] PDF Extraction Error:', err);
@@ -276,6 +365,7 @@ router.post('/pdf', upload.single('document'), async (req: Request, res: Respons
 /**
  * POST /api/extract/html
  * Upload HTML, extract with rules
+ * PHASE 44 SECURITY: Added magic byte verification, rate limiting, and audit logging
  */
 router.post('/html', upload.single('document'), async (req: Request, res: Response) => {
   try {
@@ -283,6 +373,28 @@ router.post('/html', upload.single('document'), async (req: Request, res: Respon
 
     const { docType } = req.body;
     const file = (req as any).file;
+
+    // ============================================================================
+    // PHASE 44 SECURITY: Rate limit check
+    // ============================================================================
+    const rateLimitResult = checkRateLimit(req, {
+      windowMs: 3600000, // 1 hour
+      maxRequests: 100, // 100 uploads per hour
+      maxBytes: 5 * 1024 * 1024 * 1024, // 5GB per hour
+    });
+
+    if (!rateLimitResult.allowed) {
+      await logRateLimitViolation(
+        req,
+        rateLimitResult.identifier,
+        rateLimitResult.current.count,
+        rateLimitResult.limit.maxRequests,
+        rateLimitResult.resetTime!
+      );
+      return sendError(res, 'RATE_LIMIT_EXCEEDED', 429, rateLimitResult.message, {
+        retryAfter: rateLimitResult.resetTime?.toISOString(),
+      });
+    }
 
     if (!file) {
       return sendError(res, 'NO_FILE', 400, 'No file uploaded');
@@ -292,16 +404,50 @@ router.post('/html', upload.single('document'), async (req: Request, res: Respon
       return sendError(res, 'NO_DOCTYPE', 400, 'Document type (docType) is required');
     }
 
+    // ============================================================================
+    // PHASE 44 SECURITY: Comprehensive file validation
+    // ============================================================================
+    const validationResult = validateUploadedFile(file.buffer, file.originalname, {
+      maxFileSize: 50 * 1024 * 1024, // 50MB
+      allowedExtensions: ['pdf', 'html', 'htm', 'docx'],
+      checkMagicBytes: true,
+    });
+
+    if (!validationResult.isValid) {
+      // Log validation errors
+      await logValidationError(req, file.originalname, validationResult.errors);
+
+      // Log specific errors if they indicate attacks
+      if (validationResult.errors.some((e) => e.includes('Magic byte'))) {
+        const extension = file.originalname.includes('.')
+          ? file.originalname.split('.').pop() || 'unknown'
+          : 'unknown';
+        await logMagicBytesMismatch(req, file.originalname, extension, 'Unknown/Mismatch');
+      }
+
+      return sendError(res, 'FILE_VALIDATION_FAILED', 400, 'File validation failed', {
+        errors: validationResult.errors,
+        sanitizedFilename: validationResult.sanitizedFilename,
+      });
+    }
+
+    // Log warnings if filename was sanitized
+    if (validationResult.warnings.length > 0) {
+      console.warn(`[Phase 14] File validation warnings for ${file.originalname}:`, validationResult.warnings);
+    }
+
     // Load ruleset
     let ruleSet;
     try {
       ruleSet = await loadRuleSetFromJson(docType);
     } catch (err: any) {
+      await logFileUploadFailure(req, validationResult.sanitizedFilename, err.message, 'RULESET_NOT_FOUND');
       return sendError(res, 'RULESET_NOT_FOUND', 404, err.message);
     }
 
     // Parse HTML
     if (!htmlParser!.canHandle(file.originalname)) {
+      await logFileUploadFailure(req, validationResult.sanitizedFilename, 'File is not a valid HTML', 'INVALID_FORMAT');
       return sendError(res, 'INVALID_FORMAT', 400, 'File is not a valid HTML');
     }
 
@@ -317,7 +463,7 @@ router.post('/html', upload.single('document'), async (req: Request, res: Respon
     const result = {
       resultId,
       documentReference: {
-        fileName: file.originalname,
+        fileName: validationResult.sanitizedFilename,
         docType,
         fileSize: file.size,
         uploadedAt: new Date().toISOString(),
@@ -344,6 +490,12 @@ router.post('/html', upload.single('document'), async (req: Request, res: Respon
     } catch (err: any) {
       console.warn(`[Phase 14] Could not save result file: ${err.message}`);
     }
+
+    // ============================================================================
+    // PHASE 44 SECURITY: Record upload for rate limiting and log success
+    // ============================================================================
+    recordUpload(req, file.size, { windowMs: 3600000 });
+    await logFileUploadSuccess(req, validationResult.sanitizedFilename, file.size, resultId);
 
     return sendSuccess(res, result, 'HTML extracted successfully');
   } catch (err: any) {
@@ -886,5 +1038,15 @@ router.get('/results/:resultId', async (req: Request, res: Response) => {
     sendError(res, 'RESULT_ERROR', 500, err.message || 'Failed to retrieve result');
   }
 });
+
+/**
+ * PHASE 44 SECURITY: Graceful shutdown handler
+ * Cleanup rate limiting and audit logging on server shutdown
+ */
+export function cleanupRouter(): void {
+  console.log('[Phase 14] Cleaning up router resources...');
+  shutdownRateLimiting();
+  console.log('[Phase 14] Rate limiting shutdown complete');
+}
 
 export default router;

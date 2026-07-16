@@ -30,6 +30,7 @@ import {
   History as HistoryIcon,
   Refresh as RefreshIcon,
 } from '@mui/icons-material';
+import { formatDateOnly } from '../utils/dateFormatting';
 import { useSchemas, useUpdateSchema, useDeleteSchema } from '../hooks/useSchemaAPI';
 import { useSchemaContext } from '../context/SchemaContext';
 
@@ -144,12 +145,7 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
     }
   };
 
-  /**
-   * Format date for display
-   */
-  const formatDate = (dateString: string): string => {
-    return new Date(dateString).toLocaleDateString('de-DE');
-  };
+
 
   /**
    * Get status color chip
@@ -260,7 +256,7 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
                     />
                   </TableCell>
                   <TableCell align="right">{schema.fieldsCount || 0}</TableCell>
-                  <TableCell>{new Date(schema.createdAt).toLocaleDateString()}</TableCell>
+                  <TableCell>{formatDateOnly(schema.createdAt)}</TableCell>
                   <TableCell align="center">
                     <IconButton
                       size="small"
