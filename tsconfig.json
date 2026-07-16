@@ -41,5 +41,5 @@
     "require": ["tsconfig-paths/register"]
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "tests/**/*", "**/__tests__/**", "**/governance/**", "**/environment-test/**", "**/test-registry/**", "**/issue-tracking/**", "**/testing/**", "**/decorators/**", "**/api-discovery/**", "**/IssueService.ts", "**/RegisterTest.ts"]
+  "exclude": ["node_modules", "dist", "tests/**/*", "src/test/**/*", "**/__tests__/**", "**/governance/**", "**/environment-test/**", "**/test-registry/**", "**/issue-tracking/**", "**/testing/**", "**/decorators/**", "**/api-discovery/**", "**/IssueService.ts", "**/RegisterTest.ts"]
 }

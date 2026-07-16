@@ -419,32 +419,61 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
     // Load manual from HelpContentLoader instead of JSON file
     const docs = await loader.loadDocumentation();
     
-    // Prioritize MANUAL-0.35.0.md specifically, not just any MANUAL-*.md file
+    // Current version constant - update this when releasing new version
+    const CURRENT_VERSION = '0.35.0';
+    const CURRENT_MANUAL_FILE = `MANUAL-${CURRENT_VERSION}.md`;
+    
+    console.log(`[Help] Manual endpoint called - looking for version ${CURRENT_VERSION}`);
+    
+    // Prioritize MANUAL-0.35.0.md specifically
     let manual = docs.find((d: any) => {
       const filename = d.source?.split('/').pop() || '';
-      return filename === 'MANUAL-0.35.0.md';
+      return filename === CURRENT_MANUAL_FILE;
     });
     
-    // Fallback to any MANUAL-*.md if 0.25.0 not found
+    // Debug: Log what we found
+    if (manual) {
+      console.log(`[Help] ✅ Found current manual: ${manual.source}`);
+    } else {
+      console.warn(`[Help] ⚠️ Current manual ${CURRENT_MANUAL_FILE} not found. Checking available manuals...`);
+      const availableManuals = docs
+        .filter((d: any) => d.source?.includes('MANUAL-'))
+        .map((d: any) => d.source);
+      console.warn(`[Help] Available manuals: ${availableManuals.join(', ')}`);
+    }
+    
+    // Fallback: Sort by version number to find latest if current not found
     if (!manual) {
-      manual = docs.find((d: any) => {
+      const manualDocs = docs.filter((d: any) => {
         const filename = d.source?.split('/').pop() || '';
-        return filename.startsWith('MANUAL-');
+        return filename.startsWith('MANUAL-') && filename.endsWith('.md');
       });
+      
+      if (manualDocs.length > 0) {
+        // Sort by version number (extract from filename) - highest first
+        manualDocs.sort((a: any, b: any) => {
+          const aVer = a.source?.match(/MANUAL-(\d+\.\d+\.\d+)/)?.[1] || '0.0.0';
+          const bVer = b.source?.match(/MANUAL-(\d+\.\d+\.\d+)/)?.[1] || '0.0.0';
+          return bVer.localeCompare(aVer, undefined, { numeric: true });
+        });
+        manual = manualDocs[0];
+        console.warn(`[Help] ⚠️ Using fallback manual: ${manual.source}`);
+      }
     }
     
     if (!manual) {
+      console.error(`[Help] ❌ No manual documents found at all`);
       return res.json(createSuccessResponse({
-        version: '0.35.0',
-        title: '📖 Operationshandbuch - Version 0.35.0',
+        version: CURRENT_VERSION,
+        title: `📖 Operationshandbuch - Version ${CURRENT_VERSION}`,
         chapters: [],
         totalChapters: 0,
+        note: 'No manual document found. Please ensure MANUAL-*.md exists.'
       }));
     }
 
-    // Extract version from manual title or filename and override with current version
-    // Always set version 0.35.0 for this release
-    const title = '📖 Operationshandbuch - Version 0.35.0';
+    // Always set version to current version
+    const title = `📖 Operationshandbuch - Version ${CURRENT_VERSION}`;
 
     // Parse markdown chapters: split by ## headers
     const chapters: any[] = [];
@@ -537,6 +566,52 @@ router.get('/manual', async (req: ApiRequest, res: Response, next: NextFunction)
   }
 });
 
+
+/**
+ * GET /api/help/version - Get current manual version
+ * Useful for testing and version validation
+ */
+router.get('/version', async (req: ApiRequest, res: Response, next: NextFunction) => {
+  try {
+    const CURRENT_VERSION = '0.35.0';
+    const CURRENT_MANUAL_FILE = `MANUAL-${CURRENT_VERSION}.md`;
+    
+    const docs = await loader.loadDocumentation();
+    
+    // Check if current version exists
+    const manualExists = docs.some((d: any) => {
+      const filename = d.source?.split('/').pop() || '';
+      return filename === CURRENT_MANUAL_FILE;
+    });
+    
+    // Find actual version being served
+    const serving = docs.find((d: any) => {
+      const filename = d.source?.split('/').pop() || '';
+      return filename.startsWith('MANUAL-') && filename.endsWith('.md');
+    });
+    
+    const servingVersion = serving?.source?.match(/MANUAL-(\d+\.\d+\.\d+)/)?.[1] || 'unknown';
+    
+    res.json(createSuccessResponse({
+      current: CURRENT_VERSION,
+      expected_file: CURRENT_MANUAL_FILE,
+      exists: manualExists,
+      serving_version: servingVersion,
+      serving_file: serving?.source?.split('/').pop(),
+      timestamp: new Date().toISOString()
+    }));
+  } catch (error) {
+    console.error(`[Help] Version check error:`, error);
+    const err = error as any;
+    if (err.statusCode) return next(err);
+    return next(new ApiResponseError(
+      'VERSION_CHECK_FAILED',
+      500,
+      'Failed to check manual version',
+      { error: err.message }
+    ));
+  }
+});
 
 function calculateRelevance(item: any, query: string): number {
   let score = 0;

@@ -37,7 +37,12 @@ COPY --from=builder /app/extraction-rules ./extraction-rules
 COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/docs ./docs
 COPY --from=builder /app/backend/src/data ./data
-COPY --from=builder /app/*.md ./
+
+# Copy documentation files explicitly (required for HelpContentLoader)
+COPY --from=builder /app/MANUAL-0.35.0.md ./
+COPY --from=builder /app/OPERATIONS_MANUAL_V35.md ./
+COPY --from=builder /app/RELEASE_NOTES_0.35.0.md ./
+COPY --from=builder /app/README.md ./
 
 # Accept git metadata as build arguments
 ARG GIT_COMMIT=unknown

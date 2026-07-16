@@ -163,13 +163,22 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
       {/* Header */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2, alignItems: 'center' }}>
         <Typography variant="h5">Schema Management</Typography>
-        <Button
-          startIcon={<RefreshIcon />}
-          onClick={() => refetch()}
-          disabled={loading}
-        >
-          Refresh
-        </Button>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => navigate('/schema-wizard')}
+          >
+            + Create Schema
+          </Button>
+          <Button
+            startIcon={<RefreshIcon />}
+            onClick={() => refetch()}
+            disabled={loading}
+          >
+            Refresh
+          </Button>
+        </Box>
       </Box>
 
       {/* Error Alert */}
@@ -194,11 +203,8 @@ export const SchemaListComponent: React.FC<SchemaListProps> = ({
               No schemas found
             </Typography>
             <Typography variant="body2" sx={{ mb: 2 }}>
-              Create a new schema to get started
+              Use the "Create Schema" button above to create your first schema
             </Typography>
-            <Button variant="contained" onClick={() => navigate('/schema-wizard')}>
-              Create Schema
-            </Button>
           </CardContent>
         </Card>
       )}

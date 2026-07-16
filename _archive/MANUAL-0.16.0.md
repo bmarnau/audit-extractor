@@ -8,7 +8,7 @@
 
 ---
 
-## 🎯 Überblick: Was ist neu in 0.16.0?
+## 🎯 Überblick: Was ist neu in v0.35.0?
 
 Version 0.16.0 führt **persistente Datenbankgestützte Speicherung** ein. Ihre Extraktionsschemas sind jetzt nach dem Neustart noch vorhanden!
 

@@ -1,0 +1,245 @@
+<testsuites id="" name="" tests="14" failures="3" skipped="0" errors="4" time="167.893605">
+<testsuite name="navigation-comprehensive-test.test.ts" timestamp="2026-07-16T06:24:35.342Z" hostname="chromium" tests="14" failures="3" skipped="0" time="157.115" errors="4">
+<testcase name="NAVIGATION TEST SUITE v0.34.0 › should load application and display navigation" classname="navigation-comprehensive-test.test.ts" time="2.938">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\navigation-comprehensive-t-3866c-tion-and-display-navigation-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\navigation-comprehensive-t-3866c-tion-and-display-navigation-chromium\error-context.md]]
+]]>
+</system-out>
+<failure message="expect(received).toBe(expected) // Object.is equality" type="expect.toBe">
+<![CDATA[  [chromium] › navigation-comprehensive-test.test.ts:86:3 › NAVIGATION TEST SUITE v0.34.0 › should load application and display navigation 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+       96 |       testResults.failed++;
+       97 |       testResults.details.push('❌ App or navigation not found');
+    >  98 |       expect(false).toBe(true);
+          |                     ^
+       99 |     }
+      100 |   });
+      101 |
+        at C:\Users\bmarn\OneDrive\HTML\extractor\tests\e2e\navigation-comprehensive-test.test.ts:98:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-comprehensive-t-3866c-tion-and-display-navigation-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-comprehensive-t-3866c-tion-and-display-navigation-chromium\error-context.md
+]]>
+</failure>
+</testcase>
+<testcase name="NAVIGATION TEST SUITE v0.34.0 › should display all 7 navigation categories" classname="navigation-comprehensive-test.test.ts" time="2.904">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\navigation-comprehensive-t-412f7-all-7-navigation-categories-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\navigation-comprehensive-t-412f7-all-7-navigation-categories-chromium\error-context.md]]
+]]>
+</system-out>
+<failure message="expect(received).toBe(expected) // Object.is equality" type="expect.toBe">
+<![CDATA[  [chromium] › navigation-comprehensive-test.test.ts:105:3 › NAVIGATION TEST SUITE v0.34.0 › should display all 7 navigation categories 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 0
+    Received: 1
+
+      122 |       testResults.failed++;
+      123 |       testResults.details.push(`❌ Missing: ${missingCategories.join(', ')}`);
+    > 124 |       expect(missingCategories.length).toBe(0);
+          |                                        ^
+      125 |     }
+      126 |   });
+      127 |
+        at C:\Users\bmarn\OneDrive\HTML\extractor\tests\e2e\navigation-comprehensive-test.test.ts:124:40
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-comprehensive-t-412f7-all-7-navigation-categories-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-comprehensive-t-412f7-all-7-navigation-categories-chromium\error-context.md
+]]>
+</failure>
+</testcase>
+<testcase name="NAVIGATION TEST SUITE v0.34.0 › should show Services category with 4 sub-items" classname="navigation-comprehensive-test.test.ts" time="2.93">
+</testcase>
+<testcase name="NAVIGATION TEST SUITE v0.34.0 › should display Help category" classname="navigation-comprehensive-test.test.ts" time="2.889">
+</testcase>
+<testcase name="NAVIGATION TEST SUITE v0.34.0 › should navigate to Dashboard/Home" classname="navigation-comprehensive-test.test.ts" time="30.111">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\navigation-comprehensive-t-79cf8--navigate-to-Dashboard-Home-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\navigation-comprehensive-t-79cf8--navigate-to-Dashboard-Home-chromium\error-context.md]]
+]]>
+</system-out>
+<error message="Test timeout of 30000ms exceeded." type="Error">
+<![CDATA[  [chromium] › navigation-comprehensive-test.test.ts:172:3 › NAVIGATION TEST SUITE v0.34.0 › should navigate to Dashboard/Home 
+
+    Test timeout of 30000ms exceeded.
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-comprehensive-t-79cf8--navigate-to-Dashboard-Home-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-comprehensive-t-79cf8--navigate-to-Dashboard-Home-chromium\error-context.md
+]]>
+</error>
+</testcase>
+<testcase name="NAVIGATION TEST SUITE v0.34.0 › should navigate to Schemas section" classname="navigation-comprehensive-test.test.ts" time="30.103">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\navigation-comprehensive-t-faf1b-navigate-to-Schemas-section-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\navigation-comprehensive-t-faf1b-navigate-to-Schemas-section-chromium\error-context.md]]
+]]>
+</system-out>
+<error message="Test timeout of 30000ms exceeded." type="Error">
+<![CDATA[  [chromium] › navigation-comprehensive-test.test.ts:195:3 › NAVIGATION TEST SUITE v0.34.0 › should navigate to Schemas section 
+
+    Test timeout of 30000ms exceeded.
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-comprehensive-t-faf1b-navigate-to-Schemas-section-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-comprehensive-t-faf1b-navigate-to-Schemas-section-chromium\error-context.md
+]]>
+</error>
+</testcase>
+<testcase name="NAVIGATION TEST SUITE v0.34.0 › should navigate to Services section (NEW v0.34.0)" classname="navigation-comprehensive-test.test.ts" time="30.129">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\navigation-comprehensive-t-599a3-rvices-section-NEW-v0-34-0--chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\navigation-comprehensive-t-599a3-rvices-section-NEW-v0-34-0--chromium\error-context.md]]
+]]>
+</system-out>
+<error message="Test timeout of 30000ms exceeded." type="Error">
+<![CDATA[  [chromium] › navigation-comprehensive-test.test.ts:218:3 › NAVIGATION TEST SUITE v0.34.0 › should navigate to Services section (NEW v0.34.0) 
+
+    Test timeout of 30000ms exceeded.
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-comprehensive-t-599a3-rvices-section-NEW-v0-34-0--chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-comprehensive-t-599a3-rvices-section-NEW-v0-34-0--chromium\error-context.md
+]]>
+</error>
+</testcase>
+<testcase name="NAVIGATION TEST SUITE v0.34.0 › should navigate to Help Center" classname="navigation-comprehensive-test.test.ts" time="30.151">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\navigation-comprehensive-t-32de0-uld-navigate-to-Help-Center-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\navigation-comprehensive-t-32de0-uld-navigate-to-Help-Center-chromium\error-context.md]]
+]]>
+</system-out>
+<error message="Test timeout of 30000ms exceeded." type="Error">
+<![CDATA[  [chromium] › navigation-comprehensive-test.test.ts:241:3 › NAVIGATION TEST SUITE v0.34.0 › should navigate to Help Center 
+
+    Test timeout of 30000ms exceeded.
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-comprehensive-t-32de0-uld-navigate-to-Help-Center-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-comprehensive-t-32de0-uld-navigate-to-Help-Center-chromium\error-context.md
+]]>
+</error>
+</testcase>
+<testcase name="NAVIGATION TEST SUITE v0.34.0 › should render correctly on desktop (1280x720)" classname="navigation-comprehensive-test.test.ts" time="3.736">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|test-results\navigation-comprehensive-t-363f2-rectly-on-desktop-1280x720--chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\navigation-comprehensive-t-363f2-rectly-on-desktop-1280x720--chromium\error-context.md]]
+]]>
+</system-out>
+<failure message="expect(received).toBeGreaterThan(expected)" type="expect.toBeGreaterThan">
+<![CDATA[  [chromium] › navigation-comprehensive-test.test.ts:264:3 › NAVIGATION TEST SUITE v0.34.0 › should render correctly on desktop (1280x720) 
+
+    Error: expect(received).toBeGreaterThan(expected)
+
+    Expected: > 0
+    Received:   0
+
+      276 |       testResults.failed++;
+      277 |       testResults.details.push('❌ Desktop layout issues');
+    > 278 |       expect(navElements).toBeGreaterThan(0);
+          |                           ^
+      279 |     }
+      280 |   });
+      281 |
+        at C:\Users\bmarn\OneDrive\HTML\extractor\tests\e2e\navigation-comprehensive-test.test.ts:278:27
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\..\test-results\navigation-comprehensive-t-363f2-rectly-on-desktop-1280x720--chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ..\..\test-results\navigation-comprehensive-t-363f2-rectly-on-desktop-1280x720--chromium\error-context.md
+]]>
+</failure>
+</testcase>
+<testcase name="NAVIGATION TEST SUITE v0.34.0 › should render correctly on mobile (375x667)" classname="navigation-comprehensive-test.test.ts" time="3.538">
+</testcase>
+<testcase name="NAVIGATION TEST SUITE v0.34.0 › should display Manual with correct version 0.35.0 (Phase 40 Fix #1)" classname="navigation-comprehensive-test.test.ts" time="5.21">
+</testcase>
+<testcase name="NAVIGATION TEST SUITE v0.34.0 › should display Release Notes card on Health page (Phase 40 Fix #2)" classname="navigation-comprehensive-test.test.ts" time="4.839">
+</testcase>
+<testcase name="NAVIGATION TEST SUITE v0.34.0 › should display Create Schema button in header (Phase 40 Fix #3)" classname="navigation-comprehensive-test.test.ts" time="4.983">
+</testcase>
+<testcase name="NAVIGATION TEST SUITE v0.34.0 › should output test summary" classname="navigation-comprehensive-test.test.ts" time="2.654">
+<system-out>
+<![CDATA[
+╔════════════════════════════════════════════════════════════════╗
+║   COMPREHENSIVE NAVIGATION TEST SUMMARY v0.34.0               ║
+╚════════════════════════════════════════════════════════════════╝
+
+📊 TEST RESULTS
+  ✅ Passed:   4
+  ❌ Failed:   0
+  ⊘ Skipped:  0
+  ━━━━━━━━━━━━━━━━━━━━
+  Total:      4
+
+📋 NAVIGATION STRUCTURE (v0.34.0)
+  1. Dashboard
+  2. Schemas
+  3. Jobs
+  4. Rules
+  5. Logs
+  6. Services ⭐ (Health, API, Backup, Settings) - NEW
+  7. Help
+
+🎯 KEY ACHIEVEMENTS
+  ✅ Services consolidated (4 → 1 category)
+  ✅ Navigation simplified (10 → 7 categories)
+  ✅ Help Center integrated
+  ✅ Responsive design verified
+
+📝 DETAILS
+  ✅ Mobile layout responsive
+  ✅ PHASE 40 FIX #1: Manual shows version 0.35.0 (NOT 0.18.0)
+  ✅ PHASE 40 FIX #2: Release Notes card visible on /health page with version 0.35.0
+  ✅ PHASE 40 FIX #3: Create Schema button visible, enabled, and functional
+
+🔍 VERSION INFO
+  Version: 0.34.0
+  Phase: 34 (Service Consolidation)
+  Date: 2026-07-14
+
+STATUS: ✅ PASSED
+════════════════════════════════════════════════════════════════
+
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

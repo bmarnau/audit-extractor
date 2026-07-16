@@ -1,16 +1,16 @@
-# ðŸ“– Operationshandbuch - Version 0.18.0
+# ðŸ“– Operationshandbuch - Version 0.35.0
 
-**Version**: 0.18.0  
-**Datum**: 8.7.2026  
+**Version**: 0.35.0  
+**Datum**: 16.7.2026  
 **Status**: âœ… Produktionsreife  
-**Phase**: 18 - Docker Containerization  
+**Phase**: 37a - Navigation Test Infrastructure Refinement  
 **Zielgruppe**: Endanwender, Administratoren, DevOps
 
 ---
 
-## ðŸŽ¯ Ãœberblick: Was ist neu in 0.18.0?
+## ðŸŽ¯ Ãœberblick: Was ist neu in v0.35.0?
 
-Version 0.18.0 fÃ¼hrt **vollstÃ¤ndige Docker-Containerisierung** ein. Das komplette System (Frontend, Backend, Datenbank, Cache) lÃ¤uft jetzt in isolierten Containern.
+Version 0.35.0 fÃ¼hrt **verbesserte TestzuverlÃ¤ssigkeit und Navigation** ein. Das komplette System (Frontend, Backend, Datenbank, Cache) lÃ¤uft jetzt in isolierten Containern.
 
 ```
 Alt (0.17.0):
@@ -2098,7 +2098,7 @@ LÃ¶sung:
 
 ### Zugriff
 
-Die **Log File Viewer** Komponente ist über das Menü erreichbar:
+Die **Log File Viewer** Komponente ist ï¿½ber das Menï¿½ erreichbar:
 - **URL**: http://localhost/#/logs
 - **Menu**: Logs (Icon: ??)
 - **Status**: ? Production-Ready
@@ -2119,40 +2119,40 @@ Die **Log File Viewer** Komponente ist über das Menü erreichbar:
 - system - Systemereignisse
 
 #### 3. **Zeitraum-Filter**
-Geben Sie Start- und Enddatum ein, um Logs für einen bestimmten Zeitraum zu sehen.
+Geben Sie Start- und Enddatum ein, um Logs fï¿½r einen bestimmten Zeitraum zu sehen.
 
 #### 4. **Suche**
-Volltext-Suche mit regulären Ausdrücken.
+Volltext-Suche mit regulï¿½ren Ausdrï¿½cken.
 
 #### 5. **Export**
 Logs exportieren in:
-- **JSON** - Vollständige Daten mit Context
+- **JSON** - Vollstï¿½ndige Daten mit Context
 - **CSV** - Tabellarisches Format
 - **TXT** - Lesbar formatiert
 
 ### Beispiel-Workflow
 
 `
-1. Öffne Logs: http://localhost/#/logs
+1. ï¿½ffne Logs: http://localhost/#/logs
 2. Filtere nach Level: 'error'
 3. Gebe Zeitraum ein: Letzte 24 Stunden
 4. Suche nach Stichwort: 'schema'
-5. Klicke auf Eintrag für vollständige Details
-6. Exportiere in JSON für weitere Analyse
+5. Klicke auf Eintrag fï¿½r vollstï¿½ndige Details
+6. Exportiere in JSON fï¿½r weitere Analyse
 `
 
 ### Fehlerbehebung
 
 **Problem**: Keine Logs angezeigt
-- **Lösung**: Führe einen Extract durch, um Logs zu generieren
-- **Check**: Backend-Health überprüfen (http://localhost:3000/health)
+- **Lï¿½sung**: Fï¿½hre einen Extract durch, um Logs zu generieren
+- **Check**: Backend-Health ï¿½berprï¿½fen (http://localhost:3000/health)
 
 **Problem**: Logs zu alt
-- **Lösung**: Verwende Zeitraum-Filter um relevante Logs zu finden
-- **Cleanup**: Alte Logs werden automatisch nach 30 Tagen gelöscht
+- **Lï¿½sung**: Verwende Zeitraum-Filter um relevante Logs zu finden
+- **Cleanup**: Alte Logs werden automatisch nach 30 Tagen gelï¿½scht
 
 **Problem**: Export fehlgeschlagen
-- **Lösung**: Browser-Konsole überprüfen (F12 ? Console)
+- **Lï¿½sung**: Browser-Konsole ï¿½berprï¿½fen (F12 ? Console)
 - **Alternative**: Copy-Paste aus UI oder API direkt abfragen
 
 ---
@@ -2162,7 +2162,7 @@ Logs exportieren in:
 - **Component**: [frontend/src/components/workbench/LogBrowser.tsx]
 - **Hook**: [frontend/src/hooks/useLogs.ts]
 - **Route**: GET /api/logs (Backend)
-- **Limit**: Max 500 Logs pro Anfrage (Pagination möglich)
+- **Limit**: Max 500 Logs pro Anfrage (Pagination mï¿½glich)
 - **Format**: ISO-8601 Timestamps, Millisekunden-Genauigkeit
 ---
 

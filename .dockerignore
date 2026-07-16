@@ -34,14 +34,10 @@ Thumbs.db
 .AppleDouble
 .LSOverride
 
-# Documentation (KEEP /docs - needed by backend!)
-# Only ignore root-level markdown files, NOT /docs directory
-README.md
-CHANGELOG.md
-LICENSE
-MANUAL*.md
-PHASE*.md
-*.md
+# Keep documentation - needed by backend for help content!
+# /docs is needed
+# MANUAL*.md is needed for help center
+# All .md files in root are needed
 
 # Test & temporary files
 *.test.ts

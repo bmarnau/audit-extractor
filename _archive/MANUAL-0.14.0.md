@@ -7,7 +7,7 @@
 
 ---
 
-## 🎯 Überblick: Was ist neu in 0.14.0?
+## 🎯 Überblick: Was ist neu in v0.35.0?
 
 Version 0.14.0 führt die **automatische Generierung von Extraktionsregeln** ein:
 

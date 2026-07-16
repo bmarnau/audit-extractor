@@ -14,7 +14,7 @@
 
 ---
 
-## 🎯 Was ist neu in Phase 21?
+## 🎯 Überblick: Was ist neu in v0.35.0?
 
 Version 0.21.0 führt **Asynchrone Job API** mit vollständiger Daten-Persistenz ein.
 

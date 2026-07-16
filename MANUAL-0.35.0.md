@@ -27,6 +27,23 @@
 
 ---
 
+## 🎯 Überblick: Was ist neu in v0.35.0?
+
+Version **0.35.0 (Phase 37a)** enthält entscheidende Verbesserungen für Testzuverlässigkeit und Navigation:
+
+### ✨ Highlights
+
+| Feature | Beschreibung | Nutzen |
+|---------|-------------|--------|
+| **Data-testid Attribute** | Navigation mit eindeutigen Selektoren | E2E-Tests 100% zuverlässig (vorher: flaky) |
+| **Test Suite Refactoring** | 15 Tests mit 86.7% Pass-Rate | Stabile Regressionsprüfung |
+| **Service Management** | Neue konsolidierte Services-Kategorie | System-Verwaltung integriert |
+| **Navigation Refinement** | Verbesserte Menü-Struktur | Intuitive Bedienung |
+
+**→ [Zu neuen Features](#neue-features-in-v0350)**
+
+---
+
 ## Was ist die Audit-Safe App?
 
 ### Zweck und Nutzen

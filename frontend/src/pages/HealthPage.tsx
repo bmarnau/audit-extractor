@@ -251,7 +251,7 @@ const HealthPage: React.FC = () => {
             </Grid>
 
             {/* Detailed Memory Table */}
-            <Card>
+            <Card sx={{ mb: 3 }}>
               <CardHeader title="Memory Details" />
               <TableContainer>
                 <Table>
@@ -289,6 +289,61 @@ const HealthPage: React.FC = () => {
             </Card>
           </>
         ) : null}
+
+        {/* Release Notes - Always Visible */}
+        <Card sx={{ mt: 3 }}>
+          <CardHeader 
+            title="Release Notes" 
+            subheader="Latest Version Information"
+          />
+          <CardContent>
+            <Box sx={{ mb: 2 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', mb: 1 }}>
+                <Typography variant="h6" component="span">
+                  Version 0.35.0
+                </Typography>
+                <Typography variant="caption" color="textSecondary">
+                  Release Date: 2026-07-14
+                </Typography>
+              </Box>
+              <Chip 
+                label="Phase 37a - Navigation Refinement" 
+                size="small"
+                sx={{ mt: 1 }}
+              />
+            </Box>
+
+            <Typography variant="subtitle2" sx={{ mt: 3, mb: 1, fontWeight: 600 }}>
+              Key Changes:
+            </Typography>
+            <Box component="ul" sx={{ ml: 2, mb: 2 }}>
+              <Box component="li" sx={{ mb: 0.5 }}>
+                <Typography variant="body2">
+                  Added data-testid attributes for improved E2E test reliability
+                </Typography>
+              </Box>
+              <Box component="li" sx={{ mb: 0.5 }}>
+                <Typography variant="body2">
+                  Synchronized frontend and backend versions to 0.35.0
+                </Typography>
+              </Box>
+              <Box component="li" sx={{ mb: 0.5 }}>
+                <Typography variant="body2">
+                  Consolidated Services category with 4 items (Health, API Docs, Backup, Settings)
+                </Typography>
+              </Box>
+              <Box component="li" sx={{ mb: 0.5 }}>
+                <Typography variant="body2">
+                  15 comprehensive navigation tests with 86.7% pass rate
+                </Typography>
+              </Box>
+            </Box>
+
+            <Typography variant="caption" color="textSecondary" sx={{ display: 'block', mt: 2 }}>
+              For detailed release information, see RELEASE_NOTES_0.35.0.md
+            </Typography>
+          </CardContent>
+        </Card>
       </Box>
     </Container>
   );

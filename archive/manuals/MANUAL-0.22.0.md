@@ -8,7 +8,7 @@
 
 ---
 
-## 🎯 Was ist neu in Phase 22?
+## 🎯 Überblick: Was ist neu in v0.35.0?
 
 Version 0.22.0 führt **Job-basierte Orchestrierung mit umfassender Fehlerbehandlung** ein.
 

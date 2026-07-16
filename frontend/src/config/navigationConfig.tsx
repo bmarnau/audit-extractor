@@ -195,6 +195,13 @@ export const navigationCategories: NavCategory[] = [
         description: 'System Services & Health Monitoring',
       },
       {
+        id: 'technical-audit',
+        label: 'Technical Audit',
+        path: '/technical-audit',
+        icon: <AuditIcon />,
+        description: 'Comprehensive System Audit & Status Report',
+      },
+      {
         id: 'backups',
         label: 'Backups',
         path: '/backups',

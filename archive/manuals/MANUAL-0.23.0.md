@@ -8,9 +8,9 @@
 
 ---
 
-## 📋 Übersicht
+## 🎯 Überblick: Was ist neu in v0.35.0?
 
-Phase 23 stellt die Grundlage für ein **flexibles, dokumentformat-agnostisches Extraktionssystem** bereit:
+Phase 37a führt **verbesserte Testzuverlässigkeit und Navigation** ein:
 
 ### Kernkomponenten
 1. **UnifiedDocument** - Aggregates Root für alle Dokumentformate

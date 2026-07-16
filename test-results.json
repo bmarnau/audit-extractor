@@ -1,0 +1,768 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "tests/e2e/navigation-comprehensive-test.test.ts"
+    ],
+    "configFile": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\playwright.config.ts",
+    "rootDir": "C:/Users/bmarn/OneDrive/HTML/extractor/tests/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 1800000,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/bmarn/OneDrive/HTML/extractor/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/bmarn/OneDrive/HTML/extractor/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "junit-results.xml"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.61.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "navigation-comprehensive-test.test.ts",
+      "file": "navigation-comprehensive-test.test.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "NAVIGATION TEST SUITE v0.34.0",
+          "file": "navigation-comprehensive-test.test.ts",
+          "line": 60,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should load application and display navigation",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2938,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts:98:21",
+                        "location": {
+                          "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts",
+                          "column": 21,
+                          "line": 98
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  96 |\u001b[39m       testResults\u001b[33m.\u001b[39mfailed\u001b[33m++\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m  97 |\u001b[39m       testResults\u001b[33m.\u001b[39mdetails\u001b[33m.\u001b[39mpush(\u001b[32m'❌ App or navigation not found'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  98 |\u001b[39m       expect(\u001b[36mfalse\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m  99 |\u001b[39m     }\n \u001b[90m 100 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 101 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts",
+                            "column": 21,
+                            "line": 98
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m  96 |\u001b[39m       testResults\u001b[33m.\u001b[39mfailed\u001b[33m++\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m  97 |\u001b[39m       testResults\u001b[33m.\u001b[39mdetails\u001b[33m.\u001b[39mpush(\u001b[32m'❌ App or navigation not found'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  98 |\u001b[39m       expect(\u001b[36mfalse\u001b[39m)\u001b[33m.\u001b[39mtoBe(\u001b[36mtrue\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m  99 |\u001b[39m     }\n \u001b[90m 100 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 101 |\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts:98:21\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-16T06:24:36.123Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\navigation-comprehensive-t-3866c-tion-and-display-navigation-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\navigation-comprehensive-t-3866c-tion-and-display-navigation-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts",
+                        "column": 21,
+                        "line": 98
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7e4463ae17712d329bc6-defe32d6c49a1d8f5277",
+              "file": "navigation-comprehensive-test.test.ts",
+              "line": 86,
+              "column": 3
+            },
+            {
+              "title": "should display all 7 navigation categories",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2904,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m1\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m1\u001b[39m\n    at C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts:124:40",
+                        "location": {
+                          "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts",
+                          "column": 40,
+                          "line": 124
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 122 |\u001b[39m       testResults\u001b[33m.\u001b[39mfailed\u001b[33m++\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 123 |\u001b[39m       testResults\u001b[33m.\u001b[39mdetails\u001b[33m.\u001b[39mpush(\u001b[32m`❌ Missing: ${missingCategories.join(', ')}`\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 124 |\u001b[39m       expect(missingCategories\u001b[33m.\u001b[39mlength)\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 125 |\u001b[39m     }\n \u001b[90m 126 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 127 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts",
+                            "column": 40,
+                            "line": 124
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m1\u001b[39m\n\n\u001b[0m \u001b[90m 122 |\u001b[39m       testResults\u001b[33m.\u001b[39mfailed\u001b[33m++\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 123 |\u001b[39m       testResults\u001b[33m.\u001b[39mdetails\u001b[33m.\u001b[39mpush(\u001b[32m`❌ Missing: ${missingCategories.join(', ')}`\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 124 |\u001b[39m       expect(missingCategories\u001b[33m.\u001b[39mlength)\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 125 |\u001b[39m     }\n \u001b[90m 126 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 127 |\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts:124:40\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-16T06:24:40.409Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\navigation-comprehensive-t-412f7-all-7-navigation-categories-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\navigation-comprehensive-t-412f7-all-7-navigation-categories-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts",
+                        "column": 40,
+                        "line": 124
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7e4463ae17712d329bc6-2d6f9fb27ac98f2051f5",
+              "file": "navigation-comprehensive-test.test.ts",
+              "line": 105,
+              "column": 3
+            },
+            {
+              "title": "should show Services category with 4 sub-items",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2930,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-16T06:24:44.826Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7e4463ae17712d329bc6-b5cb613c0e1b30974624",
+              "file": "navigation-comprehensive-test.test.ts",
+              "line": 131,
+              "column": 3
+            },
+            {
+              "title": "should display Help category",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2889,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-16T06:24:48.116Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7e4463ae17712d329bc6-8597278d7420823b15bb",
+              "file": "navigation-comprehensive-test.test.ts",
+              "line": 153,
+              "column": 3
+            },
+            {
+              "title": "should navigate to Dashboard/Home",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30111,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-16T06:24:51.032Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\navigation-comprehensive-t-79cf8--navigate-to-Dashboard-Home-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\navigation-comprehensive-t-79cf8--navigate-to-Dashboard-Home-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7e4463ae17712d329bc6-f681d7b2edeb9574638f",
+              "file": "navigation-comprehensive-test.test.ts",
+              "line": 172,
+              "column": 3
+            },
+            {
+              "title": "should navigate to Schemas section",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30103,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-16T06:25:22.042Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\navigation-comprehensive-t-faf1b-navigate-to-Schemas-section-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\navigation-comprehensive-t-faf1b-navigate-to-Schemas-section-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7e4463ae17712d329bc6-57a291adbbea1a942a4d",
+              "file": "navigation-comprehensive-test.test.ts",
+              "line": 195,
+              "column": 3
+            },
+            {
+              "title": "should navigate to Services section (NEW v0.34.0)",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30129,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-16T06:25:53.511Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\navigation-comprehensive-t-599a3-rvices-section-NEW-v0-34-0--chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\navigation-comprehensive-t-599a3-rvices-section-NEW-v0-34-0--chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7e4463ae17712d329bc6-e45f35dbe8a9b8408146",
+              "file": "navigation-comprehensive-test.test.ts",
+              "line": 218,
+              "column": 3
+            },
+            {
+              "title": "should navigate to Help Center",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "timedOut",
+                      "duration": 30151,
+                      "error": {
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                      },
+                      "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-16T06:26:24.848Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\navigation-comprehensive-t-32de0-uld-navigate-to-Help-Center-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\navigation-comprehensive-t-32de0-uld-navigate-to-Help-Center-chromium\\error-context.md"
+                        }
+                      ]
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7e4463ae17712d329bc6-2cd05c6371afa0e22e9a",
+              "file": "navigation-comprehensive-test.test.ts",
+              "line": 241,
+              "column": 3
+            },
+            {
+              "title": "should render correctly on desktop (1280x720)",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 3736,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n    at C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts:278:27",
+                        "location": {
+                          "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts",
+                          "column": 27,
+                          "line": 278
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 276 |\u001b[39m       testResults\u001b[33m.\u001b[39mfailed\u001b[33m++\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 277 |\u001b[39m       testResults\u001b[33m.\u001b[39mdetails\u001b[33m.\u001b[39mpush(\u001b[32m'❌ Desktop layout issues'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 278 |\u001b[39m       expect(navElements)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 279 |\u001b[39m     }\n \u001b[90m 280 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 281 |\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts",
+                            "column": 27,
+                            "line": 278
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\n\u001b[0m \u001b[90m 276 |\u001b[39m       testResults\u001b[33m.\u001b[39mfailed\u001b[33m++\u001b[39m\u001b[33m;\u001b[39m\n \u001b[90m 277 |\u001b[39m       testResults\u001b[33m.\u001b[39mdetails\u001b[33m.\u001b[39mpush(\u001b[32m'❌ Desktop layout issues'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 278 |\u001b[39m       expect(navElements)\u001b[33m.\u001b[39mtoBeGreaterThan(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 279 |\u001b[39m     }\n \u001b[90m 280 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 281 |\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts:278:27\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-16T06:26:56.346Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\navigation-comprehensive-t-363f2-rectly-on-desktop-1280x720--chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\test-results\\navigation-comprehensive-t-363f2-rectly-on-desktop-1280x720--chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor\\tests\\e2e\\navigation-comprehensive-test.test.ts",
+                        "column": 27,
+                        "line": 278
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "7e4463ae17712d329bc6-1c901d2354b533c4f4c7",
+              "file": "navigation-comprehensive-test.test.ts",
+              "line": 264,
+              "column": 3
+            },
+            {
+              "title": "should render correctly on mobile (375x667)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3538,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-16T06:27:01.394Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7e4463ae17712d329bc6-dda2443a408ba170379f",
+              "file": "navigation-comprehensive-test.test.ts",
+              "line": 285,
+              "column": 3
+            },
+            {
+              "title": "should display Manual with correct version 0.35.0 (Phase 40 Fix #1)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5210,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-16T06:27:05.261Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7e4463ae17712d329bc6-01522a2d9a271024df07",
+              "file": "navigation-comprehensive-test.test.ts",
+              "line": 306,
+              "column": 3
+            },
+            {
+              "title": "should display Release Notes card on Health page (Phase 40 Fix #2)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4839,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-16T06:27:10.489Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7e4463ae17712d329bc6-ae6a2f46266cead77982",
+              "file": "navigation-comprehensive-test.test.ts",
+              "line": 344,
+              "column": 3
+            },
+            {
+              "title": "should display Create Schema button in header (Phase 40 Fix #3)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4983,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-16T06:27:15.353Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7e4463ae17712d329bc6-f295185101607c706546",
+              "file": "navigation-comprehensive-test.test.ts",
+              "line": 380,
+              "column": 3
+            },
+            {
+              "title": "should output test summary",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2654,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n╔════════════════════════════════════════════════════════════════╗\n║   COMPREHENSIVE NAVIGATION TEST SUMMARY v0.34.0               ║\n╚════════════════════════════════════════════════════════════════╝\n\n📊 TEST RESULTS\n  ✅ Passed:   4\n  ❌ Failed:   0\n  ⊘ Skipped:  0\n  ━━━━━━━━━━━━━━━━━━━━\n  Total:      4\n\n📋 NAVIGATION STRUCTURE (v0.34.0)\n  1. Dashboard\n  2. Schemas\n  3. Jobs\n  4. Rules\n  5. Logs\n  6. Services ⭐ (Health, API, Backup, Settings) - NEW\n  7. Help\n\n🎯 KEY ACHIEVEMENTS\n  ✅ Services consolidated (4 → 1 category)\n  ✅ Navigation simplified (10 → 7 categories)\n  ✅ Help Center integrated\n  ✅ Responsive design verified\n\n📝 DETAILS\n  ✅ Mobile layout responsive\n  ✅ PHASE 40 FIX #1: Manual shows version 0.35.0 (NOT 0.18.0)\n  ✅ PHASE 40 FIX #2: Release Notes card visible on /health page with version 0.35.0\n  ✅ PHASE 40 FIX #3: Create Schema button visible, enabled, and functional\n\n🔍 VERSION INFO\n  Version: 0.34.0\n  Phase: 34 (Service Consolidation)\n  Date: 2026-07-14\n\nSTATUS: ✅ PASSED\n════════════════════════════════════════════════════════════════\n\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-07-16T06:27:20.359Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7e4463ae17712d329bc6-85bf18003174f4ce8c46",
+              "file": "navigation-comprehensive-test.test.ts",
+              "line": 423,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-07-16T06:24:35.251Z",
+    "duration": 167893.605,
+    "expected": 7,
+    "skipped": 0,
+    "unexpected": 7,
+    "flaky": 0
+  }
+}

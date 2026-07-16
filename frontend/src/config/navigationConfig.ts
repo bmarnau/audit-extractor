@@ -145,7 +145,7 @@ export const navigationCategories: NavCategory[] = [
       },
       {
         id: 'backup-list',
-        path: '/backup',
+        path: '/backups',
         label: 'Backups',
         description: 'Backup and restore management',
       },

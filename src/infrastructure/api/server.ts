@@ -70,6 +70,8 @@ export function createApiServer(): Express {
     const origin = (req.headers.origin as string) || '';
     // Allow multiple dev ports and configured origins
     const allowedOrigins = [
+      'http://localhost',
+      'http://localhost:80',
       'http://localhost:5173',
       'http://localhost:5174',
       'http://localhost:5175',

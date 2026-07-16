@@ -49,6 +49,11 @@ import JobManager from './components/JobManager';
 import IReportIntegration from './components/iReportIntegration';
 // Phase 38C: Services Page
 import ServicesPage from './pages/ServicesPage';
+// Phase 40: Technical Audit Center
+import TechnicalAuditPage from './pages/TechnicalAuditPage';
+// Phase 41: API Docs & Settings Pages
+import ApiDocsPage from './pages/ApiDocsPage';
+import SettingsPage from './pages/SettingsPage';
 // Error Handling
 import ErrorBoundary from './components/ErrorBoundary';
 // Phase 25: New Responsive Navigation
@@ -214,6 +219,7 @@ const AppContent: React.FC<{
               <Route path="/schema-wizard" element={<SchemaUploadWizard />} />
               {/* Phase 16: Schema Management Routes */}
               <Route path="/schemas" element={<SchemaListComponent />} />
+              <Route path="/schemas/create" element={<SchemaUploadWizard />} />
               <Route path="/schema/:id/edit" element={<SchemaEditorComponent />} />
               <Route path="/schema/:id/history" element={<VersionHistoryComponent />} />
               {/* Phase 14 & Earlier Routes */}
@@ -228,6 +234,12 @@ const AppContent: React.FC<{
               <Route path="/health" element={<HealthPage />} />
               <Route path="/configuration" element={<ConfigEditor />} />
               <Route path="/backups" element={<BackupManager />} />
+              {/* Phase 40: Technical Audit Center */}
+              <Route path="/technical-audit" element={<TechnicalAuditPage />} />
+              <Route path="/services/audit" element={<TechnicalAuditPage />} />
+              {/* Phase 41: API Docs & Settings */}
+              <Route path="/api/docs" element={<ApiDocsPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
               <Route path="/help" element={<HelpBrowser />} />
             </Routes>
           </Box>

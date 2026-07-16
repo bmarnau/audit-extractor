@@ -1,0 +1,295 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: navigation-comprehensive-test.test.ts >> NAVIGATION TEST SUITE v0.34.0 >> should navigate to API Docs page
+- Location: tests\e2e\navigation-comprehensive-test.test.ts:423:3
+
+# Error details
+
+```
+Test timeout of 30000ms exceeded.
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - heading "Audit-Safe Extractor" [level=6] [ref=e6]
+      - button "toggle dark mode" [ref=e7] [cursor=pointer]:
+        - img [ref=e8]
+  - generic [ref=e10]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - heading "Audit-Safe" [level=6] [ref=e15]
+        - text: Document Extraction
+      - list [ref=e16]:
+        - generic [ref=e17]:
+          - button "Dashboard" [ref=e18] [cursor=pointer]:
+            - img [ref=e20]
+            - heading "Dashboard" [level=6] [ref=e23]
+            - img [ref=e25]
+          - list [ref=e30]:
+            - link "Home Dashboard overview" [ref=e31] [cursor=pointer]:
+              - /url: /
+              - button "Home Dashboard overview" [ref=e32]:
+                - generic [ref=e33]:
+                  - generic [ref=e36]: Home
+                  - paragraph [ref=e37]: Dashboard overview
+        - generic [ref=e38]:
+          - button "Schemas" [ref=e39] [cursor=pointer]:
+            - img [ref=e41]
+            - heading "Schemas" [level=6] [ref=e44]
+            - img [ref=e46]
+          - list [ref=e51]:
+            - link "Schemas View and manage schemas" [ref=e52] [cursor=pointer]:
+              - /url: /schemas
+              - button "Schemas View and manage schemas" [ref=e53]:
+                - generic [ref=e54]:
+                  - generic [ref=e57]: Schemas
+                  - paragraph [ref=e58]: View and manage schemas
+            - link "Create Schema Create new schema" [ref=e59] [cursor=pointer]:
+              - /url: /schemas/create
+              - button "Create Schema Create new schema" [ref=e60]:
+                - generic [ref=e61]:
+                  - generic [ref=e64]: Create Schema
+                  - paragraph [ref=e65]: Create new schema
+        - generic [ref=e66]:
+          - button "Jobs" [ref=e67] [cursor=pointer]:
+            - img [ref=e69]
+            - heading "Jobs" [level=6] [ref=e72]
+            - img [ref=e74]
+          - list [ref=e79]:
+            - link "Jobs View job history" [ref=e80] [cursor=pointer]:
+              - /url: /jobs
+              - button "Jobs View job history" [ref=e81]:
+                - generic [ref=e82]:
+                  - generic [ref=e85]: Jobs
+                  - paragraph [ref=e86]: View job history
+        - button "Rules" [ref=e88] [cursor=pointer]:
+          - img [ref=e90]
+          - heading "Rules" [level=6] [ref=e93]
+          - img [ref=e95]
+        - generic [ref=e97]:
+          - button "Logs" [ref=e98] [cursor=pointer]:
+            - img [ref=e100]
+            - heading "Logs" [level=6] [ref=e103]
+            - img [ref=e105]
+          - list [ref=e110]:
+            - link "Logs System activity logs" [ref=e111] [cursor=pointer]:
+              - /url: /logs
+              - button "Logs System activity logs" [ref=e112]:
+                - generic [ref=e113]:
+                  - generic [ref=e116]: Logs
+                  - paragraph [ref=e117]: System activity logs
+        - generic [ref=e118]:
+          - button "Services" [ref=e119] [cursor=pointer]:
+            - img [ref=e121]
+            - heading "Services" [level=6] [ref=e124]
+            - img [ref=e126]
+          - list [ref=e131]:
+            - link "Health System health status" [ref=e132] [cursor=pointer]:
+              - /url: /health
+              - button "Health System health status" [ref=e133]:
+                - generic [ref=e134]:
+                  - generic [ref=e137]: Health
+                  - paragraph [ref=e138]: System health status
+            - link "API Docs API documentation and discovery" [ref=e139] [cursor=pointer]:
+              - /url: /api/docs
+              - button "API Docs API documentation and discovery" [active] [ref=e140]:
+                - generic [ref=e141]:
+                  - generic [ref=e144]: API Docs
+                  - paragraph [ref=e145]: API documentation and discovery
+            - link "Backups Backup and restore management" [ref=e146] [cursor=pointer]:
+              - /url: /backups
+              - button "Backups Backup and restore management" [ref=e147]:
+                - generic [ref=e148]:
+                  - generic [ref=e151]: Backups
+                  - paragraph [ref=e152]: Backup and restore management
+            - link "Settings System configuration settings" [ref=e153] [cursor=pointer]:
+              - /url: /settings
+              - button "Settings System configuration settings" [ref=e154]:
+                - generic [ref=e155]:
+                  - generic [ref=e158]: Settings
+                  - paragraph [ref=e159]: System configuration settings
+        - generic [ref=e160]:
+          - button "Help" [ref=e161] [cursor=pointer]:
+            - img [ref=e163]
+            - heading "Help" [level=6] [ref=e166]
+            - img [ref=e168]
+          - list [ref=e173]:
+            - link "Help Center Help documentation and guides" [ref=e174] [cursor=pointer]:
+              - /url: /help
+              - button "Help Center Help documentation and guides" [ref=e175]:
+                - generic [ref=e176]:
+                  - generic [ref=e179]: Help Center
+                  - paragraph [ref=e180]: Help documentation and guides
+      - generic [ref=e181]: v0.35.0
+    - main [ref=e182]:
+      - navigation "breadcrumb" [ref=e185]:
+        - list [ref=e186]:
+          - listitem [ref=e187]:
+            - link "Home" [ref=e188] [cursor=pointer]:
+              - /url: /
+              - img [ref=e189]
+              - paragraph [ref=e191]: Home
+          - listitem [ref=e192]:
+            - img [ref=e193]
+          - listitem [ref=e195]:
+            - link "Services" [ref=e196] [cursor=pointer]:
+              - /url: /health
+              - paragraph [ref=e197]: Services
+          - listitem [ref=e198]:
+            - img [ref=e199]
+          - listitem [ref=e201]:
+            - paragraph [ref=e203]: API Docs
+      - generic [ref=e205]:
+        - generic [ref=e206]:
+          - generic [ref=e207]:
+            - img [ref=e208]
+            - generic [ref=e210]:
+              - heading "API Documentation" [level=4] [ref=e211]
+              - paragraph [ref=e212]: Complete REST API reference for Audit-Safe Extractor
+          - separator [ref=e213]
+        - generic [ref=e214]:
+          - generic [ref=e217]: API Overview
+          - generic [ref=e218]:
+            - generic [ref=e219]:
+              - generic [ref=e220]:
+                - paragraph [ref=e221]: API Title
+                - paragraph [ref=e222]: Audit-Safe Document Extractor API
+              - generic [ref=e223]:
+                - paragraph [ref=e224]: Version
+                - paragraph [ref=e225]: 0.34.0
+              - generic [ref=e226]:
+                - paragraph [ref=e227]: Base URL
+                - paragraph [ref=e228]: http://localhost:3000/api
+              - generic [ref=e229]:
+                - paragraph [ref=e230]: Endpoints
+                - paragraph [ref=e231]: "14"
+            - paragraph [ref=e232]: REST API for document extraction, schema management, and audit support
+        - generic [ref=e233]:
+          - generic [ref=e235]:
+            - generic [ref=e236]: API Endpoints
+            - generic [ref=e237]: 14 endpoints available
+          - table [ref=e240]:
+            - rowgroup [ref=e241]:
+              - row "Method Path Description Status" [ref=e242]:
+                - columnheader "Method" [ref=e243]
+                - columnheader "Path" [ref=e244]
+                - columnheader "Description" [ref=e245]
+                - columnheader "Status" [ref=e246]
+            - rowgroup [ref=e247]:
+              - row "GET /help Get help center overview with glossary, documentation, and release notes" [ref=e248]:
+                - cell "GET" [ref=e249]:
+                  - generic [ref=e251]: GET
+                - cell "/help" [ref=e252]
+                - cell "Get help center overview with glossary, documentation, and release notes" [ref=e253]
+                - cell [ref=e254]:
+                  - img [ref=e255]
+              - row "GET /help/glossary Get glossary entries with filtering" [ref=e257]:
+                - cell "GET" [ref=e258]:
+                  - generic [ref=e260]: GET
+                - cell "/help/glossary" [ref=e261]
+                - cell "Get glossary entries with filtering" [ref=e262]
+                - cell [ref=e263]:
+                  - img [ref=e264]
+              - row "GET /help/documentation Get documentation items with filtering" [ref=e266]:
+                - cell "GET" [ref=e267]:
+                  - generic [ref=e269]: GET
+                - cell "/help/documentation" [ref=e270]
+                - cell "Get documentation items with filtering" [ref=e271]
+                - cell [ref=e272]:
+                  - img [ref=e273]
+              - row "GET /help/manual Get manual/user guide content" [ref=e275]:
+                - cell "GET" [ref=e276]:
+                  - generic [ref=e278]: GET
+                - cell "/help/manual" [ref=e279]
+                - cell "Get manual/user guide content" [ref=e280]
+                - cell [ref=e281]:
+                  - img [ref=e282]
+              - row "POST /schema/upload Upload and create a new schema with examples" [ref=e284]:
+                - cell "POST" [ref=e285]:
+                  - generic [ref=e287]: POST
+                - cell "/schema/upload" [ref=e288]
+                - cell "Upload and create a new schema with examples" [ref=e289]
+                - cell [ref=e290]:
+                  - img [ref=e291]
+              - row "GET /schema/:schemaId Get schema metadata" [ref=e293]:
+                - cell "GET" [ref=e294]:
+                  - generic [ref=e296]: GET
+                - cell "/schema/:schemaId" [ref=e297]
+                - cell "Get schema metadata" [ref=e298]
+                - cell [ref=e299]:
+                  - img [ref=e300]
+              - row "GET /schemas List all schemas with pagination" [ref=e302]:
+                - cell "GET" [ref=e303]:
+                  - generic [ref=e305]: GET
+                - cell "/schemas" [ref=e306]
+                - cell "List all schemas with pagination" [ref=e307]
+                - cell [ref=e308]:
+                  - img [ref=e309]
+              - row "GET /schema/:schemaId/rules Get extraction rules for a schema" [ref=e311]:
+                - cell "GET" [ref=e312]:
+                  - generic [ref=e314]: GET
+                - cell "/schema/:schemaId/rules" [ref=e315]
+                - cell "Get extraction rules for a schema" [ref=e316]
+                - cell [ref=e317]:
+                  - img [ref=e318]
+              - row "POST /schema/:schemaId/generate-rules Generate extraction rules from schema" [ref=e320]:
+                - cell "POST" [ref=e321]:
+                  - generic [ref=e323]: POST
+                - cell "/schema/:schemaId/generate-rules" [ref=e324]
+                - cell "Generate extraction rules from schema" [ref=e325]
+                - cell [ref=e326]:
+                  - img [ref=e327]
+              - row "GET /health Get system health status" [ref=e329]:
+                - cell "GET" [ref=e330]:
+                  - generic [ref=e332]: GET
+                - cell "/health" [ref=e333]
+                - cell "Get system health status" [ref=e334]
+                - cell [ref=e335]:
+                  - img [ref=e336]
+              - row "GET /config Get application configuration" [ref=e338]:
+                - cell "GET" [ref=e339]:
+                  - generic [ref=e341]: GET
+                - cell "/config" [ref=e342]
+                - cell "Get application configuration" [ref=e343]
+                - cell [ref=e344]:
+                  - img [ref=e345]
+              - row "GET /logs Get application logs with filtering" [ref=e347]:
+                - cell "GET" [ref=e348]:
+                  - generic [ref=e350]: GET
+                - cell "/logs" [ref=e351]
+                - cell "Get application logs with filtering" [ref=e352]
+                - cell [ref=e353]:
+                  - img [ref=e354]
+              - row "GET /backup/list List available backups" [ref=e356]:
+                - cell "GET" [ref=e357]:
+                  - generic [ref=e359]: GET
+                - cell "/backup/list" [ref=e360]
+                - cell "List available backups" [ref=e361]
+                - cell [ref=e362]:
+                  - img [ref=e363]
+              - row "POST /backup/create Create a new backup" [ref=e365]:
+                - cell "POST" [ref=e366]:
+                  - generic [ref=e368]: POST
+                - cell "/backup/create" [ref=e369]
+                - cell "Create a new backup" [ref=e370]
+                - cell [ref=e371]:
+                  - img [ref=e372]
+        - generic [ref=e374]:
+          - generic [ref=e377]: Authentication & Authorization
+          - generic [ref=e378]:
+            - alert [ref=e379]:
+              - img [ref=e381]
+              - generic [ref=e383]: Most endpoints are accessible without authentication during development. In production, implement OAuth 2.0 or API key authentication.
+            - paragraph [ref=e384]: "All API responses follow a standardized format:"
+            - generic [ref=e385]: "{ \"success\": true, \"data\": { /* response data */ }, \"timestamp\": \"2026-07-16T09:45:00Z\", \"version\": \"0.35.0\" }"
+```

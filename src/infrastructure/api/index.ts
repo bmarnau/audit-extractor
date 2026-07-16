@@ -40,6 +40,8 @@ import healthRoutes from './routes/health';
 // Phase 27 - Fix: Missing API endpoints
 import docsRoutes from './routes/docs';
 import settingsRoutes from './routes/settings';
+// Phase 40 - System & Wakeup
+import systemRoutes from './routes/system';
 
 const port = parseInt(process.env.PORT || '3000', 10);
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -239,6 +241,15 @@ async function startServer() {
       console.log('[Server] ✓ Settings routes mounted on /api/settings');
     } catch (routeErr) {
       console.error('[Server] Error mounting settings routes:', routeErr);
+      throw routeErr;
+    }
+
+    // Phase 40: System & Wakeup Routes
+    try {
+      app.use('/api/system', systemRoutes);
+      console.log('[Server] ✓ System & Wakeup routes mounted on /api/system');
+    } catch (routeErr) {
+      console.error('[Server] Error mounting system routes:', routeErr);
       throw routeErr;
     }
 
