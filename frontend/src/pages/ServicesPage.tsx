@@ -3,7 +3,7 @@
  * 
  * Displays and manages system services status
  * 
- * @version 0.35.0
+ * @version 0.37.1
  * @phase 38C
  */
 

@@ -3,8 +3,9 @@
  * 
  * Displays system health status, database connectivity, cache status,
  * and service availability checks
+ * Phase 43: Technical Audit Integration
  * 
- * @version 0.35.0
+ * @version 0.37.1
  */
 
 import React, { useState, useEffect } from 'react';
