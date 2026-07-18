@@ -1,0 +1,34 @@
+{
+  "timestamp": "2026-07-18T05:06:31.625Z",
+  "environment": {
+    "nodeVersion": "v24.16.0",
+    "platform": "win32",
+    "arch": "x64",
+    "cwd": "C:\\Users\\bmarn\\OneDrive\\HTML\\extractor"
+  },
+  "summary": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "warnings": 0,
+    "success": true
+  },
+  "details": {
+    "errors": [],
+    "warnings": [],
+    "successes": [
+      {
+        "timestamp": "2026-07-18T05:06:31.624Z",
+        "level": "success",
+        "component": "Node.js",
+        "message": "Version 24.16.0 erforderliche Mindestversion erfüllt",
+        "details": {
+          "version": "24.16.0",
+          "minVersion": "18.0.0"
+        }
+      }
+    ],
+    "infos": []
+  },
+  "recommendations": []
+}

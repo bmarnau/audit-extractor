@@ -15,7 +15,7 @@ const router = Router();
 
 /**
  * POST /api/technical-tests/export/pdf
- * Generate and download PDF report
+ * Generate and download PDF report - DIRECT STREAM
  */
 router.post(
   '/pdf',
@@ -33,7 +33,7 @@ router.post(
         offset: 0,
       });
 
-      // Generate PDF
+      // Generate PDF content
       const pdfResult = await pdfExportService.generateReport(
         findingsResult.findings,
         recommendationsResult.recommendations,
@@ -47,7 +47,7 @@ router.post(
         }
       );
 
-      if (!pdfResult.success) {
+      if (!pdfResult.success || !pdfResult.buffer) {
         return res.status(500).json({
           success: false,
           error: {
@@ -57,15 +57,17 @@ router.post(
         });
       }
 
-      res.json({
-        success: true,
-        data: {
-          filename: pdfResult.filename,
-          size: pdfResult.size,
-          generatedAt: pdfResult.generatedAt,
-          downloadUrl: `/api/technical-tests/export/download/${pdfResult.filename}`,
-        },
-      });
+      // Stream PDF directly to client
+      const timestamp = new Date().toISOString().split('T')[0];
+      const filename = `technical-audit-${timestamp}.pdf`;
+      
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.setHeader('Content-Length', pdfResult.size);
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      
+      // Send PDF buffer
+      res.send(pdfResult.buffer);
     } catch (error) {
       console.error('Error in POST /export/pdf:', error);
       next(error);

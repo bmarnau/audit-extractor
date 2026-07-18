@@ -10,6 +10,8 @@
  * 
  * @version 0.43.0
  * @phase 40 + 43
+ * 
+ * EXPORT FEATURE: Added handleExportReport function to support PDF export functionality
  */
 
 import React, { useState, useEffect } from 'react';
@@ -84,6 +86,7 @@ const TechnicalAuditPage: React.FC = () => {
   const [showWakeupDialog, setShowWakeupDialog] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [tabValue, setTabValue] = useState(0);
+  const [exporting, setExporting] = useState(false);
 
   // Load system status on component mount
   useEffect(() => {
@@ -135,6 +138,50 @@ const TechnicalAuditPage: React.FC = () => {
       console.error('Error during wakeup:', err);
     } finally {
       setWaking(false);
+    }
+  };
+
+  const handleExportReport = async (format: 'pdf' | 'csv' | 'json' = 'pdf') => {
+    try {
+      setExporting(true);
+      setError(null);
+
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+      const endpoint = `/technical-tests/export/${format}`;
+      const exportRes = await fetch(`${apiUrl}${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
+      });
+
+      if (!exportRes.ok) {
+        const errorData = await exportRes.json().catch(() => ({ error: { message: `${format.toUpperCase()} export failed` } }));
+        throw new Error(errorData.error?.message || `${format.toUpperCase()} export failed: ${exportRes.statusText}`);
+      }
+
+      // Handle binary/text response
+      const blob = await exportRes.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      
+      // Generate filename with timestamp
+      const timestamp = new Date().toISOString().split('T')[0];
+      const formatExt = format === 'pdf' ? 'pdf' : format === 'csv' ? 'csv' : 'json';
+      link.download = `technical-audit-report-${timestamp}.${formatExt}`;
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      setError(null);
+    } catch (err: any) {
+      const errorMsg = err.message || 'Export failed';
+      setError(errorMsg);
+      console.error('Export error:', err);
+    } finally {
+      setExporting(false);
     }
   };
 
@@ -564,8 +611,10 @@ const TechnicalAuditPage: React.FC = () => {
                       variant="outlined"
                       startIcon={<DownloadIcon />}
                       fullWidth
+                      onClick={() => handleExportReport('pdf')}
+                      disabled={exporting || loading}
                     >
-                      Export Report
+                      {exporting ? 'Exporting...' : 'Export Report'}
                     </Button>
                   </Box>
                 </Grid>
@@ -688,14 +737,50 @@ const TechnicalAuditPage: React.FC = () => {
                     >
                       REFRESH STATUS
                     </Button>
-                    <Button
-                      variant="outlined"
-                      startIcon={<DownloadIcon />}
-                      fullWidth
-                      sx={{ mt: 1 }}
-                    >
-                      DOWNLOAD REPORT
-                    </Button>
+                    
+                    {/* Error message */}
+                    {error && (
+                      <Alert severity="error" sx={{ mt: 1 }}>
+                        ⚠️ {error}
+                      </Alert>
+                    )}
+                    
+                    {/* Export buttons */}
+                    <Box sx={{ mt: 2 }}>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                        <Button
+                          variant="outlined"
+                          startIcon={<DownloadIcon />}
+                          onClick={() => handleExportReport('pdf')}
+                          disabled={exporting}
+                          fullWidth
+                          sx={{ mt: 1 }}
+                          title="Download report as PDF document"
+                        >
+                          {exporting ? 'EXPORTING PDF...' : '📄 PDF REPORT'}
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          startIcon={<DownloadIcon />}
+                          onClick={() => handleExportReport('csv')}
+                          disabled={exporting}
+                          fullWidth
+                          title="Download findings as CSV spreadsheet"
+                        >
+                          {exporting ? 'EXPORTING CSV...' : '📊 CSV FINDINGS'}
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          startIcon={<DownloadIcon />}
+                          onClick={() => handleExportReport('json')}
+                          disabled={exporting}
+                          fullWidth
+                          title="Download full report as JSON data"
+                        >
+                          {exporting ? 'EXPORTING JSON...' : '{}  JSON DATA'}
+                        </Button>
+                      </Box>
+                    </Box>
                   </Box>
                 </CardContent>
               </Card>

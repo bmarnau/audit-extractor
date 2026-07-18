@@ -36,9 +36,37 @@ import {
 } from '@mui/material';
 import {
   Compare as CompareIcon,
+  Check as CheckIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
 } from '@mui/icons-material';
-import { formatDateFull } from '../../utils/dateFormatting';
-import { getChangeIcon, getChangeColor } from '../../utils/colorMapping';
+
+// Inline helper functions to avoid import issues
+const formatDateFull = (date: Date | string): string => {
+  const d = typeof date === 'string' ? new Date(date) : date;
+  return d.toLocaleString('de-DE', { 
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit'
+  });
+};
+
+const getChangeIconColor = (changeType: string): string => {
+  switch(changeType) {
+    case 'added': return '#4caf50';
+    case 'changed': return '#ff9800';
+    case 'removed': return '#f44336';
+    default: return '#2196f3';
+  }
+};
+
+const getChangeColorBg = (changeType: string): string => {
+  switch(changeType) {
+    case 'added': return '#e8f5e9';
+    case 'changed': return '#fff3e0';
+    case 'removed': return '#ffebee';
+    default: return '#e3f2fd';
+  }
+};
 
 interface ExtractedRun {
   runId: string;
@@ -272,11 +300,13 @@ const DiffViewer: React.FC<DiffViewerProps> = ({ run1, run2 }) => {
               {comparison.differences.map((diff, idx) => (
                 <TableRow
                   key={idx}
-                  sx={{ backgroundColor: getChangeColor(diff.changeType) }}
+                  sx={{ backgroundColor: getChangeColorBg(diff.changeType) }}
                 >
                   <TableCell align="center" sx={{ width: 60 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                      {getChangeIcon(diff.changeType)}
+                    <Box sx={{ display: 'flex', justifyContent: 'center', color: getChangeIconColor(diff.changeType) }}>
+                      {diff.changeType === 'added' && <CheckIcon />}
+                      {diff.changeType === 'changed' && <EditIcon />}
+                      {diff.changeType === 'removed' && <DeleteIcon />}
                     </Box>
                   </TableCell>
                   <TableCell sx={{ fontWeight: 500 }}>{diff.fieldName}</TableCell>
@@ -360,7 +390,11 @@ const DiffViewer: React.FC<DiffViewerProps> = ({ run1, run2 }) => {
 
               <Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                  {getChangeIcon(selectedDiffDialog.changeType)}
+                  <Box sx={{ color: getChangeIconColor(selectedDiffDialog.changeType) }}>
+                    {selectedDiffDialog.changeType === 'added' && <CheckIcon />}
+                    {selectedDiffDialog.changeType === 'changed' && <EditIcon />}
+                    {selectedDiffDialog.changeType === 'removed' && <DeleteIcon />}
+                  </Box>
                   <Typography variant="subtitle2" color="textSecondary">
                     Änderungstyp
                   </Typography>

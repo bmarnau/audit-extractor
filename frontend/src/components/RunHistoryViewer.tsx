@@ -36,9 +36,37 @@ import {
   History as HistoryIcon,
   Delete as DeleteIcon,
   Info as InfoIcon,
+  CheckCircle as CheckIcon,
+  Warning as WarningIcon,
+  Error as ErrorIcon,
 } from '@mui/icons-material';
-import { formatDateFull } from '../../utils/dateFormatting';
-import { getStatusIcon, getStatusColor } from '../../utils/colorMapping';
+
+// Inline helper functions to avoid import issues
+const formatDateFull = (date: Date | string): string => {
+  const d = typeof date === 'string' ? new Date(date) : date;
+  return d.toLocaleString('de-DE', { 
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit'
+  });
+};
+
+const getStatusColorChip = (status: string): 'default' | 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success' => {
+  switch(status) {
+    case 'success': return 'success';
+    case 'partial': return 'warning';
+    case 'failed': return 'error';
+    default: return 'info';
+  }
+};
+
+const getStatusIconColor = (status: string): string => {
+  switch(status) {
+    case 'success': return '#4caf50';
+    case 'partial': return '#ff9800';
+    case 'failed': return '#f44336';
+    default: return '#2196f3';
+  }
+};
 
 /**
  * Domain Model für ExtractedRun
@@ -237,11 +265,15 @@ const RunHistoryViewer: React.FC<RunHistoryViewerProps> = ({
                     </TableCell>
                     <TableCell align="center">
                       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
-                        {getStatusIcon(run.status)}
+                        <Box sx={{ color: getStatusIconColor(run.status) }}>
+                          {run.status === 'success' && <CheckIcon />}
+                          {run.status === 'partial' && <WarningIcon />}
+                          {run.status === 'failed' && <ErrorIcon />}
+                        </Box>
                         <Chip
                           size="small"
                           label={run.status === 'success' ? 'OK' : 'Warnung'}
-                          color={getStatusColor(run.status)}
+                          color={getStatusColorChip(run.status)}
                           variant="outlined"
                         />
                       </Box>
@@ -326,7 +358,11 @@ const RunHistoryViewer: React.FC<RunHistoryViewerProps> = ({
                     Status
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    {getStatusIcon(selectedRunDetail.status)}
+                    <Box sx={{ color: getStatusIconColor(selectedRunDetail.status) }}>
+                      {selectedRunDetail.status === 'success' && <CheckIcon />}
+                      {selectedRunDetail.status === 'partial' && <WarningIcon />}
+                      {selectedRunDetail.status === 'failed' && <ErrorIcon />}
+                    </Box>
                     <Typography variant="body2">{selectedRunDetail.status}</Typography>
                   </Box>
                 </Grid>

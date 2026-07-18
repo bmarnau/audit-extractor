@@ -52,6 +52,8 @@ import IReportIntegration from './components/iReportIntegration';
 import ServicesPage from './pages/ServicesPage';
 // Phase 40: Technical Audit Center
 import TechnicalAuditPage from './pages/TechnicalAuditPage';
+// Phase 45+: Management Overview
+import ManagementPage from './pages/ManagementPage';
 // Phase 41: API Docs & Settings Pages
 import ApiDocsPage from './pages/ApiDocsPage';
 import SettingsPage from './pages/SettingsPage';
@@ -240,6 +242,8 @@ const AppContent: React.FC<{
               {/* Phase 40: Technical Audit Center */}
               <Route path="/technical-audit" element={<TechnicalAuditPage />} />
               <Route path="/services/audit" element={<TechnicalAuditPage />} />
+              {/* Phase 45+: Compact Management Overview */}
+              <Route path="/management" element={<ManagementPage />} />
               {/* Phase 43: Technical Quality Dashboard */}
               <Route path="/technical-tests" element={<TechnicalQualityDashboard />} />
               {/* Phase 41: API Docs & Settings */}

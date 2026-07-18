@@ -23,6 +23,7 @@ import {
   Analytics as AnalyticsIcon,
   TrendingUp as ProcessIcon,
   Cloud as CloudIcon,
+  BarChart as ManagementIcon,
 } from '@mui/icons-material';
 
 /**
@@ -200,6 +201,13 @@ export const navigationCategories: NavCategory[] = [
         path: '/technical-audit',
         icon: AuditIcon,
         description: 'Comprehensive System Audit & Status Report',
+      },
+      {
+        id: 'management',
+        label: 'Management',
+        path: '/management',
+        icon: ManagementIcon,
+        description: 'Executive Management Overview for Leadership',
       },
       {
         id: 'technical-tests',

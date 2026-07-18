@@ -44,6 +44,8 @@ import settingsRoutes from './routes/settings';
 import systemRoutes from './routes/system';
 // Phase 43 - Technical Tests: Findings & Recommendations APIs
 import technicalTestsRoutes from './routes/technical-tests';
+// Phase 45+ - Management Overview (Compact Status for Leadership)
+import managementRoutes from '../../api/routes/management.routes';
 
 const port = parseInt(process.env.PORT || '3000', 10);
 const nodeEnv = process.env.NODE_ENV || 'development';
@@ -261,6 +263,15 @@ async function startServer() {
       console.log('[Server] ✓ Technical Tests API routes mounted on /api/technical-tests');
     } catch (routeErr) {
       console.error('[Server] Error mounting technical tests routes:', routeErr);
+      throw routeErr;
+    }
+
+    // Phase 45+: Management Overview - Compact Status for Leadership
+    try {
+      app.use('/api/management', managementRoutes);
+      console.log('[Server] ✓ Management Overview API routes mounted on /api/management');
+    } catch (routeErr) {
+      console.error('[Server] Error mounting management routes:', routeErr);
       throw routeErr;
     }
 

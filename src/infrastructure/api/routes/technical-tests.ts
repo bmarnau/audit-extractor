@@ -10,6 +10,8 @@
 
 import { Router, Response, NextFunction } from 'express';
 import { ApiRequest, ApiResponseError, createSuccessResponse } from '../server';
+import { PDFGenerationService } from '../../services/pdf-generation.service';
+import { PDFValidator } from '../../services/pdf-validator.service';
 
 const router = Router();
 
@@ -408,44 +410,100 @@ router.get('/reports/:id', async (_req: ApiRequest, res: Response, next: NextFun
 
 /**
  * POST /api/technical-tests/export/pdf - Export report as PDF
+ * Optional reportId in body - if not provided, generates default report
  */
 router.post('/export/pdf', async (_req: ApiRequest, res: Response, next: NextFunction) => {
   try {
     const { reportId } = _req.body;
-    console.log(`[Technical Tests] Exporting PDF for report ${reportId}`);
+    console.log(`[Technical Tests] Exporting PDF for report ${reportId || 'DEFAULT'}`);
 
-    if (!reportId) {
-      return next(new ApiResponseError('VALIDATION_ERROR', 400, 'reportId is required'));
+    let report;
+    
+    if (reportId) {
+      // If reportId provided, look for it
+      const reports = generateMockReports();
+      report = reports.find((r) => r.id === reportId);
+
+      if (!report) {
+        return next(
+          new ApiResponseError('REPORT_NOT_FOUND', 404, `Report ${reportId} not found`)
+        );
+      }
+    } else {
+      // Generate default report if no reportId provided
+      const reports = generateMockReports();
+      report = reports[0] || {
+        id: 'DEFAULT-001',
+        version: '1.0.0',
+        reportDate: new Date().toISOString().split('T')[0],
+        generatedAt: new Date().toISOString(),
+        status: 'final',
+        findings: generateMockFindings(),
+        recommendations: generateMockRecommendations(),
+        summary: {
+          totalFindings: 4,
+          criticalCount: 1,
+          highCount: 2,
+          mediumCount: 1,
+          lowCount: 0,
+          completedRecommendations: 2,
+          totalRecommendations: 4,
+        },
+        auditedBy: 'System',
+      };
     }
 
-    const reports = generateMockReports();
-    const report = reports.find((r) => r.id === reportId);
+    try {
+      // Generate actual PDF with valid structure - include ALL report data
+      // ENFORCES central requirement: No Base64 text as .pdf - must contain valid PDF structure
+      const reportData = {
+        'Metadata': {
+          'Report ID': report.id,
+          'Version': report.version,
+          'Report Date': report.reportDate,
+          'Status': 'Complete',
+          'Generated': new Date().toISOString(),
+          'Audited By': report.auditedBy || 'System',
+        },
+        'Summary': {
+          'Total Findings': report.summary?.totalFindings || 0,
+          'Critical': report.summary?.criticalCount || 0,
+          'High': report.summary?.highCount || 0,
+          'Medium': report.summary?.mediumCount || 0,
+          'Low': report.summary?.lowCount || 0,
+          'Completed Recommendations': report.summary?.completedRecommendations || 0,
+          'Total Recommendations': report.summary?.totalRecommendations || 0,
+        },
+        'Findings': report.findings?.map((f: any) => `[${f.severity?.toUpperCase()}] ${f.title}: ${f.description}`).join('\n\n') || 'No findings',
+        'Recommendations': report.recommendations?.map((r: any) => `[${r.priority?.toUpperCase()}] ${r.title}: ${r.description} (Effort: ${r.effort || 'N/A'})`).join('\n\n') || 'No recommendations',
+      };
 
-    if (!report) {
+      const pdfResult = await PDFGenerationService.generateTechnicalAuditReport(
+        `Technical Audit Report - ${report.version}`,
+        reportData,
+        'Technical Audit System'
+      );
+
+      // Validate PDF structure before sending
+      const validation = PDFValidator.validate(pdfResult.buffer);
+      if (!validation.isValid || !validation.magicNumber) {
+        return next(
+          new ApiResponseError('PDF_VALIDATION_FAILED', 500, 'Generated PDF has invalid structure')
+        );
+      }
+
+      // Send binary PDF with correct headers
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="${pdfResult.filename}"`);
+      res.setHeader('Content-Length', pdfResult.buffer.length);
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.status(200).send(pdfResult.buffer);
+    } catch (error) {
+      console.error('[Technical Tests] Error generating PDF:', error);
       return next(
-        new ApiResponseError('REPORT_NOT_FOUND', 404, `Report ${reportId} not found`)
+        new ApiResponseError('PDF_GENERATION_FAILED', 500, `PDF generation failed: ${error}`)
       );
     }
-
-    // Simulate PDF generation
-    const pdfData = Buffer.from(
-      `PDF Report: ${report.id}\nVersion: ${report.version}\nDate: ${report.reportDate}`
-    ).toString('base64');
-
-    res.json(
-      createSuccessResponse(
-        {
-          success: true,
-          reportId,
-          fileName: `Technical_Audit_Report_${report.version}.pdf`,
-          mimeType: 'application/pdf',
-          data: pdfData,
-          size: pdfData.length,
-          generatedAt: new Date().toISOString(),
-        },
-        _req
-      )
-    );
   } catch (error) {
     console.error('[Technical Tests] Error exporting PDF:', error);
     const err = error as any;
@@ -460,47 +518,65 @@ router.post('/export/pdf', async (_req: ApiRequest, res: Response, next: NextFun
 
 /**
  * POST /api/technical-tests/export/csv - Export report as CSV
+ * Optional reportId in body - if not provided, generates default report
  */
 router.post('/export/csv', async (_req: ApiRequest, res: Response, next: NextFunction) => {
   try {
     const { reportId } = _req.body;
-    console.log(`[Technical Tests] Exporting CSV for report ${reportId}`);
+    console.log(`[Technical Tests] Exporting CSV for report ${reportId || 'DEFAULT'}`);
 
-    if (!reportId) {
-      return next(new ApiResponseError('VALIDATION_ERROR', 400, 'reportId is required'));
+    let report;
+    
+    if (reportId) {
+      // If reportId provided, look for it
+      const reports = generateMockReports();
+      report = reports.find((r) => r.id === reportId);
+
+      if (!report) {
+        return next(
+          new ApiResponseError('REPORT_NOT_FOUND', 404, `Report ${reportId} not found`)
+        );
+      }
+    } else {
+      // Generate default report if no reportId provided
+      const reports = generateMockReports();
+      report = reports[0] || {
+        id: 'DEFAULT-001',
+        version: '1.0.0',
+        reportDate: new Date().toISOString().split('T')[0],
+        generatedAt: new Date().toISOString(),
+        status: 'final',
+        findings: generateMockFindings(),
+        recommendations: generateMockRecommendations(),
+        summary: {
+          totalFindings: 4,
+          criticalCount: 1,
+          highCount: 2,
+          mediumCount: 1,
+          lowCount: 0,
+          completedRecommendations: 2,
+          totalRecommendations: 4,
+        },
+        auditedBy: 'System',
+      };
     }
 
-    const reports = generateMockReports();
-    const report = reports.find((r) => r.id === reportId);
-
-    if (!report) {
-      return next(
-        new ApiResponseError('REPORT_NOT_FOUND', 404, `Report ${reportId} not found`)
-      );
-    }
-
-    // Simulate CSV generation
+    // Generate CSV content
     const csvHeader = 'Finding ID,Title,Severity,Category,Component\n';
     const csvRows = report.findings
       .map((f) => `${f.id},"${f.title}",${f.severity},${f.category},${f.impactedComponent || 'N/A'}`)
       .join('\n');
 
-    const csvData = Buffer.from(csvHeader + csvRows).toString('base64');
+    const csvContent = csvHeader + csvRows;
 
-    res.json(
-      createSuccessResponse(
-        {
-          success: true,
-          reportId,
-          fileName: `Technical_Audit_Findings_${report.version}.csv`,
-          mimeType: 'text/csv',
-          data: csvData,
-          size: csvData.length,
-          generatedAt: new Date().toISOString(),
-        },
-        _req
-      )
-    );
+    // Send CSV directly with correct headers
+    const filename = `Technical_Audit_Findings_${report.version}.csv`;
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Length', csvContent.length);
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.status(200).send(csvContent);
+
   } catch (error) {
     console.error('[Technical Tests] Error exporting CSV:', error);
     const err = error as any;
@@ -515,41 +591,60 @@ router.post('/export/csv', async (_req: ApiRequest, res: Response, next: NextFun
 
 /**
  * POST /api/technical-tests/export/json - Export report as JSON
+ * Optional reportId in body - if not provided, generates default report
  */
 router.post('/export/json', async (_req: ApiRequest, res: Response, next: NextFunction) => {
   try {
     const { reportId } = _req.body;
-    console.log(`[Technical Tests] Exporting JSON for report ${reportId}`);
+    console.log(`[Technical Tests] Exporting JSON for report ${reportId || 'DEFAULT'}`);
 
-    if (!reportId) {
-      return next(new ApiResponseError('VALIDATION_ERROR', 400, 'reportId is required'));
-    }
+    let report;
+    
+    if (reportId) {
+      // If reportId provided, look for it
+      const reports = generateMockReports();
+      report = reports.find((r) => r.id === reportId);
 
-    const reports = generateMockReports();
-    const report = reports.find((r) => r.id === reportId);
-
-    if (!report) {
-      return next(
-        new ApiResponseError('REPORT_NOT_FOUND', 404, `Report ${reportId} not found`)
-      );
-    }
-
-    const jsonData = Buffer.from(JSON.stringify(report, null, 2)).toString('base64');
-
-    res.json(
-      createSuccessResponse(
-        {
-          success: true,
-          reportId,
-          fileName: `Technical_Audit_Report_${report.version}.json`,
-          mimeType: 'application/json',
-          data: jsonData,
-          size: jsonData.length,
-          generatedAt: new Date().toISOString(),
+      if (!report) {
+        return next(
+          new ApiResponseError('REPORT_NOT_FOUND', 404, `Report ${reportId} not found`)
+        );
+      }
+    } else {
+      // Generate default report if no reportId provided
+      const reports = generateMockReports();
+      report = reports[0] || {
+        id: 'DEFAULT-001',
+        version: '1.0.0',
+        reportDate: new Date().toISOString().split('T')[0],
+        generatedAt: new Date().toISOString(),
+        status: 'final',
+        findings: generateMockFindings(),
+        recommendations: generateMockRecommendations(),
+        summary: {
+          totalFindings: 4,
+          criticalCount: 1,
+          highCount: 2,
+          mediumCount: 1,
+          lowCount: 0,
+          completedRecommendations: 2,
+          totalRecommendations: 4,
         },
-        _req
-      )
-    );
+        auditedBy: 'System',
+      };
+    }
+
+    // Generate JSON content
+    const jsonContent = JSON.stringify(report, null, 2);
+
+    // Send JSON directly with correct headers
+    const filename = `Technical_Audit_Report_${report.version}.json`;
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Length', jsonContent.length);
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.status(200).send(jsonContent);
+
   } catch (error) {
     console.error('[Technical Tests] Error exporting JSON:', error);
     const err = error as any;

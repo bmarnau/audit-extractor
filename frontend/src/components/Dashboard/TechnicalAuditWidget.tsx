@@ -94,33 +94,49 @@ export const TechnicalAuditWidget: React.FC = () => {
   const handleExport = async (format: 'pdf' | 'csv' | 'json') => {
     try {
       setExporting(true);
+
+      const reportsRes = await fetch('/api/technical-tests/reports');
+      if (!reportsRes.ok) {
+        throw new Error('Failed to load reports for export');
+      }
+      const reportsData = await reportsRes.json();
+      const reportId = reportsData?.data?.latest?.id;
+      if (!reportId) {
+        throw new Error('No technical audit report available for export');
+      }
+
       const response = await fetch(`/api/technical-tests/export/${format}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: 'Technical Audit Report',
-          includeFindings: true,
-          includeRecommendations: true,
-          includeSummary: true,
-        }),
+        body: JSON.stringify({ reportId }),
       });
 
       if (!response.ok) {
         throw new Error(`Export failed: ${response.statusText}`);
       }
 
-      if (format === 'csv' || format === 'json') {
+      if (format === 'pdf') {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `technical-audit.${format}`;
+        a.download = `technical-audit-${reportId}.pdf`;
         a.click();
         window.URL.revokeObjectURL(url);
       } else {
-        const data = await response.json();
-        // In production, would trigger file download
-        console.log('PDF export:', data);
+        const exportData = await response.json();
+        const binaryString = atob(exportData.data.data);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: exportData.data.mimeType });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = exportData.data.fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
       }
 
       setExportDialog(false);

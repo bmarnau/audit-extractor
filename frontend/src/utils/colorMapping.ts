@@ -6,12 +6,12 @@
 
 import React from 'react';
 import {
-  AddIcon as Add,
-  DeleteIcon as Delete,
-  EditIcon as Edit,
-  CheckCircleIcon as CheckCircle,
-  WarningIcon as Warning,
-  ErrorIcon as Error,
+  Add,
+  Delete,
+  Edit,
+  CheckCircle,
+  Warning,
+  Error,
 } from '@mui/icons-material';
 
 /**

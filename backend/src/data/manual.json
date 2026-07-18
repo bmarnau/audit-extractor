@@ -1,7 +1,7 @@
 {
-  "version": "0.15.0",
-  "title": "Audit-Safe Document Extractor - Benutzerhandbuch",
-  "lastUpdated": "2026-07-08T15:30:00Z",
+  "version": "0.37.1",
+  "title": "📖 Operationshandbuch - Version 0.37.1",
+  "lastUpdated": "2026-07-16T20:00:00Z",
   "chapters": [
     {
       "id": "intro",
@@ -188,6 +188,32 @@
         {
           "heading": "Performance Optimierung",
           "content": "Optimierungstipps:\n\n⚡ Chunking: Nutzen Sie semantic chunking für bessere Qualität\n💾 Caching: Aktivieren Sie Caching für häufig verarbeitete Inhalte\n📊 Metriken: Analysieren Sie Performance-Metriken für Bottlenecks\n🔧 Batch Processing: Verarbeiten Sie mehrere Dokumente zusammen\n\nMonitorieren Sie die Systemmetriken für kontinuierliche Optimierung."
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "title": "Management Übersicht",
+      "sections": [
+        {
+          "heading": "Was ist die Management Übersicht?",
+          "content": "Die Management Übersicht (verfügbar unter /management) ist ein Executive Dashboard, das einen umfassenden Überblick über den aktuellen Status und die Reife des Systems bietet.\n\n**Zielgruppe**: Projektmanager, Stakeholder, Führungskräfte\n\n**Zweck**: \n✅ Schneller Status-Überblick\n✅ KPI-Verfolgung (Version, Build, Tests, Reife, Risiken)\n✅ Release-Readiness-Bewertung\n✅ Executive-Reporting\n✅ Entscheidungsunterstützung"
+        },
+        {
+          "heading": "Hauptsektionen",
+          "content": "Die Management Übersicht besteht aus 7 Hauptsektionen:\n\n**1. Header Section**\n- Produktname: Audit-Safe Document Extractor\n- Aktuelle Version (z.B. v0.37.1)\n- Release Status (z.B. \"Release Candidate - Production Ready\")\n- PDF Export Button für Berichte\n- Last Updated Timestamp\n\n**2. Management Summary**\n- Executive-Level Beschreibung des Projektstatus\n- Übersichtlicher Text der Situation\n\n**3. KPI Cards (6 Metriken)**\n- Version: Aktuelle Softwareversion\n- Release Status: RC, Stable, Beta, etc.\n- Build: SUCCESS/FAILURE mit TypeScript Fehleranzahl\n- Tests: Prozentuale Pass-Rate und Anzahl\n- Maturity: Reifegradfortschritt (z.B. 6/6 Bereiche)\n- Critical Risks: Anzahl kritischer Risiken\n\nJede KPI zeigt einen Status-Indicator (grün/gelb/rot).\n\n**4. Maturity Areas (Reifegrad)**\n- 6 Reifegrad-Kategorien:\n  • Kernfunktionalität\n  • Qualität & Tests\n  • Wartbarkeit\n  • Dokumentation\n  • Betrieb\n  • Sicherheit\n- Status pro Bereich: offen, in_arbeit, weitgehend_erfüllt, erfüllt\n- Farbcodierung für schnelle Erkennung\n\n**5. Release Readiness**\n- Gesamtentscheidung (Freigabefähig? Ja/Nein)\n- Checkliste mit Kriterien:\n  ✓ Build erfolgreich\n  ✓ Tests bestanden\n  ✓ Dokumentation komplett\n  ✓ Performance akzeptabel\n  ✓ Security Review durchgeführt\n\n**6. Business Benefits**\n- Geschäftliche Vorteile des Systems\n- Nutzen für verschiedene Stakeholder-Gruppen\n- ROI-Indikatoren\n\n**7. Navigation & Next Steps**\n- Links zu verwandten Seiten:\n  • Technischer Status (Technical Audit)\n  • Testbericht (Test Execution)\n  • API Dokumentation\n  • Systemstatus (Services)\n  • Release-Readiness Details\n  • Architektur\n  • Handbuch\n- Empfohlene nächste Schritte"
+        },
+        {
+          "heading": "KPI Interpretation",
+          "content": "**Version KPI**\n- Zeigt die installierte Softwareversion\n- Status grün wenn aktuell\n- Beispiel: \"0.37.1\" mit Status \"Aktuell\"\n\n**Release Status KPI**\n- Zeigt den Freigabezustand\n- Grün: Production Ready\n- Gelb: Release Candidate\n- Orange: Beta/Preview\n- Rot: Development/Unstable\n\n**Build KPI**\n- Status des letzten Build\n- Grün: SUCCESS (0 TS Fehler)\n- Orange: Warnings vorhanden\n- Rot: Build failed\n- Zeigt die Anzahl der TypeScript-Fehler\n\n**Tests KPI**\n- Pass-Rate in Prozenten\n- Grün: ≥95%\n- Orange: 80-95%\n- Rot: <80%\n- Zeigt Smoke Tests (z.B. 11/11)\n\n**Maturity KPI**\n- Reifegradfortschritt\n- Zeigt erfüllte vs. Gesamt-Bereiche (z.B. 6/6)\n- Grün wenn alle Bereiche auf Sollwert\n\n**Critical Risks KPI**\n- Anzahl kritischer Risiken\n- Grün: 0 kritische\n- Orange: 1-2 kritische\n- Rot: >2 kritische\n- \"Alle adressiert\" wenn leer"
+        },
+        {
+          "heading": "PDF Export",
+          "content": "Klicken Sie den \"PDF exportieren\" Button, um einen Management Report als PDF zu generieren.\n\n**Enthält**:\n✓ Management Summary\n✓ Alle KPIs mit Status\n✓ Maturity-Tabelle\n✓ Release Readiness Checkliste\n✓ Risiken-Analyse\n✓ Nächste Schritte\n✓ Zeitstempel und Versionsnummer\n\n**Format**: A4-kompatibler PDF, druckbar"
+        },
+        {
+          "heading": "Best Practices",
+          "content": "**Für Projektmanager:**\n1. Überprüfen Sie täglich die KPI-Sektion auf Probleme\n2. Nutzen Sie den PDF-Export für Stakeholder-Meetings\n3. Verfolgen Sie den Maturity-Fortschritt wöchentlich\n4. Achten Sie auf kritische Risiken und adressieren Sie diese\n\n**Für Führungskräfte:**\n1. Nutzen Sie die Management Übersicht als Executive-Bericht\n2. Identifizieren Sie Blockierungen über Release Readiness\n3. Treffen Sie Go/No-Go Entscheidungen auf Basis der KPIs\n4. Kommunizieren Sie Status zu Stakeholdern via PDF-Export\n\n**Für Entwickler:**\n1. Nutzen Sie Maturity-Status für Selbsteinschätzung\n2. Arbeiten Sie an Bereichen mit Status \"in_arbeit\"\n3. Helfen Sie, kritische Risiken zu adressieren\n4. Aktualisieren Sie Dokumentation zur Completion"
         }
       ]
     },

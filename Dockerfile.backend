@@ -36,13 +36,42 @@ COPY --from=builder /app/tsconfig.json ./
 COPY --from=builder /app/extraction-rules ./extraction-rules
 COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/docs ./docs
-COPY --from=builder /app/backend/src/data ./data
+
+# Copy backend data files (release notes and manual)
+# CRITICAL: Ensure these files are copied to correct location
+COPY --from=builder /app/backend/src/data ./backend/src/data
 
 # Copy documentation files explicitly (required for HelpContentLoader)
-COPY --from=builder /app/MANUAL-0.35.0.md ./
-COPY --from=builder /app/OPERATIONS_MANUAL_V35.md ./
-COPY --from=builder /app/RELEASE_NOTES_0.35.0.md ./
+COPY --from=builder /app/OPERATIONS_MANUAL.md ./
 COPY --from=builder /app/README.md ./
+COPY --from=builder /app/MANUAL-0.37.1.md ./
+COPY --from=builder /app/RELEASE_NOTES_0.37.1.md ./
+
+# ============================================================
+# VERIFICATION: Ensure all critical files are present
+# ============================================================
+RUN echo "🔍 Verifying critical files in container..." && \
+    echo "Checking /app/backend/src/data directory..." && \
+    ls -lah /app/backend/src/data/ && \
+    echo "" && \
+    echo "Checking individual files..." && \
+    test -f /app/backend/src/data/release-notes.json || (echo "❌ MISSING: /app/backend/src/data/release-notes.json" && exit 1) && \
+    echo "✅ release-notes.json OK" && \
+    test -f /app/backend/src/data/manual.json || (echo "❌ MISSING: /app/backend/src/data/manual.json" && exit 1) && \
+    echo "✅ manual.json OK" && \
+    test -f /app/RELEASE_NOTES_0.37.1.md || (echo "❌ MISSING: /app/RELEASE_NOTES_0.37.1.md" && exit 1) && \
+    echo "✅ RELEASE_NOTES_0.37.1.md OK" && \
+    test -f /app/OPERATIONS_MANUAL.md || (echo "❌ MISSING: /app/OPERATIONS_MANUAL.md" && exit 1) && \
+    echo "✅ OPERATIONS_MANUAL.md OK" && \
+    test -f /app/README.md || (echo "❌ MISSING: /app/README.md" && exit 1) && \
+    echo "✅ README.md OK" && \
+    test -f /app/MANUAL-0.37.1.md || (echo "❌ MISSING: /app/MANUAL-0.37.1.md" && exit 1) && \
+    echo "✅ MANUAL-0.37.1.md OK" && \
+    echo "" && \
+    echo "📊 File sizes:" && \
+    wc -l /app/backend/src/data/*.json /app/*.md && \
+    echo "" && \
+    echo "✅ All critical files verified successfully!"
 
 # Accept git metadata as build arguments
 ARG GIT_COMMIT=unknown

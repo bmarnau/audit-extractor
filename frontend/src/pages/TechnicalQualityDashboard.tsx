@@ -475,21 +475,30 @@ const TechnicalQualityDashboard: React.FC = () => {
       });
 
       if (!exportRes.ok) throw new Error(`Failed to export ${format.toUpperCase()}`);
-      const exportData = await exportRes.json();
 
-      // Download file
-      const binaryString = atob(exportData.data.data);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      if (format === 'pdf') {
+        const blob = await exportRes.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `technical-audit-${currentReport.id}.pdf`;
+        link.click();
+        window.URL.revokeObjectURL(url);
+      } else {
+        const exportData = await exportRes.json();
+        const binaryString = atob(exportData.data.data);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blob = new Blob([bytes], { type: exportData.data.mimeType });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = exportData.data.fileName;
+        link.click();
+        window.URL.revokeObjectURL(url);
       }
-      const blob = new Blob([bytes], { type: exportData.data.mimeType });
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = exportData.data.fileName;
-      link.click();
-      window.URL.revokeObjectURL(url);
 
       setExportDialog(false);
     } catch (err) {

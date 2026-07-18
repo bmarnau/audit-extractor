@@ -1,0 +1,245 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: navigation-comprehensive-test.test.ts >> NAVIGATION TEST SUITE v0.36.0 >> should navigate to Backups page
+- Location: tests\e2e\navigation-comprehensive-test.test.ts:501:3
+
+# Error details
+
+```
+Test timeout of 120000ms exceeded.
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - heading "Audit-Safe Extractor" [level=6] [ref=e6]
+      - button "toggle dark mode" [ref=e7] [cursor=pointer]:
+        - img [ref=e8]
+  - generic [ref=e10]:
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - heading "Audit-Safe" [level=6] [ref=e15]
+        - text: Document Extraction
+      - list [ref=e16]:
+        - generic [ref=e17]:
+          - button "Extraction" [ref=e18] [cursor=pointer]:
+            - img [ref=e20]
+            - heading "Extraction" [level=6] [ref=e23]
+            - img [ref=e25]
+          - list [ref=e30]:
+            - link "Dashboard System Overview" [ref=e31] [cursor=pointer]:
+              - /url: /
+              - button "Dashboard System Overview" [ref=e32]:
+                - img [ref=e34]
+                - generic [ref=e36]:
+                  - generic [ref=e39]: Dashboard
+                  - paragraph [ref=e40]: System Overview
+            - link "Job Manager Document Extraction Jobs" [ref=e41] [cursor=pointer]:
+              - /url: /jobs
+              - button "Job Manager Document Extraction Jobs" [ref=e42]:
+                - img [ref=e44]
+                - generic [ref=e46]:
+                  - generic [ref=e49]: Job Manager
+                  - paragraph [ref=e50]: Document Extraction Jobs
+            - link "Extraction Workbench Manual Extraction & Testing" [ref=e51] [cursor=pointer]:
+              - /url: /workbench
+              - button "Extraction Workbench Manual Extraction & Testing" [ref=e52]:
+                - img [ref=e54]
+                - generic [ref=e56]:
+                  - generic [ref=e59]: Extraction Workbench
+                  - paragraph [ref=e60]: Manual Extraction & Testing
+        - generic [ref=e61]:
+          - button "Documents & Schema" [ref=e62] [cursor=pointer]:
+            - img [ref=e64]
+            - heading "Documents & Schema" [level=6] [ref=e67]
+            - img [ref=e69]
+          - list [ref=e74]:
+            - link "Documents Browse Uploaded Documents" [ref=e75] [cursor=pointer]:
+              - /url: /documents
+              - button "Documents Browse Uploaded Documents" [ref=e76]:
+                - img [ref=e78]
+                - generic [ref=e80]:
+                  - generic [ref=e83]: Documents
+                  - paragraph [ref=e84]: Browse Uploaded Documents
+            - link "Schema Management View & Edit Extraction Schemas" [ref=e85] [cursor=pointer]:
+              - /url: /schemas
+              - button "Schema Management View & Edit Extraction Schemas" [ref=e86]:
+                - img [ref=e88]
+                - generic [ref=e90]:
+                  - generic [ref=e93]: Schema Management
+                  - paragraph [ref=e94]: View & Edit Extraction Schemas
+            - link "Schema Upload Upload New Schemas" [ref=e95] [cursor=pointer]:
+              - /url: /schema-wizard
+              - button "Schema Upload Upload New Schemas" [ref=e96]:
+                - img [ref=e98]
+                - generic [ref=e100]:
+                  - generic [ref=e103]: Schema Upload
+                  - paragraph [ref=e104]: Upload New Schemas
+            - link "iReport Integration Document Format Conversion" [ref=e105] [cursor=pointer]:
+              - /url: /ireport
+              - button "iReport Integration Document Format Conversion" [ref=e106]:
+                - img [ref=e108]
+                - generic [ref=e110]:
+                  - generic [ref=e113]: iReport Integration
+                  - paragraph [ref=e114]: Document Format Conversion
+        - generic [ref=e115]:
+          - button "Rules & Learning" [ref=e116] [cursor=pointer]:
+            - img [ref=e118]
+            - heading "Rules & Learning" [level=6] [ref=e121]
+            - img [ref=e123]
+          - list [ref=e128]:
+            - link "Rule Editor Create & Manage Extraction Rules" [ref=e129] [cursor=pointer]:
+              - /url: /rules
+              - button "Rule Editor Create & Manage Extraction Rules" [ref=e130]:
+                - img [ref=e132]
+                - generic [ref=e134]:
+                  - generic [ref=e137]: Rule Editor
+                  - paragraph [ref=e138]: Create & Manage Extraction Rules
+            - link "Learning Center ML Model Training & Management" [ref=e139] [cursor=pointer]:
+              - /url: /learning
+              - button "Learning Center ML Model Training & Management" [ref=e140]:
+                - img [ref=e142]
+                - generic [ref=e144]:
+                  - generic [ref=e147]: Learning Center
+                  - paragraph [ref=e148]: ML Model Training & Management
+            - link "Version History Track Schema Changes" [ref=e149] [cursor=pointer]:
+              - /url: /schema/:id/history
+              - button "Version History Track Schema Changes" [ref=e150]:
+                - img [ref=e152]
+                - generic [ref=e154]:
+                  - generic [ref=e157]: Version History
+                  - paragraph [ref=e158]: Track Schema Changes
+        - generic [ref=e159]:
+          - button "Monitoring & Audit" [ref=e160] [cursor=pointer]:
+            - img [ref=e162]
+            - heading "Monitoring & Audit" [level=6] [ref=e165]
+            - img [ref=e167]
+          - list [ref=e172]:
+            - link "Audit Trail System & User Activity Logs" [ref=e173] [cursor=pointer]:
+              - /url: /audit
+              - button "Audit Trail System & User Activity Logs" [ref=e174]:
+                - img [ref=e176]
+                - generic [ref=e178]:
+                  - generic [ref=e181]: Audit Trail
+                  - paragraph [ref=e182]: System & User Activity Logs
+            - link "Logs Application Logs & Diagnostics" [ref=e183] [cursor=pointer]:
+              - /url: /logs
+              - button "Logs Application Logs & Diagnostics" [ref=e184]:
+                - img [ref=e186]
+                - generic [ref=e188]:
+                  - generic [ref=e191]: Logs
+                  - paragraph [ref=e192]: Application Logs & Diagnostics
+            - link "Services System Services & Health Monitoring" [ref=e193] [cursor=pointer]:
+              - /url: /services
+              - button "Services System Services & Health Monitoring" [ref=e194]:
+                - img [ref=e196]
+                - generic [ref=e198]:
+                  - generic [ref=e201]: Services
+                  - paragraph [ref=e202]: System Services & Health Monitoring
+            - link "Technical Audit Comprehensive System Audit & Status Report" [ref=e203] [cursor=pointer]:
+              - /url: /technical-audit
+              - button "Technical Audit Comprehensive System Audit & Status Report" [ref=e204]:
+                - img [ref=e206]
+                - generic [ref=e208]:
+                  - generic [ref=e211]: Technical Audit
+                  - paragraph [ref=e212]: Comprehensive System Audit & Status Report
+            - link "Quality Dashboard Technical Quality & Report Dashboard" [ref=e213] [cursor=pointer]:
+              - /url: /technical-tests
+              - button "Quality Dashboard Technical Quality & Report Dashboard" [ref=e214]:
+                - img [ref=e216]
+                - generic [ref=e218]:
+                  - generic [ref=e221]: Quality Dashboard
+                  - paragraph [ref=e222]: Technical Quality & Report Dashboard
+            - link "Backups System Backups & Recovery" [ref=e223] [cursor=pointer]:
+              - /url: /backups
+              - button "Backups System Backups & Recovery" [active] [ref=e224]:
+                - img [ref=e226]
+                - generic [ref=e228]:
+                  - generic [ref=e231]: Backups
+                  - paragraph [ref=e232]: System Backups & Recovery
+        - generic [ref=e233]:
+          - button "System" [ref=e234] [cursor=pointer]:
+            - img [ref=e236]
+            - heading "System" [level=6] [ref=e239]
+            - img [ref=e241]
+          - list [ref=e246]:
+            - link "Configuration System Settings & Preferences" [ref=e247] [cursor=pointer]:
+              - /url: /configuration
+              - button "Configuration System Settings & Preferences" [ref=e248]:
+                - img [ref=e250]
+                - generic [ref=e252]:
+                  - generic [ref=e255]: Configuration
+                  - paragraph [ref=e256]: System Settings & Preferences
+            - link "Help Center Documentation & Support" [ref=e257] [cursor=pointer]:
+              - /url: /help
+              - button "Help Center Documentation & Support" [ref=e258]:
+                - img [ref=e260]
+                - generic [ref=e262]:
+                  - generic [ref=e265]: Help Center
+                  - paragraph [ref=e266]: Documentation & Support
+      - generic [ref=e267]: v0.37.1
+    - main [ref=e268]:
+      - navigation "breadcrumb" [ref=e271]:
+        - list [ref=e272]:
+          - listitem [ref=e273]:
+            - link "Home" [ref=e274] [cursor=pointer]:
+              - /url: /
+              - img [ref=e275]
+              - paragraph [ref=e277]: Home
+          - listitem [ref=e278]:
+            - img [ref=e279]
+          - listitem [ref=e281]:
+            - link "Monitoring & Audit" [ref=e282] [cursor=pointer]:
+              - /url: /audit
+              - paragraph [ref=e283]: Monitoring & Audit
+          - listitem [ref=e284]:
+            - img [ref=e285]
+          - listitem [ref=e287]:
+            - paragraph [ref=e289]: Backups
+      - generic [ref=e291]:
+        - generic [ref=e292]:
+          - heading "💾 Backup Manager" [level=4] [ref=e293]
+          - button "Create Backup" [ref=e294] [cursor=pointer]:
+            - img [ref=e296]
+            - text: Create Backup
+        - table [ref=e299]:
+          - rowgroup [ref=e300]:
+            - row "Backup Name Created At Size (MB) Status Duration (s) Actions" [ref=e301]:
+              - columnheader "Backup Name" [ref=e302]
+              - columnheader "Created At" [ref=e303]
+              - columnheader "Size (MB)" [ref=e304]
+              - columnheader "Status" [ref=e305]
+              - columnheader "Duration (s)" [ref=e306]
+              - columnheader "Actions" [ref=e307]
+          - rowgroup [ref=e308]:
+            - row "initial-backup 7/10/2026, 7:19:24 PM 0.00 Initial setup test - days Download Restore Delete" [ref=e309]:
+              - cell "initial-backup" [ref=e310]:
+                - heading "initial-backup" [level=6] [ref=e311]
+              - cell "7/10/2026, 7:19:24 PM" [ref=e312]:
+                - paragraph [ref=e313]: 7/10/2026, 7:19:24 PM
+              - cell "0.00" [ref=e314]:
+                - paragraph [ref=e315]: "0.00"
+              - cell "Initial setup test" [ref=e316]:
+                - generic [ref=e318]: Initial setup test
+              - cell "- days" [ref=e319]:
+                - paragraph [ref=e320]: "- days"
+              - cell "Download Restore Delete" [ref=e321]:
+                - button "Download" [ref=e322] [cursor=pointer]:
+                  - img [ref=e324]
+                  - text: Download
+                - button "Restore" [ref=e326] [cursor=pointer]:
+                  - img [ref=e328]
+                  - text: Restore
+                - button "Delete" [ref=e330] [cursor=pointer]:
+                  - img [ref=e332]
+                  - text: Delete
+```

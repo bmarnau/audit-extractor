@@ -1,0 +1,12 @@
+TestId,Category,Severity,Status,DurationMs,ErrorCode,ErrorMessage
+"DAT-001","DAT","CRITICAL","PASSED",0,"",""
+"INF-001","INF","CRITICAL","PASSED",1,"",""
+"INF-002","INF","CRITICAL","PASSED",0,"",""
+"INF-003","INF","CRITICAL","PASSED",0,"",""
+"SRV-001","SRV","CRITICAL","PASSED",0,"",""
+"SRV-002","SRV","CRITICAL","PASSED",0,"",""
+"API-001","API","HIGH","PASSED",0,"",""
+"CFG-001","CFG","HIGH","PASSED",0,"",""
+"OPS-001","OPS","MEDIUM","PASSED",0,"",""
+"UI-001","UI","MEDIUM","PASSED",0,"",""
+"GOV-001","GOV","LOW","PASSED",0,"",""

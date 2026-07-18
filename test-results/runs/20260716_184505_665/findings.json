@@ -1,0 +1,19 @@
+{
+  "runId": "20260716_184505_665",
+  "findings": [],
+  "findingsByTest": {},
+  "findingsByCategory": {},
+  "findingsBySeverity": {
+    "critical": [],
+    "high": [],
+    "medium": [],
+    "low": [],
+    "info": []
+  },
+  "errorGroups": {},
+  "regression": {
+    "newErrors": [],
+    "recurringErrors": [],
+    "fixedErrors": []
+  }
+}
