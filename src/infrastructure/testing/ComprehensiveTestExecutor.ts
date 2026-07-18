@@ -407,31 +407,32 @@ export class TestResultAggregator {
 export class CompactReportGenerator {
   /**
    * Generate compact terminal report
+   * Fixed: UTF-8 encoding for Windows PowerShell compatibility
    */
   static toTerminal(report: TestExecutionReport): string {
     let output = '\n';
-    output += '╔════════════════════════════════════════════════════════════╗\n';
-    output += '║              TEST EXECUTION REPORT                        ║\n';
-    output += '╚════════════════════════════════════════════════════════════╝\n\n';
+    output += '========================================================\n';
+    output += '              TEST EXECUTION REPORT\n';
+    output += '========================================================\n\n';
 
     // Summary metrics
-    output += '📊 SUMMARY\n';
+    output += 'SUMMARY\n';
     output += `   Tests: ${report.passedTests}/${report.totalTests} passed (${report.overallSuccessRate.toFixed(1)}%)\n`;
     output += `   Components: ${report.passingComponents}/${report.totalComponents} passing\n`;
     output += `   Duration: ${(report.duration / 1000).toFixed(2)}s\n\n`;
 
     // Severity distribution
-    output += '🎯 SEVERITY DISTRIBUTION\n';
-    output += `   🔴 CRITICAL: ${report.criticalFailures}\n`;
-    output += `   🟠 HIGH:     ${report.highFailures}\n`;
-    output += `   🟡 MEDIUM:   ${report.mediumFailures}\n`;
-    output += `   🟢 LOW:      ${report.lowFailures}\n\n`;
+    output += 'SEVERITY DISTRIBUTION\n';
+    output += `   [CRITICAL]: ${report.criticalFailures}\n`;
+    output += `   [HIGH]:     ${report.highFailures}\n`;
+    output += `   [MEDIUM]:   ${report.mediumFailures}\n`;
+    output += `   [LOW]:      ${report.lowFailures}\n\n`;
 
     // Blockers
     if (report.blockers.length > 0) {
-      output += '🚫 BLOCKERS\n';
+      output += 'BLOCKERS\n';
       report.blockers.forEach(blocker => {
-        output += `   ${blocker}\n`;
+        output += `   * ${blocker}\n`;
       });
       output += '\n';
     }
@@ -439,17 +440,17 @@ export class CompactReportGenerator {
     // Top failing components
     const topFailers = report.componentResults.filter(c => c.status === 'FAIL').slice(0, 5);
     if (topFailers.length > 0) {
-      output += '❌ TOP FAILING COMPONENTS\n';
+      output += 'TOP FAILING COMPONENTS\n';
       topFailers.forEach(comp => {
-        output += `   ${comp.componentName}: ${comp.failedTests}/${comp.totalTests} failed\n`;
+        output += `   * ${comp.componentName}: ${comp.failedTests}/${comp.totalTests} failed\n`;
       });
       output += '\n';
     }
 
     // Recommendations
-    output += '💡 RECOMMENDATIONS\n';
+    output += 'RECOMMENDATIONS\n';
     report.recommendations.forEach(rec => {
-      output += `   ${rec}\n`;
+      output += `   * ${rec}\n`;
     });
 
     output += '\n';
@@ -458,16 +459,19 @@ export class CompactReportGenerator {
 
   /**
    * Generate compact JSON report
+   * Fixed: Include executionId and timestamp as top-level fields
    */
   static toJSON(report: TestExecutionReport): string {
     const compact = {
+      executionId: report.executionId,
+      timestamp: report.startTime.toISOString(),
+      duration: (report.duration / 1000).toFixed(2) + 's',
       summary: {
         totalTests: report.totalTests,
         passed: report.passedTests,
         failed: report.failedTests,
         skipped: report.skippedTests,
         successRate: report.overallSuccessRate.toFixed(1) + '%',
-        duration: (report.duration / 1000).toFixed(2) + 's',
       },
       severity: {
         CRITICAL: report.criticalFailures,
@@ -497,6 +501,7 @@ export class CompactReportGenerator {
 
   /**
    * Generate compact Markdown report
+   * Fixed: Use plain text titles instead of emojis for better compatibility
    */
   static toMarkdown(report: TestExecutionReport): string {
     let output = `# Test Execution Report\n\n`;
@@ -504,28 +509,28 @@ export class CompactReportGenerator {
     output += `**Duration**: ${new Date(report.endTime.getTime() - report.startTime.getTime()).toISOString().substr(11, 8)}\n\n`;
 
     // Summary table
-    output += `## 📊 Summary\n\n`;
+    output += `## Summary\n\n`;
     output += `| Metric | Value |\n`;
     output += `|--------|-------|\n`;
     output += `| Total Tests | ${report.totalTests} |\n`;
-    output += `| Passed | ${report.passedTests} ✅ |\n`;
-    output += `| Failed | ${report.failedTests} ❌ |\n`;
-    output += `| Skipped | ${report.skippedTests} ⏭️  |\n`;
+    output += `| Passed | ${report.passedTests} |\n`;
+    output += `| Failed | ${report.failedTests} |\n`;
+    output += `| Skipped | ${report.skippedTests} |\n`;
     output += `| Success Rate | ${report.overallSuccessRate.toFixed(1)}% |\n`;
     output += `| Duration | ${(report.duration / 1000).toFixed(2)}s |\n\n`;
 
     // Severity distribution
-    output += `## 🎯 Severity Distribution\n\n`;
+    output += `## Severity Distribution\n\n`;
     output += `| Severity | Count |\n`;
     output += `|----------|-------|\n`;
-    output += `| 🔴 CRITICAL | ${report.criticalFailures} |\n`;
-    output += `| 🟠 HIGH | ${report.highFailures} |\n`;
-    output += `| 🟡 MEDIUM | ${report.mediumFailures} |\n`;
-    output += `| 🟢 LOW | ${report.lowFailures} |\n\n`;
+    output += `| CRITICAL | ${report.criticalFailures} |\n`;
+    output += `| HIGH | ${report.highFailures} |\n`;
+    output += `| MEDIUM | ${report.mediumFailures} |\n`;
+    output += `| LOW | ${report.lowFailures} |\n\n`;
 
     // Blockers
     if (report.blockers.length > 0) {
-      output += `## 🚫 Blockers\n\n`;
+      output += `## Blockers\n\n`;
       report.blockers.forEach(blocker => {
         output += `- ${blocker}\n`;
       });
@@ -533,7 +538,7 @@ export class CompactReportGenerator {
     }
 
     // Recommendations
-    output += `## 💡 Recommendations\n\n`;
+    output += `## Recommendations\n\n`;
     report.recommendations.forEach(rec => {
       output += `- ${rec}\n`;
     });
