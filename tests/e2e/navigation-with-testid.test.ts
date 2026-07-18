@@ -1,21 +1,22 @@
 /**
- * IMPROVED NAVIGATION TEST SUITE v0.35.0
+ * IMPROVED NAVIGATION TEST SUITE v0.37.1
  * 
- * Phase 37a: Refactored with data-testid selectors for reliable testing
- * Tests the consolidated Services navigation category (Health, API, Backup, Settings)
+ * Phase 45: Updated with consolidated navigation structure
+ * Tests the consolidated Services navigation category (Health, API, Backup, Settings, Audit)
  * 
  * Key Improvements:
  * - Uses data-testid attributes for deterministic element targeting
  * - No flaky text-based selectors
- * - Validates all 7 navigation categories
+ * - Validates all 7+ navigation categories
  * - Tests Services consolidation feature
+ * - Includes Technical Audit navigation (Phase 43+)
  */
 
 import { test, expect, Page } from '@playwright/test';
 
 const BASE_URL = 'http://localhost:5173';
 
-test.describe('NAVIGATION TEST SUITE v0.35.0 (Phase 37a)', () => {
+test.describe('NAVIGATION TEST SUITE v0.37.1 (Phase 45)', () => {
   let page: Page;
 
   test.beforeAll(async ({ browser }) => {

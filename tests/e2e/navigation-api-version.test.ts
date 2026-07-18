@@ -8,8 +8,9 @@
  * 3. Test version matches application version
  * 4. All new features in the version are tested
  * 
- * @version 0.36.0
- * @phase 41
+ * @version 0.37.1
+ * @phase 45 - Project Consistency & Consolidation
+ * @lastUpdated 2026-07-18
  */
 
 import { test, expect, Page } from '@playwright/test';
@@ -26,7 +27,7 @@ import {
 // TEST SETUP
 // ============================================================================
 
-test.describe('API Endpoints & Version Verification Suite v0.35.0', () => {
+test.describe('API Endpoints & Version Verification Suite v0.37.1', () => {
   let page: Page;
   let apiBaseUrl = NAVIGATION_ENDPOINTS.API_BASE;
 

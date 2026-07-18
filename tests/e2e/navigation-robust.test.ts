@@ -1,11 +1,13 @@
 /**
- * ROBUST NAVIGATION TEST SUITE v0.36.0
+ * ROBUST NAVIGATION TEST SUITE v0.37.1
  * 
  * Fixed version with proper waits, error handling, and fallbacks
  * Uses direct URL navigation instead of clicking (faster & more reliable)
+ * Updated for Phase 45: Project Consistency & Consolidation
  * 
- * @version 0.36.0
- * @phase 42
+ * @version 0.37.1
+ * @phase 45
+ * @lastUpdated 2026-07-18
  */
 
 import { test, expect, Page } from '@playwright/test';
